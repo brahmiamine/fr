@@ -98,6 +98,7 @@ function selectGapItems(
     context: gap.context,
     isPersonal: true,
     sourceId: gap.id,
+    rescueAngles: [],
   }))
 
   for (const word of genericWords.slice(0, count - personal.length)) {
@@ -108,6 +109,7 @@ function selectGapItems(
       context: '',
       isPersonal: false,
       sourceId: word.id,
+      rescueAngles: word.rescueAngles ?? [],
     })
   }
   return items
@@ -139,12 +141,24 @@ function selectDiverseQuestions(
   )
   const chosen = []
   const usedCategories = new Set<string>()
+  const usedTypes = new Set<string>()
 
+  // First pass: maximize both topic category and speaking-task diversity.
   for (const question of ordered) {
     if (chosen.length >= count) break
-    if (usedCategories.has(question.category)) continue
+    if (usedCategories.has(question.category) || usedTypes.has(question.type ?? 'argumentation')) continue
     chosen.push(question)
     usedCategories.add(question.category)
+    usedTypes.add(question.type ?? 'argumentation')
+  }
+
+  // Second pass: keep category diversity even when every task type is already used.
+  for (const question of ordered) {
+    if (chosen.length >= count) break
+    if (usedCategories.has(question.category) || chosen.some((item) => item.id === question.id)) continue
+    chosen.push(question)
+    usedCategories.add(question.category)
+    usedTypes.add(question.type ?? 'argumentation')
   }
 
   if (chosen.length < count) {
@@ -180,11 +194,21 @@ export function buildSessionPlan(
 
   const questionPool = selectDiverseQuestions(
     state,
-    QUESTIONS_PER_SESSION + 1,
+    QUESTIONS_PER_SESSION,
     random,
   )
   const questions = questionPool.slice(0, QUESTIONS_PER_SESSION)
-  const pivotQuestion = questionPool[QUESTIONS_PER_SESSION] ?? null
+
+  const pivotSource = questions[questions.length - 1]
+  const pivotIds = pivotSource?.pivots ?? []
+  const pivotQuestion =
+    pivotIds
+      .map((id) => contentRepository.questions.find((question) => question.id === id))
+      .find((question) => question && !state.recentQuestionIds.includes(question.id)) ??
+    pivotIds
+      .map((id) => contentRepository.questions.find((question) => question.id === id))
+      .find(Boolean) ??
+    null
   const chunks = selectChunks(state, CHUNKS_PER_SESSION, random)
   const chunksOfDay = shuffle(chunks, random)
 

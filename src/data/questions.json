@@ -3,3180 +3,6360 @@
     "id": "q001",
     "text": "Pourquoi certaines personnes préfèrent-elles vivre seules ?",
     "category": "societe",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "abstract",
+    "pivots": [
+      "q038",
+      "q115",
+      "q150"
+    ]
   },
   {
     "id": "q002",
     "text": "À quoi ressemblerait ta journée idéale ?",
     "category": "quotidien",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "hypothetical",
+    "pivots": [
+      "q051",
+      "q085",
+      "q151"
+    ]
   },
   {
     "id": "q003",
     "text": "Les voyages forment-ils vraiment la jeunesse ?",
     "category": "voyage",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q040",
+      "q086",
+      "q179"
+    ]
   },
   {
     "id": "q004",
     "text": "Quel est le plus grand changement technologique de ces dix dernières années ?",
     "category": "technologie",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "argumentation",
+    "pivots": [
+      "q043",
+      "q087",
+      "q153"
+    ]
   },
   {
     "id": "q005",
     "text": "Faut-il apprendre plusieurs langues dès l'enfance ?",
     "category": "education",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "opinion",
+    "pivots": [
+      "q042",
+      "q088",
+      "q154"
+    ]
   },
   {
     "id": "q006",
     "text": "Qu'est-ce qui rend un bon ami ?",
     "category": "societe",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "abstract",
+    "pivots": [
+      "q043",
+      "q115",
+      "q155"
+    ]
   },
   {
     "id": "q007",
     "text": "Le travail à distance va-t-il disparaître ?",
     "category": "travail",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q044",
+      "q090",
+      "q156"
+    ]
   },
   {
     "id": "q008",
     "text": "Comment la musique influence-t-elle notre humeur ?",
     "category": "culture",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "problem-solving",
+    "pivots": [
+      "q045",
+      "q091",
+      "q157"
+    ]
   },
   {
     "id": "q009",
     "text": "Pourquoi est-il difficile de changer ses habitudes ?",
     "category": "sante",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "abstract",
+    "pivots": [
+      "q046",
+      "q092",
+      "q158"
+    ]
   },
   {
     "id": "q010",
     "text": "La célébrité a-t-elle plus d'avantages ou d'inconvénients ?",
     "category": "societe",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "argumentation",
+    "pivots": [
+      "q047",
+      "q115",
+      "q159"
+    ]
   },
   {
     "id": "q011",
     "text": "Quel serait un bon conseil pour gagner du temps ?",
     "category": "quotidien",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "argumentation",
+    "pivots": [
+      "q053",
+      "q094",
+      "q160"
+    ]
   },
   {
     "id": "q012",
     "text": "Les grandes villes sont-elles encore vivables ?",
     "category": "environnement",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q049",
+      "q095",
+      "q161"
+    ]
   },
   {
     "id": "q013",
     "text": "Que penses-tu de l'usage des téléphones à table ?",
     "category": "quotidien",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "opinion",
+    "pivots": [
+      "q051",
+      "q096",
+      "q162"
+    ]
   },
   {
     "id": "q014",
     "text": "L'échec est-il nécessaire pour réussir ?",
     "category": "societe",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "opinion",
+    "pivots": [
+      "q051",
+      "q115",
+      "q163"
+    ]
   },
   {
     "id": "q015",
     "text": "Quelle invention changera le plus le siècle à venir ?",
     "category": "technologie",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "argumentation",
+    "pivots": [
+      "q053",
+      "q098",
+      "q164"
+    ]
   },
   {
     "id": "q016",
     "text": "Comment créer une bonne ambiance dans une équipe ?",
     "category": "travail",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "problem-solving",
+    "pivots": [
+      "q083",
+      "q099",
+      "q165"
+    ]
   },
   {
     "id": "q017",
     "text": "Qu'est-ce qui mérite d'être appris toute sa vie ?",
     "category": "education",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "argumentation",
+    "pivots": [
+      "q054",
+      "q100",
+      "q166"
+    ]
   },
   {
     "id": "q018",
     "text": "Préfères-tu un bon livre ou un bon film ? Pourquoi ?",
     "category": "culture",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "comparison",
+    "pivots": [
+      "q055",
+      "q101",
+      "q167"
+    ]
   },
   {
     "id": "q019",
-    "text": "Que penses-tu de les routines du matin ?",
+    "text": "Que penses-tu des routines du matin ?",
     "category": "quotidien",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "opinion",
+    "pivots": [
+      "q056",
+      "q102",
+      "q168"
+    ]
   },
   {
     "id": "q020",
     "text": "Quel conseil donnerais-tu à quelqu'un qui découvre les routines du matin ?",
     "category": "quotidien",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "problem-solving",
+    "pivots": [
+      "q058",
+      "q103",
+      "q169"
+    ]
   },
   {
     "id": "q021",
     "text": "Si les routines du matin disparaissait demain, qu'est-ce qui changerait le plus ?",
     "category": "quotidien",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "argumentation",
+    "pivots": [
+      "q059",
+      "q104",
+      "q170"
+    ]
   },
   {
     "id": "q022",
-    "text": "Quelle erreur les gens font-ils souvent à propos de les routines du matin ?",
+    "text": "Quelle erreur les gens font-ils souvent à propos des routines du matin ?",
     "category": "quotidien",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q059",
+      "q105",
+      "q171"
+    ]
   },
   {
     "id": "q023",
     "text": "Comment l'organisation de la journée pourrait-il évoluer dans les dix prochaines années ?",
     "category": "quotidien",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "problem-solving",
+    "pivots": [
+      "q060",
+      "q106",
+      "q172"
+    ]
   },
   {
     "id": "q024",
     "text": "Qu'est-ce qui est souvent mal compris à propos de l'organisation de la journée ?",
     "category": "quotidien",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q061",
+      "q107",
+      "q173"
+    ]
   },
   {
     "id": "q025",
     "text": "Qu'est-ce qui compte le plus quand il s'agit de l'organisation de la journée ?",
     "category": "quotidien",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "argumentation",
+    "pivots": [
+      "q063",
+      "q108",
+      "q174"
+    ]
   },
   {
     "id": "q026",
     "text": "Est-ce que ton opinion sur l'organisation de la journée a changé avec le temps ? Pourquoi ?",
     "category": "quotidien",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "abstract",
+    "pivots": [
+      "q063",
+      "q109",
+      "q175"
+    ]
   },
   {
     "id": "q027",
     "text": "Pourquoi les gens ont-ils parfois des avis très différents sur l'usage du téléphone à table ?",
     "category": "quotidien",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "abstract",
+    "pivots": [
+      "q064",
+      "q110",
+      "q176"
+    ]
   },
   {
     "id": "q028",
     "text": "Est-ce qu'on accorde trop ou pas assez d'importance à l'usage du téléphone à table ?",
     "category": "quotidien",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q065",
+      "q111",
+      "q177"
+    ]
   },
   {
     "id": "q029",
     "text": "Comment expliquerais-tu l'usage du téléphone à table à quelqu'un qui n'en a jamais fait l'expérience ?",
     "category": "quotidien",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q066",
+      "q112",
+      "q178"
+    ]
   },
   {
     "id": "q030",
     "text": "Qu'est-ce qui devrait changer en priorité concernant l'usage du téléphone à table ?",
     "category": "quotidien",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "opinion",
+    "pivots": [
+      "q067",
+      "q113",
+      "q179"
+    ]
   },
   {
     "id": "q031",
     "text": "Si tu pouvais fixer une seule règle concernant les courses en ligne, laquelle choisirais-tu ?",
     "category": "quotidien",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "hypothetical",
+    "pivots": [
+      "q068",
+      "q114",
+      "q180"
+    ]
   },
   {
     "id": "q032",
     "text": "Quel serait selon toi le meilleur compromis concernant les courses en ligne ?",
     "category": "quotidien",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "personal",
+    "pivots": [
+      "q069",
+      "q115",
+      "q181"
+    ]
   },
   {
     "id": "q033",
-    "text": "Quels sont les principaux avantages et les principales limites de les courses en ligne ?",
+    "text": "Quels sont les principaux avantages et les principales limites des courses en ligne ?",
     "category": "quotidien",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "personal",
+    "pivots": [
+      "q070",
+      "q116",
+      "q182"
+    ]
   },
   {
     "id": "q034",
     "text": "Quelle expérience personnelle te vient à l'esprit quand tu penses à les courses en ligne ?",
     "category": "quotidien",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q071",
+      "q117",
+      "q183"
+    ]
   },
   {
     "id": "q035",
     "text": "Quelle erreur les gens font-ils souvent à propos de la cuisine à la maison ?",
     "category": "quotidien",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q073",
+      "q118",
+      "q184"
+    ]
   },
   {
     "id": "q036",
     "text": "Que penses-tu de la cuisine à la maison ?",
     "category": "quotidien",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "opinion",
+    "pivots": [
+      "q073",
+      "q119",
+      "q185"
+    ]
   },
   {
     "id": "q037",
     "text": "Quel conseil donnerais-tu à quelqu'un qui découvre la cuisine à la maison ?",
     "category": "quotidien",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "problem-solving",
+    "pivots": [
+      "q075",
+      "q120",
+      "q186"
+    ]
   },
   {
     "id": "q038",
     "text": "Si la cuisine à la maison disparaissait demain, qu'est-ce qui changerait le plus ?",
     "category": "quotidien",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "argumentation",
+    "pivots": [
+      "q076",
+      "q121",
+      "q187"
+    ]
   },
   {
     "id": "q039",
     "text": "Est-ce que ton opinion sur le partage des tâches ménagères a changé avec le temps ? Pourquoi ?",
     "category": "quotidien",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "abstract",
+    "pivots": [
+      "q076",
+      "q122",
+      "q188"
+    ]
   },
   {
     "id": "q040",
     "text": "Comment le partage des tâches ménagères pourrait-il évoluer dans les dix prochaines années ?",
     "category": "quotidien",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "problem-solving",
+    "pivots": [
+      "q077",
+      "q123",
+      "q189"
+    ]
   },
   {
     "id": "q041",
-    "text": "Qu'est-ce qui est souvent mal compris à propos de le partage des tâches ménagères ?",
+    "text": "Qu'est-ce qui est souvent mal compris à propos du partage des tâches ménagères ?",
     "category": "quotidien",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q078",
+      "q124",
+      "q190"
+    ]
   },
   {
     "id": "q042",
-    "text": "Qu'est-ce qui compte le plus quand il s'agit de le partage des tâches ménagères ?",
+    "text": "Qu'est-ce qui compte le plus quand il s'agit du partage des tâches ménagères ?",
     "category": "quotidien",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "argumentation",
+    "pivots": [
+      "q079",
+      "q125",
+      "q191"
+    ]
   },
   {
     "id": "q043",
     "text": "Qu'est-ce qui devrait changer en priorité concernant le temps libre ?",
     "category": "quotidien",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "opinion",
+    "pivots": [
+      "q080",
+      "q126",
+      "q192"
+    ]
   },
   {
     "id": "q044",
     "text": "Pourquoi les gens ont-ils parfois des avis très différents sur le temps libre ?",
     "category": "quotidien",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "abstract",
+    "pivots": [
+      "q081",
+      "q127",
+      "q193"
+    ]
   },
   {
     "id": "q045",
     "text": "Est-ce qu'on accorde trop ou pas assez d'importance à le temps libre ?",
     "category": "quotidien",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q082",
+      "q128",
+      "q194"
+    ]
   },
   {
     "id": "q046",
     "text": "Comment expliquerais-tu le temps libre à quelqu'un qui n'en a jamais fait l'expérience ?",
     "category": "quotidien",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q083",
+      "q129",
+      "q195"
+    ]
   },
   {
     "id": "q047",
     "text": "Quelle expérience personnelle te vient à l'esprit quand tu penses à le fait de vivre seul ?",
     "category": "quotidien",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q084",
+      "q130",
+      "q196"
+    ]
   },
   {
     "id": "q048",
     "text": "Si tu pouvais fixer une seule règle concernant le fait de vivre seul, laquelle choisirais-tu ?",
     "category": "quotidien",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "hypothetical",
+    "pivots": [
+      "q085",
+      "q131",
+      "q197"
+    ]
   },
   {
     "id": "q049",
     "text": "Quel serait selon toi le meilleur compromis concernant le fait de vivre seul ?",
     "category": "quotidien",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "personal",
+    "pivots": [
+      "q086",
+      "q132",
+      "q198"
+    ]
   },
   {
     "id": "q050",
-    "text": "Quels sont les principaux avantages et les principales limites de le fait de vivre seul ?",
+    "text": "Quels sont les principaux avantages et les principales limites du fait de vivre seul ?",
     "category": "quotidien",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "personal",
+    "pivots": [
+      "q087",
+      "q133",
+      "q199"
+    ]
   },
   {
     "id": "q051",
     "text": "Si le télétravail disparaissait demain, qu'est-ce qui changerait le plus ?",
     "category": "travail",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "argumentation",
+    "pivots": [
+      "q090",
+      "q134",
+      "q200"
+    ]
   },
   {
     "id": "q052",
-    "text": "Quelle erreur les gens font-ils souvent à propos de le télétravail ?",
+    "text": "Quelle erreur les gens font-ils souvent à propos du télétravail ?",
     "category": "travail",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q090",
+      "q135",
+      "q201"
+    ]
   },
   {
     "id": "q053",
-    "text": "Que penses-tu de le télétravail ?",
+    "text": "Que penses-tu du télétravail ?",
     "category": "travail",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "opinion",
+    "pivots": [
+      "q090",
+      "q136",
+      "q202"
+    ]
   },
   {
     "id": "q054",
     "text": "Quel conseil donnerais-tu à quelqu'un qui découvre le télétravail ?",
     "category": "travail",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "problem-solving",
+    "pivots": [
+      "q091",
+      "q137",
+      "q203"
+    ]
   },
   {
     "id": "q055",
     "text": "Qu'est-ce qui compte le plus quand il s'agit de la semaine de quatre jours ?",
     "category": "travail",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "argumentation",
+    "pivots": [
+      "q093",
+      "q138",
+      "q204"
+    ]
   },
   {
     "id": "q056",
     "text": "Est-ce que ton opinion sur la semaine de quatre jours a changé avec le temps ? Pourquoi ?",
     "category": "travail",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "abstract",
+    "pivots": [
+      "q093",
+      "q139",
+      "q205"
+    ]
   },
   {
     "id": "q057",
     "text": "Comment la semaine de quatre jours pourrait-il évoluer dans les dix prochaines années ?",
     "category": "travail",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "problem-solving",
+    "pivots": [
+      "q094",
+      "q140",
+      "q206"
+    ]
   },
   {
     "id": "q058",
     "text": "Qu'est-ce qui est souvent mal compris à propos de la semaine de quatre jours ?",
     "category": "travail",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q095",
+      "q141",
+      "q207"
+    ]
   },
   {
     "id": "q059",
     "text": "Comment expliquerais-tu les réunions au travail à quelqu'un qui n'en a jamais fait l'expérience ?",
     "category": "travail",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q096",
+      "q142",
+      "q208"
+    ]
   },
   {
     "id": "q060",
     "text": "Qu'est-ce qui devrait changer en priorité concernant les réunions au travail ?",
     "category": "travail",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "opinion",
+    "pivots": [
+      "q097",
+      "q143",
+      "q209"
+    ]
   },
   {
     "id": "q061",
     "text": "Pourquoi les gens ont-ils parfois des avis très différents sur les réunions au travail ?",
     "category": "travail",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "abstract",
+    "pivots": [
+      "q098",
+      "q144",
+      "q210"
+    ]
   },
   {
     "id": "q062",
     "text": "Est-ce qu'on accorde trop ou pas assez d'importance à les réunions au travail ?",
     "category": "travail",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q100",
+      "q145",
+      "q211"
+    ]
   },
   {
     "id": "q063",
-    "text": "Quels sont les principaux avantages et les principales limites de les horaires flexibles ?",
+    "text": "Quels sont les principaux avantages et les principales limites des horaires flexibles ?",
     "category": "travail",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "personal",
+    "pivots": [
+      "q100",
+      "q146",
+      "q212"
+    ]
   },
   {
     "id": "q064",
     "text": "Quelle expérience personnelle te vient à l'esprit quand tu penses à les horaires flexibles ?",
     "category": "travail",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q101",
+      "q147",
+      "q213"
+    ]
   },
   {
     "id": "q065",
     "text": "Si tu pouvais fixer une seule règle concernant les horaires flexibles, laquelle choisirais-tu ?",
     "category": "travail",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "hypothetical",
+    "pivots": [
+      "q102",
+      "q148",
+      "q214"
+    ]
   },
   {
     "id": "q066",
     "text": "Quel serait selon toi le meilleur compromis concernant les horaires flexibles ?",
     "category": "travail",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "personal",
+    "pivots": [
+      "q103",
+      "q149",
+      "q215"
+    ]
   },
   {
     "id": "q067",
     "text": "Quel conseil donnerais-tu à quelqu'un qui découvre le changement de métier ?",
     "category": "travail",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "problem-solving",
+    "pivots": [
+      "q105",
+      "q150",
+      "q216"
+    ]
   },
   {
     "id": "q068",
     "text": "Si le changement de métier disparaissait demain, qu'est-ce qui changerait le plus ?",
     "category": "travail",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "argumentation",
+    "pivots": [
+      "q107",
+      "q151",
+      "q217"
+    ]
   },
   {
     "id": "q069",
-    "text": "Quelle erreur les gens font-ils souvent à propos de le changement de métier ?",
+    "text": "Quelle erreur les gens font-ils souvent à propos du changement de métier ?",
     "category": "travail",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q107",
+      "q152",
+      "q218"
+    ]
   },
   {
     "id": "q070",
-    "text": "Que penses-tu de le changement de métier ?",
+    "text": "Que penses-tu du changement de métier ?",
     "category": "travail",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "opinion",
+    "pivots": [
+      "q107",
+      "q153",
+      "q219"
+    ]
   },
   {
     "id": "q071",
-    "text": "Qu'est-ce qui est souvent mal compris à propos de le rôle du manager ?",
+    "text": "Qu'est-ce qui est souvent mal compris à propos du rôle du manager ?",
     "category": "travail",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q108",
+      "q154",
+      "q220"
+    ]
   },
   {
     "id": "q072",
-    "text": "Qu'est-ce qui compte le plus quand il s'agit de le rôle du manager ?",
+    "text": "Qu'est-ce qui compte le plus quand il s'agit du rôle du manager ?",
     "category": "travail",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "argumentation",
+    "pivots": [
+      "q109",
+      "q155",
+      "q221"
+    ]
   },
   {
     "id": "q073",
     "text": "Est-ce que ton opinion sur le rôle du manager a changé avec le temps ? Pourquoi ?",
     "category": "travail",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "abstract",
+    "pivots": [
+      "q110",
+      "q156",
+      "q222"
+    ]
   },
   {
     "id": "q074",
     "text": "Comment le rôle du manager pourrait-il évoluer dans les dix prochaines années ?",
     "category": "travail",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "problem-solving",
+    "pivots": [
+      "q111",
+      "q157",
+      "q223"
+    ]
   },
   {
     "id": "q075",
     "text": "Est-ce qu'on accorde trop ou pas assez d'importance à les relations entre collègues ?",
     "category": "travail",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q112",
+      "q158",
+      "q224"
+    ]
   },
   {
     "id": "q076",
     "text": "Comment expliquerais-tu les relations entre collègues à quelqu'un qui n'en a jamais fait l'expérience ?",
     "category": "travail",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q113",
+      "q159",
+      "q225"
+    ]
   },
   {
     "id": "q077",
     "text": "Qu'est-ce qui devrait changer en priorité concernant les relations entre collègues ?",
     "category": "travail",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "opinion",
+    "pivots": [
+      "q114",
+      "q160",
+      "q226"
+    ]
   },
   {
     "id": "q078",
     "text": "Pourquoi les gens ont-ils parfois des avis très différents sur les relations entre collègues ?",
     "category": "travail",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "abstract",
+    "pivots": [
+      "q115",
+      "q161",
+      "q227"
+    ]
   },
   {
     "id": "q079",
     "text": "Quel serait selon toi le meilleur compromis concernant l'équilibre entre travail et vie privée ?",
     "category": "travail",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "personal",
+    "pivots": [
+      "q116",
+      "q162",
+      "q228"
+    ]
   },
   {
     "id": "q080",
     "text": "Quels sont les principaux avantages et les principales limites de l'équilibre entre travail et vie privée ?",
     "category": "travail",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "personal",
+    "pivots": [
+      "q117",
+      "q163",
+      "q229"
+    ]
   },
   {
     "id": "q081",
     "text": "Quelle expérience personnelle te vient à l'esprit quand tu penses à l'équilibre entre travail et vie privée ?",
     "category": "travail",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q118",
+      "q164",
+      "q230"
+    ]
   },
   {
     "id": "q082",
     "text": "Si tu pouvais fixer une seule règle concernant l'équilibre entre travail et vie privée, laquelle choisirais-tu ?",
     "category": "travail",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "hypothetical",
+    "pivots": [
+      "q119",
+      "q165",
+      "q231"
+    ]
   },
   {
     "id": "q083",
-    "text": "Que penses-tu de les réseaux sociaux ?",
+    "text": "Que penses-tu des réseaux sociaux ?",
     "category": "societe",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "opinion",
+    "pivots": [
+      "q120",
+      "q166",
+      "q232"
+    ]
   },
   {
     "id": "q084",
     "text": "Quel conseil donnerais-tu à quelqu'un qui découvre les réseaux sociaux ?",
     "category": "societe",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "problem-solving",
+    "pivots": [
+      "q122",
+      "q167",
+      "q233"
+    ]
   },
   {
     "id": "q085",
     "text": "Si les réseaux sociaux disparaissait demain, qu'est-ce qui changerait le plus ?",
     "category": "societe",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "argumentation",
+    "pivots": [
+      "q123",
+      "q168",
+      "q234"
+    ]
   },
   {
     "id": "q086",
-    "text": "Quelle erreur les gens font-ils souvent à propos de les réseaux sociaux ?",
+    "text": "Quelle erreur les gens font-ils souvent à propos des réseaux sociaux ?",
     "category": "societe",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q123",
+      "q169",
+      "q235"
+    ]
   },
   {
     "id": "q087",
     "text": "Comment la célébrité pourrait-il évoluer dans les dix prochaines années ?",
     "category": "societe",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "problem-solving",
+    "pivots": [
+      "q124",
+      "q170",
+      "q236"
+    ]
   },
   {
     "id": "q088",
     "text": "Qu'est-ce qui est souvent mal compris à propos de la célébrité ?",
     "category": "societe",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q125",
+      "q171",
+      "q237"
+    ]
   },
   {
     "id": "q089",
     "text": "Qu'est-ce qui compte le plus quand il s'agit de la célébrité ?",
     "category": "societe",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "argumentation",
+    "pivots": [
+      "q127",
+      "q172",
+      "q238"
+    ]
   },
   {
     "id": "q090",
     "text": "Est-ce que ton opinion sur la célébrité a changé avec le temps ? Pourquoi ?",
     "category": "societe",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "abstract",
+    "pivots": [
+      "q127",
+      "q173",
+      "q239"
+    ]
   },
   {
     "id": "q091",
     "text": "Pourquoi les gens ont-ils parfois des avis très différents sur le bénévolat ?",
     "category": "societe",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "abstract",
+    "pivots": [
+      "q128",
+      "q174",
+      "q240"
+    ]
   },
   {
     "id": "q092",
     "text": "Est-ce qu'on accorde trop ou pas assez d'importance à le bénévolat ?",
     "category": "societe",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q129",
+      "q175",
+      "q241"
+    ]
   },
   {
     "id": "q093",
     "text": "Comment expliquerais-tu le bénévolat à quelqu'un qui n'en a jamais fait l'expérience ?",
     "category": "societe",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q130",
+      "q176",
+      "q242"
+    ]
   },
   {
     "id": "q094",
     "text": "Qu'est-ce qui devrait changer en priorité concernant le bénévolat ?",
     "category": "societe",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "opinion",
+    "pivots": [
+      "q131",
+      "q177",
+      "q243"
+    ]
   },
   {
     "id": "q095",
     "text": "Si tu pouvais fixer une seule règle concernant la politesse au quotidien, laquelle choisirais-tu ?",
     "category": "societe",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "hypothetical",
+    "pivots": [
+      "q132",
+      "q178",
+      "q244"
+    ]
   },
   {
     "id": "q096",
     "text": "Quel serait selon toi le meilleur compromis concernant la politesse au quotidien ?",
     "category": "societe",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "personal",
+    "pivots": [
+      "q133",
+      "q179",
+      "q245"
+    ]
   },
   {
     "id": "q097",
     "text": "Quels sont les principaux avantages et les principales limites de la politesse au quotidien ?",
     "category": "societe",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "personal",
+    "pivots": [
+      "q134",
+      "q180",
+      "q246"
+    ]
   },
   {
     "id": "q098",
     "text": "Quelle expérience personnelle te vient à l'esprit quand tu penses à la politesse au quotidien ?",
     "category": "societe",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q135",
+      "q181",
+      "q247"
+    ]
   },
   {
     "id": "q099",
     "text": "Quelle erreur les gens font-ils souvent à propos de l'entraide entre voisins ?",
     "category": "societe",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q137",
+      "q182",
+      "q248"
+    ]
   },
   {
     "id": "q100",
     "text": "Que penses-tu de l'entraide entre voisins ?",
     "category": "societe",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "opinion",
+    "pivots": [
+      "q137",
+      "q183",
+      "q249"
+    ]
   },
   {
     "id": "q101",
     "text": "Quel conseil donnerais-tu à quelqu'un qui découvre l'entraide entre voisins ?",
     "category": "societe",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "problem-solving",
+    "pivots": [
+      "q139",
+      "q184",
+      "q250"
+    ]
   },
   {
     "id": "q102",
     "text": "Si l'entraide entre voisins disparaissait demain, qu'est-ce qui changerait le plus ?",
     "category": "societe",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "argumentation",
+    "pivots": [
+      "q140",
+      "q185",
+      "q251"
+    ]
   },
   {
     "id": "q103",
     "text": "Est-ce que ton opinion sur la pression sociale a changé avec le temps ? Pourquoi ?",
     "category": "societe",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "abstract",
+    "pivots": [
+      "q140",
+      "q186",
+      "q252"
+    ]
   },
   {
     "id": "q104",
     "text": "Comment la pression sociale pourrait-il évoluer dans les dix prochaines années ?",
     "category": "societe",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "problem-solving",
+    "pivots": [
+      "q141",
+      "q187",
+      "q253"
+    ]
   },
   {
     "id": "q105",
     "text": "Qu'est-ce qui est souvent mal compris à propos de la pression sociale ?",
     "category": "societe",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q142",
+      "q188",
+      "q254"
+    ]
   },
   {
     "id": "q106",
     "text": "Qu'est-ce qui compte le plus quand il s'agit de la pression sociale ?",
     "category": "societe",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "argumentation",
+    "pivots": [
+      "q143",
+      "q189",
+      "q255"
+    ]
   },
   {
     "id": "q107",
     "text": "Qu'est-ce qui devrait changer en priorité concernant les différences entre générations ?",
     "category": "societe",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "comparison",
+    "pivots": [
+      "q144",
+      "q190",
+      "q256"
+    ]
   },
   {
     "id": "q108",
     "text": "Pourquoi les gens ont-ils parfois des avis très différents sur les différences entre générations ?",
     "category": "societe",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "comparison",
+    "pivots": [
+      "q145",
+      "q191",
+      "q257"
+    ]
   },
   {
     "id": "q109",
     "text": "Est-ce qu'on accorde trop ou pas assez d'importance à les différences entre générations ?",
     "category": "societe",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "comparison",
+    "pivots": [
+      "q146",
+      "q192",
+      "q258"
+    ]
   },
   {
     "id": "q110",
     "text": "Comment expliquerais-tu les différences entre générations à quelqu'un qui n'en a jamais fait l'expérience ?",
     "category": "societe",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q147",
+      "q193",
+      "q259"
+    ]
   },
   {
     "id": "q111",
     "text": "Quelle expérience personnelle te vient à l'esprit quand tu penses à la place de la publicité ?",
     "category": "societe",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q148",
+      "q194",
+      "q260"
+    ]
   },
   {
     "id": "q112",
     "text": "Si tu pouvais fixer une seule règle concernant la place de la publicité, laquelle choisirais-tu ?",
     "category": "societe",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "hypothetical",
+    "pivots": [
+      "q149",
+      "q195",
+      "q261"
+    ]
   },
   {
     "id": "q113",
     "text": "Quel serait selon toi le meilleur compromis concernant la place de la publicité ?",
     "category": "societe",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "personal",
+    "pivots": [
+      "q150",
+      "q196",
+      "q262"
+    ]
   },
   {
     "id": "q114",
     "text": "Quels sont les principaux avantages et les principales limites de la place de la publicité ?",
     "category": "societe",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "personal",
+    "pivots": [
+      "q151",
+      "q197",
+      "q263"
+    ]
   },
   {
     "id": "q115",
     "text": "Si l'intelligence artificielle au quotidien disparaissait demain, qu'est-ce qui changerait le plus ?",
     "category": "technologie",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "argumentation",
+    "pivots": [
+      "q154",
+      "q198",
+      "q264"
+    ]
   },
   {
     "id": "q116",
     "text": "Quelle erreur les gens font-ils souvent à propos de l'intelligence artificielle au quotidien ?",
     "category": "technologie",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q154",
+      "q199",
+      "q265"
+    ]
   },
   {
     "id": "q117",
     "text": "Que penses-tu de l'intelligence artificielle au quotidien ?",
     "category": "technologie",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "opinion",
+    "pivots": [
+      "q154",
+      "q200",
+      "q266"
+    ]
   },
   {
     "id": "q118",
     "text": "Quel conseil donnerais-tu à quelqu'un qui découvre l'intelligence artificielle au quotidien ?",
     "category": "technologie",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "problem-solving",
+    "pivots": [
+      "q155",
+      "q201",
+      "q267"
+    ]
   },
   {
     "id": "q119",
-    "text": "Qu'est-ce qui compte le plus quand il s'agit de les smartphones ?",
+    "text": "Qu'est-ce qui compte le plus quand il s'agit des smartphones ?",
     "category": "technologie",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "argumentation",
+    "pivots": [
+      "q157",
+      "q202",
+      "q268"
+    ]
   },
   {
     "id": "q120",
     "text": "Est-ce que ton opinion sur les smartphones a changé avec le temps ? Pourquoi ?",
     "category": "technologie",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "abstract",
+    "pivots": [
+      "q157",
+      "q203",
+      "q269"
+    ]
   },
   {
     "id": "q121",
     "text": "Comment les smartphones pourrait-il évoluer dans les dix prochaines années ?",
     "category": "technologie",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "problem-solving",
+    "pivots": [
+      "q158",
+      "q204",
+      "q270"
+    ]
   },
   {
     "id": "q122",
-    "text": "Qu'est-ce qui est souvent mal compris à propos de les smartphones ?",
+    "text": "Qu'est-ce qui est souvent mal compris à propos des smartphones ?",
     "category": "technologie",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q159",
+      "q205",
+      "q271"
+    ]
   },
   {
     "id": "q123",
     "text": "Comment expliquerais-tu les objets connectés à quelqu'un qui n'en a jamais fait l'expérience ?",
     "category": "technologie",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q160",
+      "q206",
+      "q272"
+    ]
   },
   {
     "id": "q124",
     "text": "Qu'est-ce qui devrait changer en priorité concernant les objets connectés ?",
     "category": "technologie",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "opinion",
+    "pivots": [
+      "q161",
+      "q207",
+      "q273"
+    ]
   },
   {
     "id": "q125",
     "text": "Pourquoi les gens ont-ils parfois des avis très différents sur les objets connectés ?",
     "category": "technologie",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "abstract",
+    "pivots": [
+      "q162",
+      "q208",
+      "q274"
+    ]
   },
   {
     "id": "q126",
     "text": "Est-ce qu'on accorde trop ou pas assez d'importance à les objets connectés ?",
     "category": "technologie",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q164",
+      "q209",
+      "q275"
+    ]
   },
   {
     "id": "q127",
-    "text": "Quels sont les principaux avantages et les principales limites de les assistants vocaux ?",
+    "text": "Quels sont les principaux avantages et les principales limites des assistants vocaux ?",
     "category": "technologie",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "personal",
+    "pivots": [
+      "q164",
+      "q210",
+      "q276"
+    ]
   },
   {
     "id": "q128",
     "text": "Quelle expérience personnelle te vient à l'esprit quand tu penses à les assistants vocaux ?",
     "category": "technologie",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q165",
+      "q211",
+      "q277"
+    ]
   },
   {
     "id": "q129",
     "text": "Si tu pouvais fixer une seule règle concernant les assistants vocaux, laquelle choisirais-tu ?",
     "category": "technologie",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "hypothetical",
+    "pivots": [
+      "q166",
+      "q212",
+      "q278"
+    ]
   },
   {
     "id": "q130",
     "text": "Quel serait selon toi le meilleur compromis concernant les assistants vocaux ?",
     "category": "technologie",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "personal",
+    "pivots": [
+      "q167",
+      "q213",
+      "q279"
+    ]
   },
   {
     "id": "q131",
     "text": "Quel conseil donnerais-tu à quelqu'un qui découvre les jeux vidéo ?",
     "category": "technologie",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "problem-solving",
+    "pivots": [
+      "q169",
+      "q214",
+      "q280"
+    ]
   },
   {
     "id": "q132",
     "text": "Si les jeux vidéo disparaissait demain, qu'est-ce qui changerait le plus ?",
     "category": "technologie",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "argumentation",
+    "pivots": [
+      "q171",
+      "q215",
+      "q281"
+    ]
   },
   {
     "id": "q133",
-    "text": "Quelle erreur les gens font-ils souvent à propos de les jeux vidéo ?",
+    "text": "Quelle erreur les gens font-ils souvent à propos des jeux vidéo ?",
     "category": "technologie",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q171",
+      "q216",
+      "q282"
+    ]
   },
   {
     "id": "q134",
-    "text": "Que penses-tu de les jeux vidéo ?",
+    "text": "Que penses-tu des jeux vidéo ?",
     "category": "technologie",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "opinion",
+    "pivots": [
+      "q172",
+      "q217",
+      "q283"
+    ]
   },
   {
     "id": "q135",
     "text": "Qu'est-ce qui est souvent mal compris à propos de la cybersécurité ?",
     "category": "technologie",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q172",
+      "q218",
+      "q284"
+    ]
   },
   {
     "id": "q136",
     "text": "Qu'est-ce qui compte le plus quand il s'agit de la cybersécurité ?",
     "category": "technologie",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "argumentation",
+    "pivots": [
+      "q174",
+      "q219",
+      "q285"
+    ]
   },
   {
     "id": "q137",
     "text": "Est-ce que ton opinion sur la cybersécurité a changé avec le temps ? Pourquoi ?",
     "category": "technologie",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "abstract",
+    "pivots": [
+      "q174",
+      "q220",
+      "q286"
+    ]
   },
   {
     "id": "q138",
     "text": "Comment la cybersécurité pourrait-il évoluer dans les dix prochaines années ?",
     "category": "technologie",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "problem-solving",
+    "pivots": [
+      "q175",
+      "q221",
+      "q287"
+    ]
   },
   {
     "id": "q139",
     "text": "Est-ce qu'on accorde trop ou pas assez d'importance à l'automatisation du travail ?",
     "category": "technologie",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q176",
+      "q222",
+      "q288"
+    ]
   },
   {
     "id": "q140",
     "text": "Comment expliquerais-tu l'automatisation du travail à quelqu'un qui n'en a jamais fait l'expérience ?",
     "category": "technologie",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q177",
+      "q223",
+      "q289"
+    ]
   },
   {
     "id": "q141",
     "text": "Qu'est-ce qui devrait changer en priorité concernant l'automatisation du travail ?",
     "category": "technologie",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "opinion",
+    "pivots": [
+      "q178",
+      "q224",
+      "q290"
+    ]
   },
   {
     "id": "q142",
     "text": "Pourquoi les gens ont-ils parfois des avis très différents sur l'automatisation du travail ?",
     "category": "technologie",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "abstract",
+    "pivots": [
+      "q179",
+      "q225",
+      "q291"
+    ]
   },
   {
     "id": "q143",
     "text": "Quel serait selon toi le meilleur compromis concernant la vie privée numérique ?",
     "category": "technologie",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "personal",
+    "pivots": [
+      "q180",
+      "q226",
+      "q292"
+    ]
   },
   {
     "id": "q144",
     "text": "Quels sont les principaux avantages et les principales limites de la vie privée numérique ?",
     "category": "technologie",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "personal",
+    "pivots": [
+      "q181",
+      "q227",
+      "q293"
+    ]
   },
   {
     "id": "q145",
     "text": "Quelle expérience personnelle te vient à l'esprit quand tu penses à la vie privée numérique ?",
     "category": "technologie",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q182",
+      "q228",
+      "q294"
+    ]
   },
   {
     "id": "q146",
     "text": "Si tu pouvais fixer une seule règle concernant la vie privée numérique, laquelle choisirais-tu ?",
     "category": "technologie",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "hypothetical",
+    "pivots": [
+      "q183",
+      "q229",
+      "q295"
+    ]
   },
   {
     "id": "q147",
-    "text": "Que penses-tu de le voyage en solo ?",
+    "text": "Que penses-tu du voyage en solo ?",
     "category": "voyage",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "opinion",
+    "pivots": [
+      "q184",
+      "q230",
+      "q296"
+    ]
   },
   {
     "id": "q148",
     "text": "Quel conseil donnerais-tu à quelqu'un qui découvre le voyage en solo ?",
     "category": "voyage",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "problem-solving",
+    "pivots": [
+      "q186",
+      "q231",
+      "q297"
+    ]
   },
   {
     "id": "q149",
     "text": "Si le voyage en solo disparaissait demain, qu'est-ce qui changerait le plus ?",
     "category": "voyage",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "argumentation",
+    "pivots": [
+      "q187",
+      "q232",
+      "q298"
+    ]
   },
   {
     "id": "q150",
-    "text": "Quelle erreur les gens font-ils souvent à propos de le voyage en solo ?",
+    "text": "Quelle erreur les gens font-ils souvent à propos du voyage en solo ?",
     "category": "voyage",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q187",
+      "q233",
+      "q299"
+    ]
   },
   {
     "id": "q151",
     "text": "Comment les voyages organisés pourrait-il évoluer dans les dix prochaines années ?",
     "category": "voyage",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "problem-solving",
+    "pivots": [
+      "q188",
+      "q234",
+      "q300"
+    ]
   },
   {
     "id": "q152",
-    "text": "Qu'est-ce qui est souvent mal compris à propos de les voyages organisés ?",
+    "text": "Qu'est-ce qui est souvent mal compris à propos des voyages organisés ?",
     "category": "voyage",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q189",
+      "q235",
+      "q301"
+    ]
   },
   {
     "id": "q153",
-    "text": "Qu'est-ce qui compte le plus quand il s'agit de les voyages organisés ?",
+    "text": "Qu'est-ce qui compte le plus quand il s'agit des voyages organisés ?",
     "category": "voyage",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "argumentation",
+    "pivots": [
+      "q191",
+      "q236",
+      "q302"
+    ]
   },
   {
     "id": "q154",
     "text": "Est-ce que ton opinion sur les voyages organisés a changé avec le temps ? Pourquoi ?",
     "category": "voyage",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "abstract",
+    "pivots": [
+      "q191",
+      "q237",
+      "q303"
+    ]
   },
   {
     "id": "q155",
     "text": "Pourquoi les gens ont-ils parfois des avis très différents sur le choix entre train et avion ?",
     "category": "voyage",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "abstract",
+    "pivots": [
+      "q192",
+      "q238",
+      "q304"
+    ]
   },
   {
     "id": "q156",
     "text": "Est-ce qu'on accorde trop ou pas assez d'importance à le choix entre train et avion ?",
     "category": "voyage",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q193",
+      "q239",
+      "q305"
+    ]
   },
   {
     "id": "q157",
     "text": "Comment expliquerais-tu le choix entre train et avion à quelqu'un qui n'en a jamais fait l'expérience ?",
     "category": "voyage",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q194",
+      "q240",
+      "q306"
+    ]
   },
   {
     "id": "q158",
     "text": "Qu'est-ce qui devrait changer en priorité concernant le choix entre train et avion ?",
     "category": "voyage",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "opinion",
+    "pivots": [
+      "q195",
+      "q241",
+      "q307"
+    ]
   },
   {
     "id": "q159",
     "text": "Si tu pouvais fixer une seule règle concernant le tourisme de masse, laquelle choisirais-tu ?",
     "category": "voyage",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "hypothetical",
+    "pivots": [
+      "q196",
+      "q242",
+      "q308"
+    ]
   },
   {
     "id": "q160",
     "text": "Quel serait selon toi le meilleur compromis concernant le tourisme de masse ?",
     "category": "voyage",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "personal",
+    "pivots": [
+      "q197",
+      "q243",
+      "q309"
+    ]
   },
   {
     "id": "q161",
-    "text": "Quels sont les principaux avantages et les principales limites de le tourisme de masse ?",
+    "text": "Quels sont les principaux avantages et les principales limites du tourisme de masse ?",
     "category": "voyage",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "personal",
+    "pivots": [
+      "q198",
+      "q244",
+      "q310"
+    ]
   },
   {
     "id": "q162",
     "text": "Quelle expérience personnelle te vient à l'esprit quand tu penses à le tourisme de masse ?",
     "category": "voyage",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q199",
+      "q245",
+      "q311"
+    ]
   },
   {
     "id": "q163",
     "text": "Quelle erreur les gens font-ils souvent à propos de l'apprentissage d'une langue avant de voyager ?",
     "category": "voyage",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q201",
+      "q246",
+      "q312"
+    ]
   },
   {
     "id": "q164",
     "text": "Que penses-tu de l'apprentissage d'une langue avant de voyager ?",
     "category": "voyage",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "opinion",
+    "pivots": [
+      "q201",
+      "q247",
+      "q313"
+    ]
   },
   {
     "id": "q165",
     "text": "Quel conseil donnerais-tu à quelqu'un qui découvre l'apprentissage d'une langue avant de voyager ?",
     "category": "voyage",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "problem-solving",
+    "pivots": [
+      "q203",
+      "q248",
+      "q314"
+    ]
   },
   {
     "id": "q166",
     "text": "Si l'apprentissage d'une langue avant de voyager disparaissait demain, qu'est-ce qui changerait le plus ?",
     "category": "voyage",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "argumentation",
+    "pivots": [
+      "q203",
+      "q249",
+      "q315"
+    ]
   },
   {
     "id": "q167",
     "text": "Est-ce que ton opinion sur le fait de vivre à l'étranger a changé avec le temps ? Pourquoi ?",
     "category": "voyage",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "abstract",
+    "pivots": [
+      "q204",
+      "q250",
+      "q316"
+    ]
   },
   {
     "id": "q168",
     "text": "Comment le fait de vivre à l'étranger pourrait-il évoluer dans les dix prochaines années ?",
     "category": "voyage",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "problem-solving",
+    "pivots": [
+      "q205",
+      "q251",
+      "q317"
+    ]
   },
   {
     "id": "q169",
-    "text": "Qu'est-ce qui est souvent mal compris à propos de le fait de vivre à l'étranger ?",
+    "text": "Qu'est-ce qui est souvent mal compris à propos du fait de vivre à l'étranger ?",
     "category": "voyage",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q206",
+      "q252",
+      "q318"
+    ]
   },
   {
     "id": "q170",
-    "text": "Qu'est-ce qui compte le plus quand il s'agit de le fait de vivre à l'étranger ?",
+    "text": "Qu'est-ce qui compte le plus quand il s'agit du fait de vivre à l'étranger ?",
     "category": "voyage",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "argumentation",
+    "pivots": [
+      "q207",
+      "q253",
+      "q319"
+    ]
   },
   {
     "id": "q171",
     "text": "Qu'est-ce qui devrait changer en priorité concernant le voyage léger ?",
     "category": "voyage",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "opinion",
+    "pivots": [
+      "q208",
+      "q254",
+      "q320"
+    ]
   },
   {
     "id": "q172",
     "text": "Pourquoi les gens ont-ils parfois des avis très différents sur le voyage léger ?",
     "category": "voyage",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "abstract",
+    "pivots": [
+      "q209",
+      "q255",
+      "q321"
+    ]
   },
   {
     "id": "q173",
     "text": "Est-ce qu'on accorde trop ou pas assez d'importance à le voyage léger ?",
     "category": "voyage",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q210",
+      "q256",
+      "q322"
+    ]
   },
   {
     "id": "q174",
     "text": "Comment expliquerais-tu le voyage léger à quelqu'un qui n'en a jamais fait l'expérience ?",
     "category": "voyage",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q211",
+      "q257",
+      "q323"
+    ]
   },
   {
     "id": "q175",
     "text": "Quelle expérience personnelle te vient à l'esprit quand tu penses à les imprévus en voyage ?",
     "category": "voyage",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q212",
+      "q258",
+      "q324"
+    ]
   },
   {
     "id": "q176",
     "text": "Si tu pouvais fixer une seule règle concernant les imprévus en voyage, laquelle choisirais-tu ?",
     "category": "voyage",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "hypothetical",
+    "pivots": [
+      "q213",
+      "q259",
+      "q325"
+    ]
   },
   {
     "id": "q177",
     "text": "Quel serait selon toi le meilleur compromis concernant les imprévus en voyage ?",
     "category": "voyage",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "personal",
+    "pivots": [
+      "q214",
+      "q260",
+      "q326"
+    ]
   },
   {
     "id": "q178",
-    "text": "Quels sont les principaux avantages et les principales limites de les imprévus en voyage ?",
+    "text": "Quels sont les principaux avantages et les principales limites des imprévus en voyage ?",
     "category": "voyage",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "personal",
+    "pivots": [
+      "q215",
+      "q261",
+      "q327"
+    ]
   },
   {
     "id": "q179",
     "text": "Si l'amitié à l'âge adulte disparaissait demain, qu'est-ce qui changerait le plus ?",
     "category": "relations",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "argumentation",
+    "pivots": [
+      "q218",
+      "q262",
+      "q328"
+    ]
   },
   {
     "id": "q180",
     "text": "Quelle erreur les gens font-ils souvent à propos de l'amitié à l'âge adulte ?",
     "category": "relations",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q218",
+      "q263",
+      "q329"
+    ]
   },
   {
     "id": "q181",
     "text": "Que penses-tu de l'amitié à l'âge adulte ?",
     "category": "relations",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "opinion",
+    "pivots": [
+      "q218",
+      "q264",
+      "q330"
+    ]
   },
   {
     "id": "q182",
     "text": "Quel conseil donnerais-tu à quelqu'un qui découvre l'amitié à l'âge adulte ?",
     "category": "relations",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "problem-solving",
+    "pivots": [
+      "q219",
+      "q265",
+      "q331"
+    ]
   },
   {
     "id": "q183",
-    "text": "Qu'est-ce qui compte le plus quand il s'agit de les relations à distance ?",
+    "text": "Qu'est-ce qui compte le plus quand il s'agit des relations à distance ?",
     "category": "relations",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "argumentation",
+    "pivots": [
+      "q221",
+      "q266",
+      "q332"
+    ]
   },
   {
     "id": "q184",
     "text": "Est-ce que ton opinion sur les relations à distance a changé avec le temps ? Pourquoi ?",
     "category": "relations",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "abstract",
+    "pivots": [
+      "q221",
+      "q267",
+      "q333"
+    ]
   },
   {
     "id": "q185",
     "text": "Comment les relations à distance pourrait-il évoluer dans les dix prochaines années ?",
     "category": "relations",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "problem-solving",
+    "pivots": [
+      "q222",
+      "q268",
+      "q334"
+    ]
   },
   {
     "id": "q186",
-    "text": "Qu'est-ce qui est souvent mal compris à propos de les relations à distance ?",
+    "text": "Qu'est-ce qui est souvent mal compris à propos des relations à distance ?",
     "category": "relations",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q223",
+      "q269",
+      "q335"
+    ]
   },
   {
     "id": "q187",
     "text": "Comment expliquerais-tu la gestion des conflits à quelqu'un qui n'en a jamais fait l'expérience ?",
     "category": "relations",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q224",
+      "q270",
+      "q336"
+    ]
   },
   {
     "id": "q188",
     "text": "Qu'est-ce qui devrait changer en priorité concernant la gestion des conflits ?",
     "category": "relations",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "opinion",
+    "pivots": [
+      "q225",
+      "q271",
+      "q337"
+    ]
   },
   {
     "id": "q189",
     "text": "Pourquoi les gens ont-ils parfois des avis très différents sur la gestion des conflits ?",
     "category": "relations",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "abstract",
+    "pivots": [
+      "q226",
+      "q272",
+      "q338"
+    ]
   },
   {
     "id": "q190",
     "text": "Est-ce qu'on accorde trop ou pas assez d'importance à la gestion des conflits ?",
     "category": "relations",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q228",
+      "q273",
+      "q339"
+    ]
   },
   {
     "id": "q191",
     "text": "Quels sont les principaux avantages et les principales limites de la confiance ?",
     "category": "relations",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "personal",
+    "pivots": [
+      "q228",
+      "q274",
+      "q340"
+    ]
   },
   {
     "id": "q192",
     "text": "Quelle expérience personnelle te vient à l'esprit quand tu penses à la confiance ?",
     "category": "relations",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q229",
+      "q275",
+      "q341"
+    ]
   },
   {
     "id": "q193",
     "text": "Si tu pouvais fixer une seule règle concernant la confiance, laquelle choisirais-tu ?",
     "category": "relations",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "hypothetical",
+    "pivots": [
+      "q230",
+      "q276",
+      "q342"
+    ]
   },
   {
     "id": "q194",
     "text": "Quel serait selon toi le meilleur compromis concernant la confiance ?",
     "category": "relations",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "personal",
+    "pivots": [
+      "q231",
+      "q277",
+      "q343"
+    ]
   },
   {
     "id": "q195",
     "text": "Quel conseil donnerais-tu à quelqu'un qui découvre l'écoute dans une relation ?",
     "category": "relations",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "problem-solving",
+    "pivots": [
+      "q233",
+      "q278",
+      "q344"
+    ]
   },
   {
     "id": "q196",
     "text": "Si l'écoute dans une relation disparaissait demain, qu'est-ce qui changerait le plus ?",
     "category": "relations",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "argumentation",
+    "pivots": [
+      "q235",
+      "q279",
+      "q345"
+    ]
   },
   {
     "id": "q197",
     "text": "Quelle erreur les gens font-ils souvent à propos de l'écoute dans une relation ?",
     "category": "relations",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q235",
+      "q280",
+      "q346"
+    ]
   },
   {
     "id": "q198",
     "text": "Que penses-tu de l'écoute dans une relation ?",
     "category": "relations",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "opinion",
+    "pivots": [
+      "q236",
+      "q281",
+      "q347"
+    ]
   },
   {
     "id": "q199",
-    "text": "Qu'est-ce qui est souvent mal compris à propos de les nouvelles rencontres ?",
+    "text": "Qu'est-ce qui est souvent mal compris à propos des nouvelles rencontres ?",
     "category": "relations",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q236",
+      "q282",
+      "q348"
+    ]
   },
   {
     "id": "q200",
-    "text": "Qu'est-ce qui compte le plus quand il s'agit de les nouvelles rencontres ?",
+    "text": "Qu'est-ce qui compte le plus quand il s'agit des nouvelles rencontres ?",
     "category": "relations",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "argumentation",
+    "pivots": [
+      "q238",
+      "q283",
+      "q349"
+    ]
   },
   {
     "id": "q201",
     "text": "Est-ce que ton opinion sur les nouvelles rencontres a changé avec le temps ? Pourquoi ?",
     "category": "relations",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "abstract",
+    "pivots": [
+      "q238",
+      "q284",
+      "q350"
+    ]
   },
   {
     "id": "q202",
     "text": "Comment les nouvelles rencontres pourrait-il évoluer dans les dix prochaines années ?",
     "category": "relations",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "problem-solving",
+    "pivots": [
+      "q239",
+      "q285",
+      "q351"
+    ]
   },
   {
     "id": "q203",
     "text": "Est-ce qu'on accorde trop ou pas assez d'importance à les limites personnelles ?",
     "category": "relations",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "personal",
+    "pivots": [
+      "q240",
+      "q286",
+      "q352"
+    ]
   },
   {
     "id": "q204",
     "text": "Comment expliquerais-tu les limites personnelles à quelqu'un qui n'en a jamais fait l'expérience ?",
     "category": "relations",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q241",
+      "q287",
+      "q353"
+    ]
   },
   {
     "id": "q205",
     "text": "Qu'est-ce qui devrait changer en priorité concernant les limites personnelles ?",
     "category": "relations",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "personal",
+    "pivots": [
+      "q243",
+      "q288",
+      "q354"
+    ]
   },
   {
     "id": "q206",
     "text": "Pourquoi les gens ont-ils parfois des avis très différents sur les limites personnelles ?",
     "category": "relations",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "abstract",
+    "pivots": [
+      "q243",
+      "q289",
+      "q355"
+    ]
   },
   {
     "id": "q207",
     "text": "Quel serait selon toi le meilleur compromis concernant le mélange entre travail et amitié ?",
     "category": "relations",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "personal",
+    "pivots": [
+      "q244",
+      "q290",
+      "q356"
+    ]
   },
   {
     "id": "q208",
-    "text": "Quels sont les principaux avantages et les principales limites de le mélange entre travail et amitié ?",
+    "text": "Quels sont les principaux avantages et les principales limites du mélange entre travail et amitié ?",
     "category": "relations",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "personal",
+    "pivots": [
+      "q245",
+      "q291",
+      "q357"
+    ]
   },
   {
     "id": "q209",
     "text": "Quelle expérience personnelle te vient à l'esprit quand tu penses à le mélange entre travail et amitié ?",
     "category": "relations",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q246",
+      "q292",
+      "q358"
+    ]
   },
   {
     "id": "q210",
     "text": "Si tu pouvais fixer une seule règle concernant le mélange entre travail et amitié, laquelle choisirais-tu ?",
     "category": "relations",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "hypothetical",
+    "pivots": [
+      "q247",
+      "q293",
+      "q359"
+    ]
   },
   {
     "id": "q211",
     "text": "Que penses-tu de la gestion d'un budget ?",
     "category": "argent",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "opinion",
+    "pivots": [
+      "q248",
+      "q294",
+      "q360"
+    ]
   },
   {
     "id": "q212",
     "text": "Quel conseil donnerais-tu à quelqu'un qui découvre la gestion d'un budget ?",
     "category": "argent",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "problem-solving",
+    "pivots": [
+      "q250",
+      "q295",
+      "q361"
+    ]
   },
   {
     "id": "q213",
     "text": "Si la gestion d'un budget disparaissait demain, qu'est-ce qui changerait le plus ?",
     "category": "argent",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "argumentation",
+    "pivots": [
+      "q251",
+      "q296",
+      "q362"
+    ]
   },
   {
     "id": "q214",
     "text": "Quelle erreur les gens font-ils souvent à propos de la gestion d'un budget ?",
     "category": "argent",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q251",
+      "q297",
+      "q363"
+    ]
   },
   {
     "id": "q215",
     "text": "Comment l'épargne pourrait-il évoluer dans les dix prochaines années ?",
     "category": "argent",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "problem-solving",
+    "pivots": [
+      "q252",
+      "q298",
+      "q364"
+    ]
   },
   {
     "id": "q216",
     "text": "Qu'est-ce qui est souvent mal compris à propos de l'épargne ?",
     "category": "argent",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q253",
+      "q299",
+      "q365"
+    ]
   },
   {
     "id": "q217",
     "text": "Qu'est-ce qui compte le plus quand il s'agit de l'épargne ?",
     "category": "argent",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "argumentation",
+    "pivots": [
+      "q255",
+      "q300",
+      "q366"
+    ]
   },
   {
     "id": "q218",
     "text": "Est-ce que ton opinion sur l'épargne a changé avec le temps ? Pourquoi ?",
     "category": "argent",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "abstract",
+    "pivots": [
+      "q255",
+      "q301",
+      "q367"
+    ]
   },
   {
     "id": "q219",
     "text": "Pourquoi les gens ont-ils parfois des avis très différents sur les achats impulsifs ?",
     "category": "argent",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "abstract",
+    "pivots": [
+      "q256",
+      "q302",
+      "q368"
+    ]
   },
   {
     "id": "q220",
     "text": "Est-ce qu'on accorde trop ou pas assez d'importance à les achats impulsifs ?",
     "category": "argent",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q257",
+      "q303",
+      "q369"
+    ]
   },
   {
     "id": "q221",
     "text": "Comment expliquerais-tu les achats impulsifs à quelqu'un qui n'en a jamais fait l'expérience ?",
     "category": "argent",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q258",
+      "q304",
+      "q370"
+    ]
   },
   {
     "id": "q222",
     "text": "Qu'est-ce qui devrait changer en priorité concernant les achats impulsifs ?",
     "category": "argent",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "opinion",
+    "pivots": [
+      "q259",
+      "q305",
+      "q371"
+    ]
   },
   {
     "id": "q223",
     "text": "Si tu pouvais fixer une seule règle concernant le paiement sans espèces, laquelle choisirais-tu ?",
     "category": "argent",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "hypothetical",
+    "pivots": [
+      "q260",
+      "q306",
+      "q372"
+    ]
   },
   {
     "id": "q224",
     "text": "Quel serait selon toi le meilleur compromis concernant le paiement sans espèces ?",
     "category": "argent",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "personal",
+    "pivots": [
+      "q261",
+      "q307",
+      "q373"
+    ]
   },
   {
     "id": "q225",
-    "text": "Quels sont les principaux avantages et les principales limites de le paiement sans espèces ?",
+    "text": "Quels sont les principaux avantages et les principales limites du paiement sans espèces ?",
     "category": "argent",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "personal",
+    "pivots": [
+      "q262",
+      "q308",
+      "q374"
+    ]
   },
   {
     "id": "q226",
     "text": "Quelle expérience personnelle te vient à l'esprit quand tu penses à le paiement sans espèces ?",
     "category": "argent",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q263",
+      "q309",
+      "q375"
+    ]
   },
   {
     "id": "q227",
-    "text": "Quelle erreur les gens font-ils souvent à propos de le choix entre acheter et louer ?",
+    "text": "Quelle erreur les gens font-ils souvent à propos du choix entre acheter et louer ?",
     "category": "argent",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q265",
+      "q310",
+      "q376"
+    ]
   },
   {
     "id": "q228",
-    "text": "Que penses-tu de le choix entre acheter et louer ?",
+    "text": "Que penses-tu du choix entre acheter et louer ?",
     "category": "argent",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "opinion",
+    "pivots": [
+      "q265",
+      "q311",
+      "q377"
+    ]
   },
   {
     "id": "q229",
     "text": "Quel conseil donnerais-tu à quelqu'un qui découvre le choix entre acheter et louer ?",
     "category": "argent",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "problem-solving",
+    "pivots": [
+      "q267",
+      "q312",
+      "q378"
+    ]
   },
   {
     "id": "q230",
     "text": "Si le choix entre acheter et louer disparaissait demain, qu'est-ce qui changerait le plus ?",
     "category": "argent",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "argumentation",
+    "pivots": [
+      "q268",
+      "q313",
+      "q379"
+    ]
   },
   {
     "id": "q231",
     "text": "Est-ce que ton opinion sur les cadeaux coûteux a changé avec le temps ? Pourquoi ?",
     "category": "argent",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "abstract",
+    "pivots": [
+      "q268",
+      "q314",
+      "q380"
+    ]
   },
   {
     "id": "q232",
     "text": "Comment les cadeaux coûteux pourrait-il évoluer dans les dix prochaines années ?",
     "category": "argent",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "problem-solving",
+    "pivots": [
+      "q269",
+      "q315",
+      "q381"
+    ]
   },
   {
     "id": "q233",
-    "text": "Qu'est-ce qui est souvent mal compris à propos de les cadeaux coûteux ?",
+    "text": "Qu'est-ce qui est souvent mal compris à propos des cadeaux coûteux ?",
     "category": "argent",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q270",
+      "q316",
+      "q382"
+    ]
   },
   {
     "id": "q234",
-    "text": "Qu'est-ce qui compte le plus quand il s'agit de les cadeaux coûteux ?",
+    "text": "Qu'est-ce qui compte le plus quand il s'agit des cadeaux coûteux ?",
     "category": "argent",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "argumentation",
+    "pivots": [
+      "q271",
+      "q317",
+      "q383"
+    ]
   },
   {
     "id": "q235",
     "text": "Qu'est-ce qui devrait changer en priorité concernant le partage des dépenses ?",
     "category": "argent",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "opinion",
+    "pivots": [
+      "q272",
+      "q318",
+      "q384"
+    ]
   },
   {
     "id": "q236",
     "text": "Pourquoi les gens ont-ils parfois des avis très différents sur le partage des dépenses ?",
     "category": "argent",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "abstract",
+    "pivots": [
+      "q273",
+      "q319",
+      "q385"
+    ]
   },
   {
     "id": "q237",
     "text": "Est-ce qu'on accorde trop ou pas assez d'importance à le partage des dépenses ?",
     "category": "argent",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q274",
+      "q320",
+      "q386"
+    ]
   },
   {
     "id": "q238",
     "text": "Comment expliquerais-tu le partage des dépenses à quelqu'un qui n'en a jamais fait l'expérience ?",
     "category": "argent",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q275",
+      "q321",
+      "q387"
+    ]
   },
   {
     "id": "q239",
     "text": "Quelle expérience personnelle te vient à l'esprit quand tu penses à notre rapport à l'argent ?",
     "category": "argent",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q276",
+      "q322",
+      "q388"
+    ]
   },
   {
     "id": "q240",
     "text": "Si tu pouvais fixer une seule règle concernant notre rapport à l'argent, laquelle choisirais-tu ?",
     "category": "argent",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "hypothetical",
+    "pivots": [
+      "q277",
+      "q323",
+      "q389"
+    ]
   },
   {
     "id": "q241",
     "text": "Quel serait selon toi le meilleur compromis concernant notre rapport à l'argent ?",
     "category": "argent",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "personal",
+    "pivots": [
+      "q278",
+      "q324",
+      "q390"
+    ]
   },
   {
     "id": "q242",
     "text": "Quels sont les principaux avantages et les principales limites de notre rapport à l'argent ?",
     "category": "argent",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "personal",
+    "pivots": [
+      "q279",
+      "q325",
+      "q391"
+    ]
   },
   {
     "id": "q243",
     "text": "Si le sommeil disparaissait demain, qu'est-ce qui changerait le plus ?",
     "category": "sante",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "argumentation",
+    "pivots": [
+      "q282",
+      "q326",
+      "q392"
+    ]
   },
   {
     "id": "q244",
-    "text": "Quelle erreur les gens font-ils souvent à propos de le sommeil ?",
+    "text": "Quelle erreur les gens font-ils souvent à propos du sommeil ?",
     "category": "sante",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q282",
+      "q327",
+      "q393"
+    ]
   },
   {
     "id": "q245",
-    "text": "Que penses-tu de le sommeil ?",
+    "text": "Que penses-tu du sommeil ?",
     "category": "sante",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "opinion",
+    "pivots": [
+      "q282",
+      "q328",
+      "q394"
+    ]
   },
   {
     "id": "q246",
     "text": "Quel conseil donnerais-tu à quelqu'un qui découvre le sommeil ?",
     "category": "sante",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "problem-solving",
+    "pivots": [
+      "q283",
+      "q329",
+      "q395"
+    ]
   },
   {
     "id": "q247",
     "text": "Qu'est-ce qui compte le plus quand il s'agit de l'alimentation équilibrée ?",
     "category": "sante",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "argumentation",
+    "pivots": [
+      "q285",
+      "q330",
+      "q396"
+    ]
   },
   {
     "id": "q248",
     "text": "Est-ce que ton opinion sur l'alimentation équilibrée a changé avec le temps ? Pourquoi ?",
     "category": "sante",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "abstract",
+    "pivots": [
+      "q285",
+      "q331",
+      "q397"
+    ]
   },
   {
     "id": "q249",
     "text": "Comment l'alimentation équilibrée pourrait-il évoluer dans les dix prochaines années ?",
     "category": "sante",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "problem-solving",
+    "pivots": [
+      "q286",
+      "q332",
+      "q398"
+    ]
   },
   {
     "id": "q250",
     "text": "Qu'est-ce qui est souvent mal compris à propos de l'alimentation équilibrée ?",
     "category": "sante",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q287",
+      "q333",
+      "q399"
+    ]
   },
   {
     "id": "q251",
     "text": "Comment expliquerais-tu la marche quotidienne à quelqu'un qui n'en a jamais fait l'expérience ?",
     "category": "sante",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q288",
+      "q334",
+      "q400"
+    ]
   },
   {
     "id": "q252",
     "text": "Qu'est-ce qui devrait changer en priorité concernant la marche quotidienne ?",
     "category": "sante",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "opinion",
+    "pivots": [
+      "q289",
+      "q335",
+      "q401"
+    ]
   },
   {
     "id": "q253",
     "text": "Pourquoi les gens ont-ils parfois des avis très différents sur la marche quotidienne ?",
     "category": "sante",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "abstract",
+    "pivots": [
+      "q290",
+      "q336",
+      "q402"
+    ]
   },
   {
     "id": "q254",
     "text": "Est-ce qu'on accorde trop ou pas assez d'importance à la marche quotidienne ?",
     "category": "sante",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q292",
+      "q337",
+      "q403"
+    ]
   },
   {
     "id": "q255",
     "text": "Quels sont les principaux avantages et les principales limites de l'activité physique ?",
     "category": "sante",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "personal",
+    "pivots": [
+      "q292",
+      "q338",
+      "q404"
+    ]
   },
   {
     "id": "q256",
     "text": "Quelle expérience personnelle te vient à l'esprit quand tu penses à l'activité physique ?",
     "category": "sante",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q293",
+      "q339",
+      "q405"
+    ]
   },
   {
     "id": "q257",
     "text": "Si tu pouvais fixer une seule règle concernant l'activité physique, laquelle choisirais-tu ?",
     "category": "sante",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "hypothetical",
+    "pivots": [
+      "q294",
+      "q340",
+      "q406"
+    ]
   },
   {
     "id": "q258",
     "text": "Quel serait selon toi le meilleur compromis concernant l'activité physique ?",
     "category": "sante",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "personal",
+    "pivots": [
+      "q295",
+      "q341",
+      "q407"
+    ]
   },
   {
     "id": "q259",
     "text": "Quel conseil donnerais-tu à quelqu'un qui découvre les écrans avant de dormir ?",
     "category": "sante",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "problem-solving",
+    "pivots": [
+      "q297",
+      "q342",
+      "q408"
+    ]
   },
   {
     "id": "q260",
     "text": "Si les écrans avant de dormir disparaissait demain, qu'est-ce qui changerait le plus ?",
     "category": "sante",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "argumentation",
+    "pivots": [
+      "q299",
+      "q343",
+      "q409"
+    ]
   },
   {
     "id": "q261",
-    "text": "Quelle erreur les gens font-ils souvent à propos de les écrans avant de dormir ?",
+    "text": "Quelle erreur les gens font-ils souvent à propos des écrans avant de dormir ?",
     "category": "sante",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q299",
+      "q344",
+      "q410"
+    ]
   },
   {
     "id": "q262",
-    "text": "Que penses-tu de les écrans avant de dormir ?",
+    "text": "Que penses-tu des écrans avant de dormir ?",
     "category": "sante",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "opinion",
+    "pivots": [
+      "q300",
+      "q345",
+      "q411"
+    ]
   },
   {
     "id": "q263",
     "text": "Qu'est-ce qui est souvent mal compris à propos de la gestion du stress ?",
     "category": "sante",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q300",
+      "q346",
+      "q412"
+    ]
   },
   {
     "id": "q264",
     "text": "Qu'est-ce qui compte le plus quand il s'agit de la gestion du stress ?",
     "category": "sante",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "argumentation",
+    "pivots": [
+      "q302",
+      "q347",
+      "q413"
+    ]
   },
   {
     "id": "q265",
     "text": "Est-ce que ton opinion sur la gestion du stress a changé avec le temps ? Pourquoi ?",
     "category": "sante",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "abstract",
+    "pivots": [
+      "q302",
+      "q348",
+      "q414"
+    ]
   },
   {
     "id": "q266",
     "text": "Comment la gestion du stress pourrait-il évoluer dans les dix prochaines années ?",
     "category": "sante",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "problem-solving",
+    "pivots": [
+      "q303",
+      "q349",
+      "q415"
+    ]
   },
   {
     "id": "q267",
     "text": "Est-ce qu'on accorde trop ou pas assez d'importance à le repos ?",
     "category": "sante",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q304",
+      "q350",
+      "q416"
+    ]
   },
   {
     "id": "q268",
     "text": "Comment expliquerais-tu le repos à quelqu'un qui n'en a jamais fait l'expérience ?",
     "category": "sante",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q305",
+      "q351",
+      "q417"
+    ]
   },
   {
     "id": "q269",
     "text": "Qu'est-ce qui devrait changer en priorité concernant le repos ?",
     "category": "sante",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "opinion",
+    "pivots": [
+      "q306",
+      "q352",
+      "q418"
+    ]
   },
   {
     "id": "q270",
     "text": "Pourquoi les gens ont-ils parfois des avis très différents sur le repos ?",
     "category": "sante",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "abstract",
+    "pivots": [
+      "q307",
+      "q353",
+      "q419"
+    ]
   },
   {
     "id": "q271",
     "text": "Quel serait selon toi le meilleur compromis concernant les habitudes de santé ?",
     "category": "sante",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "personal",
+    "pivots": [
+      "q308",
+      "q354",
+      "q420"
+    ]
   },
   {
     "id": "q272",
-    "text": "Quels sont les principaux avantages et les principales limites de les habitudes de santé ?",
+    "text": "Quels sont les principaux avantages et les principales limites des habitudes de santé ?",
     "category": "sante",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "personal",
+    "pivots": [
+      "q309",
+      "q355",
+      "q421"
+    ]
   },
   {
     "id": "q273",
     "text": "Quelle expérience personnelle te vient à l'esprit quand tu penses à les habitudes de santé ?",
     "category": "sante",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q310",
+      "q356",
+      "q422"
+    ]
   },
   {
     "id": "q274",
     "text": "Si tu pouvais fixer une seule règle concernant les habitudes de santé, laquelle choisirais-tu ?",
     "category": "sante",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "hypothetical",
+    "pivots": [
+      "q311",
+      "q357",
+      "q423"
+    ]
   },
   {
     "id": "q275",
-    "text": "Que penses-tu de les sports collectifs ?",
+    "text": "Que penses-tu des sports collectifs ?",
     "category": "sport",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "opinion",
+    "pivots": [
+      "q312",
+      "q358",
+      "q424"
+    ]
   },
   {
     "id": "q276",
     "text": "Quel conseil donnerais-tu à quelqu'un qui découvre les sports collectifs ?",
     "category": "sport",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "problem-solving",
+    "pivots": [
+      "q314",
+      "q359",
+      "q425"
+    ]
   },
   {
     "id": "q277",
     "text": "Si les sports collectifs disparaissait demain, qu'est-ce qui changerait le plus ?",
     "category": "sport",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "argumentation",
+    "pivots": [
+      "q315",
+      "q360",
+      "q426"
+    ]
   },
   {
     "id": "q278",
-    "text": "Quelle erreur les gens font-ils souvent à propos de les sports collectifs ?",
+    "text": "Quelle erreur les gens font-ils souvent à propos des sports collectifs ?",
     "category": "sport",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q315",
+      "q361",
+      "q427"
+    ]
   },
   {
     "id": "q279",
     "text": "Comment la compétition pourrait-il évoluer dans les dix prochaines années ?",
     "category": "sport",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "problem-solving",
+    "pivots": [
+      "q316",
+      "q362",
+      "q428"
+    ]
   },
   {
     "id": "q280",
     "text": "Qu'est-ce qui est souvent mal compris à propos de la compétition ?",
     "category": "sport",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q317",
+      "q363",
+      "q429"
+    ]
   },
   {
     "id": "q281",
     "text": "Qu'est-ce qui compte le plus quand il s'agit de la compétition ?",
     "category": "sport",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "argumentation",
+    "pivots": [
+      "q319",
+      "q364",
+      "q430"
+    ]
   },
   {
     "id": "q282",
     "text": "Est-ce que ton opinion sur la compétition a changé avec le temps ? Pourquoi ?",
     "category": "sport",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "abstract",
+    "pivots": [
+      "q319",
+      "q365",
+      "q431"
+    ]
   },
   {
     "id": "q283",
     "text": "Pourquoi les gens ont-ils parfois des avis très différents sur la salle de sport ?",
     "category": "sport",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "abstract",
+    "pivots": [
+      "q320",
+      "q366",
+      "q432"
+    ]
   },
   {
     "id": "q284",
     "text": "Est-ce qu'on accorde trop ou pas assez d'importance à la salle de sport ?",
     "category": "sport",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q321",
+      "q367",
+      "q433"
+    ]
   },
   {
     "id": "q285",
     "text": "Comment expliquerais-tu la salle de sport à quelqu'un qui n'en a jamais fait l'expérience ?",
     "category": "sport",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q322",
+      "q368",
+      "q434"
+    ]
   },
   {
     "id": "q286",
     "text": "Qu'est-ce qui devrait changer en priorité concernant la salle de sport ?",
     "category": "sport",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "opinion",
+    "pivots": [
+      "q323",
+      "q369",
+      "q435"
+    ]
   },
   {
     "id": "q287",
     "text": "Si tu pouvais fixer une seule règle concernant la course en plein air, laquelle choisirais-tu ?",
     "category": "sport",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "hypothetical",
+    "pivots": [
+      "q324",
+      "q370",
+      "q436"
+    ]
   },
   {
     "id": "q288",
     "text": "Quel serait selon toi le meilleur compromis concernant la course en plein air ?",
     "category": "sport",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "personal",
+    "pivots": [
+      "q325",
+      "q371",
+      "q437"
+    ]
   },
   {
     "id": "q289",
     "text": "Quels sont les principaux avantages et les principales limites de la course en plein air ?",
     "category": "sport",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "personal",
+    "pivots": [
+      "q326",
+      "q372",
+      "q438"
+    ]
   },
   {
     "id": "q290",
     "text": "Quelle expérience personnelle te vient à l'esprit quand tu penses à la course en plein air ?",
     "category": "sport",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q327",
+      "q373",
+      "q439"
+    ]
   },
   {
     "id": "q291",
-    "text": "Quelle erreur les gens font-ils souvent à propos de le fait de regarder du sport ?",
+    "text": "Quelle erreur les gens font-ils souvent à propos du fait de regarder du sport ?",
     "category": "sport",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q329",
+      "q374",
+      "q440"
+    ]
   },
   {
     "id": "q292",
-    "text": "Que penses-tu de le fait de regarder du sport ?",
+    "text": "Que penses-tu du fait de regarder du sport ?",
     "category": "sport",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "opinion",
+    "pivots": [
+      "q329",
+      "q375",
+      "q441"
+    ]
   },
   {
     "id": "q293",
     "text": "Quel conseil donnerais-tu à quelqu'un qui découvre le fait de regarder du sport ?",
     "category": "sport",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "problem-solving",
+    "pivots": [
+      "q331",
+      "q376",
+      "q442"
+    ]
   },
   {
     "id": "q294",
     "text": "Si le fait de regarder du sport disparaissait demain, qu'est-ce qui changerait le plus ?",
     "category": "sport",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "argumentation",
+    "pivots": [
+      "q332",
+      "q377",
+      "q443"
+    ]
   },
   {
     "id": "q295",
     "text": "Est-ce que ton opinion sur la motivation sportive a changé avec le temps ? Pourquoi ?",
     "category": "sport",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "abstract",
+    "pivots": [
+      "q332",
+      "q378",
+      "q444"
+    ]
   },
   {
     "id": "q296",
     "text": "Comment la motivation sportive pourrait-il évoluer dans les dix prochaines années ?",
     "category": "sport",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "problem-solving",
+    "pivots": [
+      "q333",
+      "q379",
+      "q445"
+    ]
   },
   {
     "id": "q297",
     "text": "Qu'est-ce qui est souvent mal compris à propos de la motivation sportive ?",
     "category": "sport",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q334",
+      "q380",
+      "q446"
+    ]
   },
   {
     "id": "q298",
     "text": "Qu'est-ce qui compte le plus quand il s'agit de la motivation sportive ?",
     "category": "sport",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "argumentation",
+    "pivots": [
+      "q335",
+      "q381",
+      "q447"
+    ]
   },
   {
     "id": "q299",
     "text": "Qu'est-ce qui devrait changer en priorité concernant le sport chez les enfants ?",
     "category": "sport",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "opinion",
+    "pivots": [
+      "q336",
+      "q382",
+      "q448"
+    ]
   },
   {
     "id": "q300",
     "text": "Pourquoi les gens ont-ils parfois des avis très différents sur le sport chez les enfants ?",
     "category": "sport",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "abstract",
+    "pivots": [
+      "q337",
+      "q383",
+      "q449"
+    ]
   },
   {
     "id": "q301",
     "text": "Est-ce qu'on accorde trop ou pas assez d'importance à le sport chez les enfants ?",
     "category": "sport",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q338",
+      "q384",
+      "q450"
+    ]
   },
   {
     "id": "q302",
     "text": "Comment expliquerais-tu le sport chez les enfants à quelqu'un qui n'en a jamais fait l'expérience ?",
     "category": "sport",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q339",
+      "q385",
+      "q451"
+    ]
   },
   {
     "id": "q303",
     "text": "Quelle expérience personnelle te vient à l'esprit quand tu penses à la recherche de performance ?",
     "category": "sport",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q340",
+      "q386",
+      "q452"
+    ]
   },
   {
     "id": "q304",
     "text": "Si tu pouvais fixer une seule règle concernant la recherche de performance, laquelle choisirais-tu ?",
     "category": "sport",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "hypothetical",
+    "pivots": [
+      "q341",
+      "q387",
+      "q453"
+    ]
   },
   {
     "id": "q305",
     "text": "Quel serait selon toi le meilleur compromis concernant la recherche de performance ?",
     "category": "sport",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "personal",
+    "pivots": [
+      "q342",
+      "q388",
+      "q454"
+    ]
   },
   {
     "id": "q306",
     "text": "Quels sont les principaux avantages et les principales limites de la recherche de performance ?",
     "category": "sport",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "personal",
+    "pivots": [
+      "q343",
+      "q389",
+      "q455"
+    ]
   },
   {
     "id": "q307",
     "text": "Si les films disparaissait demain, qu'est-ce qui changerait le plus ?",
     "category": "culture",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "argumentation",
+    "pivots": [
+      "q346",
+      "q390",
+      "q456"
+    ]
   },
   {
     "id": "q308",
-    "text": "Quelle erreur les gens font-ils souvent à propos de les films ?",
+    "text": "Quelle erreur les gens font-ils souvent à propos des films ?",
     "category": "culture",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q346",
+      "q391",
+      "q457"
+    ]
   },
   {
     "id": "q309",
-    "text": "Que penses-tu de les films ?",
+    "text": "Que penses-tu des films ?",
     "category": "culture",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "opinion",
+    "pivots": [
+      "q346",
+      "q392",
+      "q458"
+    ]
   },
   {
     "id": "q310",
     "text": "Quel conseil donnerais-tu à quelqu'un qui découvre les films ?",
     "category": "culture",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "problem-solving",
+    "pivots": [
+      "q347",
+      "q393",
+      "q459"
+    ]
   },
   {
     "id": "q311",
-    "text": "Qu'est-ce qui compte le plus quand il s'agit de les séries ?",
+    "text": "Qu'est-ce qui compte le plus quand il s'agit des séries ?",
     "category": "culture",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "argumentation",
+    "pivots": [
+      "q348",
+      "q394",
+      "q460"
+    ]
   },
   {
     "id": "q312",
     "text": "Est-ce que ton opinion sur les séries a changé avec le temps ? Pourquoi ?",
     "category": "culture",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "abstract",
+    "pivots": [
+      "q349",
+      "q395",
+      "q461"
+    ]
   },
   {
     "id": "q313",
     "text": "Comment les séries pourrait-il évoluer dans les dix prochaines années ?",
     "category": "culture",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "problem-solving",
+    "pivots": [
+      "q350",
+      "q396",
+      "q462"
+    ]
   },
   {
     "id": "q314",
-    "text": "Qu'est-ce qui est souvent mal compris à propos de les séries ?",
+    "text": "Qu'est-ce qui est souvent mal compris à propos des séries ?",
     "category": "culture",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q351",
+      "q397",
+      "q463"
+    ]
   },
   {
     "id": "q315",
     "text": "Comment expliquerais-tu la lecture à quelqu'un qui n'en a jamais fait l'expérience ?",
     "category": "culture",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q352",
+      "q398",
+      "q464"
+    ]
   },
   {
     "id": "q316",
     "text": "Qu'est-ce qui devrait changer en priorité concernant la lecture ?",
     "category": "culture",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "opinion",
+    "pivots": [
+      "q353",
+      "q399",
+      "q465"
+    ]
   },
   {
     "id": "q317",
     "text": "Pourquoi les gens ont-ils parfois des avis très différents sur la lecture ?",
     "category": "culture",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "abstract",
+    "pivots": [
+      "q354",
+      "q400",
+      "q466"
+    ]
   },
   {
     "id": "q318",
     "text": "Est-ce qu'on accorde trop ou pas assez d'importance à la lecture ?",
     "category": "culture",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q356",
+      "q401",
+      "q467"
+    ]
   },
   {
     "id": "q319",
     "text": "Quels sont les principaux avantages et les principales limites de la musique ?",
     "category": "culture",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "personal",
+    "pivots": [
+      "q356",
+      "q402",
+      "q468"
+    ]
   },
   {
     "id": "q320",
     "text": "Quelle expérience personnelle te vient à l'esprit quand tu penses à la musique ?",
     "category": "culture",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q357",
+      "q403",
+      "q469"
+    ]
   },
   {
     "id": "q321",
     "text": "Si tu pouvais fixer une seule règle concernant la musique, laquelle choisirais-tu ?",
     "category": "culture",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "hypothetical",
+    "pivots": [
+      "q358",
+      "q404",
+      "q470"
+    ]
   },
   {
     "id": "q322",
     "text": "Quel serait selon toi le meilleur compromis concernant la musique ?",
     "category": "culture",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "personal",
+    "pivots": [
+      "q359",
+      "q405",
+      "q471"
+    ]
   },
   {
     "id": "q323",
     "text": "Quel conseil donnerais-tu à quelqu'un qui découvre les musées ?",
     "category": "culture",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "problem-solving",
+    "pivots": [
+      "q361",
+      "q406",
+      "q472"
+    ]
   },
   {
     "id": "q324",
     "text": "Si les musées disparaissait demain, qu'est-ce qui changerait le plus ?",
     "category": "culture",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "argumentation",
+    "pivots": [
+      "q363",
+      "q407",
+      "q473"
+    ]
   },
   {
     "id": "q325",
-    "text": "Quelle erreur les gens font-ils souvent à propos de les musées ?",
+    "text": "Quelle erreur les gens font-ils souvent à propos des musées ?",
     "category": "culture",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q363",
+      "q408",
+      "q474"
+    ]
   },
   {
     "id": "q326",
-    "text": "Que penses-tu de les musées ?",
+    "text": "Que penses-tu des musées ?",
     "category": "culture",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "opinion",
+    "pivots": [
+      "q364",
+      "q409",
+      "q475"
+    ]
   },
   {
     "id": "q327",
-    "text": "Qu'est-ce qui est souvent mal compris à propos de les festivals ?",
+    "text": "Qu'est-ce qui est souvent mal compris à propos des festivals ?",
     "category": "culture",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q364",
+      "q410",
+      "q476"
+    ]
   },
   {
     "id": "q328",
-    "text": "Qu'est-ce qui compte le plus quand il s'agit de les festivals ?",
+    "text": "Qu'est-ce qui compte le plus quand il s'agit des festivals ?",
     "category": "culture",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "argumentation",
+    "pivots": [
+      "q366",
+      "q411",
+      "q477"
+    ]
   },
   {
     "id": "q329",
     "text": "Est-ce que ton opinion sur les festivals a changé avec le temps ? Pourquoi ?",
     "category": "culture",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "abstract",
+    "pivots": [
+      "q366",
+      "q412",
+      "q478"
+    ]
   },
   {
     "id": "q330",
     "text": "Comment les festivals pourrait-il évoluer dans les dix prochaines années ?",
     "category": "culture",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "problem-solving",
+    "pivots": [
+      "q367",
+      "q413",
+      "q479"
+    ]
   },
   {
     "id": "q331",
     "text": "Est-ce qu'on accorde trop ou pas assez d'importance à les podcasts ?",
     "category": "culture",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q368",
+      "q414",
+      "q480"
+    ]
   },
   {
     "id": "q332",
     "text": "Comment expliquerais-tu les podcasts à quelqu'un qui n'en a jamais fait l'expérience ?",
     "category": "culture",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q369",
+      "q415",
+      "q481"
+    ]
   },
   {
     "id": "q333",
     "text": "Qu'est-ce qui devrait changer en priorité concernant les podcasts ?",
     "category": "culture",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "opinion",
+    "pivots": [
+      "q370",
+      "q416",
+      "q482"
+    ]
   },
   {
     "id": "q334",
     "text": "Pourquoi les gens ont-ils parfois des avis très différents sur les podcasts ?",
     "category": "culture",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "abstract",
+    "pivots": [
+      "q371",
+      "q417",
+      "q483"
+    ]
   },
   {
     "id": "q335",
     "text": "Quel serait selon toi le meilleur compromis concernant les jeux de société ?",
     "category": "culture",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "personal",
+    "pivots": [
+      "q372",
+      "q418",
+      "q484"
+    ]
   },
   {
     "id": "q336",
-    "text": "Quels sont les principaux avantages et les principales limites de les jeux de société ?",
+    "text": "Quels sont les principaux avantages et les principales limites des jeux de société ?",
     "category": "culture",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "personal",
+    "pivots": [
+      "q373",
+      "q419",
+      "q485"
+    ]
   },
   {
     "id": "q337",
     "text": "Quelle expérience personnelle te vient à l'esprit quand tu penses à les jeux de société ?",
     "category": "culture",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q374",
+      "q420",
+      "q486"
+    ]
   },
   {
     "id": "q338",
     "text": "Si tu pouvais fixer une seule règle concernant les jeux de société, laquelle choisirais-tu ?",
     "category": "culture",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "hypothetical",
+    "pivots": [
+      "q375",
+      "q421",
+      "q487"
+    ]
   },
   {
     "id": "q339",
     "text": "Que penses-tu de l'apprentissage des langues ?",
     "category": "education",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "opinion",
+    "pivots": [
+      "q376",
+      "q422",
+      "q488"
+    ]
   },
   {
     "id": "q340",
     "text": "Quel conseil donnerais-tu à quelqu'un qui découvre l'apprentissage des langues ?",
     "category": "education",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "problem-solving",
+    "pivots": [
+      "q378",
+      "q423",
+      "q489"
+    ]
   },
   {
     "id": "q341",
     "text": "Si l'apprentissage des langues disparaissait demain, qu'est-ce qui changerait le plus ?",
     "category": "education",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "argumentation",
+    "pivots": [
+      "q379",
+      "q424",
+      "q490"
+    ]
   },
   {
     "id": "q342",
     "text": "Quelle erreur les gens font-ils souvent à propos de l'apprentissage des langues ?",
     "category": "education",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q379",
+      "q425",
+      "q491"
+    ]
   },
   {
     "id": "q343",
     "text": "Comment les devoirs à la maison pourrait-il évoluer dans les dix prochaines années ?",
     "category": "education",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "problem-solving",
+    "pivots": [
+      "q380",
+      "q426",
+      "q492"
+    ]
   },
   {
     "id": "q344",
-    "text": "Qu'est-ce qui est souvent mal compris à propos de les devoirs à la maison ?",
+    "text": "Qu'est-ce qui est souvent mal compris à propos des devoirs à la maison ?",
     "category": "education",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q381",
+      "q427",
+      "q493"
+    ]
   },
   {
     "id": "q345",
-    "text": "Qu'est-ce qui compte le plus quand il s'agit de les devoirs à la maison ?",
+    "text": "Qu'est-ce qui compte le plus quand il s'agit des devoirs à la maison ?",
     "category": "education",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "argumentation",
+    "pivots": [
+      "q383",
+      "q428",
+      "q494"
+    ]
   },
   {
     "id": "q346",
     "text": "Est-ce que ton opinion sur les devoirs à la maison a changé avec le temps ? Pourquoi ?",
     "category": "education",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "abstract",
+    "pivots": [
+      "q383",
+      "q429",
+      "q495"
+    ]
   },
   {
     "id": "q347",
     "text": "Pourquoi les gens ont-ils parfois des avis très différents sur les notes à l'école ?",
     "category": "education",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "abstract",
+    "pivots": [
+      "q384",
+      "q430",
+      "q496"
+    ]
   },
   {
     "id": "q348",
     "text": "Est-ce qu'on accorde trop ou pas assez d'importance à les notes à l'école ?",
     "category": "education",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "personal",
+    "pivots": [
+      "q385",
+      "q431",
+      "q497"
+    ]
   },
   {
     "id": "q349",
     "text": "Comment expliquerais-tu les notes à l'école à quelqu'un qui n'en a jamais fait l'expérience ?",
     "category": "education",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q386",
+      "q432",
+      "q498"
+    ]
   },
   {
     "id": "q350",
     "text": "Qu'est-ce qui devrait changer en priorité concernant les notes à l'école ?",
     "category": "education",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "personal",
+    "pivots": [
+      "q387",
+      "q433",
+      "q499"
+    ]
   },
   {
     "id": "q351",
     "text": "Si tu pouvais fixer une seule règle concernant les cours en ligne, laquelle choisirais-tu ?",
     "category": "education",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "hypothetical",
+    "pivots": [
+      "q388",
+      "q434",
+      "q500"
+    ]
   },
   {
     "id": "q352",
     "text": "Quel serait selon toi le meilleur compromis concernant les cours en ligne ?",
     "category": "education",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "personal",
+    "pivots": [
+      "q389",
+      "q435",
+      "q501"
+    ]
   },
   {
     "id": "q353",
-    "text": "Quels sont les principaux avantages et les principales limites de les cours en ligne ?",
+    "text": "Quels sont les principaux avantages et les principales limites des cours en ligne ?",
     "category": "education",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "personal",
+    "pivots": [
+      "q390",
+      "q436",
+      "q502"
+    ]
   },
   {
     "id": "q354",
     "text": "Quelle expérience personnelle te vient à l'esprit quand tu penses à les cours en ligne ?",
     "category": "education",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q391",
+      "q437",
+      "q503"
+    ]
   },
   {
     "id": "q355",
-    "text": "Quelle erreur les gens font-ils souvent à propos de les cours pratiques ?",
+    "text": "Quelle erreur les gens font-ils souvent à propos des cours pratiques ?",
     "category": "education",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q393",
+      "q438",
+      "q504"
+    ]
   },
   {
     "id": "q356",
-    "text": "Que penses-tu de les cours pratiques ?",
+    "text": "Que penses-tu des cours pratiques ?",
     "category": "education",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "opinion",
+    "pivots": [
+      "q393",
+      "q439",
+      "q505"
+    ]
   },
   {
     "id": "q357",
     "text": "Quel conseil donnerais-tu à quelqu'un qui découvre les cours pratiques ?",
     "category": "education",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "problem-solving",
+    "pivots": [
+      "q395",
+      "q440",
+      "q506"
+    ]
   },
   {
     "id": "q358",
     "text": "Si les cours pratiques disparaissait demain, qu'est-ce qui changerait le plus ?",
     "category": "education",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "argumentation",
+    "pivots": [
+      "q396",
+      "q441",
+      "q507"
+    ]
   },
   {
     "id": "q359",
     "text": "Est-ce que ton opinion sur le rôle des professeurs a changé avec le temps ? Pourquoi ?",
     "category": "education",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "abstract",
+    "pivots": [
+      "q396",
+      "q442",
+      "q508"
+    ]
   },
   {
     "id": "q360",
     "text": "Comment le rôle des professeurs pourrait-il évoluer dans les dix prochaines années ?",
     "category": "education",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "problem-solving",
+    "pivots": [
+      "q397",
+      "q443",
+      "q509"
+    ]
   },
   {
     "id": "q361",
-    "text": "Qu'est-ce qui est souvent mal compris à propos de le rôle des professeurs ?",
+    "text": "Qu'est-ce qui est souvent mal compris à propos du rôle des professeurs ?",
     "category": "education",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q398",
+      "q444",
+      "q510"
+    ]
   },
   {
     "id": "q362",
-    "text": "Qu'est-ce qui compte le plus quand il s'agit de le rôle des professeurs ?",
+    "text": "Qu'est-ce qui compte le plus quand il s'agit du rôle des professeurs ?",
     "category": "education",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "argumentation",
+    "pivots": [
+      "q399",
+      "q445",
+      "q511"
+    ]
   },
   {
     "id": "q363",
     "text": "Qu'est-ce qui devrait changer en priorité concernant l'apprentissage tout au long de la vie ?",
     "category": "education",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "opinion",
+    "pivots": [
+      "q400",
+      "q446",
+      "q512"
+    ]
   },
   {
     "id": "q364",
     "text": "Pourquoi les gens ont-ils parfois des avis très différents sur l'apprentissage tout au long de la vie ?",
     "category": "education",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "abstract",
+    "pivots": [
+      "q401",
+      "q447",
+      "q513"
+    ]
   },
   {
     "id": "q365",
     "text": "Est-ce qu'on accorde trop ou pas assez d'importance à l'apprentissage tout au long de la vie ?",
     "category": "education",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q402",
+      "q448",
+      "q514"
+    ]
   },
   {
     "id": "q366",
     "text": "Comment expliquerais-tu l'apprentissage tout au long de la vie à quelqu'un qui n'en a jamais fait l'expérience ?",
     "category": "education",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q403",
+      "q449",
+      "q515"
+    ]
   },
   {
     "id": "q367",
     "text": "Quelle expérience personnelle te vient à l'esprit quand tu penses à l'intelligence artificielle à l'école ?",
     "category": "education",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q404",
+      "q450",
+      "q516"
+    ]
   },
   {
     "id": "q368",
     "text": "Si tu pouvais fixer une seule règle concernant l'intelligence artificielle à l'école, laquelle choisirais-tu ?",
     "category": "education",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "hypothetical",
+    "pivots": [
+      "q405",
+      "q451",
+      "q517"
+    ]
   },
   {
     "id": "q369",
     "text": "Quel serait selon toi le meilleur compromis concernant l'intelligence artificielle à l'école ?",
     "category": "education",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "personal",
+    "pivots": [
+      "q406",
+      "q452",
+      "q518"
+    ]
   },
   {
     "id": "q370",
     "text": "Quels sont les principaux avantages et les principales limites de l'intelligence artificielle à l'école ?",
     "category": "education",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "personal",
+    "pivots": [
+      "q407",
+      "q453",
+      "q519"
+    ]
   },
   {
     "id": "q371",
     "text": "Si le tri des déchets disparaissait demain, qu'est-ce qui changerait le plus ?",
     "category": "environnement",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "argumentation",
+    "pivots": [
+      "q410",
+      "q454",
+      "q520"
+    ]
   },
   {
     "id": "q372",
-    "text": "Quelle erreur les gens font-ils souvent à propos de le tri des déchets ?",
+    "text": "Quelle erreur les gens font-ils souvent à propos du tri des déchets ?",
     "category": "environnement",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q410",
+      "q455",
+      "q521"
+    ]
   },
   {
     "id": "q373",
-    "text": "Que penses-tu de le tri des déchets ?",
+    "text": "Que penses-tu du tri des déchets ?",
     "category": "environnement",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "opinion",
+    "pivots": [
+      "q410",
+      "q456",
+      "q522"
+    ]
   },
   {
     "id": "q374",
     "text": "Quel conseil donnerais-tu à quelqu'un qui découvre le tri des déchets ?",
     "category": "environnement",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "problem-solving",
+    "pivots": [
+      "q411",
+      "q457",
+      "q523"
+    ]
   },
   {
     "id": "q375",
     "text": "Qu'est-ce qui compte le plus quand il s'agit de l'usage de la voiture ?",
     "category": "environnement",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "argumentation",
+    "pivots": [
+      "q413",
+      "q458",
+      "q524"
+    ]
   },
   {
     "id": "q376",
     "text": "Est-ce que ton opinion sur l'usage de la voiture a changé avec le temps ? Pourquoi ?",
     "category": "environnement",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "abstract",
+    "pivots": [
+      "q413",
+      "q459",
+      "q525"
+    ]
   },
   {
     "id": "q377",
     "text": "Comment l'usage de la voiture pourrait-il évoluer dans les dix prochaines années ?",
     "category": "environnement",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "problem-solving",
+    "pivots": [
+      "q414",
+      "q460",
+      "q526"
+    ]
   },
   {
     "id": "q378",
     "text": "Qu'est-ce qui est souvent mal compris à propos de l'usage de la voiture ?",
     "category": "environnement",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q415",
+      "q461",
+      "q527"
+    ]
   },
   {
     "id": "q379",
     "text": "Comment expliquerais-tu les transports en commun à quelqu'un qui n'en a jamais fait l'expérience ?",
     "category": "environnement",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q416",
+      "q462",
+      "q528"
+    ]
   },
   {
     "id": "q380",
     "text": "Qu'est-ce qui devrait changer en priorité concernant les transports en commun ?",
     "category": "environnement",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "opinion",
+    "pivots": [
+      "q417",
+      "q463",
+      "q529"
+    ]
   },
   {
     "id": "q381",
     "text": "Pourquoi les gens ont-ils parfois des avis très différents sur les transports en commun ?",
     "category": "environnement",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "abstract",
+    "pivots": [
+      "q418",
+      "q464",
+      "q530"
+    ]
   },
   {
     "id": "q382",
     "text": "Est-ce qu'on accorde trop ou pas assez d'importance à les transports en commun ?",
     "category": "environnement",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q420",
+      "q465",
+      "q001"
+    ]
   },
   {
     "id": "q383",
     "text": "Quels sont les principaux avantages et les principales limites de la consommation locale ?",
     "category": "environnement",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "personal",
+    "pivots": [
+      "q420",
+      "q466",
+      "q002"
+    ]
   },
   {
     "id": "q384",
     "text": "Quelle expérience personnelle te vient à l'esprit quand tu penses à la consommation locale ?",
     "category": "environnement",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q421",
+      "q467",
+      "q003"
+    ]
   },
   {
     "id": "q385",
     "text": "Si tu pouvais fixer une seule règle concernant la consommation locale, laquelle choisirais-tu ?",
     "category": "environnement",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "hypothetical",
+    "pivots": [
+      "q422",
+      "q468",
+      "q004"
+    ]
   },
   {
     "id": "q386",
     "text": "Quel serait selon toi le meilleur compromis concernant la consommation locale ?",
     "category": "environnement",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "personal",
+    "pivots": [
+      "q423",
+      "q469",
+      "q005"
+    ]
   },
   {
     "id": "q387",
     "text": "Quel conseil donnerais-tu à quelqu'un qui découvre l'achat d'occasion ?",
     "category": "environnement",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "problem-solving",
+    "pivots": [
+      "q425",
+      "q470",
+      "q006"
+    ]
   },
   {
     "id": "q388",
     "text": "Si l'achat d'occasion disparaissait demain, qu'est-ce qui changerait le plus ?",
     "category": "environnement",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "argumentation",
+    "pivots": [
+      "q427",
+      "q471",
+      "q007"
+    ]
   },
   {
     "id": "q389",
     "text": "Quelle erreur les gens font-ils souvent à propos de l'achat d'occasion ?",
     "category": "environnement",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q427",
+      "q472",
+      "q008"
+    ]
   },
   {
     "id": "q390",
     "text": "Que penses-tu de l'achat d'occasion ?",
     "category": "environnement",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "opinion",
+    "pivots": [
+      "q428",
+      "q473",
+      "q009"
+    ]
   },
   {
     "id": "q391",
-    "text": "Qu'est-ce qui est souvent mal compris à propos de le gaspillage alimentaire ?",
+    "text": "Qu'est-ce qui est souvent mal compris à propos du gaspillage alimentaire ?",
     "category": "environnement",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q428",
+      "q474",
+      "q010"
+    ]
   },
   {
     "id": "q392",
-    "text": "Qu'est-ce qui compte le plus quand il s'agit de le gaspillage alimentaire ?",
+    "text": "Qu'est-ce qui compte le plus quand il s'agit du gaspillage alimentaire ?",
     "category": "environnement",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "argumentation",
+    "pivots": [
+      "q430",
+      "q475",
+      "q011"
+    ]
   },
   {
     "id": "q393",
     "text": "Est-ce que ton opinion sur le gaspillage alimentaire a changé avec le temps ? Pourquoi ?",
     "category": "environnement",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "abstract",
+    "pivots": [
+      "q430",
+      "q476",
+      "q013"
+    ]
   },
   {
     "id": "q394",
     "text": "Comment le gaspillage alimentaire pourrait-il évoluer dans les dix prochaines années ?",
     "category": "environnement",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "problem-solving",
+    "pivots": [
+      "q431",
+      "q477",
+      "q013"
+    ]
   },
   {
     "id": "q395",
     "text": "Est-ce qu'on accorde trop ou pas assez d'importance à la consommation d'énergie à la maison ?",
     "category": "environnement",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q432",
+      "q478",
+      "q014"
+    ]
   },
   {
     "id": "q396",
     "text": "Comment expliquerais-tu la consommation d'énergie à la maison à quelqu'un qui n'en a jamais fait l'expérience ?",
     "category": "environnement",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q433",
+      "q479",
+      "q015"
+    ]
   },
   {
     "id": "q397",
     "text": "Qu'est-ce qui devrait changer en priorité concernant la consommation d'énergie à la maison ?",
     "category": "environnement",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "opinion",
+    "pivots": [
+      "q434",
+      "q480",
+      "q016"
+    ]
   },
   {
     "id": "q398",
     "text": "Pourquoi les gens ont-ils parfois des avis très différents sur la consommation d'énergie à la maison ?",
     "category": "environnement",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "abstract",
+    "pivots": [
+      "q435",
+      "q481",
+      "q017"
+    ]
   },
   {
     "id": "q399",
     "text": "Quel serait selon toi le meilleur compromis concernant le tourisme durable ?",
     "category": "environnement",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "personal",
+    "pivots": [
+      "q436",
+      "q482",
+      "q018"
+    ]
   },
   {
     "id": "q400",
-    "text": "Quels sont les principaux avantages et les principales limites de le tourisme durable ?",
+    "text": "Quels sont les principaux avantages et les principales limites du tourisme durable ?",
     "category": "environnement",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "personal",
+    "pivots": [
+      "q437",
+      "q483",
+      "q019"
+    ]
   },
   {
     "id": "q401",
     "text": "Quelle expérience personnelle te vient à l'esprit quand tu penses à le tourisme durable ?",
     "category": "environnement",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q438",
+      "q484",
+      "q020"
+    ]
   },
   {
     "id": "q402",
     "text": "Si tu pouvais fixer une seule règle concernant le tourisme durable, laquelle choisirais-tu ?",
     "category": "environnement",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "hypothetical",
+    "pivots": [
+      "q439",
+      "q485",
+      "q021"
+    ]
   },
   {
     "id": "q403",
     "text": "Que penses-tu de la vie en ville ?",
     "category": "logement",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "opinion",
+    "pivots": [
+      "q440",
+      "q486",
+      "q022"
+    ]
   },
   {
     "id": "q404",
     "text": "Quel conseil donnerais-tu à quelqu'un qui découvre la vie en ville ?",
     "category": "logement",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "problem-solving",
+    "pivots": [
+      "q442",
+      "q487",
+      "q023"
+    ]
   },
   {
     "id": "q405",
     "text": "Si la vie en ville disparaissait demain, qu'est-ce qui changerait le plus ?",
     "category": "logement",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "argumentation",
+    "pivots": [
+      "q443",
+      "q488",
+      "q024"
+    ]
   },
   {
     "id": "q406",
     "text": "Quelle erreur les gens font-ils souvent à propos de la vie en ville ?",
     "category": "logement",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q443",
+      "q489",
+      "q025"
+    ]
   },
   {
     "id": "q407",
     "text": "Comment les petits appartements pourrait-il évoluer dans les dix prochaines années ?",
     "category": "logement",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "problem-solving",
+    "pivots": [
+      "q444",
+      "q490",
+      "q026"
+    ]
   },
   {
     "id": "q408",
-    "text": "Qu'est-ce qui est souvent mal compris à propos de les petits appartements ?",
+    "text": "Qu'est-ce qui est souvent mal compris à propos des petits appartements ?",
     "category": "logement",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q445",
+      "q491",
+      "q027"
+    ]
   },
   {
     "id": "q409",
-    "text": "Qu'est-ce qui compte le plus quand il s'agit de les petits appartements ?",
+    "text": "Qu'est-ce qui compte le plus quand il s'agit des petits appartements ?",
     "category": "logement",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "argumentation",
+    "pivots": [
+      "q447",
+      "q492",
+      "q028"
+    ]
   },
   {
     "id": "q410",
     "text": "Est-ce que ton opinion sur les petits appartements a changé avec le temps ? Pourquoi ?",
     "category": "logement",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "abstract",
+    "pivots": [
+      "q447",
+      "q493",
+      "q029"
+    ]
   },
   {
     "id": "q411",
     "text": "Pourquoi les gens ont-ils parfois des avis très différents sur la colocation ?",
     "category": "logement",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "abstract",
+    "pivots": [
+      "q448",
+      "q494",
+      "q030"
+    ]
   },
   {
     "id": "q412",
     "text": "Est-ce qu'on accorde trop ou pas assez d'importance à la colocation ?",
     "category": "logement",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q449",
+      "q495",
+      "q031"
+    ]
   },
   {
     "id": "q413",
     "text": "Comment expliquerais-tu la colocation à quelqu'un qui n'en a jamais fait l'expérience ?",
     "category": "logement",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q450",
+      "q496",
+      "q032"
+    ]
   },
   {
     "id": "q414",
     "text": "Qu'est-ce qui devrait changer en priorité concernant la colocation ?",
     "category": "logement",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "opinion",
+    "pivots": [
+      "q451",
+      "q497",
+      "q033"
+    ]
   },
   {
     "id": "q415",
     "text": "Si tu pouvais fixer une seule règle concernant le voisinage, laquelle choisirais-tu ?",
     "category": "logement",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "hypothetical",
+    "pivots": [
+      "q452",
+      "q498",
+      "q034"
+    ]
   },
   {
     "id": "q416",
     "text": "Quel serait selon toi le meilleur compromis concernant le voisinage ?",
     "category": "logement",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "personal",
+    "pivots": [
+      "q453",
+      "q499",
+      "q035"
+    ]
   },
   {
     "id": "q417",
-    "text": "Quels sont les principaux avantages et les principales limites de le voisinage ?",
+    "text": "Quels sont les principaux avantages et les principales limites du voisinage ?",
     "category": "logement",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "personal",
+    "pivots": [
+      "q454",
+      "q500",
+      "q036"
+    ]
   },
   {
     "id": "q418",
     "text": "Quelle expérience personnelle te vient à l'esprit quand tu penses à le voisinage ?",
     "category": "logement",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q455",
+      "q501",
+      "q037"
+    ]
   },
   {
     "id": "q419",
-    "text": "Quelle erreur les gens font-ils souvent à propos de le déménagement ?",
+    "text": "Quelle erreur les gens font-ils souvent à propos du déménagement ?",
     "category": "logement",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q457",
+      "q502",
+      "q038"
+    ]
   },
   {
     "id": "q420",
-    "text": "Que penses-tu de le déménagement ?",
+    "text": "Que penses-tu du déménagement ?",
     "category": "logement",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "opinion",
+    "pivots": [
+      "q457",
+      "q503",
+      "q039"
+    ]
   },
   {
     "id": "q421",
     "text": "Quel conseil donnerais-tu à quelqu'un qui découvre le déménagement ?",
     "category": "logement",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "problem-solving",
+    "pivots": [
+      "q459",
+      "q504",
+      "q040"
+    ]
   },
   {
     "id": "q422",
     "text": "Si le déménagement disparaissait demain, qu'est-ce qui changerait le plus ?",
     "category": "logement",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "argumentation",
+    "pivots": [
+      "q460",
+      "q505",
+      "q041"
+    ]
   },
   {
     "id": "q423",
     "text": "Est-ce que ton opinion sur le bruit à la maison a changé avec le temps ? Pourquoi ?",
     "category": "logement",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "abstract",
+    "pivots": [
+      "q460",
+      "q506",
+      "q042"
+    ]
   },
   {
     "id": "q424",
     "text": "Comment le bruit à la maison pourrait-il évoluer dans les dix prochaines années ?",
     "category": "logement",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "problem-solving",
+    "pivots": [
+      "q461",
+      "q507",
+      "q043"
+    ]
   },
   {
     "id": "q425",
-    "text": "Qu'est-ce qui est souvent mal compris à propos de le bruit à la maison ?",
+    "text": "Qu'est-ce qui est souvent mal compris à propos du bruit à la maison ?",
     "category": "logement",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q462",
+      "q508",
+      "q044"
+    ]
   },
   {
     "id": "q426",
-    "text": "Qu'est-ce qui compte le plus quand il s'agit de le bruit à la maison ?",
+    "text": "Qu'est-ce qui compte le plus quand il s'agit du bruit à la maison ?",
     "category": "logement",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "argumentation",
+    "pivots": [
+      "q463",
+      "q509",
+      "q045"
+    ]
   },
   {
     "id": "q427",
     "text": "Qu'est-ce qui devrait changer en priorité concernant la décoration ?",
     "category": "logement",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "opinion",
+    "pivots": [
+      "q464",
+      "q510",
+      "q046"
+    ]
   },
   {
     "id": "q428",
     "text": "Pourquoi les gens ont-ils parfois des avis très différents sur la décoration ?",
     "category": "logement",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "abstract",
+    "pivots": [
+      "q465",
+      "q511",
+      "q047"
+    ]
   },
   {
     "id": "q429",
     "text": "Est-ce qu'on accorde trop ou pas assez d'importance à la décoration ?",
     "category": "logement",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q466",
+      "q512",
+      "q048"
+    ]
   },
   {
     "id": "q430",
     "text": "Comment expliquerais-tu la décoration à quelqu'un qui n'en a jamais fait l'expérience ?",
     "category": "logement",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q467",
+      "q513",
+      "q049"
+    ]
   },
   {
     "id": "q431",
     "text": "Quelle expérience personnelle te vient à l'esprit quand tu penses à le travail depuis chez soi ?",
     "category": "logement",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q468",
+      "q514",
+      "q050"
+    ]
   },
   {
     "id": "q432",
     "text": "Si tu pouvais fixer une seule règle concernant le travail depuis chez soi, laquelle choisirais-tu ?",
     "category": "logement",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "hypothetical",
+    "pivots": [
+      "q469",
+      "q515",
+      "q051"
+    ]
   },
   {
     "id": "q433",
     "text": "Quel serait selon toi le meilleur compromis concernant le travail depuis chez soi ?",
     "category": "logement",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "personal",
+    "pivots": [
+      "q470",
+      "q516",
+      "q052"
+    ]
   },
   {
     "id": "q434",
-    "text": "Quels sont les principaux avantages et les principales limites de le travail depuis chez soi ?",
+    "text": "Quels sont les principaux avantages et les principales limites du travail depuis chez soi ?",
     "category": "logement",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "personal",
+    "pivots": [
+      "q471",
+      "q517",
+      "q053"
+    ]
   },
   {
     "id": "q435",
     "text": "Si le choix entre voiture et transports disparaissait demain, qu'est-ce qui changerait le plus ?",
     "category": "mobilite",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "argumentation",
+    "pivots": [
+      "q474",
+      "q518",
+      "q054"
+    ]
   },
   {
     "id": "q436",
-    "text": "Quelle erreur les gens font-ils souvent à propos de le choix entre voiture et transports ?",
+    "text": "Quelle erreur les gens font-ils souvent à propos du choix entre voiture et transports ?",
     "category": "mobilite",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q474",
+      "q519",
+      "q055"
+    ]
   },
   {
     "id": "q437",
-    "text": "Que penses-tu de le choix entre voiture et transports ?",
+    "text": "Que penses-tu du choix entre voiture et transports ?",
     "category": "mobilite",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "opinion",
+    "pivots": [
+      "q474",
+      "q520",
+      "q056"
+    ]
   },
   {
     "id": "q438",
     "text": "Quel conseil donnerais-tu à quelqu'un qui découvre le choix entre voiture et transports ?",
     "category": "mobilite",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "problem-solving",
+    "pivots": [
+      "q475",
+      "q521",
+      "q057"
+    ]
   },
   {
     "id": "q439",
-    "text": "Qu'est-ce qui compte le plus quand il s'agit de le vélo en ville ?",
+    "text": "Qu'est-ce qui compte le plus quand il s'agit du vélo en ville ?",
     "category": "mobilite",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "argumentation",
+    "pivots": [
+      "q477",
+      "q522",
+      "q058"
+    ]
   },
   {
     "id": "q440",
     "text": "Est-ce que ton opinion sur le vélo en ville a changé avec le temps ? Pourquoi ?",
     "category": "mobilite",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "abstract",
+    "pivots": [
+      "q477",
+      "q523",
+      "q059"
+    ]
   },
   {
     "id": "q441",
     "text": "Comment le vélo en ville pourrait-il évoluer dans les dix prochaines années ?",
     "category": "mobilite",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "problem-solving",
+    "pivots": [
+      "q478",
+      "q524",
+      "q060"
+    ]
   },
   {
     "id": "q442",
-    "text": "Qu'est-ce qui est souvent mal compris à propos de le vélo en ville ?",
+    "text": "Qu'est-ce qui est souvent mal compris à propos du vélo en ville ?",
     "category": "mobilite",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q479",
+      "q525",
+      "q061"
+    ]
   },
   {
     "id": "q443",
     "text": "Comment expliquerais-tu la marche pour les petits trajets à quelqu'un qui n'en a jamais fait l'expérience ?",
     "category": "mobilite",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q480",
+      "q526",
+      "q062"
+    ]
   },
   {
     "id": "q444",
     "text": "Qu'est-ce qui devrait changer en priorité concernant la marche pour les petits trajets ?",
     "category": "mobilite",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "opinion",
+    "pivots": [
+      "q481",
+      "q527",
+      "q063"
+    ]
   },
   {
     "id": "q445",
     "text": "Pourquoi les gens ont-ils parfois des avis très différents sur la marche pour les petits trajets ?",
     "category": "mobilite",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "abstract",
+    "pivots": [
+      "q482",
+      "q528",
+      "q064"
+    ]
   },
   {
     "id": "q446",
     "text": "Est-ce qu'on accorde trop ou pas assez d'importance à la marche pour les petits trajets ?",
     "category": "mobilite",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q484",
+      "q529",
+      "q065"
+    ]
   },
   {
     "id": "q447",
-    "text": "Quels sont les principaux avantages et les principales limites de les trottinettes électriques ?",
+    "text": "Quels sont les principaux avantages et les principales limites des trottinettes électriques ?",
     "category": "mobilite",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "personal",
+    "pivots": [
+      "q484",
+      "q530",
+      "q066"
+    ]
   },
   {
     "id": "q448",
     "text": "Quelle expérience personnelle te vient à l'esprit quand tu penses à les trottinettes électriques ?",
     "category": "mobilite",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q485",
+      "q001",
+      "q067"
+    ]
   },
   {
     "id": "q449",
     "text": "Si tu pouvais fixer une seule règle concernant les trottinettes électriques, laquelle choisirais-tu ?",
     "category": "mobilite",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "hypothetical",
+    "pivots": [
+      "q486",
+      "q002",
+      "q068"
+    ]
   },
   {
     "id": "q450",
     "text": "Quel serait selon toi le meilleur compromis concernant les trottinettes électriques ?",
     "category": "mobilite",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "personal",
+    "pivots": [
+      "q487",
+      "q003",
+      "q069"
+    ]
   },
   {
     "id": "q451",
     "text": "Quel conseil donnerais-tu à quelqu'un qui découvre les longs trajets domicile-travail ?",
     "category": "mobilite",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "problem-solving",
+    "pivots": [
+      "q489",
+      "q004",
+      "q070"
+    ]
   },
   {
     "id": "q452",
     "text": "Si les longs trajets domicile-travail disparaissait demain, qu'est-ce qui changerait le plus ?",
     "category": "mobilite",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "argumentation",
+    "pivots": [
+      "q491",
+      "q005",
+      "q071"
+    ]
   },
   {
     "id": "q453",
-    "text": "Quelle erreur les gens font-ils souvent à propos de les longs trajets domicile-travail ?",
+    "text": "Quelle erreur les gens font-ils souvent à propos des longs trajets domicile-travail ?",
     "category": "mobilite",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q491",
+      "q006",
+      "q072"
+    ]
   },
   {
     "id": "q454",
-    "text": "Que penses-tu de les longs trajets domicile-travail ?",
+    "text": "Que penses-tu des longs trajets domicile-travail ?",
     "category": "mobilite",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "opinion",
+    "pivots": [
+      "q492",
+      "q007",
+      "q073"
+    ]
   },
   {
     "id": "q455",
-    "text": "Qu'est-ce qui est souvent mal compris à propos de le train pour les longues distances ?",
+    "text": "Qu'est-ce qui est souvent mal compris à propos du train pour les longues distances ?",
     "category": "mobilite",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q492",
+      "q008",
+      "q074"
+    ]
   },
   {
     "id": "q456",
-    "text": "Qu'est-ce qui compte le plus quand il s'agit de le train pour les longues distances ?",
+    "text": "Qu'est-ce qui compte le plus quand il s'agit du train pour les longues distances ?",
     "category": "mobilite",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "argumentation",
+    "pivots": [
+      "q494",
+      "q009",
+      "q075"
+    ]
   },
   {
     "id": "q457",
     "text": "Est-ce que ton opinion sur le train pour les longues distances a changé avec le temps ? Pourquoi ?",
     "category": "mobilite",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "abstract",
+    "pivots": [
+      "q494",
+      "q010",
+      "q076"
+    ]
   },
   {
     "id": "q458",
     "text": "Comment le train pour les longues distances pourrait-il évoluer dans les dix prochaines années ?",
     "category": "mobilite",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "problem-solving",
+    "pivots": [
+      "q495",
+      "q011",
+      "q077"
+    ]
   },
   {
     "id": "q459",
     "text": "Est-ce qu'on accorde trop ou pas assez d'importance à les applications de navigation ?",
     "category": "mobilite",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q496",
+      "q012",
+      "q078"
+    ]
   },
   {
     "id": "q460",
     "text": "Comment expliquerais-tu les applications de navigation à quelqu'un qui n'en a jamais fait l'expérience ?",
     "category": "mobilite",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q497",
+      "q013",
+      "q079"
+    ]
   },
   {
     "id": "q461",
     "text": "Qu'est-ce qui devrait changer en priorité concernant les applications de navigation ?",
     "category": "mobilite",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "opinion",
+    "pivots": [
+      "q498",
+      "q014",
+      "q080"
+    ]
   },
   {
     "id": "q462",
     "text": "Pourquoi les gens ont-ils parfois des avis très différents sur les applications de navigation ?",
     "category": "mobilite",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "abstract",
+    "pivots": [
+      "q499",
+      "q015",
+      "q081"
+    ]
   },
   {
     "id": "q463",
     "text": "Quel serait selon toi le meilleur compromis concernant le permis de conduire ?",
     "category": "mobilite",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "personal",
+    "pivots": [
+      "q502",
+      "q016",
+      "q082"
+    ]
   },
   {
     "id": "q464",
-    "text": "Quels sont les principaux avantages et les principales limites de le permis de conduire ?",
+    "text": "Quels sont les principaux avantages et les principales limites du permis de conduire ?",
     "category": "mobilite",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "personal",
+    "pivots": [
+      "q502",
+      "q017",
+      "q083"
+    ]
   },
   {
     "id": "q465",
     "text": "Quelle expérience personnelle te vient à l'esprit quand tu penses à le permis de conduire ?",
     "category": "mobilite",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q502",
+      "q018",
+      "q084"
+    ]
   },
   {
     "id": "q466",
     "text": "Si tu pouvais fixer une seule règle concernant le permis de conduire, laquelle choisirais-tu ?",
     "category": "mobilite",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "hypothetical",
+    "pivots": [
+      "q503",
+      "q019",
+      "q085"
+    ]
   },
   {
     "id": "q467",
     "text": "Que penses-tu de la procrastination ?",
     "category": "habitudes",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "opinion",
+    "pivots": [
+      "q504",
+      "q020",
+      "q086"
+    ]
   },
   {
     "id": "q468",
     "text": "Quel conseil donnerais-tu à quelqu'un qui découvre la procrastination ?",
     "category": "habitudes",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "problem-solving",
+    "pivots": [
+      "q506",
+      "q021",
+      "q087"
+    ]
   },
   {
     "id": "q469",
     "text": "Si la procrastination disparaissait demain, qu'est-ce qui changerait le plus ?",
     "category": "habitudes",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "argumentation",
+    "pivots": [
+      "q507",
+      "q022",
+      "q088"
+    ]
   },
   {
     "id": "q470",
     "text": "Quelle erreur les gens font-ils souvent à propos de la procrastination ?",
     "category": "habitudes",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q507",
+      "q023",
+      "q089"
+    ]
   },
   {
     "id": "q471",
     "text": "Comment la ponctualité pourrait-il évoluer dans les dix prochaines années ?",
     "category": "habitudes",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "problem-solving",
+    "pivots": [
+      "q508",
+      "q024",
+      "q090"
+    ]
   },
   {
     "id": "q472",
     "text": "Qu'est-ce qui est souvent mal compris à propos de la ponctualité ?",
     "category": "habitudes",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q509",
+      "q025",
+      "q091"
+    ]
   },
   {
     "id": "q473",
     "text": "Qu'est-ce qui compte le plus quand il s'agit de la ponctualité ?",
     "category": "habitudes",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "argumentation",
+    "pivots": [
+      "q511",
+      "q026",
+      "q092"
+    ]
   },
   {
     "id": "q474",
     "text": "Est-ce que ton opinion sur la ponctualité a changé avec le temps ? Pourquoi ?",
     "category": "habitudes",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "abstract",
+    "pivots": [
+      "q511",
+      "q027",
+      "q093"
+    ]
   },
   {
     "id": "q475",
     "text": "Pourquoi les gens ont-ils parfois des avis très différents sur les habitudes du matin ?",
     "category": "habitudes",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "abstract",
+    "pivots": [
+      "q512",
+      "q028",
+      "q094"
+    ]
   },
   {
     "id": "q476",
     "text": "Est-ce qu'on accorde trop ou pas assez d'importance à les habitudes du matin ?",
     "category": "habitudes",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q513",
+      "q029",
+      "q095"
+    ]
   },
   {
     "id": "q477",
     "text": "Comment expliquerais-tu les habitudes du matin à quelqu'un qui n'en a jamais fait l'expérience ?",
     "category": "habitudes",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q514",
+      "q030",
+      "q096"
+    ]
   },
   {
     "id": "q478",
     "text": "Qu'est-ce qui devrait changer en priorité concernant les habitudes du matin ?",
     "category": "habitudes",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "opinion",
+    "pivots": [
+      "q515",
+      "q031",
+      "q097"
+    ]
   },
   {
     "id": "q479",
     "text": "Si tu pouvais fixer une seule règle concernant le multitâche, laquelle choisirais-tu ?",
     "category": "habitudes",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "hypothetical",
+    "pivots": [
+      "q516",
+      "q032",
+      "q098"
+    ]
   },
   {
     "id": "q480",
     "text": "Quel serait selon toi le meilleur compromis concernant le multitâche ?",
     "category": "habitudes",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "personal",
+    "pivots": [
+      "q517",
+      "q033",
+      "q099"
+    ]
   },
   {
     "id": "q481",
-    "text": "Quels sont les principaux avantages et les principales limites de le multitâche ?",
+    "text": "Quels sont les principaux avantages et les principales limites du multitâche ?",
     "category": "habitudes",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "personal",
+    "pivots": [
+      "q518",
+      "q034",
+      "q100"
+    ]
   },
   {
     "id": "q482",
     "text": "Quelle expérience personnelle te vient à l'esprit quand tu penses à le multitâche ?",
     "category": "habitudes",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q519",
+      "q035",
+      "q101"
+    ]
   },
   {
     "id": "q483",
-    "text": "Quelle erreur les gens font-ils souvent à propos de les résolutions de début d'année ?",
+    "text": "Quelle erreur les gens font-ils souvent à propos des résolutions de début d'année ?",
     "category": "habitudes",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q521",
+      "q036",
+      "q102"
+    ]
   },
   {
     "id": "q484",
-    "text": "Que penses-tu de les résolutions de début d'année ?",
+    "text": "Que penses-tu des résolutions de début d'année ?",
     "category": "habitudes",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "opinion",
+    "pivots": [
+      "q521",
+      "q037",
+      "q103"
+    ]
   },
   {
     "id": "q485",
     "text": "Quel conseil donnerais-tu à quelqu'un qui découvre les résolutions de début d'année ?",
     "category": "habitudes",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "problem-solving",
+    "pivots": [
+      "q523",
+      "q038",
+      "q104"
+    ]
   },
   {
     "id": "q486",
     "text": "Si les résolutions de début d'année disparaissait demain, qu'est-ce qui changerait le plus ?",
     "category": "habitudes",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "argumentation",
+    "pivots": [
+      "q524",
+      "q039",
+      "q105"
+    ]
   },
   {
     "id": "q487",
     "text": "Est-ce que ton opinion sur les pauses sans écran a changé avec le temps ? Pourquoi ?",
     "category": "habitudes",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "abstract",
+    "pivots": [
+      "q524",
+      "q040",
+      "q106"
+    ]
   },
   {
     "id": "q488",
     "text": "Comment les pauses sans écran pourrait-il évoluer dans les dix prochaines années ?",
     "category": "habitudes",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "problem-solving",
+    "pivots": [
+      "q525",
+      "q041",
+      "q107"
+    ]
   },
   {
     "id": "q489",
-    "text": "Qu'est-ce qui est souvent mal compris à propos de les pauses sans écran ?",
+    "text": "Qu'est-ce qui est souvent mal compris à propos des pauses sans écran ?",
     "category": "habitudes",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q526",
+      "q042",
+      "q108"
+    ]
   },
   {
     "id": "q490",
-    "text": "Qu'est-ce qui compte le plus quand il s'agit de les pauses sans écran ?",
+    "text": "Qu'est-ce qui compte le plus quand il s'agit des pauses sans écran ?",
     "category": "habitudes",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "argumentation",
+    "pivots": [
+      "q527",
+      "q043",
+      "q109"
+    ]
   },
   {
     "id": "q491",
     "text": "Qu'est-ce qui devrait changer en priorité concernant la planification ?",
     "category": "habitudes",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "opinion",
+    "pivots": [
+      "q528",
+      "q044",
+      "q110"
+    ]
   },
   {
     "id": "q492",
     "text": "Pourquoi les gens ont-ils parfois des avis très différents sur la planification ?",
     "category": "habitudes",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "abstract",
+    "pivots": [
+      "q529",
+      "q045",
+      "q111"
+    ]
   },
   {
     "id": "q493",
     "text": "Est-ce qu'on accorde trop ou pas assez d'importance à la planification ?",
     "category": "habitudes",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q530",
+      "q046",
+      "q112"
+    ]
   },
   {
     "id": "q494",
     "text": "Comment expliquerais-tu la planification à quelqu'un qui n'en a jamais fait l'expérience ?",
     "category": "habitudes",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q001",
+      "q047",
+      "q113"
+    ]
   },
   {
     "id": "q495",
     "text": "Quelle expérience personnelle te vient à l'esprit quand tu penses à la spontanéité ?",
     "category": "habitudes",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q002",
+      "q048",
+      "q114"
+    ]
   },
   {
     "id": "q496",
     "text": "Si tu pouvais fixer une seule règle concernant la spontanéité, laquelle choisirais-tu ?",
     "category": "habitudes",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "hypothetical",
+    "pivots": [
+      "q003",
+      "q049",
+      "q115"
+    ]
   },
   {
     "id": "q497",
     "text": "Quel serait selon toi le meilleur compromis concernant la spontanéité ?",
     "category": "habitudes",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "personal",
+    "pivots": [
+      "q004",
+      "q050",
+      "q116"
+    ]
   },
   {
     "id": "q498",
     "text": "Quels sont les principaux avantages et les principales limites de la spontanéité ?",
     "category": "habitudes",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "personal",
+    "pivots": [
+      "q005",
+      "q051",
+      "q117"
+    ]
   },
   {
     "id": "q499",
     "text": "Si le lancement d'un projet personnel disparaissait demain, qu'est-ce qui changerait le plus ?",
     "category": "projets",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "personal",
+    "pivots": [
+      "q006",
+      "q052",
+      "q118"
+    ]
   },
   {
     "id": "q500",
-    "text": "Quelle erreur les gens font-ils souvent à propos de le lancement d'un projet personnel ?",
+    "text": "Quelle erreur les gens font-ils souvent à propos du lancement d'un projet personnel ?",
     "category": "projets",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "personal",
+    "pivots": [
+      "q007",
+      "q053",
+      "q119"
+    ]
   },
   {
     "id": "q501",
-    "text": "Que penses-tu de le lancement d'un projet personnel ?",
+    "text": "Que penses-tu du lancement d'un projet personnel ?",
     "category": "projets",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "personal",
+    "pivots": [
+      "q008",
+      "q054",
+      "q120"
+    ]
   },
   {
     "id": "q502",
     "text": "Quel conseil donnerais-tu à quelqu'un qui découvre le lancement d'un projet personnel ?",
     "category": "projets",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "problem-solving",
+    "pivots": [
+      "q009",
+      "q055",
+      "q121"
+    ]
   },
   {
     "id": "q503",
     "text": "Qu'est-ce qui compte le plus quand il s'agit de l'apprentissage d'une nouvelle compétence ?",
     "category": "projets",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "argumentation",
+    "pivots": [
+      "q013",
+      "q056",
+      "q122"
+    ]
   },
   {
     "id": "q504",
     "text": "Est-ce que ton opinion sur l'apprentissage d'une nouvelle compétence a changé avec le temps ? Pourquoi ?",
     "category": "projets",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "abstract",
+    "pivots": [
+      "q011",
+      "q057",
+      "q123"
+    ]
   },
   {
     "id": "q505",
     "text": "Comment l'apprentissage d'une nouvelle compétence pourrait-il évoluer dans les dix prochaines années ?",
     "category": "projets",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "problem-solving",
+    "pivots": [
+      "q012",
+      "q058",
+      "q124"
+    ]
   },
   {
     "id": "q506",
     "text": "Qu'est-ce qui est souvent mal compris à propos de l'apprentissage d'une nouvelle compétence ?",
     "category": "projets",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q013",
+      "q059",
+      "q125"
+    ]
   },
   {
     "id": "q507",
     "text": "Comment expliquerais-tu les projets à long terme à quelqu'un qui n'en a jamais fait l'expérience ?",
     "category": "projets",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q014",
+      "q060",
+      "q126"
+    ]
   },
   {
     "id": "q508",
     "text": "Qu'est-ce qui devrait changer en priorité concernant les projets à long terme ?",
     "category": "projets",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "opinion",
+    "pivots": [
+      "q015",
+      "q061",
+      "q127"
+    ]
   },
   {
     "id": "q509",
     "text": "Pourquoi les gens ont-ils parfois des avis très différents sur les projets à long terme ?",
     "category": "projets",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "abstract",
+    "pivots": [
+      "q016",
+      "q062",
+      "q128"
+    ]
   },
   {
     "id": "q510",
     "text": "Est-ce qu'on accorde trop ou pas assez d'importance à les projets à long terme ?",
     "category": "projets",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q018",
+      "q063",
+      "q129"
+    ]
   },
   {
     "id": "q511",
-    "text": "Quels sont les principaux avantages et les principales limites de le fait d'abandonner un projet ?",
+    "text": "Quels sont les principaux avantages et les principales limites du fait d'abandonner un projet ?",
     "category": "projets",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "personal",
+    "pivots": [
+      "q018",
+      "q064",
+      "q130"
+    ]
   },
   {
     "id": "q512",
     "text": "Quelle expérience personnelle te vient à l'esprit quand tu penses à le fait d'abandonner un projet ?",
     "category": "projets",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q019",
+      "q065",
+      "q131"
+    ]
   },
   {
     "id": "q513",
     "text": "Si tu pouvais fixer une seule règle concernant le fait d'abandonner un projet, laquelle choisirais-tu ?",
     "category": "projets",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "hypothetical",
+    "pivots": [
+      "q020",
+      "q066",
+      "q132"
+    ]
   },
   {
     "id": "q514",
     "text": "Quel serait selon toi le meilleur compromis concernant le fait d'abandonner un projet ?",
     "category": "projets",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "personal",
+    "pivots": [
+      "q021",
+      "q067",
+      "q133"
+    ]
   },
   {
     "id": "q515",
     "text": "Quel conseil donnerais-tu à quelqu'un qui découvre le travail en équipe ?",
     "category": "projets",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "problem-solving",
+    "pivots": [
+      "q022",
+      "q068",
+      "q134"
+    ]
   },
   {
     "id": "q516",
     "text": "Si le travail en équipe disparaissait demain, qu'est-ce qui changerait le plus ?",
     "category": "projets",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "argumentation",
+    "pivots": [
+      "q023",
+      "q069",
+      "q135"
+    ]
   },
   {
     "id": "q517",
-    "text": "Quelle erreur les gens font-ils souvent à propos de le travail en équipe ?",
+    "text": "Quelle erreur les gens font-ils souvent à propos du travail en équipe ?",
     "category": "projets",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q026",
+      "q070",
+      "q136"
+    ]
   },
   {
     "id": "q518",
-    "text": "Que penses-tu de le travail en équipe ?",
+    "text": "Que penses-tu du travail en équipe ?",
     "category": "projets",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "opinion",
+    "pivots": [
+      "q025",
+      "q071",
+      "q137"
+    ]
   },
   {
     "id": "q519",
     "text": "Qu'est-ce qui est souvent mal compris à propos de la motivation ?",
     "category": "projets",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q026",
+      "q072",
+      "q138"
+    ]
   },
   {
     "id": "q520",
     "text": "Qu'est-ce qui compte le plus quand il s'agit de la motivation ?",
     "category": "projets",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "type": "argumentation",
+    "pivots": [
+      "q027",
+      "q073",
+      "q139"
+    ]
   },
   {
     "id": "q521",
     "text": "Est-ce que ton opinion sur la motivation a changé avec le temps ? Pourquoi ?",
     "category": "projets",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "abstract",
+    "pivots": [
+      "q028",
+      "q074",
+      "q140"
+    ]
   },
   {
     "id": "q522",
     "text": "Comment la motivation pourrait-il évoluer dans les dix prochaines années ?",
     "category": "projets",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "problem-solving",
+    "pivots": [
+      "q029",
+      "q075",
+      "q141"
+    ]
   },
   {
     "id": "q523",
     "text": "Est-ce qu'on accorde trop ou pas assez d'importance à le perfectionnisme ?",
     "category": "projets",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "argumentation",
+    "pivots": [
+      "q030",
+      "q076",
+      "q142"
+    ]
   },
   {
     "id": "q524",
     "text": "Comment expliquerais-tu le perfectionnisme à quelqu'un qui n'en a jamais fait l'expérience ?",
     "category": "projets",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q031",
+      "q077",
+      "q143"
+    ]
   },
   {
     "id": "q525",
     "text": "Qu'est-ce qui devrait changer en priorité concernant le perfectionnisme ?",
     "category": "projets",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "opinion",
+    "pivots": [
+      "q032",
+      "q078",
+      "q144"
+    ]
   },
   {
     "id": "q526",
     "text": "Pourquoi les gens ont-ils parfois des avis très différents sur le perfectionnisme ?",
     "category": "projets",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "abstract",
+    "pivots": [
+      "q033",
+      "q079",
+      "q145"
+    ]
   },
   {
     "id": "q527",
     "text": "Quel serait selon toi le meilleur compromis concernant le fait de célébrer ses progrès ?",
     "category": "projets",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "personal",
+    "pivots": [
+      "q034",
+      "q080",
+      "q146"
+    ]
   },
   {
     "id": "q528",
-    "text": "Quels sont les principaux avantages et les principales limites de le fait de célébrer ses progrès ?",
+    "text": "Quels sont les principaux avantages et les principales limites du fait de célébrer ses progrès ?",
     "category": "projets",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "personal",
+    "pivots": [
+      "q035",
+      "q081",
+      "q147"
+    ]
   },
   {
     "id": "q529",
     "text": "Quelle expérience personnelle te vient à l'esprit quand tu penses à le fait de célébrer ses progrès ?",
     "category": "projets",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "type": "narrative",
+    "pivots": [
+      "q036",
+      "q082",
+      "q148"
+    ]
   },
   {
     "id": "q530",
     "text": "Si tu pouvais fixer une seule règle concernant le fait de célébrer ses progrès, laquelle choisirais-tu ?",
     "category": "projets",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "type": "hypothetical",
+    "pivots": [
+      "q037",
+      "q083",
+      "q149"
+    ]
   }
 ]

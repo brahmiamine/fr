@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { ProsodyExercise, ProsodyFocus } from '../types'
-import { FOCUS_OPTIONS, focusGoal } from '../types'
+import { FOCUS_OPTIONS, focusGoal, imitationTranscript, speechRateFor } from '../types'
 import type { ProsodyRecorder } from '../hooks/useProsodyRecorder'
 import { AbaPlayer } from './AbaPlayer'
 import { AudioClip } from './AudioClip'
@@ -45,7 +45,10 @@ export function ComparisonExercise({
         {hasAttempt && recorder.attempt1 ? (
           <>
             <AbaPlayer
-              modelSrc={audioSrc}
+              modelSrc={audioSrc || undefined}
+              modelText={exercise.modelKind === 'tts' ? imitationTranscript(exercise) : undefined}
+              modelLocale={exercise.voiceLocale}
+              modelRate={speechRateFor(exercise)}
               learnerSrc={recorder.attempt1.url}
               start={exercise.imitation.start}
               end={exercise.imitation.end}
@@ -113,7 +116,10 @@ export function ComparisonExercise({
         <p className="exercise__expression">« {focusGoal(focus, exercise)} »</p>
         <p className="muted">Refais uniquement ce point. Ne corrige rien d'autre.</p>
         <AudioClip
-          src={audioSrc}
+          src={audioSrc || undefined}
+          speechText={exercise.modelKind === 'tts' ? imitationTranscript(exercise) : undefined}
+          speechLocale={exercise.voiceLocale}
+          speechRate={speechRateFor(exercise)}
           start={exercise.imitation.start}
           end={exercise.imitation.end}
           label="Réécouter le modèle"

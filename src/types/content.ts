@@ -1,5 +1,17 @@
 export type Difficulty = 'easy' | 'medium' | 'hard'
 
+export type QuestionType =
+  | 'personal'
+  | 'opinion'
+  | 'argumentation'
+  | 'narrative'
+  | 'hypothetical'
+  | 'comparison'
+  | 'problem-solving'
+  | 'abstract'
+
+export type Register = 'familier' | 'courant' | 'soutenu'
+
 export interface Topic {
   id: string
   title: string
@@ -15,6 +27,9 @@ export interface Question {
   text: string
   category: string
   difficulty: Difficulty
+  type?: QuestionType
+  /** IDs of questions from other categories that work as abrupt advanced pivots. */
+  pivots?: string[]
 }
 
 export interface ParaphraseWord {
@@ -22,6 +37,8 @@ export interface ParaphraseWord {
   word: string
   category: string
   difficulty: Difficulty
+  /** Angles that help describe the concept without revealing the target word. */
+  rescueAngles?: string[]
 }
 
 /** A reusable spoken-French "chunk" (expression) to retrieve and reuse. */
@@ -32,6 +49,17 @@ export interface Chunk {
   expression: string
   category: string
   level: string
+  register?: Register
+  usageTip?: string
+}
+
+export interface ConversationScenario {
+  id: string
+  situation: string
+  goal: string
+  category: string
+  difficulty: Difficulty
+  events: string[]
 }
 
 export interface ContentRepository {
@@ -39,6 +67,7 @@ export interface ContentRepository {
   questions: readonly Question[]
   paraphraseWords: readonly ParaphraseWord[]
   chunks: readonly Chunk[]
+  conversationScenarios: readonly ConversationScenario[]
 }
 
 export interface Identifiable {

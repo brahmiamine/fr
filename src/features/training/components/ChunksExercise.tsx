@@ -84,6 +84,8 @@ export function ChunksExercise({
       </p>
       <h1 className="exercise__intent">{chunk.intent}</h1>
       <p className="exercise__expression">« {chunk.expression} »</p>
+      <p className="pill">Registre : {chunk.register ?? 'courant'}</p>
+      {chunk.usageTip ? <p className="muted">{chunk.usageTip}</p> : null}
       <p className="muted">
         Fais maintenant 2 phrases différentes avec cette expression, à voix
         haute.

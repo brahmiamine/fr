@@ -1,7 +1,11 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { cancelSpeech, speakText } from '../speech'
 
 export interface AudioClipProps {
-  src: string
+  src?: string
+  speechText?: string
+  speechLocale?: string
+  speechRate?: number
   start?: number
   end?: number
   label?: string
@@ -13,6 +17,9 @@ export interface AudioClipProps {
 
 export function AudioClip({
   src,
+  speechText,
+  speechLocale,
+  speechRate,
   start,
   end,
   label = 'Écouter',
@@ -24,6 +31,8 @@ export function AudioClip({
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const completedRef = useRef(false)
   const [playing, setPlaying] = useState(false)
+
+  useEffect(() => () => cancelSpeech(), [])
 
   const setPlayback = (value: boolean) => {
     setPlaying(value)
@@ -38,15 +47,33 @@ export function AudioClip({
   }
 
   const togglePlayback = () => {
-    const audio = audioRef.current
-    if (!audio || disabled) return
+    if (disabled) return
 
+    if (speechText) {
+      if (playing) {
+        cancelSpeech()
+        setPlayback(false)
+        return
+      }
+      completedRef.current = false
+      const started = speakText(speechText, {
+        lang: speechLocale,
+        rate: speechRate,
+        onStart: () => setPlayback(true),
+        onEnd: completePlayback,
+        onError: () => setPlayback(false),
+      })
+      if (!started) setPlayback(false)
+      return
+    }
+
+    const audio = audioRef.current
+    if (!audio) return
     if (playing) {
       audio.pause()
       setPlayback(false)
       return
     }
-
     if (
       audio.ended ||
       (start !== undefined &&
@@ -54,12 +81,8 @@ export function AudioClip({
     ) {
       audio.currentTime = start ?? 0
     }
-
     completedRef.current = false
-    void audio
-      .play()
-      .then(() => setPlayback(true))
-      .catch(() => setPlayback(false))
+    void audio.play().then(() => setPlayback(true)).catch(() => setPlayback(false))
   }
 
   const handleTimeUpdate = () => {
@@ -77,21 +100,23 @@ export function AudioClip({
         className={`button ${variant === 'block' ? 'button--block' : 'button--ghost'}`}
         onClick={togglePlayback}
         aria-pressed={playing}
-        disabled={disabled}
+        disabled={disabled || (!src && !speechText)}
       >
         <span aria-hidden="true">{playing ? '⏸' : '▶'}</span>
         {label}
       </button>
-      <audio
-        ref={audioRef}
-        src={src}
-        preload="metadata"
-        onTimeUpdate={handleTimeUpdate}
-        onEnded={completePlayback}
-        onPause={() => {
-          if (!completedRef.current) setPlayback(false)
-        }}
-      />
+      {src && !speechText ? (
+        <audio
+          ref={audioRef}
+          src={src}
+          preload="metadata"
+          onTimeUpdate={handleTimeUpdate}
+          onEnded={completePlayback}
+          onPause={() => {
+            if (!completedRef.current) setPlayback(false)
+          }}
+        />
+      ) : null}
     </span>
   )
 }

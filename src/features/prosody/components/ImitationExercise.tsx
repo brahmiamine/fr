@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { ProsodyExercise } from '../types'
+import { imitationTranscript, speechRateFor } from '../types'
 import {
   REQUIRED_IMITATION_LISTENS,
   REQUIRED_SHADOW_PLAYS,
@@ -44,7 +45,10 @@ export function ImitationExercise({
         <p className="pill">Imitation · Écoute</p>
         <h2 id="imitation-listen">Écoute le segment 2 ou 3 fois.</h2>
         <AudioClip
-          src={audioSrc}
+          src={audioSrc || undefined}
+          speechText={exercise.modelKind === 'tts' ? imitationTranscript(exercise) : undefined}
+          speechLocale={exercise.voiceLocale}
+          speechRate={speechRateFor(exercise)}
           start={exercise.imitation.start}
           end={exercise.imitation.end}
           label="Écouter le segment"
@@ -89,7 +93,10 @@ export function ImitationExercise({
           reste une imitation différée, pas du shadowing.
         </p>
         <AudioClip
-          src={audioSrc}
+          src={audioSrc || undefined}
+          speechText={exercise.modelKind === 'tts' ? imitationTranscript(exercise) : undefined}
+          speechLocale={exercise.voiceLocale}
+          speechRate={speechRateFor(exercise)}
           start={exercise.imitation.start}
           end={exercise.imitation.end}
           label="Réécouter le segment"
@@ -126,7 +133,10 @@ export function ImitationExercise({
         d'automatiser son mouvement.
       </p>
       <AudioClip
-        src={audioSrc}
+        src={audioSrc || undefined}
+        speechText={exercise.modelKind === 'tts' ? imitationTranscript(exercise) : undefined}
+        speechLocale={exercise.voiceLocale}
+        speechRate={speechRateFor(exercise)}
         start={exercise.imitation.start}
         end={exercise.imitation.end}
         label="Démarrer le shadowing"

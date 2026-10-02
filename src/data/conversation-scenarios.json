@@ -1,0 +1,332 @@
+[
+  {
+    "id": "conv_001",
+    "situation": "Tu arrives en retard à une réunion.",
+    "goal": "Expliquer brièvement, t'excuser et proposer comment rattraper le point manqué.",
+    "category": "travail",
+    "difficulty": "easy",
+    "events": [
+      "La personne t'interrompt pour demander la raison.",
+      "Elle te demande ce que tu vas faire maintenant."
+    ]
+  },
+  {
+    "id": "conv_002",
+    "situation": "Un collègue n'est pas d'accord avec ta solution.",
+    "goal": "Défendre ton idée sans bloquer et reconnaître un argument valable.",
+    "category": "travail",
+    "difficulty": "medium",
+    "events": [
+      "Il donne un contre-exemple.",
+      "Il te demande une alternative."
+    ]
+  },
+  {
+    "id": "conv_003",
+    "situation": "Tu dois demander une journée de télétravail exceptionnelle.",
+    "goal": "Expliquer la situation et formuler une demande claire.",
+    "category": "travail",
+    "difficulty": "medium",
+    "events": [
+      "Ton manager hésite.",
+      "Il te demande comment tu resteras disponible."
+    ]
+  },
+  {
+    "id": "conv_004",
+    "situation": "Un ami veut annuler un voyage au dernier moment.",
+    "goal": "Comprendre sa raison puis chercher un compromis.",
+    "category": "voyage",
+    "difficulty": "medium",
+    "events": [
+      "Il refuse ta première proposition.",
+      "Un nouveau problème de transport apparaît."
+    ]
+  },
+  {
+    "id": "conv_005",
+    "situation": "À l'hôtel, la chambre ne correspond pas à la réservation.",
+    "goal": "Expliquer calmement le problème et demander une solution.",
+    "category": "voyage",
+    "difficulty": "medium",
+    "events": [
+      "La réception dit que l'hôtel est complet.",
+      "On te propose une solution imparfaite."
+    ]
+  },
+  {
+    "id": "conv_006",
+    "situation": "Tu demandes ton chemin mais tu ne comprends pas l'explication.",
+    "goal": "Demander de reformuler et vérifier que tu as bien compris.",
+    "category": "mobilite",
+    "difficulty": "easy",
+    "events": [
+      "La personne parle trop vite.",
+      "Elle utilise un nom de rue que tu ne connais pas."
+    ]
+  },
+  {
+    "id": "conv_007",
+    "situation": "Tu dois expliquer un problème avec une facture.",
+    "goal": "Décrire précisément le problème sans connaître tout le vocabulaire administratif.",
+    "category": "administratif",
+    "difficulty": "medium",
+    "events": [
+      "L'agent demande une date précise.",
+      "Il te demande ce que tu souhaites comme correction."
+    ]
+  },
+  {
+    "id": "conv_008",
+    "situation": "Tu appelles pour déplacer un rendez-vous.",
+    "goal": "Expliquer pourquoi et négocier un nouvel horaire.",
+    "category": "administratif",
+    "difficulty": "easy",
+    "events": [
+      "Le premier créneau proposé ne te convient pas.",
+      "On te demande tes disponibilités exactes."
+    ]
+  },
+  {
+    "id": "conv_009",
+    "situation": "Tu veux retourner un produit qui ne fonctionne pas.",
+    "goal": "Décrire le défaut et demander échange ou remboursement.",
+    "category": "quotidien",
+    "difficulty": "medium",
+    "events": [
+      "Le vendeur demande comment le problème est apparu.",
+      "Il propose seulement un avoir."
+    ]
+  },
+  {
+    "id": "conv_010",
+    "situation": "Un voisin fait beaucoup de bruit le soir.",
+    "goal": "Expliquer le problème poliment et poser une limite.",
+    "category": "logement",
+    "difficulty": "medium",
+    "events": [
+      "Le voisin minimise le bruit.",
+      "Il te demande à quelle heure cela te gêne."
+    ]
+  },
+  {
+    "id": "conv_011",
+    "situation": "Tu visites un appartement.",
+    "goal": "Poser des questions utiles et réagir aux réponses.",
+    "category": "logement",
+    "difficulty": "easy",
+    "events": [
+      "Le propriétaire répond vaguement sur les charges.",
+      "Tu découvres un défaut dans la pièce."
+    ]
+  },
+  {
+    "id": "conv_012",
+    "situation": "Un ami te demande ton avis sur une décision importante.",
+    "goal": "Nuancer ton opinion et donner un exemple.",
+    "category": "relations",
+    "difficulty": "medium",
+    "events": [
+      "Il te demande ce que tu ferais à sa place.",
+      "Il n'est pas convaincu par ton premier argument."
+    ]
+  },
+  {
+    "id": "conv_013",
+    "situation": "Tu dois dire non à une invitation sans vexer la personne.",
+    "goal": "Refuser naturellement et proposer une alternative.",
+    "category": "relations",
+    "difficulty": "easy",
+    "events": [
+      "La personne insiste.",
+      "Elle te demande quand tu serais disponible."
+    ]
+  },
+  {
+    "id": "conv_014",
+    "situation": "Quelqu'un a mal compris ce que tu voulais dire.",
+    "goal": "Reformuler ton idée de deux façons différentes.",
+    "category": "conversation",
+    "difficulty": "medium",
+    "events": [
+      "La personne comprend encore autre chose.",
+      "Elle te demande un exemple concret."
+    ]
+  },
+  {
+    "id": "conv_015",
+    "situation": "Tu ne te souviens plus d'un mot important en pleine conversation.",
+    "goal": "Continuer en décrivant le concept au lieu de t'arrêter.",
+    "category": "conversation",
+    "difficulty": "easy",
+    "events": [
+      "Ton interlocuteur propose le mauvais mot.",
+      "Tu dois préciser à quoi l'objet ou l'idée sert."
+    ]
+  },
+  {
+    "id": "conv_016",
+    "situation": "Tu participes à une discussion sur les réseaux sociaux.",
+    "goal": "Exprimer une opinion, une raison et une nuance.",
+    "category": "technologie",
+    "difficulty": "medium",
+    "events": [
+      "Quelqu'un cite un contre-exemple.",
+      "On te demande si ton avis changerait dans un autre contexte."
+    ]
+  },
+  {
+    "id": "conv_017",
+    "situation": "Tu expliques à quelqu'un comment utiliser une application.",
+    "goal": "Donner des étapes simples et vérifier la compréhension.",
+    "category": "technologie",
+    "difficulty": "easy",
+    "events": [
+      "La personne ne trouve pas le bouton.",
+      "Elle te demande de recommencer plus simplement."
+    ]
+  },
+  {
+    "id": "conv_018",
+    "situation": "Tu dois choisir entre deux abonnements.",
+    "goal": "Comparer les options et justifier ton choix.",
+    "category": "argent",
+    "difficulty": "medium",
+    "events": [
+      "Le moins cher a une limite importante.",
+      "On te demande quel critère compte le plus."
+    ]
+  },
+  {
+    "id": "conv_019",
+    "situation": "Un ami trouve que tu dépenses trop pour un loisir.",
+    "goal": "Expliquer tes priorités sans transformer la discussion en conflit.",
+    "category": "argent",
+    "difficulty": "medium",
+    "events": [
+      "Il insiste sur le prix.",
+      "Il te demande ce que tu accepterais de réduire."
+    ]
+  },
+  {
+    "id": "conv_020",
+    "situation": "Tu racontes une petite mésaventure arrivée ce matin.",
+    "goal": "Raconter dans l'ordre avec des connecteurs naturels.",
+    "category": "quotidien",
+    "difficulty": "easy",
+    "events": [
+      "On t'interrompt pour demander ce qui s'est passé ensuite.",
+      "Tu dois résumer l'histoire en une phrase."
+    ]
+  },
+  {
+    "id": "conv_021",
+    "situation": "Tu expliques pourquoi tu veux changer une habitude.",
+    "goal": "Décrire le problème, la motivation et le plan.",
+    "category": "habitudes",
+    "difficulty": "medium",
+    "events": [
+      "Quelqu'un doute que tu tiennes longtemps.",
+      "On te demande ta première action concrète."
+    ]
+  },
+  {
+    "id": "conv_022",
+    "situation": "Tu conseilles quelqu'un qui veut reprendre le sport.",
+    "goal": "Donner un conseil prudent et réaliste.",
+    "category": "sport",
+    "difficulty": "easy",
+    "events": [
+      "La personne veut aller trop vite.",
+      "Elle te demande comment rester régulière."
+    ]
+  },
+  {
+    "id": "conv_023",
+    "situation": "Tu discutes après un match avec quelqu'un qui n'a pas vu la même chose que toi.",
+    "goal": "Décrire un moment de jeu et accepter le désaccord.",
+    "category": "sport",
+    "difficulty": "medium",
+    "events": [
+      "Il te coupe avec une autre interprétation.",
+      "Il te demande quel détail t'a fait penser cela."
+    ]
+  },
+  {
+    "id": "conv_024",
+    "situation": "Tu présentes un film que tu as aimé sans raconter la fin.",
+    "goal": "Donner envie avec une description naturelle.",
+    "category": "culture",
+    "difficulty": "easy",
+    "events": [
+      "On te demande ce qui le rend différent.",
+      "On te demande à qui tu le recommanderais."
+    ]
+  },
+  {
+    "id": "conv_025",
+    "situation": "Tu expliques une tradition de ton pays à quelqu'un qui ne la connaît pas.",
+    "goal": "Décrire simplement puis répondre à une question inattendue.",
+    "category": "culture",
+    "difficulty": "medium",
+    "events": [
+      "La personne compare avec une autre tradition.",
+      "Elle te demande ce qui a changé aujourd'hui."
+    ]
+  },
+  {
+    "id": "conv_026",
+    "situation": "Tu défends une solution plus écologique mais plus contraignante.",
+    "goal": "Argumenter puis reconnaître une limite.",
+    "category": "environnement",
+    "difficulty": "hard",
+    "events": [
+      "On te parle du coût.",
+      "On te demande une solution pour les personnes qui ont moins de choix."
+    ]
+  },
+  {
+    "id": "conv_027",
+    "situation": "Tu dois expliquer un sujet que tu connais à un débutant.",
+    "goal": "Simplifier sans perdre l'idée essentielle.",
+    "category": "education",
+    "difficulty": "medium",
+    "events": [
+      "La personne ne comprend pas un terme.",
+      "Elle te demande un exemple de la vie quotidienne."
+    ]
+  },
+  {
+    "id": "conv_028",
+    "situation": "Tu n'es pas sûr d'une information pendant une discussion.",
+    "goal": "Exprimer l'incertitude sans arrêter la conversation.",
+    "category": "conversation",
+    "difficulty": "easy",
+    "events": [
+      "On te demande ce dont tu es certain.",
+      "Tu dois corriger ta phrase après avoir réfléchi."
+    ]
+  },
+  {
+    "id": "conv_029",
+    "situation": "Tu dois proposer une idée à un groupe.",
+    "goal": "Présenter l'idée, son avantage et demander une réaction.",
+    "category": "projets",
+    "difficulty": "medium",
+    "events": [
+      "Une personne voit un risque.",
+      "Le groupe te demande une version plus simple."
+    ]
+  },
+  {
+    "id": "conv_030",
+    "situation": "Le plan prévu ne fonctionne plus au dernier moment.",
+    "goal": "Réagir vite, expliquer le problème et proposer un plan B.",
+    "category": "projets",
+    "difficulty": "hard",
+    "events": [
+      "Ta première solution est impossible.",
+      "Tu dois choisir entre deux compromis."
+    ]
+  }
+]
