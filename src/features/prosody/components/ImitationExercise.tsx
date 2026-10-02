@@ -7,6 +7,7 @@ import {
 } from '../types'
 import type { ProsodyRecorder } from '../hooks/useProsodyRecorder'
 import { AudioClip } from './AudioClip'
+import { MelodyWarmup } from './MelodyWarmup'
 import { RecorderControls } from './RecorderControls'
 
 export interface ImitationExerciseProps {
@@ -69,6 +70,7 @@ export function ImitationExercise({
             <li>✓ l'énergie</li>
           </ul>
         </div>
+        <MelodyWarmup exercise={exercise} audioSrc={audioSrc} />
         <button
           type="button"
           className="button button--block"

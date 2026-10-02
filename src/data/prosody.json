@@ -4,37 +4,57 @@
     "level": "B1",
     "category": "opinion",
     "modelKind": "tts",
-    "transcript": "Franchement, je trouve que c'est une bonne idée, mais tout dépend de la façon dont on l'applique.",
+    "transcript": "Franchement, je trouve que c'est une bonne idée, mais tout dépend de la façon dont on l'applique. Si on prend le temps de bien l'expliquer, je pense que la plupart des gens finiront par l'accepter.",
     "groups": [
       {
         "text": "Franchement",
         "start": 0,
-        "end": 4,
+        "end": 0.6,
         "intonation": "level",
         "enchainementAfter": true
       },
       {
         "text": "je trouve que c'est une bonne idée",
-        "start": 4,
-        "end": 8,
+        "start": 0.9,
+        "end": 2.5,
         "intonation": "rise",
         "finalLengthening": true,
         "liaisonAfter": true
       },
       {
         "text": "mais tout dépend de la façon dont on l'applique",
-        "start": 8,
-        "end": 12,
+        "start": 2.8,
+        "end": 5.2,
+        "intonation": "fall",
+        "finalLengthening": true
+      },
+      {
+        "text": "Si on prend le temps de bien l'expliquer",
+        "start": 5.8,
+        "end": 7.8,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "je pense que la plupart des gens",
+        "start": 8.1,
+        "end": 9.7,
+        "intonation": "level"
+      },
+      {
+        "text": "finiront par l'accepter",
+        "start": 10,
+        "end": 11.4,
         "intonation": "fall",
         "finalLengthening": true
       }
     ],
     "imitation": {
-      "start": 4,
-      "end": 12
+      "start": 0,
+      "end": 5.2
     },
     "retelling": {
-      "idea": "Donner un avis positif puis ajouter une condition."
+      "idea": "Donner un avis positif, poser une condition, puis dire comment les gens pourraient réagir."
     },
     "ready": true,
     "source": "browser-speech-synthesis",
@@ -45,42 +65,63 @@
       "grouping",
       "intonation",
       "finalLengthening"
-    ]
+    ],
+    "timing": "estimated"
   },
   {
     "id": "prosody_002",
     "level": "B1",
     "category": "travail",
     "modelKind": "tts",
-    "transcript": "Personnellement, le télétravail me fait gagner du temps, même si le contact avec l'équipe me manque parfois.",
+    "transcript": "Personnellement, le télétravail me fait gagner du temps, même si le contact avec l'équipe me manque parfois. Du coup, j'essaie d'aller au bureau une ou deux fois par semaine, juste pour garder le lien.",
     "groups": [
       {
         "text": "Personnellement",
         "start": 0,
-        "end": 4,
+        "end": 1,
         "intonation": "level"
       },
       {
         "text": "le télétravail me fait gagner du temps",
-        "start": 4,
-        "end": 8,
+        "start": 1.3,
+        "end": 3.5,
         "intonation": "rise",
         "finalLengthening": true
       },
       {
         "text": "même si le contact avec l'équipe me manque parfois",
-        "start": 8,
+        "start": 3.8,
+        "end": 6.4,
+        "intonation": "fall",
+        "finalLengthening": true
+      },
+      {
+        "text": "Du coup",
+        "start": 7,
+        "end": 7.4,
+        "intonation": "level"
+      },
+      {
+        "text": "j'essaie d'aller au bureau une ou deux fois par semaine",
+        "start": 7.7,
+        "end": 10.5,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "juste pour garder le lien",
+        "start": 10.8,
         "end": 12,
         "intonation": "fall",
         "finalLengthening": true
       }
     ],
     "imitation": {
-      "start": 4,
-      "end": 12
+      "start": 0,
+      "end": 6.4
     },
     "retelling": {
-      "idea": "Présenter un avantage du télétravail puis une réserve."
+      "idea": "Présenter un avantage du télétravail, une réserve, puis la solution que tu as trouvée."
     },
     "ready": true,
     "source": "browser-speech-synthesis",
@@ -91,42 +132,64 @@
       "rhythm",
       "intonation",
       "continuity"
-    ]
+    ],
+    "timing": "estimated"
   },
   {
     "id": "prosody_003",
     "level": "B2",
     "category": "nuance",
     "modelKind": "tts",
-    "transcript": "En fait, ce n'est pas vraiment oui ou non, ça dépend surtout du contexte et des priorités de chacun.",
+    "transcript": "En fait, ce n'est pas vraiment oui ou non, ça dépend surtout du contexte et des priorités de chacun. Pour certains, c'est une évidence, alors que pour d'autres, c'est presque impossible à imaginer.",
     "groups": [
       {
         "text": "En fait",
         "start": 0,
-        "end": 4,
+        "end": 0.4,
         "intonation": "level"
       },
       {
         "text": "ce n'est pas vraiment oui ou non",
-        "start": 4,
-        "end": 8,
+        "start": 0.7,
+        "end": 2.3,
         "intonation": "rise",
         "finalLengthening": true
       },
       {
         "text": "ça dépend surtout du contexte et des priorités de chacun",
-        "start": 8,
-        "end": 12,
+        "start": 2.6,
+        "end": 5.8,
+        "intonation": "fall",
+        "finalLengthening": true
+      },
+      {
+        "text": "Pour certains c'est une évidence",
+        "start": 6.4,
+        "end": 8,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "alors que pour d'autres",
+        "start": 8.3,
+        "end": 9.3,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "c'est presque impossible à imaginer",
+        "start": 9.6,
+        "end": 11.6,
         "intonation": "fall",
         "finalLengthening": true
       }
     ],
     "imitation": {
-      "start": 4,
-      "end": 12
+      "start": 0,
+      "end": 5.8
     },
     "retelling": {
-      "idea": "Exprimer une réponse nuancée."
+      "idea": "Donner une réponse nuancée et opposer deux façons de voir les choses."
     },
     "ready": true,
     "source": "browser-speech-synthesis",
@@ -136,43 +199,64 @@
     "focus": [
       "grouping",
       "intonation"
-    ]
+    ],
+    "timing": "estimated"
   },
   {
     "id": "prosody_004",
     "level": "A2",
     "category": "quotidien",
     "modelKind": "tts",
-    "transcript": "Ce matin, j'étais un peu pressé, du coup j'ai oublié mes clés et j'ai dû revenir à la maison.",
+    "transcript": "Ce matin, j'étais un peu pressé, du coup j'ai oublié mes clés et j'ai dû revenir à la maison. Évidemment, le bus est passé juste devant moi, donc je suis arrivé en retard au travail.",
     "groups": [
       {
         "text": "Ce matin j'étais un peu pressé",
         "start": 0,
-        "end": 4,
+        "end": 1.8,
         "intonation": "rise",
         "enchainementAfter": true
       },
       {
         "text": "du coup j'ai oublié mes clés",
-        "start": 4,
-        "end": 8,
+        "start": 2.1,
+        "end": 3.5,
         "intonation": "level",
         "finalLengthening": true
       },
       {
         "text": "et j'ai dû revenir à la maison",
-        "start": 8,
+        "start": 3.8,
+        "end": 5.8,
+        "intonation": "fall",
+        "finalLengthening": true
+      },
+      {
+        "text": "Évidemment",
+        "start": 6.4,
+        "end": 7.2,
+        "intonation": "level"
+      },
+      {
+        "text": "le bus est passé juste devant moi",
+        "start": 7.5,
+        "end": 9.3,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "donc je suis arrivé en retard au travail",
+        "start": 9.6,
         "end": 12,
         "intonation": "fall",
         "finalLengthening": true
       }
     ],
     "imitation": {
-      "start": 4,
-      "end": 12
+      "start": 0,
+      "end": 5.8
     },
     "retelling": {
-      "idea": "Raconter un petit imprévu du quotidien."
+      "idea": "Raconter un petit imprévu du quotidien et sa conséquence."
     },
     "ready": true,
     "source": "browser-speech-synthesis",
@@ -182,43 +266,65 @@
     "focus": [
       "rhythm",
       "continuity"
-    ]
+    ],
+    "timing": "estimated"
   },
   {
     "id": "prosody_005",
     "level": "B1",
     "category": "conversation",
     "modelKind": "tts",
-    "transcript": "Attends, je vois ce que tu veux dire, mais ce n'est pas exactement ce que j'avais en tête.",
+    "transcript": "Attends, je vois ce que tu veux dire, mais ce n'est pas exactement ce que j'avais en tête. Moi, je parlais surtout du budget, pas vraiment du calendrier, tu vois ce que je veux dire ?",
     "groups": [
       {
         "text": "Attends",
         "start": 0,
-        "end": 4,
+        "end": 0.34,
         "intonation": "rise"
       },
       {
         "text": "je vois ce que tu veux dire",
-        "start": 4,
-        "end": 8,
+        "start": 0.64,
+        "end": 1.85,
         "intonation": "rise",
         "finalLengthening": true,
         "liaisonAfter": true
       },
       {
         "text": "mais ce n'est pas exactement ce que j'avais en tête",
-        "start": 8,
-        "end": 12,
+        "start": 2.15,
+        "end": 4.56,
         "intonation": "fall",
+        "finalLengthening": true
+      },
+      {
+        "text": "Moi je parlais surtout du budget",
+        "start": 5.16,
+        "end": 6.71,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "pas vraiment du calendrier",
+        "start": 7.01,
+        "end": 8.22,
+        "intonation": "fall",
+        "finalLengthening": true
+      },
+      {
+        "text": "tu vois ce que je veux dire",
+        "start": 8.82,
+        "end": 10.03,
+        "intonation": "rise",
         "finalLengthening": true
       }
     ],
     "imitation": {
-      "start": 4,
-      "end": 12
+      "start": 0,
+      "end": 6.71
     },
     "retelling": {
-      "idea": "Réagir à quelqu'un et reformuler un désaccord."
+      "idea": "Réagir à quelqu'un, reformuler un désaccord et vérifier qu'il t'a compris."
     },
     "ready": true,
     "source": "browser-speech-synthesis",
@@ -229,42 +335,63 @@
       "energy",
       "intonation",
       "continuity"
-    ]
+    ],
+    "timing": "estimated"
   },
   {
     "id": "prosody_006",
     "level": "B2",
     "category": "travail",
     "modelKind": "tts",
-    "transcript": "Le problème, ce n'est pas la réunion elle-même, c'est surtout qu'on pourrait régler ça en dix minutes.",
+    "transcript": "Le problème, ce n'est pas la réunion elle-même, c'est surtout qu'on pourrait régler ça en dix minutes. Franchement, avec un simple message, tout le monde aurait gagné une heure.",
     "groups": [
       {
         "text": "Le problème ce n'est pas la réunion elle-même",
         "start": 0,
-        "end": 4,
+        "end": 2.2,
         "intonation": "rise"
       },
       {
         "text": "c'est surtout",
-        "start": 4,
-        "end": 8,
+        "start": 2.5,
+        "end": 3.1,
         "intonation": "level",
         "finalLengthening": true
       },
       {
         "text": "qu'on pourrait régler ça en dix minutes",
-        "start": 8,
-        "end": 12,
+        "start": 3.4,
+        "end": 5.4,
+        "intonation": "fall",
+        "finalLengthening": true
+      },
+      {
+        "text": "Franchement",
+        "start": 6,
+        "end": 6.6,
+        "intonation": "level"
+      },
+      {
+        "text": "avec un simple message",
+        "start": 6.9,
+        "end": 8.1,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "tout le monde aurait gagné une heure",
+        "start": 8.4,
+        "end": 10.2,
         "intonation": "fall",
         "finalLengthening": true
       }
     ],
     "imitation": {
-      "start": 4,
-      "end": 12
+      "start": 0,
+      "end": 5.4
     },
     "retelling": {
-      "idea": "Critiquer une réunion de façon mesurée."
+      "idea": "Critiquer une réunion de façon mesurée et proposer une alternative."
     },
     "ready": true,
     "source": "browser-speech-synthesis",
@@ -274,43 +401,64 @@
     "focus": [
       "grouping",
       "finalLengthening"
-    ]
+    ],
+    "timing": "estimated"
   },
   {
     "id": "prosody_007",
     "level": "B1",
     "category": "voyage",
     "modelKind": "tts",
-    "transcript": "Quand je voyage, j'aime bien prévoir l'essentiel, mais je garde toujours un peu de place pour l'imprévu.",
+    "transcript": "Quand je voyage, j'aime bien prévoir l'essentiel, mais je garde toujours un peu de place pour l'imprévu. D'ailleurs, c'est souvent dans ces moments-là qu'on fait les rencontres les plus intéressantes.",
     "groups": [
       {
         "text": "Quand je voyage j'aime bien prévoir l'essentiel",
         "start": 0,
-        "end": 4,
+        "end": 2,
         "intonation": "rise",
         "enchainementAfter": true
       },
       {
         "text": "mais je garde toujours",
-        "start": 4,
-        "end": 8,
+        "start": 2.3,
+        "end": 3.3,
         "intonation": "level",
         "finalLengthening": true
       },
       {
         "text": "un peu de place pour l'imprévu",
-        "start": 8,
-        "end": 12,
+        "start": 3.6,
+        "end": 5.2,
+        "intonation": "fall",
+        "finalLengthening": true
+      },
+      {
+        "text": "D'ailleurs",
+        "start": 5.8,
+        "end": 6.2,
+        "intonation": "level"
+      },
+      {
+        "text": "c'est souvent dans ces moments-là",
+        "start": 6.5,
+        "end": 8.1,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "qu'on fait les rencontres les plus intéressantes",
+        "start": 8.4,
+        "end": 10.6,
         "intonation": "fall",
         "finalLengthening": true
       }
     ],
     "imitation": {
-      "start": 4,
-      "end": 12
+      "start": 0,
+      "end": 5.2
     },
     "retelling": {
-      "idea": "Expliquer sa façon de voyager."
+      "idea": "Expliquer ta façon de voyager et ce que l'imprévu t'apporte."
     },
     "ready": true,
     "source": "browser-speech-synthesis",
@@ -320,42 +468,63 @@
     "focus": [
       "rhythm",
       "finalLengthening"
-    ]
+    ],
+    "timing": "estimated"
   },
   {
     "id": "prosody_008",
     "level": "B1",
     "category": "relations",
     "modelKind": "tts",
-    "transcript": "Je comprends ton point de vue, et en même temps, je pense qu'on peut voir la situation autrement.",
+    "transcript": "Je comprends ton point de vue, et en même temps, je pense qu'on peut voir la situation autrement. Peut-être qu'en discutant un peu plus calmement, on trouvera une solution qui nous convient à tous les deux.",
     "groups": [
       {
         "text": "Je comprends ton point de vue",
         "start": 0,
-        "end": 4,
+        "end": 1.67,
         "intonation": "rise"
       },
       {
         "text": "et en même temps",
-        "start": 4,
-        "end": 8,
+        "start": 1.97,
+        "end": 2.92,
         "intonation": "level",
         "finalLengthening": true
       },
       {
         "text": "je pense qu'on peut voir la situation autrement",
-        "start": 8,
-        "end": 12,
+        "start": 3.22,
+        "end": 6.08,
+        "intonation": "fall",
+        "finalLengthening": true
+      },
+      {
+        "text": "Peut-être qu'en discutant un peu plus calmement",
+        "start": 6.68,
+        "end": 9.54,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "on trouvera une solution",
+        "start": 9.84,
+        "end": 11.74,
+        "intonation": "level"
+      },
+      {
+        "text": "qui nous convient à tous les deux",
+        "start": 12.04,
+        "end": 13.94,
         "intonation": "fall",
         "finalLengthening": true
       }
     ],
     "imitation": {
-      "start": 4,
-      "end": 12
+      "start": 0,
+      "end": 6.08
     },
     "retelling": {
-      "idea": "Reconnaître un point de vue puis proposer une autre lecture."
+      "idea": "Reconnaître un point de vue, proposer une autre lecture, puis chercher un compromis."
     },
     "ready": true,
     "source": "browser-speech-synthesis",
@@ -365,43 +534,64 @@
     "focus": [
       "intonation",
       "tempo"
-    ]
+    ],
+    "timing": "estimated"
   },
   {
     "id": "prosody_009",
     "level": "B2",
     "category": "technologie",
     "modelKind": "tts",
-    "transcript": "L'intelligence artificielle peut faire gagner beaucoup de temps, à condition de vérifier ce qu'elle produit.",
+    "transcript": "L'intelligence artificielle peut faire gagner beaucoup de temps, à condition de vérifier ce qu'elle produit. Sinon, on risque de recopier des erreurs sans même s'en rendre compte.",
     "groups": [
       {
         "text": "L'intelligence artificielle peut faire gagner beaucoup de temps",
         "start": 0,
-        "end": 4,
+        "end": 3.2,
         "intonation": "rise"
       },
       {
         "text": "à condition",
-        "start": 4,
-        "end": 8,
+        "start": 3.5,
+        "end": 4.3,
         "intonation": "level",
         "finalLengthening": true,
         "liaisonAfter": true
       },
       {
         "text": "de vérifier ce qu'elle produit",
-        "start": 8,
-        "end": 12,
+        "start": 4.6,
+        "end": 6.2,
+        "intonation": "fall",
+        "finalLengthening": true
+      },
+      {
+        "text": "Sinon",
+        "start": 6.8,
+        "end": 7.2,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "on risque de recopier des erreurs",
+        "start": 7.5,
+        "end": 9.3,
+        "intonation": "level"
+      },
+      {
+        "text": "sans même s'en rendre compte",
+        "start": 9.6,
+        "end": 10.6,
         "intonation": "fall",
         "finalLengthening": true
       }
     ],
     "imitation": {
-      "start": 4,
-      "end": 12
+      "start": 0,
+      "end": 6.2
     },
     "retelling": {
-      "idea": "Présenter un avantage de l'IA avec une condition."
+      "idea": "Présenter un avantage de l'IA, une condition et le risque si on l'oublie."
     },
     "ready": true,
     "source": "browser-speech-synthesis",
@@ -411,43 +601,65 @@
     "focus": [
       "grouping",
       "continuity"
-    ]
+    ],
+    "timing": "estimated"
   },
   {
     "id": "prosody_010",
     "level": "B1",
     "category": "argent",
     "modelKind": "tts",
-    "transcript": "À mon avis, économiser c'est important, mais il faut aussi savoir profiter un peu de son argent.",
+    "transcript": "À mon avis, économiser c'est important, mais il faut aussi savoir profiter un peu de son argent. Sinon, on passe sa vie à mettre de côté pour plus tard, et plus tard n'arrive jamais vraiment.",
     "groups": [
       {
         "text": "À mon avis économiser c'est important",
         "start": 0,
-        "end": 4,
+        "end": 2.6,
         "intonation": "rise",
         "enchainementAfter": true
       },
       {
         "text": "mais il faut aussi savoir",
-        "start": 4,
-        "end": 8,
+        "start": 2.9,
+        "end": 4.3,
         "intonation": "level",
         "finalLengthening": true
       },
       {
         "text": "profiter un peu de son argent",
-        "start": 8,
-        "end": 12,
+        "start": 4.6,
+        "end": 6.4,
+        "intonation": "fall",
+        "finalLengthening": true
+      },
+      {
+        "text": "Sinon",
+        "start": 7,
+        "end": 7.4,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "on passe sa vie à mettre de côté pour plus tard",
+        "start": 7.7,
+        "end": 10.1,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "et plus tard n'arrive jamais vraiment",
+        "start": 10.4,
+        "end": 12.2,
         "intonation": "fall",
         "finalLengthening": true
       }
     ],
     "imitation": {
-      "start": 4,
-      "end": 12
+      "start": 0,
+      "end": 6.4
     },
     "retelling": {
-      "idea": "Nuancer entre épargne et plaisir."
+      "idea": "Nuancer entre épargne et plaisir, avec un argument contre l'excès d'épargne."
     },
     "ready": true,
     "source": "browser-speech-synthesis",
@@ -457,42 +669,64 @@
     "focus": [
       "intonation",
       "finalLengthening"
-    ]
+    ],
+    "timing": "estimated"
   },
   {
     "id": "prosody_011",
     "level": "B1",
     "category": "sport",
     "modelKind": "tts",
-    "transcript": "Au début, je voulais aller trop vite, puis j'ai compris que la régularité comptait beaucoup plus.",
+    "transcript": "Au début, je voulais aller trop vite, puis j'ai compris que la régularité comptait beaucoup plus. Maintenant, je cours trois fois par semaine, tranquillement, et je me sens beaucoup mieux qu'avant.",
     "groups": [
       {
         "text": "Au début je voulais aller trop vite",
         "start": 0,
-        "end": 4,
+        "end": 1.72,
         "intonation": "rise"
       },
       {
         "text": "puis j'ai compris",
-        "start": 4,
-        "end": 8,
+        "start": 2.02,
+        "end": 2.71,
         "intonation": "level",
         "finalLengthening": true
       },
       {
         "text": "que la régularité comptait beaucoup plus",
-        "start": 8,
-        "end": 12,
+        "start": 3.01,
+        "end": 5.08,
+        "intonation": "fall",
+        "finalLengthening": true
+      },
+      {
+        "text": "Maintenant",
+        "start": 5.68,
+        "end": 6.2,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "je cours trois fois par semaine tranquillement",
+        "start": 6.5,
+        "end": 8.4,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "et je me sens beaucoup mieux qu'avant",
+        "start": 8.7,
+        "end": 10.25,
         "intonation": "fall",
         "finalLengthening": true
       }
     ],
     "imitation": {
-      "start": 4,
-      "end": 12
+      "start": 0,
+      "end": 5.08
     },
     "retelling": {
-      "idea": "Raconter un changement dans sa pratique sportive."
+      "idea": "Raconter un changement dans ta pratique sportive et son résultat."
     },
     "ready": true,
     "source": "browser-speech-synthesis",
@@ -502,42 +736,63 @@
     "focus": [
       "tempo",
       "rhythm"
-    ]
+    ],
+    "timing": "estimated"
   },
   {
     "id": "prosody_012",
     "level": "B1",
     "category": "culture",
     "modelKind": "tts",
-    "transcript": "Ce film m'a vraiment surpris, parce qu'au départ je pensais que l'histoire serait beaucoup plus prévisible.",
+    "transcript": "Ce film m'a vraiment surpris, parce qu'au départ je pensais que l'histoire serait beaucoup plus prévisible. En fait, la fin m'a tellement marqué que j'y ai repensé pendant plusieurs jours.",
     "groups": [
       {
         "text": "Ce film m'a vraiment surpris",
         "start": 0,
-        "end": 4,
+        "end": 1.4,
         "intonation": "rise"
       },
       {
         "text": "parce qu'au départ",
-        "start": 4,
-        "end": 8,
+        "start": 1.7,
+        "end": 2.5,
         "intonation": "level",
         "finalLengthening": true
       },
       {
         "text": "je pensais que l'histoire serait beaucoup plus prévisible",
-        "start": 8,
-        "end": 12,
+        "start": 2.8,
+        "end": 5.6,
+        "intonation": "fall",
+        "finalLengthening": true
+      },
+      {
+        "text": "En fait",
+        "start": 6.2,
+        "end": 6.6,
+        "intonation": "level"
+      },
+      {
+        "text": "la fin m'a tellement marqué",
+        "start": 6.9,
+        "end": 8.5,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "que j'y ai repensé pendant plusieurs jours",
+        "start": 8.8,
+        "end": 11,
         "intonation": "fall",
         "finalLengthening": true
       }
     ],
     "imitation": {
-      "start": 4,
-      "end": 12
+      "start": 0,
+      "end": 5.6
     },
     "retelling": {
-      "idea": "Parler d'une surprise à propos d'un film."
+      "idea": "Parler d'un film qui t'a surpris et de l'effet qu'il a eu sur toi."
     },
     "ready": true,
     "source": "browser-speech-synthesis",
@@ -547,44 +802,66 @@
     "focus": [
       "energy",
       "intonation"
-    ]
+    ],
+    "timing": "estimated"
   },
   {
     "id": "prosody_013",
     "level": "B2",
     "category": "education",
     "modelKind": "tts",
-    "transcript": "Apprendre une langue, ce n'est pas seulement connaître des règles, c'est surtout réussir à parler sans tout traduire.",
+    "transcript": "Apprendre une langue, ce n'est pas seulement connaître des règles, c'est surtout réussir à parler sans tout traduire. Et ça, honnêtement, ça vient surtout avec la pratique, pas avec les livres.",
     "groups": [
       {
         "text": "Apprendre une langue ce n'est pas seulement connaître des règles",
         "start": 0,
-        "end": 4,
+        "end": 2.8,
         "intonation": "rise",
         "enchainementAfter": true
       },
       {
         "text": "c'est surtout",
-        "start": 4,
-        "end": 8,
+        "start": 3.1,
+        "end": 3.7,
         "intonation": "level",
         "finalLengthening": true,
         "liaisonAfter": true
       },
       {
         "text": "réussir à parler sans tout traduire",
-        "start": 8,
-        "end": 12,
+        "start": 4,
+        "end": 5.8,
+        "intonation": "fall",
+        "finalLengthening": true
+      },
+      {
+        "text": "Et ça honnêtement",
+        "start": 6.4,
+        "end": 7.6,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "ça vient surtout avec la pratique",
+        "start": 7.9,
+        "end": 9.7,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "pas avec les livres",
+        "start": 10,
+        "end": 11,
         "intonation": "fall",
         "finalLengthening": true
       }
     ],
     "imitation": {
-      "start": 4,
-      "end": 12
+      "start": 0,
+      "end": 5.8
     },
     "retelling": {
-      "idea": "Expliquer ce qui compte dans l'apprentissage d'une langue."
+      "idea": "Expliquer ce qui compte vraiment dans l'apprentissage d'une langue et comment on y arrive."
     },
     "ready": true,
     "source": "browser-speech-synthesis",
@@ -594,42 +871,63 @@
     "focus": [
       "grouping",
       "continuity"
-    ]
+    ],
+    "timing": "estimated"
   },
   {
     "id": "prosody_014",
     "level": "B2",
     "category": "environnement",
     "modelKind": "tts",
-    "transcript": "Bien sûr, changer ses habitudes ne suffit pas à tout résoudre, mais chaque choix peut quand même avoir un effet.",
+    "transcript": "Bien sûr, changer ses habitudes ne suffit pas à tout résoudre, mais chaque choix peut quand même avoir un effet. Et puis, quand beaucoup de gens changent en même temps, ça finit par faire une vraie différence.",
     "groups": [
       {
         "text": "Bien sûr changer ses habitudes ne suffit pas à tout résoudre",
         "start": 0,
-        "end": 4,
+        "end": 3.81,
         "intonation": "rise"
       },
       {
         "text": "mais chaque choix",
-        "start": 4,
-        "end": 8,
+        "start": 4.11,
+        "end": 4.82,
         "intonation": "level",
         "finalLengthening": true
       },
       {
         "text": "peut quand même avoir un effet",
-        "start": 8,
-        "end": 12,
+        "start": 5.12,
+        "end": 7.02,
+        "intonation": "fall",
+        "finalLengthening": true
+      },
+      {
+        "text": "Et puis",
+        "start": 7.62,
+        "end": 8.1,
+        "intonation": "level"
+      },
+      {
+        "text": "quand beaucoup de gens changent en même temps",
+        "start": 8.4,
+        "end": 10.78,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "ça finit par faire une vraie différence",
+        "start": 11.08,
+        "end": 13.46,
         "intonation": "fall",
         "finalLengthening": true
       }
     ],
     "imitation": {
-      "start": 4,
-      "end": 12
+      "start": 0,
+      "end": 7.02
     },
     "retelling": {
-      "idea": "Nuancer l'effet des gestes individuels."
+      "idea": "Nuancer l'effet des gestes individuels puis montrer leur effet collectif."
     },
     "ready": true,
     "source": "browser-speech-synthesis",
@@ -639,42 +937,63 @@
     "focus": [
       "tempo",
       "intonation"
-    ]
+    ],
+    "timing": "estimated"
   },
   {
     "id": "prosody_015",
     "level": "B1",
     "category": "logement",
     "modelKind": "tts",
-    "transcript": "L'appartement est bien situé et assez lumineux, par contre la cuisine est vraiment plus petite que je pensais.",
+    "transcript": "L'appartement est bien situé et assez lumineux, par contre la cuisine est vraiment plus petite que je pensais. Mais bon, pour le prix, je pense que ça reste une très bonne affaire.",
     "groups": [
       {
         "text": "L'appartement est bien situé et assez lumineux",
         "start": 0,
-        "end": 4,
+        "end": 2.8,
         "intonation": "rise"
       },
       {
         "text": "par contre",
-        "start": 4,
-        "end": 8,
+        "start": 3.1,
+        "end": 3.5,
         "intonation": "level",
         "finalLengthening": true
       },
       {
         "text": "la cuisine est vraiment plus petite que je pensais",
-        "start": 8,
-        "end": 12,
+        "start": 3.8,
+        "end": 6.4,
+        "intonation": "fall",
+        "finalLengthening": true
+      },
+      {
+        "text": "Mais bon",
+        "start": 7,
+        "end": 7.4,
+        "intonation": "level"
+      },
+      {
+        "text": "pour le prix",
+        "start": 7.7,
+        "end": 8.3,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "je pense que ça reste une très bonne affaire",
+        "start": 8.6,
+        "end": 10.6,
         "intonation": "fall",
         "finalLengthening": true
       }
     ],
     "imitation": {
-      "start": 4,
-      "end": 12
+      "start": 0,
+      "end": 6.4
     },
     "retelling": {
-      "idea": "Décrire un logement avec un avantage et un inconvénient."
+      "idea": "Décrire un logement avec un avantage, un inconvénient, puis donner ton bilan."
     },
     "ready": true,
     "source": "browser-speech-synthesis",
@@ -684,43 +1003,65 @@
     "focus": [
       "grouping",
       "finalLengthening"
-    ]
+    ],
+    "timing": "estimated"
   },
   {
     "id": "prosody_016",
     "level": "A2",
     "category": "mobilite",
     "modelKind": "tts",
-    "transcript": "Normalement, je prends le train, mais aujourd'hui il y avait un problème, alors j'ai pris le bus.",
+    "transcript": "Normalement, je prends le train, mais aujourd'hui il y avait un problème, alors j'ai pris le bus. Résultat, j'ai mis presque une heure de plus, mais au moins j'ai pu lire tranquillement.",
     "groups": [
       {
         "text": "Normalement je prends le train",
         "start": 0,
-        "end": 4,
+        "end": 1.6,
         "intonation": "rise",
         "enchainementAfter": true
       },
       {
         "text": "mais aujourd'hui il y avait un problème",
-        "start": 4,
-        "end": 8,
+        "start": 1.9,
+        "end": 4.1,
         "intonation": "rise",
         "finalLengthening": true
       },
       {
         "text": "alors j'ai pris le bus",
-        "start": 8,
-        "end": 12,
+        "start": 4.4,
+        "end": 5.6,
+        "intonation": "fall",
+        "finalLengthening": true
+      },
+      {
+        "text": "Résultat",
+        "start": 6.2,
+        "end": 6.8,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "j'ai mis presque une heure de plus",
+        "start": 7.1,
+        "end": 8.5,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "mais au moins j'ai pu lire tranquillement",
+        "start": 8.8,
+        "end": 10.8,
         "intonation": "fall",
         "finalLengthening": true
       }
     ],
     "imitation": {
-      "start": 4,
-      "end": 12
+      "start": 0,
+      "end": 5.6
     },
     "retelling": {
-      "idea": "Raconter un changement de transport."
+      "idea": "Raconter un changement de transport, sa conséquence et un point positif."
     },
     "ready": true,
     "source": "browser-speech-synthesis",
@@ -730,43 +1071,65 @@
     "focus": [
       "rhythm",
       "intonation"
-    ]
+    ],
+    "timing": "estimated"
   },
   {
     "id": "prosody_017",
     "level": "B1",
     "category": "habitudes",
     "modelKind": "tts",
-    "transcript": "J'essaie de préparer mes affaires la veille, comme ça le matin je perds beaucoup moins de temps.",
+    "transcript": "J'essaie de préparer mes affaires la veille, comme ça le matin je perds beaucoup moins de temps. Et surtout, je pars beaucoup plus serein, sans avoir l'impression de courir partout.",
     "groups": [
       {
         "text": "J'essaie de préparer mes affaires la veille",
         "start": 0,
-        "end": 4,
+        "end": 2.2,
         "intonation": "rise"
       },
       {
         "text": "comme ça le matin",
-        "start": 4,
-        "end": 8,
+        "start": 2.5,
+        "end": 3.5,
         "intonation": "level",
         "finalLengthening": true,
         "liaisonAfter": true
       },
       {
         "text": "je perds beaucoup moins de temps",
-        "start": 8,
-        "end": 12,
+        "start": 3.8,
+        "end": 5.2,
+        "intonation": "fall",
+        "finalLengthening": true
+      },
+      {
+        "text": "Et surtout",
+        "start": 5.8,
+        "end": 6.4,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "je pars beaucoup plus serein",
+        "start": 6.7,
+        "end": 8.1,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "sans avoir l'impression de courir partout",
+        "start": 8.4,
+        "end": 10.6,
         "intonation": "fall",
         "finalLengthening": true
       }
     ],
     "imitation": {
-      "start": 4,
-      "end": 12
+      "start": 0,
+      "end": 5.2
     },
     "retelling": {
-      "idea": "Expliquer une habitude pratique."
+      "idea": "Expliquer une habitude pratique et ce qu'elle change dans ta journée."
     },
     "ready": true,
     "source": "browser-speech-synthesis",
@@ -776,42 +1139,64 @@
     "focus": [
       "continuity",
       "finalLengthening"
-    ]
+    ],
+    "timing": "estimated"
   },
   {
     "id": "prosody_018",
     "level": "B1",
     "category": "sante",
     "modelKind": "tts",
-    "transcript": "Quand je manque de sommeil, je le sens tout de suite, j'ai moins d'énergie et je me concentre moins bien.",
+    "transcript": "Quand je manque de sommeil, je le sens tout de suite, j'ai moins d'énergie et je me concentre moins bien. Alors maintenant, j'essaie de me coucher à heure fixe, même le week-end.",
     "groups": [
       {
         "text": "Quand je manque de sommeil je le sens tout de suite",
         "start": 0,
-        "end": 4,
+        "end": 2.86,
         "intonation": "rise"
       },
       {
         "text": "j'ai moins d'énergie",
-        "start": 4,
-        "end": 8,
+        "start": 3.16,
+        "end": 4.35,
         "intonation": "level",
         "finalLengthening": true
       },
       {
         "text": "et je me concentre moins bien",
-        "start": 8,
-        "end": 12,
+        "start": 4.65,
+        "end": 6.32,
+        "intonation": "fall",
+        "finalLengthening": true
+      },
+      {
+        "text": "Alors maintenant",
+        "start": 6.92,
+        "end": 8.11,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "j'essaie de me coucher à heure fixe",
+        "start": 8.41,
+        "end": 10.55,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "même le week-end",
+        "start": 10.85,
+        "end": 11.8,
         "intonation": "fall",
         "finalLengthening": true
       }
     ],
     "imitation": {
-      "start": 4,
-      "end": 12
+      "start": 0,
+      "end": 6.32
     },
     "retelling": {
-      "idea": "Décrire les effets d'un manque de sommeil."
+      "idea": "Décrire les effets d'un manque de sommeil et ce que tu fais pour l'éviter."
     },
     "ready": true,
     "source": "browser-speech-synthesis",
@@ -821,43 +1206,64 @@
     "focus": [
       "tempo",
       "rhythm"
-    ]
+    ],
+    "timing": "estimated"
   },
   {
     "id": "prosody_019",
     "level": "B2",
     "category": "projets",
     "modelKind": "tts",
-    "transcript": "On avait prévu de finir vendredi, sauf qu'un problème technique a tout décalé, donc on doit revoir le planning.",
+    "transcript": "On avait prévu de finir vendredi, sauf qu'un problème technique a tout décalé, donc on doit revoir le planning. Ce n'est pas dramatique, mais il faudra prévenir le client dès aujourd'hui.",
     "groups": [
       {
         "text": "On avait prévu de finir vendredi",
         "start": 0,
-        "end": 4,
+        "end": 2.2,
         "intonation": "rise",
         "enchainementAfter": true
       },
       {
         "text": "sauf qu'un problème technique a tout décalé",
-        "start": 4,
-        "end": 8,
+        "start": 2.5,
+        "end": 4.7,
         "intonation": "rise",
         "finalLengthening": true
       },
       {
         "text": "donc on doit revoir le planning",
-        "start": 8,
-        "end": 12,
+        "start": 5,
+        "end": 6.6,
+        "intonation": "fall",
+        "finalLengthening": true
+      },
+      {
+        "text": "Ce n'est pas dramatique",
+        "start": 7.2,
+        "end": 8.4,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "mais il faudra prévenir le client",
+        "start": 8.7,
+        "end": 10.5,
+        "intonation": "level"
+      },
+      {
+        "text": "dès aujourd'hui",
+        "start": 10.8,
+        "end": 11.6,
         "intonation": "fall",
         "finalLengthening": true
       }
     ],
     "imitation": {
-      "start": 4,
-      "end": 12
+      "start": 0,
+      "end": 6.6
     },
     "retelling": {
-      "idea": "Expliquer un retard de projet et sa conséquence."
+      "idea": "Expliquer un retard de projet, sa conséquence et la prochaine étape."
     },
     "ready": true,
     "source": "browser-speech-synthesis",
@@ -867,42 +1273,57 @@
     "focus": [
       "continuity",
       "intonation"
-    ]
+    ],
+    "timing": "estimated"
   },
   {
     "id": "prosody_020",
     "level": "B2",
     "category": "opinion",
     "modelKind": "tts",
-    "transcript": "Je suis plutôt favorable à cette idée, néanmoins je comprends les personnes qui craignent ses effets à long terme.",
+    "transcript": "Je suis plutôt favorable à cette idée, néanmoins je comprends les personnes qui craignent ses effets à long terme. C'est pour ça qu'il faudrait l'essayer d'abord à petite échelle, avant de la généraliser.",
     "groups": [
       {
         "text": "Je suis plutôt favorable à cette idée",
         "start": 0,
-        "end": 4,
+        "end": 2.62,
         "intonation": "rise"
       },
       {
         "text": "néanmoins",
-        "start": 4,
-        "end": 8,
+        "start": 2.92,
+        "end": 3.4,
         "intonation": "level",
         "finalLengthening": true
       },
       {
         "text": "je comprends les personnes qui craignent ses effets à long terme",
-        "start": 8,
-        "end": 12,
+        "start": 3.7,
+        "end": 7.27,
+        "intonation": "fall",
+        "finalLengthening": true
+      },
+      {
+        "text": "C'est pour ça qu'il faudrait l'essayer d'abord à petite échelle",
+        "start": 7.87,
+        "end": 11.44,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "avant de la généraliser",
+        "start": 11.74,
+        "end": 13.88,
         "intonation": "fall",
         "finalLengthening": true
       }
     ],
     "imitation": {
-      "start": 4,
-      "end": 12
+      "start": 0,
+      "end": 7.27
     },
     "retelling": {
-      "idea": "Exprimer un avis tout en reconnaissant une objection."
+      "idea": "Exprimer un avis, reconnaître une objection, puis proposer une prudence."
     },
     "ready": true,
     "source": "browser-speech-synthesis",
@@ -912,43 +1333,58 @@
     "focus": [
       "tempo",
       "intonation"
-    ]
+    ],
+    "timing": "estimated"
   },
   {
     "id": "prosody_021",
     "level": "A2",
     "category": "conversation",
     "modelKind": "tts",
-    "transcript": "Oui, enfin, ce que je veux dire, c'est que le problème n'est pas là, il est plutôt dans l'organisation.",
+    "transcript": "Oui, enfin, ce que je veux dire, c'est que le problème n'est pas là, il est plutôt dans l'organisation. Si chacun savait exactement ce qu'il doit faire et pour quand, on gagnerait énormément de temps.",
     "groups": [
       {
         "text": "Oui enfin ce que je veux dire",
         "start": 0,
-        "end": 4,
+        "end": 1.38,
         "intonation": "rise"
       },
       {
         "text": "c'est que le problème n'est pas là",
-        "start": 4,
-        "end": 8,
+        "start": 1.68,
+        "end": 3.06,
         "intonation": "rise",
         "finalLengthening": true,
         "liaisonAfter": true
       },
       {
         "text": "il est plutôt dans l'organisation",
-        "start": 8,
-        "end": 12,
+        "start": 3.36,
+        "end": 5.08,
+        "intonation": "fall",
+        "finalLengthening": true
+      },
+      {
+        "text": "Si chacun savait exactement ce qu'il doit faire et pour quand",
+        "start": 5.68,
+        "end": 8.44,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "on gagnerait énormément de temps",
+        "start": 8.74,
+        "end": 10.46,
         "intonation": "fall",
         "finalLengthening": true
       }
     ],
     "imitation": {
-      "start": 4,
-      "end": 12
+      "start": 0,
+      "end": 5.08
     },
     "retelling": {
-      "idea": "Se corriger et préciser son idée en parlant."
+      "idea": "Te corriger en parlant, préciser ton idée et proposer une piste."
     },
     "ready": true,
     "source": "browser-speech-synthesis",
@@ -958,43 +1394,65 @@
     "focus": [
       "energy",
       "continuity"
-    ]
+    ],
+    "timing": "estimated"
   },
   {
     "id": "prosody_022",
     "level": "B1",
     "category": "travail",
     "modelKind": "tts",
-    "transcript": "Si je devais choisir, je préférerais des horaires flexibles, parce que ça permet de mieux organiser sa journée.",
+    "transcript": "Si je devais choisir, je préférerais des horaires flexibles, parce que ça permet de mieux organiser sa journée. Par exemple, je pourrais commencer plus tôt et finir plus tôt les jours où j'ai des rendez-vous.",
     "groups": [
       {
         "text": "Si je devais choisir je préférerais des horaires flexibles",
         "start": 0,
-        "end": 4,
+        "end": 3.2,
         "intonation": "rise",
         "enchainementAfter": true
       },
       {
         "text": "parce que ça permet",
-        "start": 4,
-        "end": 8,
+        "start": 3.5,
+        "end": 4.5,
         "intonation": "level",
         "finalLengthening": true
       },
       {
         "text": "de mieux organiser sa journée",
-        "start": 8,
-        "end": 12,
+        "start": 4.8,
+        "end": 6.6,
+        "intonation": "fall",
+        "finalLengthening": true
+      },
+      {
+        "text": "Par exemple",
+        "start": 7.2,
+        "end": 7.8,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "je pourrais commencer plus tôt et finir plus tôt",
+        "start": 8.1,
+        "end": 10.7,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "les jours où j'ai des rendez-vous",
+        "start": 11,
+        "end": 12.6,
         "intonation": "fall",
         "finalLengthening": true
       }
     ],
     "imitation": {
-      "start": 4,
-      "end": 12
+      "start": 0,
+      "end": 6.6
     },
     "retelling": {
-      "idea": "Justifier une préférence professionnelle."
+      "idea": "Justifier une préférence professionnelle avec un exemple concret."
     },
     "ready": true,
     "source": "browser-speech-synthesis",
@@ -1004,42 +1462,63 @@
     "focus": [
       "grouping",
       "finalLengthening"
-    ]
+    ],
+    "timing": "estimated"
   },
   {
     "id": "prosody_023",
     "level": "B2",
     "category": "voyage",
     "modelKind": "tts",
-    "transcript": "Le voyage était très bien organisé, mais ce que j'ai préféré, c'est justement le moment où rien ne s'est passé comme prévu.",
+    "transcript": "Le voyage était très bien organisé, mais ce que j'ai préféré, c'est justement le moment où rien ne s'est passé comme prévu. On s'est perdus dans un petit village, et finalement, c'est le meilleur souvenir du séjour.",
     "groups": [
       {
         "text": "Le voyage était très bien organisé",
         "start": 0,
-        "end": 4,
+        "end": 2,
         "intonation": "rise"
       },
       {
         "text": "mais ce que j'ai préféré",
-        "start": 4,
-        "end": 8,
+        "start": 2.3,
+        "end": 3.7,
         "intonation": "rise",
         "finalLengthening": true
       },
       {
         "text": "c'est justement le moment où rien ne s'est passé comme prévu",
-        "start": 8,
-        "end": 12,
+        "start": 4,
+        "end": 7.2,
+        "intonation": "fall",
+        "finalLengthening": true
+      },
+      {
+        "text": "On s'est perdus dans un petit village",
+        "start": 7.8,
+        "end": 9.8,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "et finalement",
+        "start": 10.1,
+        "end": 11.1,
+        "intonation": "level"
+      },
+      {
+        "text": "c'est le meilleur souvenir du séjour",
+        "start": 11.4,
+        "end": 13.4,
         "intonation": "fall",
         "finalLengthening": true
       }
     ],
     "imitation": {
-      "start": 4,
-      "end": 12
+      "start": 0,
+      "end": 7.2
     },
     "retelling": {
-      "idea": "Raconter pourquoi un imprévu a rendu un voyage intéressant."
+      "idea": "Raconter pourquoi un imprévu a rendu un voyage plus intéressant."
     },
     "ready": true,
     "source": "browser-speech-synthesis",
@@ -1049,42 +1528,64 @@
     "focus": [
       "rhythm",
       "energy"
-    ]
+    ],
+    "timing": "estimated"
   },
   {
     "id": "prosody_024",
     "level": "B2",
     "category": "relations",
     "modelKind": "tts",
-    "transcript": "Parfois, on pense avoir été très clair, alors que l'autre personne a compris quelque chose de complètement différent.",
+    "transcript": "Parfois, on pense avoir été très clair, alors que l'autre personne a compris quelque chose de complètement différent. Du coup, maintenant, je prends l'habitude de reformuler pour vérifier qu'on parle bien de la même chose.",
     "groups": [
       {
         "text": "Parfois on pense avoir été très clair",
         "start": 0,
-        "end": 4,
+        "end": 2,
         "intonation": "rise"
       },
       {
         "text": "alors que l'autre personne",
-        "start": 4,
-        "end": 8,
+        "start": 2.3,
+        "end": 3.5,
         "intonation": "level",
         "finalLengthening": true
       },
       {
         "text": "a compris quelque chose de complètement différent",
-        "start": 8,
-        "end": 12,
+        "start": 3.8,
+        "end": 6.4,
+        "intonation": "fall",
+        "finalLengthening": true
+      },
+      {
+        "text": "Du coup maintenant",
+        "start": 7,
+        "end": 8,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "je prends l'habitude de reformuler",
+        "start": 8.3,
+        "end": 10.3,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "pour vérifier qu'on parle bien de la même chose",
+        "start": 10.6,
+        "end": 12.8,
         "intonation": "fall",
         "finalLengthening": true
       }
     ],
     "imitation": {
-      "start": 4,
-      "end": 12
+      "start": 0,
+      "end": 6.4
     },
     "retelling": {
-      "idea": "Expliquer un malentendu."
+      "idea": "Expliquer un malentendu et la stratégie que tu utilises pour l'éviter."
     },
     "ready": true,
     "source": "browser-speech-synthesis",
@@ -1094,44 +1595,72 @@
     "focus": [
       "grouping",
       "intonation"
-    ]
+    ],
+    "timing": "estimated"
   },
   {
     "id": "prosody_025",
     "level": "B1",
     "category": "technologie",
     "modelKind": "tts",
-    "transcript": "Ce qui est pratique avec cette application, c'est qu'on trouve tout au même endroit sans passer par plusieurs menus.",
+    "transcript": "Ce qui est pratique avec cette application, c'est qu'on trouve tout au même endroit sans passer par plusieurs menus. Bon, au début, il faut un peu de temps pour s'y habituer, mais après, on ne peut plus s'en passer.",
     "groups": [
       {
         "text": "Ce qui est pratique avec cette application",
         "start": 0,
-        "end": 4,
+        "end": 2.07,
         "intonation": "rise",
         "enchainementAfter": true
       },
       {
         "text": "c'est qu'on trouve tout au même endroit",
-        "start": 4,
-        "end": 8,
+        "start": 2.37,
+        "end": 3.75,
         "intonation": "rise",
         "finalLengthening": true,
         "liaisonAfter": true
       },
       {
         "text": "sans passer par plusieurs menus",
-        "start": 8,
-        "end": 12,
+        "start": 4.05,
+        "end": 5.43,
+        "intonation": "fall",
+        "finalLengthening": true
+      },
+      {
+        "text": "Bon au début",
+        "start": 6.03,
+        "end": 6.72,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "il faut un peu de temps pour s'y habituer",
+        "start": 7.02,
+        "end": 8.92,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "mais après",
+        "start": 9.22,
+        "end": 9.74,
+        "intonation": "level"
+      },
+      {
+        "text": "on ne peut plus s'en passer",
+        "start": 10.04,
+        "end": 11.25,
         "intonation": "fall",
         "finalLengthening": true
       }
     ],
     "imitation": {
-      "start": 4,
-      "end": 12
+      "start": 0,
+      "end": 5.43
     },
     "retelling": {
-      "idea": "Présenter simplement l'avantage d'une application."
+      "idea": "Présenter l'avantage d'une application et la période d'adaptation."
     },
     "ready": true,
     "source": "browser-speech-synthesis",
@@ -1141,42 +1670,64 @@
     "focus": [
       "tempo",
       "continuity"
-    ]
+    ],
+    "timing": "estimated"
   },
   {
     "id": "prosody_026",
     "level": "B2",
     "category": "argent",
     "modelKind": "tts",
-    "transcript": "Le moins cher n'est pas toujours le meilleur choix, surtout si tu dois ensuite payer plusieurs options en plus.",
+    "transcript": "Le moins cher n'est pas toujours le meilleur choix, surtout si tu dois ensuite payer plusieurs options en plus. Moi, maintenant, je compare toujours le prix total avant de me décider.",
     "groups": [
       {
         "text": "Le moins cher n'est pas toujours le meilleur choix",
         "start": 0,
-        "end": 4,
+        "end": 2.2,
         "intonation": "rise"
       },
       {
         "text": "surtout si tu dois ensuite",
-        "start": 4,
-        "end": 8,
+        "start": 2.5,
+        "end": 3.9,
         "intonation": "level",
         "finalLengthening": true
       },
       {
         "text": "payer plusieurs options en plus",
-        "start": 8,
-        "end": 12,
+        "start": 4.2,
+        "end": 5.6,
+        "intonation": "fall",
+        "finalLengthening": true
+      },
+      {
+        "text": "Moi maintenant",
+        "start": 6.2,
+        "end": 7,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "je compare toujours le prix total",
+        "start": 7.3,
+        "end": 9.1,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "avant de me décider",
+        "start": 9.4,
+        "end": 10.8,
         "intonation": "fall",
         "finalLengthening": true
       }
     ],
     "imitation": {
-      "start": 4,
-      "end": 12
+      "start": 0,
+      "end": 5.6
     },
     "retelling": {
-      "idea": "Nuancer un choix basé uniquement sur le prix."
+      "idea": "Nuancer un choix basé uniquement sur le prix et dire comment tu choisis."
     },
     "ready": true,
     "source": "browser-speech-synthesis",
@@ -1186,42 +1737,63 @@
     "focus": [
       "intonation",
       "finalLengthening"
-    ]
+    ],
+    "timing": "estimated"
   },
   {
     "id": "prosody_027",
     "level": "B2",
     "category": "sport",
     "modelKind": "tts",
-    "transcript": "Sur le moment, j'étais persuadé qu'il y avait faute, mais en revoyant l'action, je comprends mieux la décision.",
+    "transcript": "Sur le moment, j'étais persuadé qu'il y avait faute, mais en revoyant l'action, je comprends mieux la décision. Bon, ça reste frustrant pour l'équipe, mais l'arbitre avait plutôt raison.",
     "groups": [
       {
         "text": "Sur le moment j'étais persuadé qu'il y avait faute",
         "start": 0,
-        "end": 4,
+        "end": 2.8,
         "intonation": "rise"
       },
       {
         "text": "mais en revoyant l'action",
-        "start": 4,
-        "end": 8,
+        "start": 3.1,
+        "end": 4.3,
         "intonation": "level",
         "finalLengthening": true
       },
       {
         "text": "je comprends mieux la décision",
-        "start": 8,
-        "end": 12,
+        "start": 4.6,
+        "end": 6.2,
+        "intonation": "fall",
+        "finalLengthening": true
+      },
+      {
+        "text": "Bon",
+        "start": 6.8,
+        "end": 7,
+        "intonation": "level"
+      },
+      {
+        "text": "ça reste frustrant pour l'équipe",
+        "start": 7.3,
+        "end": 8.7,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "mais l'arbitre avait plutôt raison",
+        "start": 9,
+        "end": 10.8,
         "intonation": "fall",
         "finalLengthening": true
       }
     ],
     "imitation": {
-      "start": 4,
-      "end": 12
+      "start": 0,
+      "end": 6.2
     },
     "retelling": {
-      "idea": "Réviser son jugement après avoir revu une action."
+      "idea": "Réviser ton jugement après avoir revu une action, en gardant une nuance."
     },
     "ready": true,
     "source": "browser-speech-synthesis",
@@ -1231,43 +1803,65 @@
     "focus": [
       "rhythm",
       "intonation"
-    ]
+    ],
+    "timing": "estimated"
   },
   {
     "id": "prosody_028",
     "level": "B2",
     "category": "culture",
     "modelKind": "tts",
-    "transcript": "Ce que j'aime dans cette histoire, c'est qu'elle paraît très simple au début, puis elle devient beaucoup plus profonde.",
+    "transcript": "Ce que j'aime dans cette histoire, c'est qu'elle paraît très simple au début, puis elle devient beaucoup plus profonde. À la fin, on se rend compte qu'elle parle surtout de la peur de changer.",
     "groups": [
       {
         "text": "Ce que j'aime dans cette histoire",
         "start": 0,
-        "end": 4,
+        "end": 1.67,
         "intonation": "rise",
         "enchainementAfter": true
       },
       {
         "text": "c'est qu'elle paraît très simple au début",
-        "start": 4,
-        "end": 8,
+        "start": 1.97,
+        "end": 4.11,
         "intonation": "rise",
         "finalLengthening": true
       },
       {
         "text": "puis elle devient beaucoup plus profonde",
-        "start": 8,
-        "end": 12,
+        "start": 4.41,
+        "end": 6.55,
+        "intonation": "fall",
+        "finalLengthening": true
+      },
+      {
+        "text": "À la fin",
+        "start": 7.15,
+        "end": 7.86,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "on se rend compte",
+        "start": 8.16,
+        "end": 9.11,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "qu'elle parle surtout de la peur de changer",
+        "start": 9.41,
+        "end": 11.79,
         "intonation": "fall",
         "finalLengthening": true
       }
     ],
     "imitation": {
-      "start": 4,
-      "end": 12
+      "start": 0,
+      "end": 6.55
     },
     "retelling": {
-      "idea": "Expliquer ce qui plaît dans une histoire."
+      "idea": "Expliquer ce qui te plaît dans une histoire et ce qu'elle raconte vraiment."
     },
     "ready": true,
     "source": "browser-speech-synthesis",
@@ -1277,43 +1871,65 @@
     "focus": [
       "tempo",
       "finalLengthening"
-    ]
+    ],
+    "timing": "estimated"
   },
   {
     "id": "prosody_029",
     "level": "B1",
     "category": "education",
     "modelKind": "tts",
-    "transcript": "Quand je ne connais pas un mot, j'essaie maintenant de l'expliquer autrement au lieu de m'arrêter complètement.",
+    "transcript": "Quand je ne connais pas un mot, j'essaie maintenant de l'expliquer autrement au lieu de m'arrêter complètement. Ça ne marche pas à chaque fois, mais au moins, la conversation continue.",
     "groups": [
       {
         "text": "Quand je ne connais pas un mot",
         "start": 0,
-        "end": 4,
+        "end": 1.6,
         "intonation": "rise"
       },
       {
         "text": "j'essaie maintenant de l'expliquer autrement",
-        "start": 4,
-        "end": 8,
+        "start": 1.9,
+        "end": 4.3,
         "intonation": "rise",
         "finalLengthening": true,
         "liaisonAfter": true
       },
       {
         "text": "au lieu de m'arrêter complètement",
-        "start": 8,
-        "end": 12,
+        "start": 4.6,
+        "end": 6.6,
+        "intonation": "fall",
+        "finalLengthening": true
+      },
+      {
+        "text": "Ça ne marche pas à chaque fois",
+        "start": 7.2,
+        "end": 8.6,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "mais au moins",
+        "start": 8.9,
+        "end": 9.5,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "la conversation continue",
+        "start": 9.8,
+        "end": 11.4,
         "intonation": "fall",
         "finalLengthening": true
       }
     ],
     "imitation": {
-      "start": 4,
-      "end": 12
+      "start": 0,
+      "end": 6.6
     },
     "retelling": {
-      "idea": "Expliquer une stratégie pour éviter les blocages."
+      "idea": "Expliquer ta stratégie pour éviter les blocages et ses limites."
     },
     "ready": true,
     "source": "browser-speech-synthesis",
@@ -1323,42 +1939,64 @@
     "focus": [
       "continuity",
       "rhythm"
-    ]
+    ],
+    "timing": "estimated"
   },
   {
     "id": "prosody_030",
     "level": "B2",
     "category": "nuance",
     "modelKind": "tts",
-    "transcript": "Au final, je dirais que l'idée est intéressante, mais seulement si on garde assez de souplesse pour l'adapter.",
+    "transcript": "Au final, je dirais que l'idée est intéressante, mais seulement si on garde assez de souplesse pour l'adapter. Sinon, je crains qu'on se retrouve très vite bloqués par nos propres règles.",
     "groups": [
       {
         "text": "Au final je dirais que l'idée est intéressante",
         "start": 0,
-        "end": 4,
+        "end": 2.8,
         "intonation": "rise"
       },
       {
         "text": "mais seulement si on garde assez de souplesse",
-        "start": 4,
-        "end": 8,
+        "start": 3.1,
+        "end": 5.5,
         "intonation": "rise",
         "finalLengthening": true
       },
       {
         "text": "pour l'adapter",
-        "start": 8,
-        "end": 12,
+        "start": 5.8,
+        "end": 6.6,
+        "intonation": "fall",
+        "finalLengthening": true
+      },
+      {
+        "text": "Sinon",
+        "start": 7.2,
+        "end": 7.6,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "je crains qu'on se retrouve très vite bloqués",
+        "start": 7.9,
+        "end": 9.9,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "par nos propres règles",
+        "start": 10.2,
+        "end": 11,
         "intonation": "fall",
         "finalLengthening": true
       }
     ],
     "imitation": {
-      "start": 4,
-      "end": 12
+      "start": 0,
+      "end": 6.6
     },
     "retelling": {
-      "idea": "Conclure avec une opinion conditionnelle."
+      "idea": "Conclure avec une opinion conditionnelle et le risque à éviter."
     },
     "ready": true,
     "source": "browser-speech-synthesis",
@@ -1368,6 +2006,7 @@
     "focus": [
       "intonation",
       "finalLengthening"
-    ]
+    ],
+    "timing": "estimated"
   }
 ]

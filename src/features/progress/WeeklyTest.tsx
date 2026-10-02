@@ -1,7 +1,8 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import type { FormEvent } from 'react'
 import { useAppState } from '../../app/AppStateProvider'
 import { Timer } from '../../components/Timer/Timer'
+import { useAudioRecorder } from '../../hooks/useAudioRecorder'
 import { contentRepository } from '../../services/content/contentRepository'
 import {
   getWeekKey,
@@ -49,6 +50,19 @@ export default function WeeklyTest() {
   const [topic, setTopic] = useState<Topic | null>(null)
   const [stage, setStage] = useState<'intro' | 'running' | 'form'>('intro')
   const [measurement, setMeasurement] = useState(emptyMeasurement())
+  const recorder = useAudioRecorder({ measureLevels: true })
+  const activity = recorder.activity ?? null
+
+  // Pre-fill what the microphone measured; the learner can still correct it.
+  useEffect(() => {
+    if (!activity) return
+    setMeasurement((prev) => ({
+      ...prev,
+      startDelaySeconds: prev.startDelaySeconds || String(activity.startDelaySeconds),
+      longestFluentSegmentSeconds:
+        prev.longestFluentSegmentSeconds || String(Math.round(activity.longestSpeechSeconds)),
+    }))
+  }, [activity])
 
   const recentTopicIds = useMemo(
     () => [...state.recentTopicIds, ...state.weeklyTests.map((test) => test.topicId)],
@@ -70,13 +84,23 @@ export default function WeeklyTest() {
           <li>Plus long segment fluide : {existing.longestFluentSegmentSeconds}s</li>
           <li>Débit approximatif : {wordsPerMinute(existing)} mots/min</li>
           <li>Score ressenti : {existing.score}/5</li>
+          {existing.measured ? (
+            <li>
+              Mesuré au micro : {existing.measured.longPauses} pauses &gt; 1 s ·
+              plus longue séquence {existing.measured.longestSpeechSeconds} s
+            </li>
+          ) : null}
         </ul>
       </section>
     )
   }
 
-  const handleStart = () => {
-    setTopic(pickTopic(recentTopicIds))
+  const handleStart = async () => {
+    const nextTopic = pickTopic(recentTopicIds)
+    // Same conditions every week: the recording starts with the topic, so the
+    // time before the first word can be measured.
+    if (recorder.supported) await recorder.start()
+    setTopic(nextTopic)
     setStage('running')
   }
 
@@ -101,6 +125,7 @@ export default function WeeklyTest() {
       longestFluentSegmentSeconds: toNumber(measurement.longestFluentSegmentSeconds),
       wordsSpoken: toNumber(measurement.wordsSpoken),
       score: Math.min(5, Math.max(1, toNumber(measurement.score) || 3)),
+      ...(activity ? { measured: activity } : {}),
     }
     updateWith((prev) => recordWeeklyTest(prev, record))
     setStage('intro')
@@ -116,7 +141,16 @@ export default function WeeklyTest() {
             Un sujet jamais vu récemment, aucune préparation, puis 3 minutes de
             parole spontanée dans les mêmes conditions chaque semaine.
           </p>
-          <button type="button" className="button button--block" onClick={handleStart}>
+          <p className="muted">
+            {recorder.supported
+              ? "Ta voix est enregistrée (uniquement en mémoire) pour mesurer le temps avant le premier mot, les pauses de plus d'1 s et ta plus longue séquence continue."
+              : "Sans micro disponible, note tes mesures juste après avoir parlé."}
+          </p>
+          <button
+            type="button"
+            className="button button--block"
+            onClick={() => void handleStart()}
+          >
             Lancer le test de 3 minutes
           </button>
         </>
@@ -134,7 +168,10 @@ export default function WeeklyTest() {
             autoStart
             hideControls
             label="Parle librement"
-            onComplete={() => setStage('form')}
+            onComplete={() => {
+              recorder.stop()
+              setStage('form')
+            }}
           />
         </>
       ) : null}
@@ -142,6 +179,29 @@ export default function WeeklyTest() {
       {stage === 'form' ? (
         <form onSubmit={handleSubmit}>
           <h3>Mesures</h3>
+          {recorder.blobUrl ? (
+            <div className="exercise__rescue">
+              <p className="muted">
+                Réécoute-toi pour compter : distingue les pauses au milieu d'une
+                phrase (difficulté de formulation) des pauses entre deux idées.
+              </p>
+              <audio src={recorder.blobUrl} controls preload="metadata" />
+            </div>
+          ) : null}
+          {activity ? (
+            <div className="exercise__rescue" aria-live="polite">
+              <h3>Mesuré automatiquement</h3>
+              <ul>
+                <li>Temps avant le premier son : {activity.startDelaySeconds} s</li>
+                <li>
+                  Pauses de plus d'1 s : {activity.longPauses} (à répartir
+                  ci-dessous entre milieu de phrase et entre deux idées)
+                </li>
+                <li>Plus longue séquence continue : {activity.longestSpeechSeconds} s</li>
+                <li>Temps passé à parler : {Math.round(activity.speechRatio * 100)} %</li>
+              </ul>
+            </div>
+          ) : null}
           {(
             [
               ['startDelaySeconds', "Temps avant de démarrer (s)"],

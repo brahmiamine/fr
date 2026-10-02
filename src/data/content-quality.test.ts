@@ -5,6 +5,8 @@ import chunks from './native-expressions.json'
 import words from './paraphrase-words.json'
 import prosody from './prosody.json'
 import scenarios from './conversation-scenarios.json'
+import stories from './retelling-stories.json'
+import { secondsPerSyllable } from '../services/content/prosodyTiming'
 
 const badFrenchContraction = /\b(?:de les|de le|à les|à le)\b/i
 
@@ -48,5 +50,34 @@ describe('pedagogical content quality', () => {
     expect(prosody.length).toBeGreaterThanOrEqual(30)
     expect(prosody.every((item) => item.ready === true)).toBe(true)
     expect(prosody.every((item) => item.modelKind === 'tts' || item.modelKind === 'recording')).toBe(true)
+  })
+
+  it('times synthetic prosody models from their syllables, not with fake 4-second groups', () => {
+    for (const item of prosody.filter((entry) => entry.modelKind === 'tts')) {
+      expect(item.timing).toBe('estimated')
+      const duration = Math.max(...item.groups.map((group) => group.end))
+      expect(duration).toBeGreaterThanOrEqual(10)
+      expect(duration).toBeLessThanOrEqual(30)
+      for (const group of item.groups) {
+        const rate = secondsPerSyllable(group as Parameters<typeof secondsPerSyllable>[0])
+        expect(rate).toBeGreaterThan(0.12)
+        expect(rate).toBeLessThan(0.4)
+      }
+      // The full transcript is what the voice actually reads.
+      for (const group of item.groups) {
+        const firstWord = group.text.split(' ')[0]
+        expect(item.transcript).toContain(firstWord)
+      }
+    }
+  })
+
+  it('ships short stories for the 4-3-2 retelling variant', () => {
+    expect(stories.length).toBeGreaterThanOrEqual(12)
+    for (const story of stories) {
+      const words = story.text.split(/\s+/).length
+      expect(words).toBeGreaterThanOrEqual(70)
+      expect(words).toBeLessThanOrEqual(160)
+      expect(story.transferPrompt.length).toBeGreaterThan(10)
+    }
   })
 })

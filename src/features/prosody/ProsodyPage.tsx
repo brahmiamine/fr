@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useReducer, useRef } from 'react'
+import { useEffect, useMemo, useReducer, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAppState } from '../../app/AppStateProvider'
 import { assetUrl } from '../../services/assets'
@@ -8,12 +8,20 @@ import {
   validateProsodyExercise,
 } from '../../services/content/prosodyRepository'
 import {
+  recentProsodyFocus,
   recordProsodySession,
   toLocalDateString,
 } from '../../services/progress/progress'
 import type { ProsodySessionRecord } from '../../types/progress'
-import type { ProsodyExercise } from './types'
-import { STAGE_LABELS, STAGE_ORDER } from './types'
+import type { ProsodyExercise, ProsodyFocus } from './types'
+import {
+  FOCUS_OPTIONS,
+  STAGE_LABELS,
+  STAGE_ORDER,
+  retellingGoalFor,
+} from './types'
+import { buildCustomExercise } from './customExtract'
+import { CustomExtractForm } from './components/CustomExtractForm'
 import { createProsodySession, prosodyReducer } from './prosodyReducer'
 import { useProsodyRecorder } from './hooks/useProsodyRecorder'
 import { ListeningExercise } from './components/ListeningExercise'
@@ -32,12 +40,46 @@ function sessionDurationMinutes(startedAt: string): number {
 
 export default function ProsodyPage({ exercise: exerciseProp }: ProsodyPageProps) {
   const { state } = useAppState()
+  const [mode, setMode] = useState<'model' | 'import'>('model')
+  const [customExercise, setCustomExercise] = useState<ProsodyExercise | null>(null)
+  const preferredFocus = useMemo(
+    () => recentProsodyFocus(state.prosodySessions),
+    // Chosen once per visit so the excerpt does not change mid-session.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  )
   const exercise = useMemo(
     () =>
       exerciseProp ??
-      pickReadyProsodyExercise(state.recentProsodyIds),
-    [exerciseProp, state.recentProsodyIds],
+      pickReadyProsodyExercise(state.recentProsodyIds, Math.random, preferredFocus),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [exerciseProp],
   )
+
+  if (mode === 'import') {
+    return (
+      <div className="training">
+        <ProsodyHeader position={0} title="Mon extrait" />
+        <CustomExtractForm
+          onCancel={() => setMode('model')}
+          onSubmit={(input) => {
+            setCustomExercise(buildCustomExercise(input))
+            setMode('model')
+          }}
+        />
+      </div>
+    )
+  }
+
+  if (customExercise) {
+    return (
+      <ProsodySession
+        key={customExercise.id}
+        exercise={customExercise}
+        preferredFocus={preferredFocus}
+      />
+    )
+  }
 
   if (!exercise) {
     const problems = prosodyRepository.map((item) => ({
@@ -73,7 +115,14 @@ export default function ProsodyPage({ exercise: exerciseProp }: ProsodyPageProps
               ))}
             </ul>
           </details>
-          <Link className="button button--block" to="/">
+          <button
+            type="button"
+            className="button button--block"
+            onClick={() => setMode('import')}
+          >
+            Utiliser mon propre extrait (vraie voix)
+          </button>
+          <Link className="button button--ghost button--block" to="/">
             Retour à l'accueil
           </Link>
         </section>
@@ -81,20 +130,41 @@ export default function ProsodyPage({ exercise: exerciseProp }: ProsodyPageProps
     )
   }
 
-  return <ProsodySession exercise={exercise} />
+  return (
+    <ProsodySession
+      exercise={exercise}
+      preferredFocus={preferredFocus}
+      onUseOwnExtract={() => setMode('import')}
+    />
+  )
 }
 
-function ProsodySession({ exercise }: { exercise: ProsodyExercise }) {
-  const { updateWith } = useAppState()
+function focusLabel(focus: ProsodyFocus | null): string | null {
+  return FOCUS_OPTIONS.find((option) => option.value === focus)?.goal ?? null
+}
+
+function ProsodySession({
+  exercise,
+  preferredFocus = null,
+  onUseOwnExtract,
+}: {
+  exercise: ProsodyExercise
+  preferredFocus?: ProsodyFocus | null
+  onUseOwnExtract?: () => void
+}) {
+  const { state, updateWith } = useAppState()
   const recorder = useProsodyRecorder()
-  const [session, dispatch] = useReducer(
-    prosodyReducer,
-    exercise,
-    createProsodySession,
+  const [session, dispatch] = useReducer(prosodyReducer, exercise, (value) =>
+    createProsodySession(value, new Date(), retellingGoalFor(state.prosodySessions.length)),
   )
   const finalizedRef = useRef(false)
 
-  const audioSrc = exercise.audio ? assetUrl(exercise.audio) : ''
+  const audioSrc = exercise.audio
+    ? exercise.audio.startsWith('blob:')
+      ? exercise.audio
+      : assetUrl(exercise.audio)
+    : ''
+  const recentFocusGoal = focusLabel(preferredFocus)
   const position = STAGE_ORDER.indexOf(session.stage) + 1
 
   useEffect(() => {
@@ -147,6 +217,10 @@ function ProsodySession({ exercise }: { exercise: ProsodyExercise }) {
     <div className="training">
       <ProsodyHeader position={position} title={STAGE_LABELS[session.stage]} />
 
+      {recentFocusGoal && session.stage === 'listening' && session.listening.step === 'meaning' ? (
+        <p className="pill">Ton point de travail récent : {recentFocusGoal}</p>
+      ) : null}
+
       {session.stage === 'listening' ? (
         <ListeningExercise
           exercise={exercise}
@@ -154,8 +228,11 @@ function ProsodySession({ exercise }: { exercise: ProsodyExercise }) {
           audioSrc={audioSrc}
           meaningPlays={session.listening.meaningPlays}
           prosodyPlays={session.listening.prosodyPlays}
+          marking={session.listening.marking}
           onAudioComplete={() => dispatch({ type: 'LISTEN_PLAYED' })}
           onNext={() => dispatch({ type: 'LISTEN_NEXT' })}
+          onMarked={(marking) => dispatch({ type: 'LISTEN_MARKED', marking })}
+          onUseOwnExtract={onUseOwnExtract}
         />
       ) : null}
 
@@ -197,6 +274,8 @@ function ProsodySession({ exercise }: { exercise: ProsodyExercise }) {
           step={session.retelling.step}
           recorder={recorder}
           durationSeconds={session.retelling.durationSeconds}
+          minSeconds={session.retelling.minSeconds}
+          targetSeconds={session.retelling.targetSeconds}
           onStart={() => dispatch({ type: 'RETELL_START' })}
           onRecorded={(durationSeconds) =>
             dispatch({ type: 'RETELL_RECORDED', durationSeconds })

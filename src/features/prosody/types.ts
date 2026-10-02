@@ -40,6 +40,10 @@ export interface ProsodyExercise {
   register?: 'familier' | 'courant' | 'soutenu'
   speed?: ProsodySpeed
   focus?: ProsodyFocus[]
+  /** `estimated` for TTS (syllable-based), `measured` for real recordings. */
+  timing?: 'estimated' | 'measured'
+  /** Learner-imported excerpt: groups are only a rough guide, not a reference. */
+  custom?: boolean
 }
 
 export const REQUIRED_MEANING_LISTENS = 1
@@ -53,6 +57,18 @@ export const MAX_IMITATION_SECONDS = 15
 export const MIN_RETELL_SECONDS = 30
 export const TARGET_RETELL_SECONDS = 60
 
+export interface RetellingGoal {
+  minSeconds: number
+  targetSeconds: number
+}
+
+/** Start with 30–60 s, then progressively move towards 1–2 minutes. */
+export function retellingGoalFor(completedProsodySessions: number): RetellingGoal {
+  if (completedProsodySessions < 5) return { minSeconds: 30, targetSeconds: 60 }
+  if (completedProsodySessions < 10) return { minSeconds: 45, targetSeconds: 90 }
+  return { minSeconds: 60, targetSeconds: 120 }
+}
+
 export interface ProsodySessionState {
   id: string
   exerciseId: string
@@ -61,9 +77,10 @@ export interface ProsodySessionState {
   completed: boolean
 
   listening: {
-    step: 'meaning' | 'prosody' | 'reveal'
+    step: 'meaning' | 'prosody' | 'mark' | 'reveal'
     meaningPlays: number
     prosodyPlays: number
+    marking: { boundaries: number[]; intonations: Array<ProsodyGroup['intonation']> } | null
   }
   imitation: {
     step: 'listen' | 'record' | 'shadow'
@@ -78,6 +95,8 @@ export interface ProsodySessionState {
   retelling: {
     step: 'prompt' | 'record' | 'review'
     durationSeconds: number
+    minSeconds: number
+    targetSeconds: number
   }
 }
 

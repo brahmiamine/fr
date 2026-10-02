@@ -5,6 +5,7 @@ import {
   QUESTION_COUNTDOWN_SECONDS,
   QUESTION_SPEAKING_SECONDS,
   QUESTION_STARTERS,
+  QUESTION_TYPE_LABELS,
 } from '../types'
 import type { BlockRating } from '../types'
 
@@ -14,6 +15,8 @@ export interface SurpriseQuestionsExerciseProps {
   total: number
   stage: 'countdown' | 'prep' | 'speaking' | 'rate'
   prepSeconds: number
+  /** 60 s at first, up to 90 s as the learner progresses. */
+  speakingSeconds?: number
   chunksOfDay: Chunk[]
   focusWords: string[]
   pivotQuestion?: Question | null
@@ -33,6 +36,7 @@ export function SurpriseQuestionsExercise({
   total,
   stage,
   prepSeconds,
+  speakingSeconds: answerSeconds = QUESTION_SPEAKING_SECONDS,
   chunksOfDay,
   focusWords,
   pivotQuestion = null,
@@ -75,7 +79,11 @@ export function SurpriseQuestionsExercise({
       <section className="card exercise exercise--center" aria-live="polite">
         <p className="pill">{counterLabel}</p>
         <h1 className="exercise__prompt">{question.text}</h1>
-        <p className="pill">Type : {question.type}</p>
+        {question.type ? (
+          <p className="pill">
+            Type : {QUESTION_TYPE_LABELS[question.type] ?? question.type}
+          </p>
+        ) : null}
         <p className="exercise__prep-plan">Idée → raison → exemple</p>
         <Timer
           durationSeconds={prepSeconds}
@@ -119,7 +127,12 @@ export function SurpriseQuestionsExercise({
 
   const hasAdvancedPivot = Boolean(pivotQuestion && !revenge)
   const activeQuestion = pivotActive && pivotQuestion ? pivotQuestion : question
-  const speakingSeconds = pivotActive ? PIVOT_SECONDS : QUESTION_SPEAKING_SECONDS
+  // With an advanced pivot: 60 s, then the abrupt 30 s pivot.
+  const speakingSeconds = pivotActive
+    ? PIVOT_SECONDS
+    : hasAdvancedPivot
+      ? QUESTION_SPEAKING_SECONDS
+      : answerSeconds
 
   const completeSpeakingPhase = () => {
     if (hasAdvancedPivot && !pivotActive) {

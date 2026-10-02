@@ -1,8 +1,9 @@
 import { contentRepository } from '../content/contentRepository'
 import { pickInPriority, selectUniqueItems } from '../content/selectContent'
-import { toLocalDateString } from '../progress/progress'
+import { recentProsodyFocus, toLocalDateString } from '../progress/progress'
 import type { AppState } from '../../types/progress'
-import type { Chunk, Topic } from '../../types/content'
+import type { Chunk, RetellingStory, Topic } from '../../types/content'
+import { FOCUS_OPTIONS } from '../../features/prosody/types'
 import type { GapItem, SessionPlan } from '../../features/training/types'
 import {
   CHUNKS_PER_SESSION,
@@ -11,6 +12,28 @@ import {
 } from '../../features/training/types'
 
 const PERSONAL_GAP_RATIO = 0.7
+/** Every third session, the 4 → 3 → 2 retells a short story. */
+export const RETELLING_EVERY_N_SESSIONS = 3
+
+export function isRetellingDay(completedSessions: number): boolean {
+  return completedSessions % RETELLING_EVERY_N_SESSIONS === RETELLING_EVERY_N_SESSIONS - 1
+}
+
+export function topicFromStory(story: RetellingStory): Topic {
+  return {
+    id: story.id,
+    title: `Raconte : « ${story.title} »`,
+    category: story.category,
+    difficulty: 'medium',
+    prompts: [
+      'Qui ? Où ? Quand ?',
+      'Quel est le problème au départ ?',
+      'Comment la situation évolue-t-elle ?',
+      'Comment ça se termine, et qu’en retenir ?',
+    ],
+    transferPrompt: story.transferPrompt,
+  }
+}
 
 function shuffle<T>(items: readonly T[], random: () => number): T[] {
   const copy = [...items]
@@ -188,9 +211,15 @@ export function buildSessionPlan(
   state: AppState,
   random: () => number = Math.random,
 ): SessionPlan {
-  const topics = selectUniqueItems(contentRepository.topics, 1, state.recentTopicIds, random)
+  const story = isRetellingDay(state.sessions.length)
+    ? selectUniqueItems(contentRepository.retellingStories, 1, state.recentTopicIds, random)[0] ?? null
+    : null
+  const topics = story
+    ? [topicFromStory(story)]
+    : selectUniqueItems(contentRepository.topics, 1, state.recentTopicIds, random)
   if (topics.length === 0) throw new Error('Aucun sujet de conversation disponible.')
   const topic: Topic = topics[0]
+  const prosodyFocus = recentProsodyFocus(state.prosodySessions)
 
   const questionPool = selectDiverseQuestions(
     state,
@@ -211,6 +240,11 @@ export function buildSessionPlan(
     null
   const chunks = selectChunks(state, CHUNKS_PER_SESSION, random)
   const chunksOfDay = shuffle(chunks, random)
+  const reviewed = new Set(state.chunkReviews.map((review) => review.chunkId))
+  const personal = new Set(state.personalChunks.map((chunk) => chunk.id))
+  const newChunkIds = chunks
+    .filter((chunk) => !reviewed.has(chunk.id) && !personal.has(chunk.id))
+    .map((chunk) => chunk.id)
 
   return {
     topic,
@@ -221,5 +255,9 @@ export function buildSessionPlan(
     gapItems: selectGapItems(state, GAPS_PER_SESSION, random),
     focusWords: selectFocusWords(state, random),
     fluencyReminders: selectFluencyReminders(state, random),
+    newChunkIds,
+    retellingStory: story,
+    prosodyFocusGoal:
+      FOCUS_OPTIONS.find((option) => option.value === prosodyFocus)?.goal ?? null,
   }
 }

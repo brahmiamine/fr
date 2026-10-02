@@ -326,3 +326,8 @@
 .confetti__piece--round {
   border-radius: 50%;
 }
+
+.retelling-story {
+  margin: 0.5rem 0 0;
+  line-height: 1.55;
+}

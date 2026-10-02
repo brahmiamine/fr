@@ -246,3 +246,60 @@
   border-color: var(--accent);
   background: var(--gradient-soft);
 }
+
+/* ---------- Active marking (/ ↑ ↓) ---------- */
+.marking {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.15rem;
+  line-height: 2.2;
+  font-size: 1.05rem;
+}
+
+.marking__item {
+  display: inline-flex;
+  align-items: center;
+}
+
+.marking__gap {
+  min-width: 28px;
+  min-height: 32px;
+  margin: 0 0.1rem;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.marking__gap.is-active {
+  border-style: solid;
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--surface-2);
+}
+
+.marking__group {
+  justify-content: space-between;
+  text-align: left;
+}
+
+.custom-extract__segment {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  align-items: end;
+}
+
+.custom-extract__segment label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.melody-warmup summary {
+  cursor: pointer;
+  font-weight: 600;
+}

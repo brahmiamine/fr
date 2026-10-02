@@ -7,11 +7,12 @@ import {
   calculateLongestStreak,
   calculateProsodyMinutes,
   calculateTotalPracticeMinutes,
+  findComparisonTest,
   formatDuration,
   getWeekKey,
   masteredGapCount,
-  toLocalDateString,
 } from '../../services/progress/progress'
+import ConversationPrep from './ConversationPrep'
 import WeeklyConversation from './WeeklyConversation'
 import WeeklyTest from './WeeklyTest'
 import './progress.css'
@@ -24,13 +25,6 @@ function formatDate(value: string): string {
     day: 'numeric',
     month: 'short',
   })
-}
-
-function shiftWeekKey(weekKey: string, days: number): string {
-  const [year, month, day] = weekKey.split('-').map(Number)
-  const date = new Date(year, (month ?? 1) - 1, day ?? 1)
-  date.setDate(date.getDate() + days)
-  return toLocalDateString(date)
 }
 
 function wpm(wordsSpoken?: number): number {
@@ -52,11 +46,11 @@ export default function ProgressPage() {
   )
 
   const thisWeek = getWeekKey()
-  const fourWeeksAgo = shiftWeekKey(thisWeek, -28)
   const currentTest = state.weeklyTests.find((test) => test.weekKey === thisWeek)
-  const comparisonTest = state.weeklyTests.find(
-    (test) => test.weekKey === fourWeeksAgo,
-  )
+  const comparisonTest = findComparisonTest(state.weeklyTests, thisWeek)
+  const testHistory = [...state.weeklyTests]
+    .sort((a, b) => b.weekKey.localeCompare(a.weekKey))
+    .slice(0, 8)
 
   const hasSessions = state.sessions.length > 0
 
@@ -90,11 +84,14 @@ export default function ProgressPage() {
       </section>
 
       <WeeklyTest />
+      <ConversationPrep />
       <WeeklyConversation />
 
       {currentTest && comparisonTest ? (
         <section className="card" aria-labelledby="weekly-compare">
-          <h2 id="weekly-compare">Cette semaine vs il y a 4 semaines</h2>
+          <h2 id="weekly-compare">
+            Cette semaine vs semaine du {formatDate(comparisonTest.weekKey)}
+          </h2>
           <table className="progress__table">
             <thead>
               <tr>
@@ -139,6 +136,34 @@ export default function ProgressPage() {
                 <td>{comparisonTest.score}</td>
                 <td>{currentTest.score}</td>
               </tr>
+            </tbody>
+          </table>
+        </section>
+      ) : null}
+
+      {testHistory.length > 1 ? (
+        <section className="card" aria-labelledby="weekly-history">
+          <h2 id="weekly-history">Évolution des tests hebdomadaires</h2>
+          <table className="progress__table">
+            <thead>
+              <tr>
+                <th scope="col">Semaine</th>
+                <th scope="col">Démarrage (s)</th>
+                <th scope="col">Pauses milieu</th>
+                <th scope="col">Segment (s)</th>
+                <th scope="col">Mots/min</th>
+              </tr>
+            </thead>
+            <tbody>
+              {testHistory.map((test) => (
+                <tr key={test.weekKey}>
+                  <th scope="row">{formatDate(test.weekKey)}</th>
+                  <td>{test.startDelaySeconds}</td>
+                  <td>{test.midSentencePauses ?? test.longPauses}</td>
+                  <td>{test.longestFluentSegmentSeconds}</td>
+                  <td>{wpm(test.wordsSpoken)}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </section>

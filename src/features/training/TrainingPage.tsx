@@ -11,7 +11,7 @@ import {
   recordCompletedSession,
   setInProgressSession,
   toLocalDateString,
-  trainingLevelForSessionCount,
+  trainingLevelForSessions,
   upsertChunkReview,
   upsertFluencyNote,
   upsertPersonalChunk,
@@ -30,6 +30,7 @@ import {
   sessionReducer,
 } from './sessionReducer'
 import type { TrainingSessionState } from './types'
+import { TRAINING_SESSION_SCHEMA, speakingSecondsForLevel } from './types'
 import './training.css'
 
 function sessionDurationMinutes(session: TrainingSessionState): number {
@@ -56,7 +57,9 @@ function CompletedScreen({ session }: { session: TrainingSessionState }) {
         <li>{plan.chunks.length} chunks travaillés</li>
         <li>{plan.gapItems.length} mots travaillés</li>
         <li>{practisedQuestionIds(session).length} questions spontanées</li>
-        <li>4 → 3 → 2 terminé</li>
+        <li>
+          4 → 3 → 2 terminé{plan.retellingStory ? ' (variante retelling)' : ''}
+        </li>
       </ul>
       <div className="stack">
         <Link className="button button--block" to="/progress">
@@ -75,13 +78,13 @@ export default function TrainingPage() {
   const sessionRecorder = useAudioRecorder()
 
   const initialSession = useMemo<TrainingSessionState | null>(() => {
-    if (state.inProgressSession) return state.inProgressSession
+    // An unfinished session saved by an older version restarts cleanly.
+    if (state.inProgressSession?.schema === TRAINING_SESSION_SCHEMA) {
+      return state.inProgressSession
+    }
     try {
       const plan = buildSessionPlan(state)
-      return createSessionState(
-        plan,
-        trainingLevelForSessionCount(state.sessions.length),
-      )
+      return createSessionState(plan, trainingLevelForSessions(state.sessions))
     } catch {
       return null
     }
@@ -111,6 +114,8 @@ export default function TrainingPage() {
       .map((item) => item.sourceId as string)
 
     const questionIds = practisedQuestionIds(session)
+    const questionBlocks = { none: 0, some: 0, much: 0 }
+    for (const entry of session.questionRatings) questionBlocks[entry.rating] += 1
 
     const record: SessionRecord = {
       id: session.sessionId,
@@ -130,6 +135,9 @@ export default function TrainingPage() {
         gapsPracticed: plan.gapItems.length,
         questionsAsked: questionIds.length,
         fluencyDone: true,
+        chunksUsed: (session.usedChunkIds ?? []).length,
+        questionBlocks,
+        retelling: Boolean(plan.retellingStory),
       },
     }
 
@@ -191,6 +199,16 @@ export default function TrainingPage() {
         session.feedback.expressionIntent,
         now,
       )
+      next = upsertPersonalChunk(
+        next,
+        session.fluencyFeedback.missedChunk ?? '',
+        session.fluencyFeedback.missedChunkIntent ?? '',
+        now,
+      )
+
+      for (const capture of session.gapCaptures ?? []) {
+        next = captureWordGap(next, capture.target, capture.context, now)
+      }
 
       for (const reminderId of session.usedFluencyReminderIds ?? []) {
         next = markFluencyNoteUsed(next, reminderId, now)
@@ -238,6 +256,9 @@ export default function TrainingPage() {
           total={session.plan.chunks.length}
           step={session.chunks.step}
           chunksOfDay={session.plan.chunksOfDay}
+          isNew={(session.plan.newChunkIds ?? []).includes(
+            session.plan.chunks[session.chunks.index]?.id ?? '',
+          )}
           onReveal={() => dispatch({ type: 'CHUNK_REVEAL' })}
           onRate={(result) => dispatch({ type: 'CHUNK_RATE', result })}
           onContinue={() => dispatch({ type: 'CHUNKS_OF_DAY_CONTINUE' })}
@@ -256,6 +277,8 @@ export default function TrainingPage() {
           focusWords={session.plan.focusWords}
           fluencyReminders={session.plan.fluencyReminders}
           recorder={sessionRecorder}
+          retellingStory={session.plan.retellingStory ?? null}
+          prosodyFocusGoal={session.plan.prosodyFocusGoal ?? null}
           onKeywordsChange={(keywords) =>
             dispatch({ type: 'FLUENCY_SET_KEYWORDS', keywords })
           }
@@ -278,7 +301,15 @@ export default function TrainingPage() {
           index={session.gaps.index}
           total={session.plan.gapItems.length}
           step={session.gaps.step}
+          capturedContext={
+            (session.gapCaptures ?? []).find(
+              (capture) =>
+                capture.target === session.plan.gapItems[session.gaps.index]?.target,
+            )?.context ?? ''
+          }
           onFound={() => dispatch({ type: 'GAP_FOUND' })}
+          onVerify={(correct) => dispatch({ type: 'GAP_VERIFY', correct })}
+          onCapture={(context) => dispatch({ type: 'GAP_CAPTURE', context })}
           onStartParaphrase={() => dispatch({ type: 'GAP_START_PARAPHRASE' })}
           onReveal={() => dispatch({ type: 'GAP_REVEAL' })}
           onNext={() => dispatch({ type: 'GAP_NEXT' })}
@@ -294,6 +325,9 @@ export default function TrainingPage() {
           onToggleReminder={(reminderId) =>
             dispatch({ type: 'FLUENCY_TOGGLE_REMINDER_USED', reminderId })
           }
+          chunksOfDay={session.plan.chunksOfDay}
+          usedChunkIds={session.usedChunkIds ?? []}
+          onToggleChunk={(chunkId) => dispatch({ type: 'CHUNK_TOGGLE_USED', chunkId })}
           onChange={(field, value) =>
             dispatch({ type: 'FEEDBACK_SET', field, value })
           }
@@ -348,6 +382,7 @@ function QuestionsRenderer({
         total={plan.questions.length}
         stage={session.revenge.stage as 'countdown' | 'prep' | 'speaking'}
         prepSeconds={prepSeconds(session)}
+        speakingSeconds={speakingSecondsForLevel(session.level)}
         chunksOfDay={plan.chunksOfDay}
         focusWords={plan.focusWords}
         revenge
@@ -374,6 +409,7 @@ function QuestionsRenderer({
       total={plan.questions.length}
       stage={session.questions.stage}
       prepSeconds={prepSeconds(session)}
+      speakingSeconds={speakingSecondsForLevel(session.level)}
       chunksOfDay={plan.chunksOfDay}
       focusWords={plan.focusWords}
       pivotQuestion={pivotQuestion}

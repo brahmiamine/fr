@@ -43,7 +43,7 @@ describe('full session walk', () => {
   it('moves through chunks, fluency, questions, gaps and feedback', () => {
     let state = newSession()
 
-    for (const result of ['easy', 'difficult', 'failed'] as const) {
+    for (const result of ['easy', 'difficult', 'failed', 'discovered'] as const) {
       state = sessionReducer(state, { type: 'CHUNK_REVEAL' })
       state = sessionReducer(state, { type: 'CHUNK_RATE', result })
     }
@@ -95,6 +95,7 @@ describe('full session walk', () => {
     for (let i = 0; i < 5; i += 1) {
       if (state.gaps.step === 'recall') {
         state = sessionReducer(state, { type: 'GAP_FOUND' })
+        state = sessionReducer(state, { type: 'GAP_VERIFY', correct: true })
       } else {
         state = sessionReducer(state, { type: 'GAP_REVEAL' })
       }
@@ -118,16 +119,25 @@ describe('full session walk', () => {
 })
 
 describe('question revenge selection', () => {
-  it('skips revenge when nothing was blocked', () => {
+  it('always replays the hardest question, even when nothing was blocked', () => {
     let state = { ...newSession(), stageIndex: 2 }
     for (let i = 0; i < 5; i += 1) {
       state = sessionReducer(state, { type: 'QUESTION_RATE', rating: 'none' })
     }
-    expect(state.revenge.questionId).toBeNull()
-    expect(getCurrentStage(state)).toBe('gaps')
+    expect(state.revenge.questionId).toBe(plan.questions[0].id)
+    expect(getCurrentStage(state)).toBe('questions')
   })
 
-  it('attributes the advanced final rating to the pivot question', () => {
+  it('replays the worst-rated question', () => {
+    let state = { ...newSession(), stageIndex: 2 }
+    const ratings = ['some', 'none', 'much', 'some', 'none'] as const
+    for (const rating of ratings) {
+      state = sessionReducer(state, { type: 'QUESTION_RATE', rating })
+    }
+    expect(state.revenge.questionId).toBe(plan.questions[2].id)
+  })
+
+  it('attributes the advanced final rating to the question asked, not the pivot', () => {
     const base = createSessionState(plan, 3, new Date('2026-10-02T10:00:00.000Z'))
     let state: TrainingSessionState = {
       ...base,
@@ -144,8 +154,47 @@ describe('question revenge selection', () => {
 
     state = sessionReducer(state, { type: 'QUESTION_RATE', rating: 'much' })
 
-    expect(state.questionRatings[state.questionRatings.length - 1]?.questionId).toBe(plan.pivotQuestion?.id)
-    expect(state.revenge.questionId).toBe(plan.pivotQuestion?.id)
+    const lastQuestion = plan.questions[plan.questions.length - 1]
+    expect(state.questionRatings[state.questionRatings.length - 1]?.questionId).toBe(lastQuestion.id)
+    expect(state.revenge.questionId).toBe(lastQuestion.id)
+  })
+})
+
+describe('word gap verification', () => {
+  it('records a found word only after the learner checked the answer', () => {
+    let state = { ...newSession(), stageIndex: 3 }
+    state = { ...state, gaps: { index: 0, step: 'recall' } }
+    state = sessionReducer(state, { type: 'GAP_FOUND' })
+    expect(state.gaps.step).toBe('verify')
+    expect(state.gapResults).toEqual([])
+
+    state = sessionReducer(state, { type: 'GAP_VERIFY', correct: false })
+    expect(state.gaps.step).toBe('revealed')
+    expect(state.gapResults).toEqual([
+      { itemKey: plan.gapItems[0].key, found: false },
+    ])
+  })
+
+  it('lets the learner keep a generic word in their personal gap list', () => {
+    const genericIndex = plan.gapItems.findIndex((item) => !item.isPersonal)
+    let state = { ...newSession(), stageIndex: 3 }
+    state = { ...state, gaps: { index: genericIndex, step: 'revealed' } }
+    state = sessionReducer(state, { type: 'GAP_CAPTURE', context: 'le bouton au mur' })
+    expect(state.gapCaptures).toEqual([
+      { target: plan.gapItems[genericIndex].target, context: 'le bouton au mur' },
+    ])
+    state = sessionReducer(state, { type: 'GAP_CAPTURE', context: '' })
+    expect(state.gapCaptures).toEqual([])
+  })
+})
+
+describe('chunks of the day usage', () => {
+  it('tracks the chunks the learner really placed while speaking', () => {
+    let state = newSession()
+    state = sessionReducer(state, { type: 'CHUNK_TOGGLE_USED', chunkId: 'chunk_001' })
+    expect(state.usedChunkIds).toEqual(['chunk_001'])
+    state = sessionReducer(state, { type: 'CHUNK_TOGGLE_USED', chunkId: 'chunk_001' })
+    expect(state.usedChunkIds).toEqual([])
   })
 })
 

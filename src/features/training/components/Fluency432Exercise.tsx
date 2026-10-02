@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
-import type { Chunk, Topic } from '../../../types/content'
+import type { Chunk, RetellingStory, Topic } from '../../../types/content'
 import { SpeakButton } from '../../../components/Speech/SpeakButton'
 import { Timer } from '../../../components/Timer/Timer'
 import type { AudioRecorder } from '../../../hooks/useAudioRecorder'
-import { FLUENCY_ROUND_SECONDS } from '../types'
+import { FLUENCY_ROUND_SECONDS, MINI_FEEDBACK_SECONDS } from '../types'
 import type { FluencyFeedback, FluencyReminder } from '../types'
 
 export interface Fluency432ExerciseProps {
@@ -17,6 +17,10 @@ export interface Fluency432ExerciseProps {
   focusWords: string[]
   fluencyReminders: FluencyReminder[]
   recorder?: AudioRecorder
+  /** Retelling variant: the topic is a short story heard before round 1. */
+  retellingStory?: RetellingStory | null
+  /** Recent prosody point to keep while speaking. */
+  prosodyFocusGoal?: string | null
   onKeywordsChange: (keywords: string[]) => void
   onStartRound: () => void
   onRoundComplete: () => void
@@ -34,6 +38,13 @@ const RUNNING_HINTS = [
   'Continue. Un mot manque ? Explique-le autrement.',
   'Reformule, ne récite pas.',
   'Continue à parler.',
+  'Nouveau sujet : réutilise ce que tu viens de travailler.',
+]
+
+const STORY_HINTS = [
+  "Raconte l'histoire avec tes mots. Un mot manque ? Explique-le autrement.",
+  'Raconte-la de nouveau, autrement : ne récite pas.',
+  "L'essentiel, plus vite, sans t'arrêter.",
   'Nouveau sujet : réutilise ce que tu viens de travailler.',
 ]
 
@@ -55,6 +66,8 @@ export function Fluency432Exercise({
   focusWords,
   fluencyReminders,
   recorder,
+  retellingStory = null,
+  prosodyFocusGoal = null,
   onKeywordsChange,
   onStartRound,
   onRoundComplete,
@@ -66,7 +79,12 @@ export function Fluency432Exercise({
   )
   const [difficultPhrase, setDifficultPhrase] = useState(feedback.difficultPhrase)
   const [importantError, setImportantError] = useState(feedback.importantError)
+  const [missedChunk, setMissedChunk] = useState(feedback.missedChunk ?? '')
+  const [missedChunkIntent, setMissedChunkIntent] = useState(
+    feedback.missedChunkIntent ?? '',
+  )
   const [showPrompts, setShowPrompts] = useState(false)
+  const [showStoryText, setShowStoryText] = useState(false)
   const [recordFirstRound, setRecordFirstRound] = useState(true)
 
   const isTransfer = roundIndex === FLUENCY_ROUND_SECONDS.length - 1
@@ -75,15 +93,43 @@ export function Fluency432Exercise({
   if (stage === 'prep') {
     return (
       <section className="card exercise" aria-labelledby="fluency-title">
-        <p className="pill">Tour 1 / 3</p>
+        <p className="pill">
+          Tour 1 / 4{retellingStory ? ' · Variante retelling' : ''}
+        </p>
         <h1 id="fluency-title" className="exercise__prompt">
           {topic.title}
         </h1>
-        <SpeakButton
-          text={topic.title}
-          label="Écouter le sujet"
-          ariaLabel="Écouter le sujet"
-        />
+        {retellingStory ? (
+          <div className="exercise__rescue">
+            <h3>Écoute d'abord l'histoire</h3>
+            <p className="muted">
+              Écoute-la sans lire, repère 2–3 expressions, puis raconte-la avec
+              tes propres mots pendant les tours 4 → 3 → 2.
+            </p>
+            <SpeakButton
+              text={retellingStory.text}
+              label="Écouter l'histoire"
+              ariaLabel="Écouter l'histoire"
+            />
+            {showStoryText ? (
+              <p className="retelling-story" lang="fr">{retellingStory.text}</p>
+            ) : (
+              <button
+                type="button"
+                className="button button--ghost button--block"
+                onClick={() => setShowStoryText(true)}
+              >
+                Lire le texte (seulement si l'audio ne marche pas)
+              </button>
+            )}
+          </div>
+        ) : (
+          <SpeakButton
+            text={topic.title}
+            label="Écouter le sujet"
+            ariaLabel="Écouter le sujet"
+          />
+        )}
 
         {showPrompts ? (
           <div className="exercise__rescue">
@@ -130,8 +176,18 @@ export function Fluency432Exercise({
           </p>
         ) : null}
 
+        {prosodyFocusGoal ? (
+          <p className="exercise__chunks">
+            <span className="muted">Prosodie à garder :</span> {prosodyFocusGoal}
+          </p>
+        ) : null}
+
         <div className="field">
-          <label htmlFor="keywords">Note 3 mots-clés maximum (facultatif)</label>
+          <label htmlFor="keywords">
+            {retellingStory
+              ? 'Note 2–3 expressions entendues (facultatif)'
+              : 'Note 3 mots-clés maximum (facultatif)'}
+          </label>
           <input
             id="keywords"
             value={keywords.join(', ')}
@@ -174,17 +230,28 @@ export function Fluency432Exercise({
     const handleSubmit = (event: FormEvent) => {
       event.preventDefault()
       if (missingWord.trim() && !missingWordContext.trim()) return
+      if (missedChunk.trim() && !missedChunkIntent.trim()) return
       onSubmitFeedback({
         missingWord,
         missingWordContext,
         difficultPhrase,
         importantError,
+        missedChunk,
+        missedChunkIntent,
       })
     }
 
     return (
       <section className="card exercise" aria-labelledby="feedback-title">
         <h2 id="feedback-title">Petit retour (30–60 s)</h2>
+        <Timer
+          durationSeconds={MINI_FEEDBACK_SECONDS}
+          autoStart
+          hideControls
+          compact
+          secondsOnly
+          label="Reste bref"
+        />
 
         {recorder?.blobUrl ? (
           <div className="exercise__rescue">
@@ -269,6 +336,31 @@ export function Fluency432Exercise({
               />
             ) : null}
           </div>
+          <div className="field">
+            <label htmlFor="missed-chunk">
+              Un chunk que tu aurais pu utiliser ? (facultatif)
+            </label>
+            <input
+              id="missed-chunk"
+              value={missedChunk}
+              onChange={(event) => setMissedChunk(event.target.value)}
+              placeholder="Ex. D'un autre côté…"
+              autoComplete="off"
+            />
+          </div>
+          {missedChunk.trim() ? (
+            <div className="field">
+              <label htmlFor="missed-chunk-intent">À quoi sert-il ?</label>
+              <input
+                id="missed-chunk-intent"
+                value={missedChunkIntent}
+                onChange={(event) => setMissedChunkIntent(event.target.value)}
+                placeholder="Ex. nuancer une opinion"
+                autoComplete="off"
+                required
+              />
+            </div>
+          ) : null}
           <button type="submit" className="button button--block">
             Continuer vers le tour 2
           </button>
@@ -293,7 +385,22 @@ export function Fluency432Exercise({
         onComplete={finishRound}
         label={prompt}
       />
-      <p className="exercise__hint">{RUNNING_HINTS[roundIndex]}</p>
+      <p className="exercise__hint">
+        {(retellingStory && !isTransfer ? STORY_HINTS : RUNNING_HINTS)[roundIndex]}
+      </p>
+
+      {feedback.missedChunk?.trim() && (roundIndex === 1 || roundIndex === 2) ? (
+        <p className="exercise__chunks">
+          <span className="muted">À placer dans ce tour :</span>{' '}
+          {feedback.missedChunk}
+        </p>
+      ) : null}
+
+      {prosodyFocusGoal ? (
+        <p className="exercise__chunks">
+          <span className="muted">Prosodie :</span> {prosodyFocusGoal}
+        </p>
+      ) : null}
 
       {keywords.length > 0 ? (
         <p className="exercise__keywords">
