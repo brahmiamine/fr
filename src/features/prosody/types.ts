@@ -36,6 +36,14 @@ export interface ProsodyExercise {
   /** True when the model is usable: licensed recording or browser TTS fallback. */
   ready: boolean
   source: string
+  /** Canonical page where the reusable recording and its license can be verified. */
+  sourceUrl?: string
+  /** SPDX-like short identifier used by the bundled recording bank. */
+  license?: 'CC0-1.0' | 'CC-BY-SA-3.0' | 'CC-BY-SA-4.0'
+  /** Human-readable credit and modification notice for bundled recordings. */
+  attribution?: string
+  /** Range selected from the original source, before it was normalized for the app. */
+  sourceRange?: { start: number; end: number }
   voiceLocale?: string
   register?: 'familier' | 'courant' | 'soutenu'
   speed?: ProsodySpeed

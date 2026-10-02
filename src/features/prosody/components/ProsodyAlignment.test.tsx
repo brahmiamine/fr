@@ -60,6 +60,34 @@ function mockRecorder(overrides: Partial<ProsodyRecorder> = {}): ProsodyRecorder
 }
 
 describe('prosody listening alignment', () => {
+  it('shows attribution and license for a bundled human recording', () => {
+    render(
+      <ListeningExercise
+        exercise={{
+          ...exercise,
+          modelKind: 'recording',
+          source: 'Wikimedia Commons',
+          sourceUrl: 'https://commons.wikimedia.org/wiki/File:Example.ogg',
+          license: 'CC-BY-SA-4.0',
+          attribution: 'Locutrice exemple, via Wikimedia Commons.',
+        }}
+        step="meaning"
+        audioSrc={audioSrc}
+        meaningPlays={0}
+        prosodyPlays={0}
+        onAudioComplete={() => undefined}
+        onNext={() => undefined}
+      />,
+    )
+
+    expect(screen.getByText(/vraie voix/i)).toBeInTheDocument()
+    expect(screen.getByText(/CC-BY-SA-4.0/)).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /source/i })).toHaveAttribute(
+      'href',
+      'https://commons.wikimedia.org/wiki/File:Example.ogg',
+    )
+  })
+
   it('hides the transcript and blocks progression until the first full listen', () => {
     const { container, rerender } = render(
       <ListeningExercise
