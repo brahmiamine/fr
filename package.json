@@ -10,7 +10,8 @@
     "test": "vitest",
     "test:watch": "vitest",
     "test:run": "vitest --run",
-    "typecheck": "tsc -b"
+    "typecheck": "tsc -b",
+    "prosody:youtube": "node scripts/prosody-from-youtube.mjs"
   },
   "dependencies": {
     "react": "^18.3.1",

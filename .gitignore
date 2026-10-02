@@ -7,6 +7,10 @@ coverage
 .DS_Store
 .vite
 .idea
+.cache
+# Extraits de prosodie conservés pour un usage personnel uniquement : jamais publiés.
+src/data/prosody.personal.json
+public/audio/prosody/prosody_perso_*.ogg
 .vscode/*
 !.vscode/extensions.json
 npm-debug.log*

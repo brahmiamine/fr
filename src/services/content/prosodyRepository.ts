@@ -16,8 +16,23 @@ import {
   MIN_IMITATION_SECONDS,
 } from '../../features/prosody/types'
 
-export const prosodyRepository: readonly ProsodyExercise[] =
-  prosodyData as unknown as ProsodyExercise[]
+/**
+ * Excerpts the learner built for their own practice from copyrighted sources.
+ * The file is git-ignored and absent from the repository, so this glob simply
+ * resolves to nothing for everyone else — and anything dropped in here can
+ * never be published by accident.
+ */
+const personalModules = import.meta.glob<ProsodyExercise[]>(
+  '../../data/prosody.personal.json',
+  { eager: true, import: 'default' },
+)
+
+const personalExercises = Object.values(personalModules).flat()
+
+export const prosodyRepository: readonly ProsodyExercise[] = [
+  ...(prosodyData as unknown as ProsodyExercise[]),
+  ...personalExercises,
+]
 
 export function prosodyExerciseDuration(exercise: ProsodyExercise): number {
   if (exercise.groups.length === 0) return 0
