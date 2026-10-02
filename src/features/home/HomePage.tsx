@@ -11,15 +11,13 @@ import {
   formatDuration,
   getWeekKey,
   masteredGapCount,
+  trainingLevelForSessionCount,
 } from '../../services/progress/progress'
-import { STAGE_META, STAGE_ORDER } from '../training/types'
+import { STAGE_META, STAGE_ORDER, prepSecondsForLevel } from '../training/types'
 import './home.css'
 
 function sessionDurationEstimate(): number {
-  return STAGE_ORDER.reduce(
-    (total, stage) => total + STAGE_META[stage].minutes,
-    0,
-  )
+  return STAGE_ORDER.reduce((total, stage) => total + STAGE_META[stage].minutes, 0)
 }
 
 interface Stat {
@@ -33,14 +31,17 @@ export default function HomePage() {
   const streak = calculateCurrentStreak(state.sessions)
   const totalMinutes = calculateTotalPracticeMinutes(state.sessions)
   const weekly = calculateWeeklyProgress(state.sessions)
+  const level = trainingLevelForSessionCount(state.sessions.length)
 
   const hasSession = Boolean(state.inProgressSession)
   const resumeLabel = state.inProgressSession
     ? `Reprendre ma séance — Étape ${state.inProgressSession.stageIndex + 1}/${STAGE_ORDER.length}`
     : null
 
-  const weeklyTestAvailable = !state.weeklyTests.some(
-    (test) => test.weekKey === getWeekKey(),
+  const weekKey = getWeekKey()
+  const weeklyTestAvailable = !state.weeklyTests.some((test) => test.weekKey === weekKey)
+  const conversationAvailable = !state.conversationPractices.some(
+    (practice) => practice.weekKey === weekKey,
   )
 
   const stats: Stat[] = [
@@ -59,7 +60,7 @@ export default function HomePage() {
           <h1>Prêt pour ta séance ?</h1>
           <p className="muted">
             Aujourd'hui : environ {sessionDurationEstimate()} min, guidé étape par
-            étape.
+            étape. Préparation surprise : {prepSecondsForLevel(level)} s.
           </p>
           <Link className="button button--gradient button--block home__cta" to="/training">
             {hasSession ? resumeLabel : 'Commencer ma séance'}
@@ -73,7 +74,11 @@ export default function HomePage() {
 
       <section className="home__stats" aria-label="Statistiques">
         {stats.map((stat, index) => (
-          <div key={stat.label} className="stat" style={{ animationDelay: `${index * 0.05}s` }}>
+          <div
+            key={stat.label}
+            className="stat"
+            style={{ animationDelay: `${index * 0.05}s` }}
+          >
             <span className={`stat__icon stat__icon--${stat.icon}`}>
               <StatIcon name={stat.icon} />
             </span>
@@ -87,10 +92,22 @@ export default function HomePage() {
         <section className="card home__weekly-test">
           <div>
             <h2>Test de fluidité disponible</h2>
-            <p className="muted">Environ 10 minutes, une fois par semaine.</p>
+            <p className="muted">3 minutes, une fois par semaine.</p>
           </div>
           <Link className="button button--gradient" to="/progress">
             Faire le test
+          </Link>
+        </section>
+      ) : null}
+
+      {conversationAvailable ? (
+        <section className="card home__weekly-test">
+          <div>
+            <h2>Défi de vraie conversation</h2>
+            <p className="muted">20–30 minutes avec une personne, une fois par semaine.</p>
+          </div>
+          <Link className="button button--gradient" to="/progress">
+            Voir le défi
           </Link>
         </section>
       ) : null}
