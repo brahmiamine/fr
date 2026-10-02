@@ -1,4 +1,4 @@
-# Entraîneur de fluidité — Français
+# Parle+ — Coach de français parlé
 
 Un **coach de français parlé** sous forme de site web, mobile-first. Chaque
 séance est une boucle d'apprentissage fermée : l'application donne du contenu →
@@ -125,7 +125,7 @@ d'anciennes données peuvent être considérées comme déjà vues.
 ## Stockage local et confidentialité
 
 - Aucune donnée ne quitte l'appareil.
-- Tout est stocké dans `localStorage` sous la clé `fr-fluency-trainer`, dans un schéma versionné (`version: 3`, avec migration depuis les v1 et v2).
+- Tout est stocké dans `localStorage` sous la clé `parle-plus`, dans un schéma versionné (`version: 3`, avec migration depuis les v1/v2 et depuis l'ancienne clé `fr-fluency-trainer`).
 - Données conservées : sessions terminées, tests hebdomadaires, **trous de
   mots** (`wordGaps`), **révisions de chunks** (`chunkReviews`), exemples
   personnels, contenus récents et session en cours.
@@ -152,21 +152,18 @@ l'application et la publie sur GitHub Pages à chaque push sur `main`.
 Vite est configuré avec `base: '/fr/'` pour respecter le chemin du dépôt.
 Dans les paramètres GitHub du dépôt, la source Pages doit être **GitHub Actions**.
 
-## Interface web
+## Interface web et PWA
 
-L'application se présente comme un **site web** responsive, et non comme une
-application installable :
+Parle+ est un **site web mobile-first installable comme application** :
 
-- en-tête de site avec marque et navigation en haut (Accueil / Progression) ;
-- contenu dans une colonne centrée, pied de page, défilement de page classique ;
-- pendant une session, la navigation est réduite pour rester concentré sur la
-  tâche, et le pied de page est masqué ;
-- aucune PWA, aucun service worker, aucune installation ni mode plein écran.
+- manifeste PWA (`public/manifest.webmanifest`) avec le nom, les couleurs et les icônes Parle+ ;
+- service worker (`public/service-worker.js`) enregistré au chargement pour mettre en cache l'interface et les ressources déjà consultées ;
+- affichage `standalone` lorsqu'il est ajouté à l'écran d'accueil ;
+- icône standard + variante maskable dans `public/icons/` ;
+- métadonnées mobile et couleur de thème alignées sur la palette indigo → violet → rose ;
+- le déploiement GitHub Pages reste compatible grâce au `base: '/fr/'` de Vite et au routage par hash.
 
-Le site reste **mobile-first** : styles de base pensés pour le téléphone, puis
-élargissement progressif sur tablette et ordinateur. Les champs passent à
-`font-size: 16px` pour éviter le zoom automatique sur iOS, les cibles tactiles
-font au moins 44 px et le délai de tap de 300 ms est supprimé.
+L'interface reste responsive avec en-tête de marque, navigation, colonne centrée et mode focalisé pendant les exercices. Les champs utilisent `font-size: 16px` pour éviter le zoom automatique sur iOS et les cibles tactiles restent adaptées au mobile.
 
 ### Design & animations
 
