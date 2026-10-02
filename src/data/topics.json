@@ -18,10 +18,10 @@
     "category": "travail",
     "difficulty": "easy",
     "prompts": [
-      "Pourquoi ce sujet divise-t-il les gens ?",
-      "Quelle nuance ajouterais-tu ?",
-      "Qu'est-ce qui compte le plus dans la décision ?",
-      "Donne un exemple de la vie réelle."
+      "Quel est le vrai problème derrière ce sujet ?",
+      "Quelles en sont les causes principales ?",
+      "Quelle solution te paraît réaliste ?",
+      "Quelle limite cette solution aurait-elle ?"
     ],
     "transferPrompt": "Télétravail ou bureau ?"
   },
@@ -31,10 +31,10 @@
     "category": "travail",
     "difficulty": "medium",
     "prompts": [
-      "Quel choix ferais-tu personnellement ?",
-      "Qu'est-ce qui pourrait te faire changer d'avis ?",
-      "Quels sont les avantages et les inconvénients ?",
-      "Raconte une situation qui illustre ton choix."
+      "Comment voyais-tu ce sujet auparavant ?",
+      "Qu'est-ce qui peut faire évoluer un avis ?",
+      "Comment le vois-tu aujourd'hui ?",
+      "Donne un exemple de ce changement."
     ],
     "transferPrompt": "Changer souvent d'entreprise est-il une bonne stratégie ?"
   },
@@ -44,10 +44,10 @@
     "category": "travail",
     "difficulty": "medium",
     "prompts": [
-      "Comment vois-tu ce sujet aujourd'hui ?",
-      "Quel problème principal faut-il résoudre ?",
-      "Quelle solution serait réaliste ?",
-      "Qu'est-ce qui pourrait mal fonctionner ?"
+      "Quels sont les deux choix principaux ?",
+      "Quel avantage a le premier ?",
+      "Quel avantage a le second ?",
+      "Quel compromis choisirais-tu ?"
     ],
     "transferPrompt": "Faut-il aimer son travail pour être heureux ?"
   },
@@ -57,10 +57,10 @@
     "category": "travail",
     "difficulty": "medium",
     "prompts": [
-      "Pourquoi ce sujet divise-t-il les gens ?",
-      "Quelle nuance ajouterais-tu ?",
-      "Qu'est-ce qui compte le plus dans la décision ?",
-      "Donne un exemple de la vie réelle."
+      "Raconte une situation liée à ce sujet.",
+      "Qu'est-ce qui s'est passé exactement ?",
+      "Comment as-tu réagi ou réagirais-tu ?",
+      "Quelle leçon en tirer ?"
     ],
     "transferPrompt": "Les messages peuvent-ils remplacer beaucoup de réunions ?"
   },
@@ -70,10 +70,10 @@
     "category": "travail",
     "difficulty": "medium",
     "prompts": [
-      "Qu'est-ce qui te semble le plus important ?",
-      "Comment la situation pourrait-elle évoluer ?",
-      "Quel compromis serait acceptable ?",
-      "Relie le sujet à une expérience personnelle."
+      "Quel est le principal avantage ?",
+      "Quel est le principal inconvénient ?",
+      "Pour qui la réponse pourrait-elle être différente ?",
+      "Dans quelles conditions changerais-tu d'avis ?"
     ],
     "transferPrompt": "Les réunions sont-elles trop nombreuses ?"
   },
@@ -83,10 +83,10 @@
     "category": "travail",
     "difficulty": "hard",
     "prompts": [
-      "Comment vois-tu ce sujet aujourd'hui ?",
-      "Quel problème principal faut-il résoudre ?",
-      "Quelle solution serait réaliste ?",
-      "Qu'est-ce qui pourrait mal fonctionner ?"
+      "Imagine que tu doives décider aujourd'hui.",
+      "Quels critères utiliserais-tu ?",
+      "Quel risque voudrais-tu éviter ?",
+      "Quelle décision prendrais-tu finalement ?"
     ],
     "transferPrompt": "Les horaires flexibles améliorent-ils vraiment la vie ?"
   },
@@ -96,10 +96,10 @@
     "category": "travail",
     "difficulty": "hard",
     "prompts": [
-      "Quelle est ta position spontanée ?",
-      "Quelle est ta raison principale ?",
-      "Quel contre-argument faut-il prendre au sérieux ?",
-      "Donne un exemple concret ou personnel."
+      "Quelle opinion entend-on souvent sur ce sujet ?",
+      "Avec quelle partie es-tu d'accord ?",
+      "Quelle partie nuancerais-tu ?",
+      "Comment reformulerais-tu une position équilibrée ?"
     ],
     "transferPrompt": "Faut-il séparer complètement travail et vie privée ?"
   },
@@ -109,10 +109,10 @@
     "category": "travail",
     "difficulty": "medium",
     "prompts": [
-      "Qu'est-ce qui te semble le plus important ?",
-      "Comment la situation pourrait-elle évoluer ?",
-      "Quel compromis serait acceptable ?",
-      "Relie le sujet à une expérience personnelle."
+      "Qu'est-ce qui te semble évident au premier abord ?",
+      "Qu'est-ce qui est plus compliqué qu'il n'y paraît ?",
+      "Quel détail change beaucoup la réponse ?",
+      "Donne un cas concret."
     ],
     "transferPrompt": "L'ambiance au travail compte-t-elle plus que le salaire ?"
   },
@@ -122,10 +122,10 @@
     "category": "travail",
     "difficulty": "medium",
     "prompts": [
-      "Quel choix ferais-tu personnellement ?",
-      "Qu'est-ce qui pourrait te faire changer d'avis ?",
-      "Quels sont les avantages et les inconvénients ?",
-      "Raconte une situation qui illustre ton choix."
+      "Comment expliquerais-tu ce sujet à quelqu'un qui ne le connaît pas ?",
+      "Quel exemple simple utiliserais-tu ?",
+      "Quelle confusion faudrait-il éviter ?",
+      "Quelle idée devrait-il retenir ?"
     ],
     "transferPrompt": "Un bon salaire suffit-il pour garder un employé ?"
   },
@@ -135,10 +135,10 @@
     "category": "quotidien",
     "difficulty": "easy",
     "prompts": [
-      "Quelle est ta position spontanée ?",
-      "Quelle est ta raison principale ?",
-      "Quel contre-argument faut-il prendre au sérieux ?",
-      "Donne un exemple concret ou personnel."
+      "Si tu devais convaincre quelqu'un, par quoi commencerais-tu ?",
+      "Quel argument serait le plus fort ?",
+      "Quelle objection pourrait-il faire ?",
+      "Comment lui répondrais-tu ?"
     ],
     "transferPrompt": "Être spontané rend-il la vie plus agréable ?"
   },
@@ -148,10 +148,10 @@
     "category": "quotidien",
     "difficulty": "easy",
     "prompts": [
-      "Pourquoi ce sujet divise-t-il les gens ?",
-      "Quelle nuance ajouterais-tu ?",
-      "Qu'est-ce qui compte le plus dans la décision ?",
-      "Donne un exemple de la vie réelle."
+      "Quel conseil donnerais-tu à quelqu'un confronté à ce sujet ?",
+      "Quelle erreur devrait-il éviter ?",
+      "Quelle première action pourrait-il faire ?",
+      "Quel résultat réaliste attendre ?"
     ],
     "transferPrompt": "Faut-il tout planifier dans sa journée ?"
   },
@@ -161,10 +161,10 @@
     "category": "quotidien",
     "difficulty": "hard",
     "prompts": [
-      "Quel choix ferais-tu personnellement ?",
-      "Qu'est-ce qui pourrait te faire changer d'avis ?",
-      "Quels sont les avantages et les inconvénients ?",
-      "Raconte une situation qui illustre ton choix."
+      "Quels acteurs sont concernés ?",
+      "Ont-ils les mêmes intérêts ?",
+      "Où peut apparaître un conflit ?",
+      "Quel compromis serait acceptable ?"
     ],
     "transferPrompt": "Faire ses courses en magasin ou en ligne ?"
   },
@@ -174,10 +174,10 @@
     "category": "quotidien",
     "difficulty": "hard",
     "prompts": [
-      "Comment vois-tu ce sujet aujourd'hui ?",
-      "Quel problème principal faut-il résoudre ?",
-      "Quelle solution serait réaliste ?",
-      "Qu'est-ce qui pourrait mal fonctionner ?"
+      "Que se passe-t-il à court terme ?",
+      "Et à long terme ?",
+      "Quelle conséquence est souvent oubliée ?",
+      "Laquelle compte le plus pour toi ?"
     ],
     "transferPrompt": "Cuisiner chez soi ou commander ?"
   },
@@ -187,10 +187,10 @@
     "category": "quotidien",
     "difficulty": "medium",
     "prompts": [
-      "Pourquoi ce sujet divise-t-il les gens ?",
-      "Quelle nuance ajouterais-tu ?",
-      "Qu'est-ce qui compte le plus dans la décision ?",
-      "Donne un exemple de la vie réelle."
+      "Qu'est-ce qui dépend de la personne ?",
+      "Qu'est-ce qui dépend du contexte ?",
+      "Qu'est-ce qui dépend des moyens disponibles ?",
+      "Quelle conclusion nuancée en tires-tu ?"
     ],
     "transferPrompt": "Une routine du matin est-elle vraiment utile ?"
   },
@@ -200,10 +200,10 @@
     "category": "quotidien",
     "difficulty": "medium",
     "prompts": [
-      "Qu'est-ce qui te semble le plus important ?",
-      "Comment la situation pourrait-elle évoluer ?",
-      "Quel compromis serait acceptable ?",
-      "Relie le sujet à une expérience personnelle."
+      "Donne un exemple où cette idée fonctionne bien.",
+      "Donne un exemple où elle fonctionne mal.",
+      "Qu'est-ce qui explique la différence ?",
+      "Quelle règle générale proposerais-tu ?"
     ],
     "transferPrompt": "Se lever tôt ou se coucher tard ?"
   },
@@ -213,10 +213,10 @@
     "category": "quotidien",
     "difficulty": "medium",
     "prompts": [
-      "Comment vois-tu ce sujet aujourd'hui ?",
-      "Quel problème principal faut-il résoudre ?",
-      "Quelle solution serait réaliste ?",
-      "Qu'est-ce qui pourrait mal fonctionner ?"
+      "Quelle serait la réponse la plus simple ?",
+      "Pourquoi cette réponse est-elle incomplète ?",
+      "Quelle nuance faut-il ajouter ?",
+      "Formule ta conclusion en une phrase."
     ],
     "transferPrompt": "La colocation est-elle une bonne expérience ?"
   },
@@ -226,10 +226,10 @@
     "category": "quotidien",
     "difficulty": "medium",
     "prompts": [
-      "Quelle est ta position spontanée ?",
-      "Quelle est ta raison principale ?",
-      "Quel contre-argument faut-il prendre au sérieux ?",
-      "Donne un exemple concret ou personnel."
+      "Quel changement récent influence ce sujet ?",
+      "Qu'est-ce qui pourrait encore changer ?",
+      "Quel scénario te paraît plausible ?",
+      "Comment faudrait-il s'y adapter ?"
     ],
     "transferPrompt": "Vivre seul ou avec d'autres personnes ?"
   },
@@ -239,10 +239,10 @@
     "category": "quotidien",
     "difficulty": "hard",
     "prompts": [
-      "Qu'est-ce qui te semble le plus important ?",
-      "Comment la situation pourrait-elle évoluer ?",
-      "Quel compromis serait acceptable ?",
-      "Relie le sujet à une expérience personnelle."
+      "Quelle priorité mettrais-tu en premier ?",
+      "Quelle priorité viendrait ensuite ?",
+      "Qu'est-ce que tu accepterais de sacrifier ?",
+      "Explique ton ordre de priorité."
     ],
     "transferPrompt": "Peut-on vivre quelques heures par jour sans téléphone ?"
   },
@@ -252,10 +252,10 @@
     "category": "quotidien",
     "difficulty": "hard",
     "prompts": [
-      "Quel choix ferais-tu personnellement ?",
-      "Qu'est-ce qui pourrait te faire changer d'avis ?",
-      "Quels sont les avantages et les inconvénients ?",
-      "Raconte une situation qui illustre ton choix."
+      "Quel exemple personnel peux-tu relier à ce sujet ?",
+      "Qu'as-tu ressenti ou observé ?",
+      "Qu'aurais-tu pu faire autrement ?",
+      "Est-ce que cela influence ton opinion aujourd'hui ?"
     ],
     "transferPrompt": "Faut-il répondre immédiatement aux messages ?"
   },
@@ -278,10 +278,10 @@
     "category": "societe",
     "difficulty": "easy",
     "prompts": [
-      "Pourquoi ce sujet divise-t-il les gens ?",
-      "Quelle nuance ajouterais-tu ?",
-      "Qu'est-ce qui compte le plus dans la décision ?",
-      "Donne un exemple de la vie réelle."
+      "Quel est le vrai problème derrière ce sujet ?",
+      "Quelles en sont les causes principales ?",
+      "Quelle solution te paraît réaliste ?",
+      "Quelle limite cette solution aurait-elle ?"
     ],
     "transferPrompt": "Les réseaux sociaux rapprochent-ils vraiment les gens ?"
   },
@@ -291,10 +291,10 @@
     "category": "societe",
     "difficulty": "medium",
     "prompts": [
-      "Quel choix ferais-tu personnellement ?",
-      "Qu'est-ce qui pourrait te faire changer d'avis ?",
-      "Quels sont les avantages et les inconvénients ?",
-      "Raconte une situation qui illustre ton choix."
+      "Comment voyais-tu ce sujet auparavant ?",
+      "Qu'est-ce qui peut faire évoluer un avis ?",
+      "Comment le vois-tu aujourd'hui ?",
+      "Donne un exemple de ce changement."
     ],
     "transferPrompt": "Les règles de savoir-vivre sont-elles trop strictes ?"
   },
@@ -304,10 +304,10 @@
     "category": "societe",
     "difficulty": "medium",
     "prompts": [
-      "Comment vois-tu ce sujet aujourd'hui ?",
-      "Quel problème principal faut-il résoudre ?",
-      "Quelle solution serait réaliste ?",
-      "Qu'est-ce qui pourrait mal fonctionner ?"
+      "Quels sont les deux choix principaux ?",
+      "Quel avantage a le premier ?",
+      "Quel avantage a le second ?",
+      "Quel compromis choisirais-tu ?"
     ],
     "transferPrompt": "La politesse est-elle en train de disparaître ?"
   },
@@ -317,10 +317,10 @@
     "category": "societe",
     "difficulty": "hard",
     "prompts": [
-      "Pourquoi ce sujet divise-t-il les gens ?",
-      "Quelle nuance ajouterais-tu ?",
-      "Qu'est-ce qui compte le plus dans la décision ?",
-      "Donne un exemple de la vie réelle."
+      "Raconte une situation liée à ce sujet.",
+      "Qu'est-ce qui s'est passé exactement ?",
+      "Comment as-tu réagi ou réagirais-tu ?",
+      "Quelle leçon en tirer ?"
     ],
     "transferPrompt": "Les jeunes et les plus âgés peuvent-ils apprendre davantage les uns des autres ?"
   },
@@ -330,10 +330,10 @@
     "category": "societe",
     "difficulty": "hard",
     "prompts": [
-      "Qu'est-ce qui te semble le plus important ?",
-      "Comment la situation pourrait-elle évoluer ?",
-      "Quel compromis serait acceptable ?",
-      "Relie le sujet à une expérience personnelle."
+      "Quel est le principal avantage ?",
+      "Quel est le principal inconvénient ?",
+      "Pour qui la réponse pourrait-elle être différente ?",
+      "Dans quelles conditions changerais-tu d'avis ?"
     ],
     "transferPrompt": "Les générations se comprennent-elles suffisamment ?"
   },
@@ -343,10 +343,10 @@
     "category": "societe",
     "difficulty": "medium",
     "prompts": [
-      "Comment vois-tu ce sujet aujourd'hui ?",
-      "Quel problème principal faut-il résoudre ?",
-      "Quelle solution serait réaliste ?",
-      "Qu'est-ce qui pourrait mal fonctionner ?"
+      "Imagine que tu doives décider aujourd'hui.",
+      "Quels critères utiliserais-tu ?",
+      "Quel risque voudrais-tu éviter ?",
+      "Quelle décision prendrais-tu finalement ?"
     ],
     "transferPrompt": "Peut-on réellement acheter sans être influencé ?"
   },
@@ -356,10 +356,10 @@
     "category": "societe",
     "difficulty": "medium",
     "prompts": [
-      "Quelle est ta position spontanée ?",
-      "Quelle est ta raison principale ?",
-      "Quel contre-argument faut-il prendre au sérieux ?",
-      "Donne un exemple concret ou personnel."
+      "Quelle opinion entend-on souvent sur ce sujet ?",
+      "Avec quelle partie es-tu d'accord ?",
+      "Quelle partie nuancerais-tu ?",
+      "Comment reformulerais-tu une position équilibrée ?"
     ],
     "transferPrompt": "La publicité influence-t-elle trop nos choix ?"
   },
@@ -369,10 +369,10 @@
     "category": "societe",
     "difficulty": "medium",
     "prompts": [
-      "Qu'est-ce qui te semble le plus important ?",
-      "Comment la situation pourrait-elle évoluer ?",
-      "Quel compromis serait acceptable ?",
-      "Relie le sujet à une expérience personnelle."
+      "Qu'est-ce qui te semble évident au premier abord ?",
+      "Qu'est-ce qui est plus compliqué qu'il n'y paraît ?",
+      "Quel détail change beaucoup la réponse ?",
+      "Donne un cas concret."
     ],
     "transferPrompt": "La vie en communauté est-elle devenue plus individualiste ?"
   },
@@ -382,10 +382,10 @@
     "category": "societe",
     "difficulty": "medium",
     "prompts": [
-      "Quel choix ferais-tu personnellement ?",
-      "Qu'est-ce qui pourrait te faire changer d'avis ?",
-      "Quels sont les avantages et les inconvénients ?",
-      "Raconte une situation qui illustre ton choix."
+      "Comment expliquerais-tu ce sujet à quelqu'un qui ne le connaît pas ?",
+      "Quel exemple simple utiliserais-tu ?",
+      "Quelle confusion faudrait-il éviter ?",
+      "Quelle idée devrait-il retenir ?"
     ],
     "transferPrompt": "Les voisins devraient-ils davantage s'entraider ?"
   },
@@ -395,10 +395,10 @@
     "category": "technologie",
     "difficulty": "easy",
     "prompts": [
-      "Quelle est ta position spontanée ?",
-      "Quelle est ta raison principale ?",
-      "Quel contre-argument faut-il prendre au sérieux ?",
-      "Donne un exemple concret ou personnel."
+      "Si tu devais convaincre quelqu'un, par quoi commencerais-tu ?",
+      "Quel argument serait le plus fort ?",
+      "Quelle objection pourrait-il faire ?",
+      "Comment lui répondrais-tu ?"
     ],
     "transferPrompt": "Faut-il limiter certains usages de l'intelligence artificielle ?"
   },
@@ -408,10 +408,10 @@
     "category": "technologie",
     "difficulty": "easy",
     "prompts": [
-      "Pourquoi ce sujet divise-t-il les gens ?",
-      "Quelle nuance ajouterais-tu ?",
-      "Qu'est-ce qui compte le plus dans la décision ?",
-      "Donne un exemple de la vie réelle."
+      "Quel conseil donnerais-tu à quelqu'un confronté à ce sujet ?",
+      "Quelle erreur devrait-il éviter ?",
+      "Quelle première action pourrait-il faire ?",
+      "Quel résultat réaliste attendre ?"
     ],
     "transferPrompt": "L'intelligence artificielle améliore-t-elle le quotidien ?"
   },
@@ -421,10 +421,10 @@
     "category": "technologie",
     "difficulty": "medium",
     "prompts": [
-      "Quel choix ferais-tu personnellement ?",
-      "Qu'est-ce qui pourrait te faire changer d'avis ?",
-      "Quels sont les avantages et les inconvénients ?",
-      "Raconte une situation qui illustre ton choix."
+      "Quels acteurs sont concernés ?",
+      "Ont-ils les mêmes intérêts ?",
+      "Où peut apparaître un conflit ?",
+      "Quel compromis serait acceptable ?"
     ],
     "transferPrompt": "Une journée sans smartphone serait-elle bénéfique ?"
   },
@@ -434,10 +434,10 @@
     "category": "technologie",
     "difficulty": "medium",
     "prompts": [
-      "Comment vois-tu ce sujet aujourd'hui ?",
-      "Quel problème principal faut-il résoudre ?",
-      "Quelle solution serait réaliste ?",
-      "Qu'est-ce qui pourrait mal fonctionner ?"
+      "Que se passe-t-il à court terme ?",
+      "Et à long terme ?",
+      "Quelle conséquence est souvent oubliée ?",
+      "Laquelle compte le plus pour toi ?"
     ],
     "transferPrompt": "Le smartphone nous fait-il gagner ou perdre du temps ?"
   },
@@ -447,10 +447,10 @@
     "category": "technologie",
     "difficulty": "medium",
     "prompts": [
-      "Pourquoi ce sujet divise-t-il les gens ?",
-      "Quelle nuance ajouterais-tu ?",
-      "Qu'est-ce qui compte le plus dans la décision ?",
-      "Donne un exemple de la vie réelle."
+      "Qu'est-ce qui dépend de la personne ?",
+      "Qu'est-ce qui dépend du contexte ?",
+      "Qu'est-ce qui dépend des moyens disponibles ?",
+      "Quelle conclusion nuancée en tires-tu ?"
     ],
     "transferPrompt": "La maison intelligente simplifie-t-elle vraiment la vie ?"
   },
@@ -460,10 +460,10 @@
     "category": "technologie",
     "difficulty": "medium",
     "prompts": [
-      "Qu'est-ce qui te semble le plus important ?",
-      "Comment la situation pourrait-elle évoluer ?",
-      "Quel compromis serait acceptable ?",
-      "Relie le sujet à une expérience personnelle."
+      "Donne un exemple où cette idée fonctionne bien.",
+      "Donne un exemple où elle fonctionne mal.",
+      "Qu'est-ce qui explique la différence ?",
+      "Quelle règle générale proposerais-tu ?"
     ],
     "transferPrompt": "Les objets connectés sont-ils vraiment utiles ?"
   },
@@ -473,10 +473,10 @@
     "category": "technologie",
     "difficulty": "hard",
     "prompts": [
-      "Comment vois-tu ce sujet aujourd'hui ?",
-      "Quel problème principal faut-il résoudre ?",
-      "Quelle solution serait réaliste ?",
-      "Qu'est-ce qui pourrait mal fonctionner ?"
+      "Quelle serait la réponse la plus simple ?",
+      "Pourquoi cette réponse est-elle incomplète ?",
+      "Quelle nuance faut-il ajouter ?",
+      "Formule ta conclusion en une phrase."
     ],
     "transferPrompt": "Sommes-nous suffisamment attentifs à notre vie privée numérique ?"
   },
@@ -486,10 +486,10 @@
     "category": "technologie",
     "difficulty": "hard",
     "prompts": [
-      "Quelle est ta position spontanée ?",
-      "Quelle est ta raison principale ?",
-      "Quel contre-argument faut-il prendre au sérieux ?",
-      "Donne un exemple concret ou personnel."
+      "Quel changement récent influence ce sujet ?",
+      "Qu'est-ce qui pourrait encore changer ?",
+      "Quel scénario te paraît plausible ?",
+      "Comment faudrait-il s'y adapter ?"
     ],
     "transferPrompt": "Faut-il tout sauvegarder dans le cloud ?"
   },
@@ -499,10 +499,10 @@
     "category": "technologie",
     "difficulty": "medium",
     "prompts": [
-      "Qu'est-ce qui te semble le plus important ?",
-      "Comment la situation pourrait-elle évoluer ?",
-      "Quel compromis serait acceptable ?",
-      "Relie le sujet à une expérience personnelle."
+      "Quelle priorité mettrais-tu en premier ?",
+      "Quelle priorité viendrait ensuite ?",
+      "Qu'est-ce que tu accepterais de sacrifier ?",
+      "Explique ton ordre de priorité."
     ],
     "transferPrompt": "Quelles tâches ne devraient jamais être automatisées ?"
   },
@@ -512,10 +512,10 @@
     "category": "technologie",
     "difficulty": "medium",
     "prompts": [
-      "Quel choix ferais-tu personnellement ?",
-      "Qu'est-ce qui pourrait te faire changer d'avis ?",
-      "Quels sont les avantages et les inconvénients ?",
-      "Raconte une situation qui illustre ton choix."
+      "Quel exemple personnel peux-tu relier à ce sujet ?",
+      "Qu'as-tu ressenti ou observé ?",
+      "Qu'aurais-tu pu faire autrement ?",
+      "Est-ce que cela influence ton opinion aujourd'hui ?"
     ],
     "transferPrompt": "L'automatisation va-t-elle rendre le travail plus intéressant ?"
   },
@@ -538,10 +538,10 @@
     "category": "voyage",
     "difficulty": "easy",
     "prompts": [
-      "Pourquoi ce sujet divise-t-il les gens ?",
-      "Quelle nuance ajouterais-tu ?",
-      "Qu'est-ce qui compte le plus dans la décision ?",
-      "Donne un exemple de la vie réelle."
+      "Quel est le vrai problème derrière ce sujet ?",
+      "Quelles en sont les causes principales ?",
+      "Quelle solution te paraît réaliste ?",
+      "Quelle limite cette solution aurait-elle ?"
     ],
     "transferPrompt": "Voyager seul ou accompagné ?"
   },
@@ -551,10 +551,10 @@
     "category": "voyage",
     "difficulty": "hard",
     "prompts": [
-      "Quel choix ferais-tu personnellement ?",
-      "Qu'est-ce qui pourrait te faire changer d'avis ?",
-      "Quels sont les avantages et les inconvénients ?",
-      "Raconte une situation qui illustre ton choix."
+      "Comment voyais-tu ce sujet auparavant ?",
+      "Qu'est-ce qui peut faire évoluer un avis ?",
+      "Comment le vois-tu aujourd'hui ?",
+      "Donne un exemple de ce changement."
     ],
     "transferPrompt": "Le temps de trajet compte-t-il plus que le prix ?"
   },
@@ -564,10 +564,10 @@
     "category": "voyage",
     "difficulty": "hard",
     "prompts": [
-      "Comment vois-tu ce sujet aujourd'hui ?",
-      "Quel problème principal faut-il résoudre ?",
-      "Quelle solution serait réaliste ?",
-      "Qu'est-ce qui pourrait mal fonctionner ?"
+      "Quels sont les deux choix principaux ?",
+      "Quel avantage a le premier ?",
+      "Quel avantage a le second ?",
+      "Quel compromis choisirais-tu ?"
     ],
     "transferPrompt": "Train ou avion pour voyager en Europe ?"
   },
@@ -577,10 +577,10 @@
     "category": "voyage",
     "difficulty": "medium",
     "prompts": [
-      "Pourquoi ce sujet divise-t-il les gens ?",
-      "Quelle nuance ajouterais-tu ?",
-      "Qu'est-ce qui compte le plus dans la décision ?",
-      "Donne un exemple de la vie réelle."
+      "Raconte une situation liée à ce sujet.",
+      "Qu'est-ce qui s'est passé exactement ?",
+      "Comment as-tu réagi ou réagirais-tu ?",
+      "Quelle leçon en tirer ?"
     ],
     "transferPrompt": "Les imprévus rendent-ils un voyage plus mémorable ?"
   },
@@ -590,10 +590,10 @@
     "category": "voyage",
     "difficulty": "medium",
     "prompts": [
-      "Qu'est-ce qui te semble le plus important ?",
-      "Comment la situation pourrait-elle évoluer ?",
-      "Quel compromis serait acceptable ?",
-      "Relie le sujet à une expérience personnelle."
+      "Quel est le principal avantage ?",
+      "Quel est le principal inconvénient ?",
+      "Pour qui la réponse pourrait-elle être différente ?",
+      "Dans quelles conditions changerais-tu d'avis ?"
     ],
     "transferPrompt": "Faut-il beaucoup préparer un voyage ?"
   },
@@ -603,10 +603,10 @@
     "category": "voyage",
     "difficulty": "medium",
     "prompts": [
-      "Comment vois-tu ce sujet aujourd'hui ?",
-      "Quel problème principal faut-il résoudre ?",
-      "Quelle solution serait réaliste ?",
-      "Qu'est-ce qui pourrait mal fonctionner ?"
+      "Imagine que tu doives décider aujourd'hui.",
+      "Quels critères utiliserais-tu ?",
+      "Quel risque voudrais-tu éviter ?",
+      "Quelle décision prendrais-tu finalement ?"
     ],
     "transferPrompt": "Faut-il parler la langue du pays pour bien s'intégrer ?"
   },
@@ -616,10 +616,10 @@
     "category": "voyage",
     "difficulty": "medium",
     "prompts": [
-      "Quelle est ta position spontanée ?",
-      "Quelle est ta raison principale ?",
-      "Quel contre-argument faut-il prendre au sérieux ?",
-      "Donne un exemple concret ou personnel."
+      "Quelle opinion entend-on souvent sur ce sujet ?",
+      "Avec quelle partie es-tu d'accord ?",
+      "Quelle partie nuancerais-tu ?",
+      "Comment reformulerais-tu une position équilibrée ?"
     ],
     "transferPrompt": "Vivre quelques années à l'étranger est-il une bonne expérience ?"
   },
@@ -629,10 +629,10 @@
     "category": "voyage",
     "difficulty": "hard",
     "prompts": [
-      "Qu'est-ce qui te semble le plus important ?",
-      "Comment la situation pourrait-elle évoluer ?",
-      "Quel compromis serait acceptable ?",
-      "Relie le sujet à une expérience personnelle."
+      "Qu'est-ce qui te semble évident au premier abord ?",
+      "Qu'est-ce qui est plus compliqué qu'il n'y paraît ?",
+      "Quel détail change beaucoup la réponse ?",
+      "Donne un cas concret."
     ],
     "transferPrompt": "Peut-on profiter d'un voyage sans prendre beaucoup de photos ?"
   },
@@ -642,10 +642,10 @@
     "category": "voyage",
     "difficulty": "hard",
     "prompts": [
-      "Quel choix ferais-tu personnellement ?",
-      "Qu'est-ce qui pourrait te faire changer d'avis ?",
-      "Quels sont les avantages et les inconvénients ?",
-      "Raconte une situation qui illustre ton choix."
+      "Comment expliquerais-tu ce sujet à quelqu'un qui ne le connaît pas ?",
+      "Quel exemple simple utiliserais-tu ?",
+      "Quelle confusion faudrait-il éviter ?",
+      "Quelle idée devrait-il retenir ?"
     ],
     "transferPrompt": "Voyager léger ou tout prévoir ?"
   },
@@ -655,10 +655,10 @@
     "category": "relations",
     "difficulty": "easy",
     "prompts": [
-      "Quelle est ta position spontanée ?",
-      "Quelle est ta raison principale ?",
-      "Quel contre-argument faut-il prendre au sérieux ?",
-      "Donne un exemple concret ou personnel."
+      "Si tu devais convaincre quelqu'un, par quoi commencerais-tu ?",
+      "Quel argument serait le plus fort ?",
+      "Quelle objection pourrait-il faire ?",
+      "Comment lui répondrais-tu ?"
     ],
     "transferPrompt": "Peut-on rester proche sans se voir souvent ?"
   },
@@ -668,10 +668,10 @@
     "category": "relations",
     "difficulty": "easy",
     "prompts": [
-      "Pourquoi ce sujet divise-t-il les gens ?",
-      "Quelle nuance ajouterais-tu ?",
-      "Qu'est-ce qui compte le plus dans la décision ?",
-      "Donne un exemple de la vie réelle."
+      "Quel conseil donnerais-tu à quelqu'un confronté à ce sujet ?",
+      "Quelle erreur devrait-il éviter ?",
+      "Quelle première action pourrait-il faire ?",
+      "Quel résultat réaliste attendre ?"
     ],
     "transferPrompt": "Qu'est-ce qui fait durer une amitié ?"
   },
@@ -681,10 +681,10 @@
     "category": "relations",
     "difficulty": "medium",
     "prompts": [
-      "Quel choix ferais-tu personnellement ?",
-      "Qu'est-ce qui pourrait te faire changer d'avis ?",
-      "Quels sont les avantages et les inconvénients ?",
-      "Raconte une situation qui illustre ton choix."
+      "Quels acteurs sont concernés ?",
+      "Ont-ils les mêmes intérêts ?",
+      "Où peut apparaître un conflit ?",
+      "Quel compromis serait acceptable ?"
     ],
     "transferPrompt": "Peut-on éviter les conflits dans une relation ?"
   },
@@ -694,10 +694,10 @@
     "category": "relations",
     "difficulty": "medium",
     "prompts": [
-      "Comment vois-tu ce sujet aujourd'hui ?",
-      "Quel problème principal faut-il résoudre ?",
-      "Quelle solution serait réaliste ?",
-      "Qu'est-ce qui pourrait mal fonctionner ?"
+      "Que se passe-t-il à court terme ?",
+      "Et à long terme ?",
+      "Quelle conséquence est souvent oubliée ?",
+      "Laquelle compte le plus pour toi ?"
     ],
     "transferPrompt": "Faut-il toujours dire ce qu'on pense à ses proches ?"
   },
@@ -707,10 +707,10 @@
     "category": "relations",
     "difficulty": "hard",
     "prompts": [
-      "Pourquoi ce sujet divise-t-il les gens ?",
-      "Quelle nuance ajouterais-tu ?",
-      "Qu'est-ce qui compte le plus dans la décision ?",
-      "Donne un exemple de la vie réelle."
+      "Qu'est-ce qui dépend de la personne ?",
+      "Qu'est-ce qui dépend du contexte ?",
+      "Qu'est-ce qui dépend des moyens disponibles ?",
+      "Quelle conclusion nuancée en tires-tu ?"
     ],
     "transferPrompt": "Peut-on vraiment retrouver une confiance perdue ?"
   },
@@ -720,10 +720,10 @@
     "category": "relations",
     "difficulty": "hard",
     "prompts": [
-      "Qu'est-ce qui te semble le plus important ?",
-      "Comment la situation pourrait-elle évoluer ?",
-      "Quel compromis serait acceptable ?",
-      "Relie le sujet à une expérience personnelle."
+      "Donne un exemple où cette idée fonctionne bien.",
+      "Donne un exemple où elle fonctionne mal.",
+      "Qu'est-ce qui explique la différence ?",
+      "Quelle règle générale proposerais-tu ?"
     ],
     "transferPrompt": "La confiance se construit-elle lentement ?"
   },
@@ -733,10 +733,10 @@
     "category": "relations",
     "difficulty": "medium",
     "prompts": [
-      "Comment vois-tu ce sujet aujourd'hui ?",
-      "Quel problème principal faut-il résoudre ?",
-      "Quelle solution serait réaliste ?",
-      "Qu'est-ce qui pourrait mal fonctionner ?"
+      "Quelle serait la réponse la plus simple ?",
+      "Pourquoi cette réponse est-elle incomplète ?",
+      "Quelle nuance faut-il ajouter ?",
+      "Formule ta conclusion en une phrase."
     ],
     "transferPrompt": "Les nouvelles rencontres deviennent-elles plus difficiles avec l'âge ?"
   },
@@ -746,10 +746,10 @@
     "category": "relations",
     "difficulty": "medium",
     "prompts": [
-      "Quelle est ta position spontanée ?",
-      "Quelle est ta raison principale ?",
-      "Quel contre-argument faut-il prendre au sérieux ?",
-      "Donne un exemple concret ou personnel."
+      "Quel changement récent influence ce sujet ?",
+      "Qu'est-ce qui pourrait encore changer ?",
+      "Quel scénario te paraît plausible ?",
+      "Comment faudrait-il s'y adapter ?"
     ],
     "transferPrompt": "Faut-il avoir beaucoup d'amis ou quelques amis proches ?"
   },
@@ -759,10 +759,10 @@
     "category": "relations",
     "difficulty": "medium",
     "prompts": [
-      "Qu'est-ce qui te semble le plus important ?",
-      "Comment la situation pourrait-elle évoluer ?",
-      "Quel compromis serait acceptable ?",
-      "Relie le sujet à une expérience personnelle."
+      "Quelle priorité mettrais-tu en premier ?",
+      "Quelle priorité viendrait ensuite ?",
+      "Qu'est-ce que tu accepterais de sacrifier ?",
+      "Explique ton ordre de priorité."
     ],
     "transferPrompt": "Donner des conseils non demandés est-il une bonne idée ?"
   },
@@ -772,10 +772,10 @@
     "category": "relations",
     "difficulty": "medium",
     "prompts": [
-      "Quel choix ferais-tu personnellement ?",
-      "Qu'est-ce qui pourrait te faire changer d'avis ?",
-      "Quels sont les avantages et les inconvénients ?",
-      "Raconte une situation qui illustre ton choix."
+      "Quel exemple personnel peux-tu relier à ce sujet ?",
+      "Qu'as-tu ressenti ou observé ?",
+      "Qu'aurais-tu pu faire autrement ?",
+      "Est-ce que cela influence ton opinion aujourd'hui ?"
     ],
     "transferPrompt": "Savoir écouter est-il plus important que savoir conseiller ?"
   },
@@ -798,10 +798,10 @@
     "category": "argent",
     "difficulty": "easy",
     "prompts": [
-      "Pourquoi ce sujet divise-t-il les gens ?",
-      "Quelle nuance ajouterais-tu ?",
-      "Qu'est-ce qui compte le plus dans la décision ?",
-      "Donne un exemple de la vie réelle."
+      "Quel est le vrai problème derrière ce sujet ?",
+      "Quelles en sont les causes principales ?",
+      "Quelle solution te paraît réaliste ?",
+      "Quelle limite cette solution aurait-elle ?"
     ],
     "transferPrompt": "Épargner ou profiter de son argent maintenant ?"
   },
@@ -811,10 +811,10 @@
     "category": "argent",
     "difficulty": "medium",
     "prompts": [
-      "Quel choix ferais-tu personnellement ?",
-      "Qu'est-ce qui pourrait te faire changer d'avis ?",
-      "Quels sont les avantages et les inconvénients ?",
-      "Raconte une situation qui illustre ton choix."
+      "Comment voyais-tu ce sujet auparavant ?",
+      "Qu'est-ce qui peut faire évoluer un avis ?",
+      "Comment le vois-tu aujourd'hui ?",
+      "Donne un exemple de ce changement."
     ],
     "transferPrompt": "Posséder beaucoup de choses rend-il plus heureux ?"
   },
@@ -824,10 +824,10 @@
     "category": "argent",
     "difficulty": "medium",
     "prompts": [
-      "Comment vois-tu ce sujet aujourd'hui ?",
-      "Quel problème principal faut-il résoudre ?",
-      "Quelle solution serait réaliste ?",
-      "Qu'est-ce qui pourrait mal fonctionner ?"
+      "Quels sont les deux choix principaux ?",
+      "Quel avantage a le premier ?",
+      "Quel avantage a le second ?",
+      "Quel compromis choisirais-tu ?"
     ],
     "transferPrompt": "Acheter ou louer son logement ?"
   },
@@ -837,10 +837,10 @@
     "category": "argent",
     "difficulty": "medium",
     "prompts": [
-      "Pourquoi ce sujet divise-t-il les gens ?",
-      "Quelle nuance ajouterais-tu ?",
-      "Qu'est-ce qui compte le plus dans la décision ?",
-      "Donne un exemple de la vie réelle."
+      "Raconte une situation liée à ce sujet.",
+      "Qu'est-ce qui s'est passé exactement ?",
+      "Comment as-tu réagi ou réagirais-tu ?",
+      "Quelle leçon en tirer ?"
     ],
     "transferPrompt": "Paye-t-on plus facilement quand on ne voit pas l'argent partir ?"
   },
@@ -850,10 +850,10 @@
     "category": "argent",
     "difficulty": "medium",
     "prompts": [
-      "Qu'est-ce qui te semble le plus important ?",
-      "Comment la situation pourrait-elle évoluer ?",
-      "Quel compromis serait acceptable ?",
-      "Relie le sujet à une expérience personnelle."
+      "Quel est le principal avantage ?",
+      "Quel est le principal inconvénient ?",
+      "Pour qui la réponse pourrait-elle être différente ?",
+      "Dans quelles conditions changerais-tu d'avis ?"
     ],
     "transferPrompt": "Le paiement sans espèces simplifie-t-il trop les achats ?"
   },
@@ -863,10 +863,10 @@
     "category": "argent",
     "difficulty": "hard",
     "prompts": [
-      "Comment vois-tu ce sujet aujourd'hui ?",
-      "Quel problème principal faut-il résoudre ?",
-      "Quelle solution serait réaliste ?",
-      "Qu'est-ce qui pourrait mal fonctionner ?"
+      "Imagine que tu doives décider aujourd'hui.",
+      "Quels critères utiliserais-tu ?",
+      "Quel risque voudrais-tu éviter ?",
+      "Quelle décision prendrais-tu finalement ?"
     ],
     "transferPrompt": "L'argent peut-il créer des tensions même quand on en a assez ?"
   },
@@ -876,10 +876,10 @@
     "category": "argent",
     "difficulty": "hard",
     "prompts": [
-      "Quelle est ta position spontanée ?",
-      "Quelle est ta raison principale ?",
-      "Quel contre-argument faut-il prendre au sérieux ?",
-      "Donne un exemple concret ou personnel."
+      "Quelle opinion entend-on souvent sur ce sujet ?",
+      "Avec quelle partie es-tu d'accord ?",
+      "Quelle partie nuancerais-tu ?",
+      "Comment reformulerais-tu une position équilibrée ?"
     ],
     "transferPrompt": "Faut-il partager toutes les dépenses dans un couple ?"
   },
@@ -889,10 +889,10 @@
     "category": "argent",
     "difficulty": "medium",
     "prompts": [
-      "Qu'est-ce qui te semble le plus important ?",
-      "Comment la situation pourrait-elle évoluer ?",
-      "Quel compromis serait acceptable ?",
-      "Relie le sujet à une expérience personnelle."
+      "Qu'est-ce qui te semble évident au premier abord ?",
+      "Qu'est-ce qui est plus compliqué qu'il n'y paraît ?",
+      "Quel détail change beaucoup la réponse ?",
+      "Donne un cas concret."
     ],
     "transferPrompt": "Vaut-il mieux offrir une expérience qu'un objet ?"
   },
@@ -902,10 +902,10 @@
     "category": "argent",
     "difficulty": "medium",
     "prompts": [
-      "Quel choix ferais-tu personnellement ?",
-      "Qu'est-ce qui pourrait te faire changer d'avis ?",
-      "Quels sont les avantages et les inconvénients ?",
-      "Raconte une situation qui illustre ton choix."
+      "Comment expliquerais-tu ce sujet à quelqu'un qui ne le connaît pas ?",
+      "Quel exemple simple utiliserais-tu ?",
+      "Quelle confusion faudrait-il éviter ?",
+      "Quelle idée devrait-il retenir ?"
     ],
     "transferPrompt": "Un cadeau cher est-il forcément un meilleur cadeau ?"
   },
@@ -915,10 +915,10 @@
     "category": "sante",
     "difficulty": "easy",
     "prompts": [
-      "Quelle est ta position spontanée ?",
-      "Quelle est ta raison principale ?",
-      "Quel contre-argument faut-il prendre au sérieux ?",
-      "Donne un exemple concret ou personnel."
+      "Si tu devais convaincre quelqu'un, par quoi commencerais-tu ?",
+      "Quel argument serait le plus fort ?",
+      "Quelle objection pourrait-il faire ?",
+      "Comment lui répondrais-tu ?"
     ],
     "transferPrompt": "Faut-il garder les mêmes horaires de sommeil le week-end ?"
   },
@@ -928,10 +928,10 @@
     "category": "sante",
     "difficulty": "easy",
     "prompts": [
-      "Pourquoi ce sujet divise-t-il les gens ?",
-      "Quelle nuance ajouterais-tu ?",
-      "Qu'est-ce qui compte le plus dans la décision ?",
-      "Donne un exemple de la vie réelle."
+      "Quel conseil donnerais-tu à quelqu'un confronté à ce sujet ?",
+      "Quelle erreur devrait-il éviter ?",
+      "Quelle première action pourrait-il faire ?",
+      "Quel résultat réaliste attendre ?"
     ],
     "transferPrompt": "Dormir suffisamment est-il la priorité numéro un ?"
   },
@@ -941,10 +941,10 @@
     "category": "sante",
     "difficulty": "hard",
     "prompts": [
-      "Quel choix ferais-tu personnellement ?",
-      "Qu'est-ce qui pourrait te faire changer d'avis ?",
-      "Quels sont les avantages et les inconvénients ?",
-      "Raconte une situation qui illustre ton choix."
+      "Quels acteurs sont concernés ?",
+      "Ont-ils les mêmes intérêts ?",
+      "Où peut apparaître un conflit ?",
+      "Quel compromis serait acceptable ?"
     ],
     "transferPrompt": "Vaut-il mieux une petite activité régulière ou de grosses séances occasionnelles ?"
   },
@@ -954,10 +954,10 @@
     "category": "sante",
     "difficulty": "hard",
     "prompts": [
-      "Comment vois-tu ce sujet aujourd'hui ?",
-      "Quel problème principal faut-il résoudre ?",
-      "Quelle solution serait réaliste ?",
-      "Qu'est-ce qui pourrait mal fonctionner ?"
+      "Que se passe-t-il à court terme ?",
+      "Et à long terme ?",
+      "Quelle conséquence est souvent oubliée ?",
+      "Laquelle compte le plus pour toi ?"
     ],
     "transferPrompt": "Marcher tous les jours suffit-il pour rester actif ?"
   },
@@ -967,10 +967,10 @@
     "category": "sante",
     "difficulty": "medium",
     "prompts": [
-      "Pourquoi ce sujet divise-t-il les gens ?",
-      "Quelle nuance ajouterais-tu ?",
-      "Qu'est-ce qui compte le plus dans la décision ?",
-      "Donne un exemple de la vie réelle."
+      "Qu'est-ce qui dépend de la personne ?",
+      "Qu'est-ce qui dépend du contexte ?",
+      "Qu'est-ce qui dépend des moyens disponibles ?",
+      "Quelle conclusion nuancée en tires-tu ?"
     ],
     "transferPrompt": "Faut-il imposer une heure sans écran chaque soir ?"
   },
@@ -980,10 +980,10 @@
     "category": "sante",
     "difficulty": "medium",
     "prompts": [
-      "Qu'est-ce qui te semble le plus important ?",
-      "Comment la situation pourrait-elle évoluer ?",
-      "Quel compromis serait acceptable ?",
-      "Relie le sujet à une expérience personnelle."
+      "Donne un exemple où cette idée fonctionne bien.",
+      "Donne un exemple où elle fonctionne mal.",
+      "Qu'est-ce qui explique la différence ?",
+      "Quelle règle générale proposerais-tu ?"
     ],
     "transferPrompt": "Les écrans avant de dormir sont-ils un vrai problème ?"
   },
@@ -993,10 +993,10 @@
     "category": "sante",
     "difficulty": "medium",
     "prompts": [
-      "Comment vois-tu ce sujet aujourd'hui ?",
-      "Quel problème principal faut-il résoudre ?",
-      "Quelle solution serait réaliste ?",
-      "Qu'est-ce qui pourrait mal fonctionner ?"
+      "Quelle serait la réponse la plus simple ?",
+      "Pourquoi cette réponse est-elle incomplète ?",
+      "Quelle nuance faut-il ajouter ?",
+      "Formule ta conclusion en une phrase."
     ],
     "transferPrompt": "Pourquoi est-il parfois difficile de ne rien faire ?"
   },
@@ -1006,10 +1006,10 @@
     "category": "sante",
     "difficulty": "medium",
     "prompts": [
-      "Quelle est ta position spontanée ?",
-      "Quelle est ta raison principale ?",
-      "Quel contre-argument faut-il prendre au sérieux ?",
-      "Donne un exemple concret ou personnel."
+      "Quel changement récent influence ce sujet ?",
+      "Qu'est-ce qui pourrait encore changer ?",
+      "Quel scénario te paraît plausible ?",
+      "Comment faudrait-il s'y adapter ?"
     ],
     "transferPrompt": "Prendre du repos est-il aussi important que faire du sport ?"
   },
@@ -1019,10 +1019,10 @@
     "category": "sante",
     "difficulty": "hard",
     "prompts": [
-      "Qu'est-ce qui te semble le plus important ?",
-      "Comment la situation pourrait-elle évoluer ?",
-      "Quel compromis serait acceptable ?",
-      "Relie le sujet à une expérience personnelle."
+      "Quelle priorité mettrais-tu en premier ?",
+      "Quelle priorité viendrait ensuite ?",
+      "Qu'est-ce que tu accepterais de sacrifier ?",
+      "Explique ton ordre de priorité."
     ],
     "transferPrompt": "L'environnement compte-t-il plus que la volonté pour changer ses habitudes ?"
   },
@@ -1032,10 +1032,10 @@
     "category": "sante",
     "difficulty": "hard",
     "prompts": [
-      "Quel choix ferais-tu personnellement ?",
-      "Qu'est-ce qui pourrait te faire changer d'avis ?",
-      "Quels sont les avantages et les inconvénients ?",
-      "Raconte une situation qui illustre ton choix."
+      "Quel exemple personnel peux-tu relier à ce sujet ?",
+      "Qu'as-tu ressenti ou observé ?",
+      "Qu'aurais-tu pu faire autrement ?",
+      "Est-ce que cela influence ton opinion aujourd'hui ?"
     ],
     "transferPrompt": "Changer une habitude de santé demande-t-il surtout de la motivation ?"
   },
@@ -1058,10 +1058,10 @@
     "category": "sport",
     "difficulty": "easy",
     "prompts": [
-      "Pourquoi ce sujet divise-t-il les gens ?",
-      "Quelle nuance ajouterais-tu ?",
-      "Qu'est-ce qui compte le plus dans la décision ?",
-      "Donne un exemple de la vie réelle."
+      "Quel est le vrai problème derrière ce sujet ?",
+      "Quelles en sont les causes principales ?",
+      "Quelle solution te paraît réaliste ?",
+      "Quelle limite cette solution aurait-elle ?"
     ],
     "transferPrompt": "Sport collectif ou sport individuel ?"
   },
@@ -1071,10 +1071,10 @@
     "category": "sport",
     "difficulty": "medium",
     "prompts": [
-      "Quel choix ferais-tu personnellement ?",
-      "Qu'est-ce qui pourrait te faire changer d'avis ?",
-      "Quels sont les avantages et les inconvénients ?",
-      "Raconte une situation qui illustre ton choix."
+      "Comment voyais-tu ce sujet auparavant ?",
+      "Qu'est-ce qui peut faire évoluer un avis ?",
+      "Comment le vois-tu aujourd'hui ?",
+      "Donne un exemple de ce changement."
     ],
     "transferPrompt": "Peut-on rester motivé sans objectif sportif précis ?"
   },
@@ -1084,10 +1084,10 @@
     "category": "sport",
     "difficulty": "medium",
     "prompts": [
-      "Comment vois-tu ce sujet aujourd'hui ?",
-      "Quel problème principal faut-il résoudre ?",
-      "Quelle solution serait réaliste ?",
-      "Qu'est-ce qui pourrait mal fonctionner ?"
+      "Quels sont les deux choix principaux ?",
+      "Quel avantage a le premier ?",
+      "Quel avantage a le second ?",
+      "Quel compromis choisirais-tu ?"
     ],
     "transferPrompt": "Salle de sport ou activité en plein air ?"
   },
@@ -1097,10 +1097,10 @@
     "category": "sport",
     "difficulty": "hard",
     "prompts": [
-      "Pourquoi ce sujet divise-t-il les gens ?",
-      "Quelle nuance ajouterais-tu ?",
-      "Qu'est-ce qui compte le plus dans la décision ?",
-      "Donne un exemple de la vie réelle."
+      "Raconte une situation liée à ce sujet.",
+      "Qu'est-ce qui s'est passé exactement ?",
+      "Comment as-tu réagi ou réagirais-tu ?",
+      "Quelle leçon en tirer ?"
     ],
     "transferPrompt": "La régularité compte-t-elle plus que l'intensité ?"
   },
@@ -1110,10 +1110,10 @@
     "category": "sport",
     "difficulty": "hard",
     "prompts": [
-      "Qu'est-ce qui te semble le plus important ?",
-      "Comment la situation pourrait-elle évoluer ?",
-      "Quel compromis serait acceptable ?",
-      "Relie le sujet à une expérience personnelle."
+      "Quel est le principal avantage ?",
+      "Quel est le principal inconvénient ?",
+      "Pour qui la réponse pourrait-elle être différente ?",
+      "Dans quelles conditions changerais-tu d'avis ?"
     ],
     "transferPrompt": "Faut-il faire du sport même quand on manque de motivation ?"
   },
@@ -1123,10 +1123,10 @@
     "category": "sport",
     "difficulty": "medium",
     "prompts": [
-      "Comment vois-tu ce sujet aujourd'hui ?",
-      "Quel problème principal faut-il résoudre ?",
-      "Quelle solution serait réaliste ?",
-      "Qu'est-ce qui pourrait mal fonctionner ?"
+      "Imagine que tu doives décider aujourd'hui.",
+      "Quels critères utiliserais-tu ?",
+      "Quel risque voudrais-tu éviter ?",
+      "Quelle décision prendrais-tu finalement ?"
     ],
     "transferPrompt": "Les sportifs professionnels sont-ils de bons modèles ?"
   },
@@ -1136,10 +1136,10 @@
     "category": "sport",
     "difficulty": "medium",
     "prompts": [
-      "Quelle est ta position spontanée ?",
-      "Quelle est ta raison principale ?",
-      "Quel contre-argument faut-il prendre au sérieux ?",
-      "Donne un exemple concret ou personnel."
+      "Quelle opinion entend-on souvent sur ce sujet ?",
+      "Avec quelle partie es-tu d'accord ?",
+      "Quelle partie nuancerais-tu ?",
+      "Comment reformulerais-tu une position équilibrée ?"
     ],
     "transferPrompt": "Regarder du sport peut-il donner envie d'en pratiquer ?"
   },
@@ -1149,10 +1149,10 @@
     "category": "sport",
     "difficulty": "medium",
     "prompts": [
-      "Qu'est-ce qui te semble le plus important ?",
-      "Comment la situation pourrait-elle évoluer ?",
-      "Quel compromis serait acceptable ?",
-      "Relie le sujet à une expérience personnelle."
+      "Qu'est-ce qui te semble évident au premier abord ?",
+      "Qu'est-ce qui est plus compliqué qu'il n'y paraît ?",
+      "Quel détail change beaucoup la réponse ?",
+      "Donne un cas concret."
     ],
     "transferPrompt": "Les enfants devraient-ils essayer plusieurs sports avant de se spécialiser ?"
   },
@@ -1162,10 +1162,10 @@
     "category": "sport",
     "difficulty": "medium",
     "prompts": [
-      "Quel choix ferais-tu personnellement ?",
-      "Qu'est-ce qui pourrait te faire changer d'avis ?",
-      "Quels sont les avantages et les inconvénients ?",
-      "Raconte une situation qui illustre ton choix."
+      "Comment expliquerais-tu ce sujet à quelqu'un qui ne le connaît pas ?",
+      "Quel exemple simple utiliserais-tu ?",
+      "Quelle confusion faudrait-il éviter ?",
+      "Quelle idée devrait-il retenir ?"
     ],
     "transferPrompt": "Faut-il pousser les enfants à faire du sport ?"
   },
@@ -1175,10 +1175,10 @@
     "category": "culture",
     "difficulty": "easy",
     "prompts": [
-      "Quelle est ta position spontanée ?",
-      "Quelle est ta raison principale ?",
-      "Quel contre-argument faut-il prendre au sérieux ?",
-      "Donne un exemple concret ou personnel."
+      "Si tu devais convaincre quelqu'un, par quoi commencerais-tu ?",
+      "Quel argument serait le plus fort ?",
+      "Quelle objection pourrait-il faire ?",
+      "Comment lui répondrais-tu ?"
     ],
     "transferPrompt": "Une adaptation doit-elle rester fidèle au livre ?"
   },
@@ -1188,10 +1188,10 @@
     "category": "culture",
     "difficulty": "easy",
     "prompts": [
-      "Pourquoi ce sujet divise-t-il les gens ?",
-      "Quelle nuance ajouterais-tu ?",
-      "Qu'est-ce qui compte le plus dans la décision ?",
-      "Donne un exemple de la vie réelle."
+      "Quel conseil donnerais-tu à quelqu'un confronté à ce sujet ?",
+      "Quelle erreur devrait-il éviter ?",
+      "Quelle première action pourrait-il faire ?",
+      "Quel résultat réaliste attendre ?"
     ],
     "transferPrompt": "Livre ou film ?"
   },
@@ -1201,10 +1201,10 @@
     "category": "culture",
     "difficulty": "medium",
     "prompts": [
-      "Quel choix ferais-tu personnellement ?",
-      "Qu'est-ce qui pourrait te faire changer d'avis ?",
-      "Quels sont les avantages et les inconvénients ?",
-      "Raconte une situation qui illustre ton choix."
+      "Quels acteurs sont concernés ?",
+      "Ont-ils les mêmes intérêts ?",
+      "Où peut apparaître un conflit ?",
+      "Quel compromis serait acceptable ?"
     ],
     "transferPrompt": "Les plateformes de streaming offrent-elles trop de choix ?"
   },
@@ -1214,10 +1214,10 @@
     "category": "culture",
     "difficulty": "medium",
     "prompts": [
-      "Comment vois-tu ce sujet aujourd'hui ?",
-      "Quel problème principal faut-il résoudre ?",
-      "Quelle solution serait réaliste ?",
-      "Qu'est-ce qui pourrait mal fonctionner ?"
+      "Que se passe-t-il à court terme ?",
+      "Et à long terme ?",
+      "Quelle conséquence est souvent oubliée ?",
+      "Laquelle compte le plus pour toi ?"
     ],
     "transferPrompt": "Regarder une série d'un coup ou lentement ?"
   },
@@ -1227,10 +1227,10 @@
     "category": "culture",
     "difficulty": "medium",
     "prompts": [
-      "Pourquoi ce sujet divise-t-il les gens ?",
-      "Quelle nuance ajouterais-tu ?",
-      "Qu'est-ce qui compte le plus dans la décision ?",
-      "Donne un exemple de la vie réelle."
+      "Qu'est-ce qui dépend de la personne ?",
+      "Qu'est-ce qui dépend du contexte ?",
+      "Qu'est-ce qui dépend des moyens disponibles ?",
+      "Quelle conclusion nuancée en tires-tu ?"
     ],
     "transferPrompt": "Écouter toujours les mêmes chansons est-il un problème ?"
   },
@@ -1240,10 +1240,10 @@
     "category": "culture",
     "difficulty": "medium",
     "prompts": [
-      "Qu'est-ce qui te semble le plus important ?",
-      "Comment la situation pourrait-elle évoluer ?",
-      "Quel compromis serait acceptable ?",
-      "Relie le sujet à une expérience personnelle."
+      "Donne un exemple où cette idée fonctionne bien.",
+      "Donne un exemple où elle fonctionne mal.",
+      "Qu'est-ce qui explique la différence ?",
+      "Quelle règle générale proposerais-tu ?"
     ],
     "transferPrompt": "La musique change-t-elle vraiment notre humeur ?"
   },
@@ -1253,10 +1253,10 @@
     "category": "culture",
     "difficulty": "hard",
     "prompts": [
-      "Comment vois-tu ce sujet aujourd'hui ?",
-      "Quel problème principal faut-il résoudre ?",
-      "Quelle solution serait réaliste ?",
-      "Qu'est-ce qui pourrait mal fonctionner ?"
+      "Quelle serait la réponse la plus simple ?",
+      "Pourquoi cette réponse est-elle incomplète ?",
+      "Quelle nuance faut-il ajouter ?",
+      "Formule ta conclusion en une phrase."
     ],
     "transferPrompt": "La culture devrait-elle être plus accessible gratuitement ?"
   },
@@ -1266,10 +1266,10 @@
     "category": "culture",
     "difficulty": "hard",
     "prompts": [
-      "Quelle est ta position spontanée ?",
-      "Quelle est ta raison principale ?",
-      "Quel contre-argument faut-il prendre au sérieux ?",
-      "Donne un exemple concret ou personnel."
+      "Quel changement récent influence ce sujet ?",
+      "Qu'est-ce qui pourrait encore changer ?",
+      "Quel scénario te paraît plausible ?",
+      "Comment faudrait-il s'y adapter ?"
     ],
     "transferPrompt": "Les musées doivent-ils devenir plus interactifs ?"
   },
@@ -1279,10 +1279,10 @@
     "category": "culture",
     "difficulty": "medium",
     "prompts": [
-      "Qu'est-ce qui te semble le plus important ?",
-      "Comment la situation pourrait-elle évoluer ?",
-      "Quel compromis serait acceptable ?",
-      "Relie le sujet à une expérience personnelle."
+      "Quelle priorité mettrais-tu en premier ?",
+      "Quelle priorité viendrait ensuite ?",
+      "Qu'est-ce que tu accepterais de sacrifier ?",
+      "Explique ton ordre de priorité."
     ],
     "transferPrompt": "Apprend-on mieux en écoutant ou en lisant ?"
   },
@@ -1292,10 +1292,10 @@
     "category": "culture",
     "difficulty": "medium",
     "prompts": [
-      "Quel choix ferais-tu personnellement ?",
-      "Qu'est-ce qui pourrait te faire changer d'avis ?",
-      "Quels sont les avantages et les inconvénients ?",
-      "Raconte une situation qui illustre ton choix."
+      "Quel exemple personnel peux-tu relier à ce sujet ?",
+      "Qu'as-tu ressenti ou observé ?",
+      "Qu'aurais-tu pu faire autrement ?",
+      "Est-ce que cela influence ton opinion aujourd'hui ?"
     ],
     "transferPrompt": "Les podcasts peuvent-ils remplacer certains livres ou articles ?"
   },
@@ -1318,10 +1318,10 @@
     "category": "education",
     "difficulty": "easy",
     "prompts": [
-      "Pourquoi ce sujet divise-t-il les gens ?",
-      "Quelle nuance ajouterais-tu ?",
-      "Qu'est-ce qui compte le plus dans la décision ?",
-      "Donne un exemple de la vie réelle."
+      "Quel est le vrai problème derrière ce sujet ?",
+      "Quelles en sont les causes principales ?",
+      "Quelle solution te paraît réaliste ?",
+      "Quelle limite cette solution aurait-elle ?"
     ],
     "transferPrompt": "Faut-il apprendre plusieurs langues dès l'enfance ?"
   },
@@ -1331,10 +1331,10 @@
     "category": "education",
     "difficulty": "hard",
     "prompts": [
-      "Quel choix ferais-tu personnellement ?",
-      "Qu'est-ce qui pourrait te faire changer d'avis ?",
-      "Quels sont les avantages et les inconvénients ?",
-      "Raconte une situation qui illustre ton choix."
+      "Comment voyais-tu ce sujet auparavant ?",
+      "Qu'est-ce qui peut faire évoluer un avis ?",
+      "Comment le vois-tu aujourd'hui ?",
+      "Donne un exemple de ce changement."
     ],
     "transferPrompt": "Faut-il évaluer autrement que par des notes ?"
   },
@@ -1344,10 +1344,10 @@
     "category": "education",
     "difficulty": "hard",
     "prompts": [
-      "Comment vois-tu ce sujet aujourd'hui ?",
-      "Quel problème principal faut-il résoudre ?",
-      "Quelle solution serait réaliste ?",
-      "Qu'est-ce qui pourrait mal fonctionner ?"
+      "Quels sont les deux choix principaux ?",
+      "Quel avantage a le premier ?",
+      "Quel avantage a le second ?",
+      "Quel compromis choisirais-tu ?"
     ],
     "transferPrompt": "Les notes motivent-elles les élèves ?"
   },
@@ -1357,10 +1357,10 @@
     "category": "education",
     "difficulty": "medium",
     "prompts": [
-      "Pourquoi ce sujet divise-t-il les gens ?",
-      "Quelle nuance ajouterais-tu ?",
-      "Qu'est-ce qui compte le plus dans la décision ?",
-      "Donne un exemple de la vie réelle."
+      "Raconte une situation liée à ce sujet.",
+      "Qu'est-ce qui s'est passé exactement ?",
+      "Comment as-tu réagi ou réagirais-tu ?",
+      "Quelle leçon en tirer ?"
     ],
     "transferPrompt": "L'école prépare-t-elle suffisamment à la vie quotidienne ?"
   },
@@ -1370,10 +1370,10 @@
     "category": "education",
     "difficulty": "medium",
     "prompts": [
-      "Qu'est-ce qui te semble le plus important ?",
-      "Comment la situation pourrait-elle évoluer ?",
-      "Quel compromis serait acceptable ?",
-      "Relie le sujet à une expérience personnelle."
+      "Quel est le principal avantage ?",
+      "Quel est le principal inconvénient ?",
+      "Pour qui la réponse pourrait-elle être différente ?",
+      "Dans quelles conditions changerais-tu d'avis ?"
     ],
     "transferPrompt": "Les cours devraient-ils être plus pratiques ?"
   },
@@ -1383,10 +1383,10 @@
     "category": "education",
     "difficulty": "medium",
     "prompts": [
-      "Comment vois-tu ce sujet aujourd'hui ?",
-      "Quel problème principal faut-il résoudre ?",
-      "Quelle solution serait réaliste ?",
-      "Qu'est-ce qui pourrait mal fonctionner ?"
+      "Imagine que tu doives décider aujourd'hui.",
+      "Quels critères utiliserais-tu ?",
+      "Quel risque voudrais-tu éviter ?",
+      "Quelle décision prendrais-tu finalement ?"
     ],
     "transferPrompt": "Apprend-on mieux seul ou avec un professeur ?"
   },
@@ -1396,10 +1396,10 @@
     "category": "education",
     "difficulty": "medium",
     "prompts": [
-      "Quelle est ta position spontanée ?",
-      "Quelle est ta raison principale ?",
-      "Quel contre-argument faut-il prendre au sérieux ?",
-      "Donne un exemple concret ou personnel."
+      "Quelle opinion entend-on souvent sur ce sujet ?",
+      "Avec quelle partie es-tu d'accord ?",
+      "Quelle partie nuancerais-tu ?",
+      "Comment reformulerais-tu une position équilibrée ?"
     ],
     "transferPrompt": "Les cours en ligne peuvent-ils remplacer certains cours en classe ?"
   },
@@ -1409,10 +1409,10 @@
     "category": "education",
     "difficulty": "hard",
     "prompts": [
-      "Qu'est-ce qui te semble le plus important ?",
-      "Comment la situation pourrait-elle évoluer ?",
-      "Quel compromis serait acceptable ?",
-      "Relie le sujet à une expérience personnelle."
+      "Qu'est-ce qui te semble évident au premier abord ?",
+      "Qu'est-ce qui est plus compliqué qu'il n'y paraît ?",
+      "Quel détail change beaucoup la réponse ?",
+      "Donne un cas concret."
     ],
     "transferPrompt": "Comment utiliser l'intelligence artificielle sans arrêter de réfléchir soi-même ?"
   },
@@ -1422,10 +1422,10 @@
     "category": "education",
     "difficulty": "hard",
     "prompts": [
-      "Quel choix ferais-tu personnellement ?",
-      "Qu'est-ce qui pourrait te faire changer d'avis ?",
-      "Quels sont les avantages et les inconvénients ?",
-      "Raconte une situation qui illustre ton choix."
+      "Comment expliquerais-tu ce sujet à quelqu'un qui ne le connaît pas ?",
+      "Quel exemple simple utiliserais-tu ?",
+      "Quelle confusion faudrait-il éviter ?",
+      "Quelle idée devrait-il retenir ?"
     ],
     "transferPrompt": "L'intelligence artificielle a-t-elle sa place à l'école ?"
   },
@@ -1435,10 +1435,10 @@
     "category": "environnement",
     "difficulty": "easy",
     "prompts": [
-      "Quelle est ta position spontanée ?",
-      "Quelle est ta raison principale ?",
-      "Quel contre-argument faut-il prendre au sérieux ?",
-      "Donne un exemple concret ou personnel."
+      "Si tu devais convaincre quelqu'un, par quoi commencerais-tu ?",
+      "Quel argument serait le plus fort ?",
+      "Quelle objection pourrait-il faire ?",
+      "Comment lui répondrais-tu ?"
     ],
     "transferPrompt": "Faut-il accepter de payer plus cher pour consommer plus durablement ?"
   },
@@ -1448,10 +1448,10 @@
     "category": "environnement",
     "difficulty": "easy",
     "prompts": [
-      "Pourquoi ce sujet divise-t-il les gens ?",
-      "Quelle nuance ajouterais-tu ?",
-      "Qu'est-ce qui compte le plus dans la décision ?",
-      "Donne un exemple de la vie réelle."
+      "Quel conseil donnerais-tu à quelqu'un confronté à ce sujet ?",
+      "Quelle erreur devrait-il éviter ?",
+      "Quelle première action pourrait-il faire ?",
+      "Quel résultat réaliste attendre ?"
     ],
     "transferPrompt": "Acheter local change-t-il vraiment quelque chose ?"
   },
@@ -1461,10 +1461,10 @@
     "category": "environnement",
     "difficulty": "medium",
     "prompts": [
-      "Quel choix ferais-tu personnellement ?",
-      "Qu'est-ce qui pourrait te faire changer d'avis ?",
-      "Quels sont les avantages et les inconvénients ?",
-      "Raconte une situation qui illustre ton choix."
+      "Quels acteurs sont concernés ?",
+      "Ont-ils les mêmes intérêts ?",
+      "Où peut apparaître un conflit ?",
+      "Quel compromis serait acceptable ?"
     ],
     "transferPrompt": "Les villes devraient-elles réduire davantage la place de la voiture ?"
   },
@@ -1474,10 +1474,10 @@
     "category": "environnement",
     "difficulty": "medium",
     "prompts": [
-      "Comment vois-tu ce sujet aujourd'hui ?",
-      "Quel problème principal faut-il résoudre ?",
-      "Quelle solution serait réaliste ?",
-      "Qu'est-ce qui pourrait mal fonctionner ?"
+      "Que se passe-t-il à court terme ?",
+      "Et à long terme ?",
+      "Quelle conséquence est souvent oubliée ?",
+      "Laquelle compte le plus pour toi ?"
     ],
     "transferPrompt": "Voiture ou transports en commun ?"
   },
@@ -1487,10 +1487,10 @@
     "category": "environnement",
     "difficulty": "hard",
     "prompts": [
-      "Pourquoi ce sujet divise-t-il les gens ?",
-      "Quelle nuance ajouterais-tu ?",
-      "Qu'est-ce qui compte le plus dans la décision ?",
-      "Donne un exemple de la vie réelle."
+      "Qu'est-ce qui dépend de la personne ?",
+      "Qu'est-ce qui dépend du contexte ?",
+      "Qu'est-ce qui dépend des moyens disponibles ?",
+      "Quelle conclusion nuancée en tires-tu ?"
     ],
     "transferPrompt": "Réparer devrait-il être plus simple que remplacer ?"
   },
@@ -1500,10 +1500,10 @@
     "category": "environnement",
     "difficulty": "hard",
     "prompts": [
-      "Qu'est-ce qui te semble le plus important ?",
-      "Comment la situation pourrait-elle évoluer ?",
-      "Quel compromis serait acceptable ?",
-      "Relie le sujet à une expérience personnelle."
+      "Donne un exemple où cette idée fonctionne bien.",
+      "Donne un exemple où elle fonctionne mal.",
+      "Qu'est-ce qui explique la différence ?",
+      "Quelle règle générale proposerais-tu ?"
     ],
     "transferPrompt": "Acheter d'occasion devrait-il devenir normal ?"
   },
@@ -1513,10 +1513,10 @@
     "category": "environnement",
     "difficulty": "medium",
     "prompts": [
-      "Comment vois-tu ce sujet aujourd'hui ?",
-      "Quel problème principal faut-il résoudre ?",
-      "Quelle solution serait réaliste ?",
-      "Qu'est-ce qui pourrait mal fonctionner ?"
+      "Quelle serait la réponse la plus simple ?",
+      "Pourquoi cette réponse est-elle incomplète ?",
+      "Quelle nuance faut-il ajouter ?",
+      "Formule ta conclusion en une phrase."
     ],
     "transferPrompt": "Comment réduire le gaspillage sans compliquer le quotidien ?"
   },
@@ -1526,10 +1526,10 @@
     "category": "environnement",
     "difficulty": "medium",
     "prompts": [
-      "Quelle est ta position spontanée ?",
-      "Quelle est ta raison principale ?",
-      "Quel contre-argument faut-il prendre au sérieux ?",
-      "Donne un exemple concret ou personnel."
+      "Quel changement récent influence ce sujet ?",
+      "Qu'est-ce qui pourrait encore changer ?",
+      "Quel scénario te paraît plausible ?",
+      "Comment faudrait-il s'y adapter ?"
     ],
     "transferPrompt": "Le gaspillage alimentaire est-il surtout un problème individuel ?"
   },
@@ -1539,10 +1539,10 @@
     "category": "environnement",
     "difficulty": "medium",
     "prompts": [
-      "Qu'est-ce qui te semble le plus important ?",
-      "Comment la situation pourrait-elle évoluer ?",
-      "Quel compromis serait acceptable ?",
-      "Relie le sujet à une expérience personnelle."
+      "Quelle priorité mettrais-tu en premier ?",
+      "Quelle priorité viendrait ensuite ?",
+      "Qu'est-ce que tu accepterais de sacrifier ?",
+      "Explique ton ordre de priorité."
     ],
     "transferPrompt": "Peut-on concilier envie de voyager et impact écologique ?"
   },
@@ -1552,10 +1552,10 @@
     "category": "environnement",
     "difficulty": "medium",
     "prompts": [
-      "Quel choix ferais-tu personnellement ?",
-      "Qu'est-ce qui pourrait te faire changer d'avis ?",
-      "Quels sont les avantages et les inconvénients ?",
-      "Raconte une situation qui illustre ton choix."
+      "Quel exemple personnel peux-tu relier à ce sujet ?",
+      "Qu'as-tu ressenti ou observé ?",
+      "Qu'aurais-tu pu faire autrement ?",
+      "Est-ce que cela influence ton opinion aujourd'hui ?"
     ],
     "transferPrompt": "Voyager moins est-il nécessaire pour l'environnement ?"
   },
@@ -1578,10 +1578,10 @@
     "category": "logement",
     "difficulty": "easy",
     "prompts": [
-      "Pourquoi ce sujet divise-t-il les gens ?",
-      "Quelle nuance ajouterais-tu ?",
-      "Qu'est-ce qui compte le plus dans la décision ?",
-      "Donne un exemple de la vie réelle."
+      "Quel est le vrai problème derrière ce sujet ?",
+      "Quelles en sont les causes principales ?",
+      "Quelle solution te paraît réaliste ?",
+      "Quelle limite cette solution aurait-elle ?"
     ],
     "transferPrompt": "Ville ou campagne ?"
   },
@@ -1591,10 +1591,10 @@
     "category": "logement",
     "difficulty": "medium",
     "prompts": [
-      "Quel choix ferais-tu personnellement ?",
-      "Qu'est-ce qui pourrait te faire changer d'avis ?",
-      "Quels sont les avantages et les inconvénients ?",
-      "Raconte une situation qui illustre ton choix."
+      "Comment voyais-tu ce sujet auparavant ?",
+      "Qu'est-ce qui peut faire évoluer un avis ?",
+      "Comment le vois-tu aujourd'hui ?",
+      "Donne un exemple de ce changement."
     ],
     "transferPrompt": "La localisation est-elle plus importante que la taille du logement ?"
   },
@@ -1604,10 +1604,10 @@
     "category": "logement",
     "difficulty": "medium",
     "prompts": [
-      "Comment vois-tu ce sujet aujourd'hui ?",
-      "Quel problème principal faut-il résoudre ?",
-      "Quelle solution serait réaliste ?",
-      "Qu'est-ce qui pourrait mal fonctionner ?"
+      "Quels sont les deux choix principaux ?",
+      "Quel avantage a le premier ?",
+      "Quel avantage a le second ?",
+      "Quel compromis choisirais-tu ?"
     ],
     "transferPrompt": "Petit logement bien placé ou grand logement loin du centre ?"
   },
@@ -1617,10 +1617,10 @@
     "category": "logement",
     "difficulty": "medium",
     "prompts": [
-      "Pourquoi ce sujet divise-t-il les gens ?",
-      "Quelle nuance ajouterais-tu ?",
-      "Qu'est-ce qui compte le plus dans la décision ?",
-      "Donne un exemple de la vie réelle."
+      "Raconte une situation liée à ce sujet.",
+      "Qu'est-ce qui s'est passé exactement ?",
+      "Comment as-tu réagi ou réagirais-tu ?",
+      "Quelle leçon en tirer ?"
     ],
     "transferPrompt": "Un bon voisinage peut-il changer la qualité de vie ?"
   },
@@ -1630,10 +1630,10 @@
     "category": "logement",
     "difficulty": "medium",
     "prompts": [
-      "Qu'est-ce qui te semble le plus important ?",
-      "Comment la situation pourrait-elle évoluer ?",
-      "Quel compromis serait acceptable ?",
-      "Relie le sujet à une expérience personnelle."
+      "Quel est le principal avantage ?",
+      "Quel est le principal inconvénient ?",
+      "Pour qui la réponse pourrait-elle être différente ?",
+      "Dans quelles conditions changerais-tu d'avis ?"
     ],
     "transferPrompt": "Faut-il bien connaître ses voisins ?"
   },
@@ -1643,10 +1643,10 @@
     "category": "logement",
     "difficulty": "hard",
     "prompts": [
-      "Comment vois-tu ce sujet aujourd'hui ?",
-      "Quel problème principal faut-il résoudre ?",
-      "Quelle solution serait réaliste ?",
-      "Qu'est-ce qui pourrait mal fonctionner ?"
+      "Imagine que tu doives décider aujourd'hui.",
+      "Quels critères utiliserais-tu ?",
+      "Quel risque voudrais-tu éviter ?",
+      "Quelle décision prendrais-tu finalement ?"
     ],
     "transferPrompt": "À quel moment faut-il accepter de changer de quartier ou de ville ?"
   },
@@ -1656,10 +1656,10 @@
     "category": "logement",
     "difficulty": "hard",
     "prompts": [
-      "Quelle est ta position spontanée ?",
-      "Quelle est ta raison principale ?",
-      "Quel contre-argument faut-il prendre au sérieux ?",
-      "Donne un exemple concret ou personnel."
+      "Quelle opinion entend-on souvent sur ce sujet ?",
+      "Avec quelle partie es-tu d'accord ?",
+      "Quelle partie nuancerais-tu ?",
+      "Comment reformulerais-tu une position équilibrée ?"
     ],
     "transferPrompt": "Déménager souvent est-il enrichissant ou fatigant ?"
   },
@@ -1669,10 +1669,10 @@
     "category": "logement",
     "difficulty": "medium",
     "prompts": [
-      "Qu'est-ce qui te semble le plus important ?",
-      "Comment la situation pourrait-elle évoluer ?",
-      "Quel compromis serait acceptable ?",
-      "Relie le sujet à une expérience personnelle."
+      "Qu'est-ce qui te semble évident au premier abord ?",
+      "Qu'est-ce qui est plus compliqué qu'il n'y paraît ?",
+      "Quel détail change beaucoup la réponse ?",
+      "Donne un cas concret."
     ],
     "transferPrompt": "Faut-il privilégier le confort ou l'esthétique chez soi ?"
   },
@@ -1682,10 +1682,10 @@
     "category": "logement",
     "difficulty": "medium",
     "prompts": [
-      "Quel choix ferais-tu personnellement ?",
-      "Qu'est-ce qui pourrait te faire changer d'avis ?",
-      "Quels sont les avantages et les inconvénients ?",
-      "Raconte une situation qui illustre ton choix."
+      "Comment expliquerais-tu ce sujet à quelqu'un qui ne le connaît pas ?",
+      "Quel exemple simple utiliserais-tu ?",
+      "Quelle confusion faudrait-il éviter ?",
+      "Quelle idée devrait-il retenir ?"
     ],
     "transferPrompt": "La décoration influence-t-elle vraiment le bien-être ?"
   },
@@ -1695,10 +1695,10 @@
     "category": "mobilite",
     "difficulty": "easy",
     "prompts": [
-      "Quelle est ta position spontanée ?",
-      "Quelle est ta raison principale ?",
-      "Quel contre-argument faut-il prendre au sérieux ?",
-      "Donne un exemple concret ou personnel."
+      "Si tu devais convaincre quelqu'un, par quoi commencerais-tu ?",
+      "Quel argument serait le plus fort ?",
+      "Quelle objection pourrait-il faire ?",
+      "Comment lui répondrais-tu ?"
     ],
     "transferPrompt": "Marcher davantage peut-il remplacer certains trajets motorisés ?"
   },
@@ -1708,10 +1708,10 @@
     "category": "mobilite",
     "difficulty": "easy",
     "prompts": [
-      "Pourquoi ce sujet divise-t-il les gens ?",
-      "Quelle nuance ajouterais-tu ?",
-      "Qu'est-ce qui compte le plus dans la décision ?",
-      "Donne un exemple de la vie réelle."
+      "Quel conseil donnerais-tu à quelqu'un confronté à ce sujet ?",
+      "Quelle erreur devrait-il éviter ?",
+      "Quelle première action pourrait-il faire ?",
+      "Quel résultat réaliste attendre ?"
     ],
     "transferPrompt": "Vélo ou transports en commun en ville ?"
   },
@@ -1721,10 +1721,10 @@
     "category": "mobilite",
     "difficulty": "hard",
     "prompts": [
-      "Quel choix ferais-tu personnellement ?",
-      "Qu'est-ce qui pourrait te faire changer d'avis ?",
-      "Quels sont les avantages et les inconvénients ?",
-      "Raconte une situation qui illustre ton choix."
+      "Quels acteurs sont concernés ?",
+      "Ont-ils les mêmes intérêts ?",
+      "Où peut apparaître un conflit ?",
+      "Quel compromis serait acceptable ?"
     ],
     "transferPrompt": "L'autopartage peut-il remplacer la voiture personnelle ?"
   },
@@ -1734,10 +1734,10 @@
     "category": "mobilite",
     "difficulty": "hard",
     "prompts": [
-      "Comment vois-tu ce sujet aujourd'hui ?",
-      "Quel problème principal faut-il résoudre ?",
-      "Quelle solution serait réaliste ?",
-      "Qu'est-ce qui pourrait mal fonctionner ?"
+      "Que se passe-t-il à court terme ?",
+      "Et à long terme ?",
+      "Quelle conséquence est souvent oubliée ?",
+      "Laquelle compte le plus pour toi ?"
     ],
     "transferPrompt": "Faut-il garder une voiture quand on vit près des transports ?"
   },
@@ -1747,10 +1747,10 @@
     "category": "mobilite",
     "difficulty": "medium",
     "prompts": [
-      "Pourquoi ce sujet divise-t-il les gens ?",
-      "Quelle nuance ajouterais-tu ?",
-      "Qu'est-ce qui compte le plus dans la décision ?",
-      "Donne un exemple de la vie réelle."
+      "Qu'est-ce qui dépend de la personne ?",
+      "Qu'est-ce qui dépend du contexte ?",
+      "Qu'est-ce qui dépend des moyens disponibles ?",
+      "Quelle conclusion nuancée en tires-tu ?"
     ],
     "transferPrompt": "Combien de temps de trajet est-on prêt à accepter pour un meilleur emploi ?"
   },
@@ -1760,10 +1760,10 @@
     "category": "mobilite",
     "difficulty": "medium",
     "prompts": [
-      "Qu'est-ce qui te semble le plus important ?",
-      "Comment la situation pourrait-elle évoluer ?",
-      "Quel compromis serait acceptable ?",
-      "Relie le sujet à une expérience personnelle."
+      "Donne un exemple où cette idée fonctionne bien.",
+      "Donne un exemple où elle fonctionne mal.",
+      "Qu'est-ce qui explique la différence ?",
+      "Quelle règle générale proposerais-tu ?"
     ],
     "transferPrompt": "Les longs trajets domicile-travail sont-ils acceptables ?"
   },
@@ -1773,10 +1773,10 @@
     "category": "mobilite",
     "difficulty": "medium",
     "prompts": [
-      "Comment vois-tu ce sujet aujourd'hui ?",
-      "Quel problème principal faut-il résoudre ?",
-      "Quelle solution serait réaliste ?",
-      "Qu'est-ce qui pourrait mal fonctionner ?"
+      "Quelle serait la réponse la plus simple ?",
+      "Pourquoi cette réponse est-elle incomplète ?",
+      "Quelle nuance faut-il ajouter ?",
+      "Formule ta conclusion en une phrase."
     ],
     "transferPrompt": "Le confort compte-t-il plus que la rapidité dans les transports ?"
   },
@@ -1786,10 +1786,10 @@
     "category": "mobilite",
     "difficulty": "medium",
     "prompts": [
-      "Quelle est ta position spontanée ?",
-      "Quelle est ta raison principale ?",
-      "Quel contre-argument faut-il prendre au sérieux ?",
-      "Donne un exemple concret ou personnel."
+      "Quel changement récent influence ce sujet ?",
+      "Qu'est-ce qui pourrait encore changer ?",
+      "Quel scénario te paraît plausible ?",
+      "Comment faudrait-il s'y adapter ?"
     ],
     "transferPrompt": "Train ou voiture pour les déplacements régionaux ?"
   },
@@ -1799,10 +1799,10 @@
     "category": "mobilite",
     "difficulty": "hard",
     "prompts": [
-      "Qu'est-ce qui te semble le plus important ?",
-      "Comment la situation pourrait-elle évoluer ?",
-      "Quel compromis serait acceptable ?",
-      "Relie le sujet à une expérience personnelle."
+      "Quelle priorité mettrais-tu en premier ?",
+      "Quelle priorité viendrait ensuite ?",
+      "Qu'est-ce que tu accepterais de sacrifier ?",
+      "Explique ton ordre de priorité."
     ],
     "transferPrompt": "Faut-il parfois se déplacer sans GPS ?"
   },
@@ -1812,10 +1812,10 @@
     "category": "mobilite",
     "difficulty": "hard",
     "prompts": [
-      "Quel choix ferais-tu personnellement ?",
-      "Qu'est-ce qui pourrait te faire changer d'avis ?",
-      "Quels sont les avantages et les inconvénients ?",
-      "Raconte une situation qui illustre ton choix."
+      "Quel exemple personnel peux-tu relier à ce sujet ?",
+      "Qu'as-tu ressenti ou observé ?",
+      "Qu'aurais-tu pu faire autrement ?",
+      "Est-ce que cela influence ton opinion aujourd'hui ?"
     ],
     "transferPrompt": "Les applications de navigation nous rendent-elles moins autonomes ?"
   },
@@ -1838,10 +1838,10 @@
     "category": "habitudes",
     "difficulty": "easy",
     "prompts": [
-      "Pourquoi ce sujet divise-t-il les gens ?",
-      "Quelle nuance ajouterais-tu ?",
-      "Qu'est-ce qui compte le plus dans la décision ?",
-      "Donne un exemple de la vie réelle."
+      "Quel est le vrai problème derrière ce sujet ?",
+      "Quelles en sont les causes principales ?",
+      "Quelle solution te paraît réaliste ?",
+      "Quelle limite cette solution aurait-elle ?"
     ],
     "transferPrompt": "Pourquoi procrastine-t-on ?"
   },
@@ -1851,10 +1851,10 @@
     "category": "habitudes",
     "difficulty": "medium",
     "prompts": [
-      "Quel choix ferais-tu personnellement ?",
-      "Qu'est-ce qui pourrait te faire changer d'avis ?",
-      "Quels sont les avantages et les inconvénients ?",
-      "Raconte une situation qui illustre ton choix."
+      "Comment voyais-tu ce sujet auparavant ?",
+      "Qu'est-ce qui peut faire évoluer un avis ?",
+      "Comment le vois-tu aujourd'hui ?",
+      "Donne un exemple de ce changement."
     ],
     "transferPrompt": "Dix minutes de retard, est-ce vraiment grave ?"
   },
@@ -1864,10 +1864,10 @@
     "category": "habitudes",
     "difficulty": "medium",
     "prompts": [
-      "Comment vois-tu ce sujet aujourd'hui ?",
-      "Quel problème principal faut-il résoudre ?",
-      "Quelle solution serait réaliste ?",
-      "Qu'est-ce qui pourrait mal fonctionner ?"
+      "Quels sont les deux choix principaux ?",
+      "Quel avantage a le premier ?",
+      "Quel avantage a le second ?",
+      "Quel compromis choisirais-tu ?"
     ],
     "transferPrompt": "Être ponctuel est-il toujours important ?"
   },
@@ -1877,10 +1877,10 @@
     "category": "habitudes",
     "difficulty": "hard",
     "prompts": [
-      "Pourquoi ce sujet divise-t-il les gens ?",
-      "Quelle nuance ajouterais-tu ?",
-      "Qu'est-ce qui compte le plus dans la décision ?",
-      "Donne un exemple de la vie réelle."
+      "Raconte une situation liée à ce sujet.",
+      "Qu'est-ce qui s'est passé exactement ?",
+      "Comment as-tu réagi ou réagirais-tu ?",
+      "Quelle leçon en tirer ?"
     ],
     "transferPrompt": "Faut-il couper toutes les notifications pour se concentrer ?"
   },
@@ -1890,10 +1890,10 @@
     "category": "habitudes",
     "difficulty": "hard",
     "prompts": [
-      "Qu'est-ce qui te semble le plus important ?",
-      "Comment la situation pourrait-elle évoluer ?",
-      "Quel compromis serait acceptable ?",
-      "Relie le sujet à une expérience personnelle."
+      "Quel est le principal avantage ?",
+      "Quel est le principal inconvénient ?",
+      "Pour qui la réponse pourrait-elle être différente ?",
+      "Dans quelles conditions changerais-tu d'avis ?"
     ],
     "transferPrompt": "Faire plusieurs choses à la fois est-il efficace ?"
   },
@@ -1903,10 +1903,10 @@
     "category": "habitudes",
     "difficulty": "medium",
     "prompts": [
-      "Comment vois-tu ce sujet aujourd'hui ?",
-      "Quel problème principal faut-il résoudre ?",
-      "Quelle solution serait réaliste ?",
-      "Qu'est-ce qui pourrait mal fonctionner ?"
+      "Imagine que tu doives décider aujourd'hui.",
+      "Quels critères utiliserais-tu ?",
+      "Quel risque voudrais-tu éviter ?",
+      "Quelle décision prendrais-tu finalement ?"
     ],
     "transferPrompt": "Vaut-il mieux changer une petite habitude à la fois ?"
   },
@@ -1916,10 +1916,10 @@
     "category": "habitudes",
     "difficulty": "medium",
     "prompts": [
-      "Quelle est ta position spontanée ?",
-      "Quelle est ta raison principale ?",
-      "Quel contre-argument faut-il prendre au sérieux ?",
-      "Donne un exemple concret ou personnel."
+      "Quelle opinion entend-on souvent sur ce sujet ?",
+      "Avec quelle partie es-tu d'accord ?",
+      "Quelle partie nuancerais-tu ?",
+      "Comment reformulerais-tu une position équilibrée ?"
     ],
     "transferPrompt": "Les résolutions de début d'année servent-elles à quelque chose ?"
   },
@@ -1929,10 +1929,10 @@
     "category": "habitudes",
     "difficulty": "medium",
     "prompts": [
-      "Qu'est-ce qui te semble le plus important ?",
-      "Comment la situation pourrait-elle évoluer ?",
-      "Quel compromis serait acceptable ?",
-      "Relie le sujet à une expérience personnelle."
+      "Qu'est-ce qui te semble évident au premier abord ?",
+      "Qu'est-ce qui est plus compliqué qu'il n'y paraît ?",
+      "Quel détail change beaucoup la réponse ?",
+      "Donne un cas concret."
     ],
     "transferPrompt": "Peut-on trop organiser sa vie ?"
   },
@@ -1942,10 +1942,10 @@
     "category": "habitudes",
     "difficulty": "medium",
     "prompts": [
-      "Quel choix ferais-tu personnellement ?",
-      "Qu'est-ce qui pourrait te faire changer d'avis ?",
-      "Quels sont les avantages et les inconvénients ?",
-      "Raconte une situation qui illustre ton choix."
+      "Comment expliquerais-tu ce sujet à quelqu'un qui ne le connaît pas ?",
+      "Quel exemple simple utiliserais-tu ?",
+      "Quelle confusion faudrait-il éviter ?",
+      "Quelle idée devrait-il retenir ?"
     ],
     "transferPrompt": "Planifier sa semaine réduit-il le stress ?"
   }
