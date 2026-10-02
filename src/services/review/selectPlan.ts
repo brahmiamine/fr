@@ -109,7 +109,7 @@ function selectGapItems(
       context: '',
       isPersonal: false,
       sourceId: word.id,
-      rescueAngles: word.rescueAngles,
+      rescueAngles: word.rescueAngles ?? [],
     })
   }
   return items
@@ -146,10 +146,10 @@ function selectDiverseQuestions(
   // First pass: maximize both topic category and speaking-task diversity.
   for (const question of ordered) {
     if (chosen.length >= count) break
-    if (usedCategories.has(question.category) || usedTypes.has(question.type)) continue
+    if (usedCategories.has(question.category) || usedTypes.has(question.type ?? 'argumentation')) continue
     chosen.push(question)
     usedCategories.add(question.category)
-    usedTypes.add(question.type)
+    usedTypes.add(question.type ?? 'argumentation')
   }
 
   // Second pass: keep category diversity even when every task type is already used.
@@ -158,7 +158,7 @@ function selectDiverseQuestions(
     if (usedCategories.has(question.category) || chosen.some((item) => item.id === question.id)) continue
     chosen.push(question)
     usedCategories.add(question.category)
-    usedTypes.add(question.type)
+    usedTypes.add(question.type ?? 'argumentation')
   }
 
   if (chosen.length < count) {
