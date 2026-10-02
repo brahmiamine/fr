@@ -57,16 +57,41 @@ describe('storage', () => {
     expect(result.state).toEqual(createInitialState())
   })
 
-  it('round-trips a valid V2 state', () => {
+  it('round-trips a valid V3 state', () => {
     const storage = memoryStorage()
     const state = stateWithSession()
     expect(saveAppState(state, storage).ok).toBe(true)
 
     const loaded = loadAppState(storage)
     expect(loaded.available).toBe(true)
-    expect(loaded.state.version).toBe(2)
+    expect(loaded.state.version).toBe(3)
     expect(loaded.state.sessions).toHaveLength(1)
     expect(loaded.state.recentTopicIds).toEqual(['t001'])
+  })
+
+  it('migrates V2 data and restarts only the incompatible in-progress session', () => {
+    const storage = memoryStorage({
+      [STORAGE_KEY]: JSON.stringify({
+        version: 2,
+        sessions: stateWithSession().sessions,
+        weeklyTests: [],
+        wordGaps: [],
+        chunkReviews: [],
+        personalExamples: [],
+        recentTopicIds: ['t001'],
+        recentQuestionIds: [],
+        recentWordIds: [],
+        recentChunkIds: [],
+        level: 2,
+        inProgressSession: { old: 'shape' },
+      }),
+    })
+    const loaded = loadAppState(storage)
+    expect(loaded.state.version).toBe(3)
+    expect(loaded.state.sessions).toHaveLength(1)
+    expect(loaded.state.personalChunks).toEqual([])
+    expect(loaded.state.fluencyNotes).toEqual([])
+    expect(loaded.state.inProgressSession).toBeNull()
   })
 
   it('falls back to initial state on malformed JSON', () => {
@@ -79,11 +104,11 @@ describe('storage', () => {
       [STORAGE_KEY]: JSON.stringify({ version: 99, sessions: [{ id: 'x' }] }),
     })
     const loaded = loadAppState(storage)
-    expect(loaded.state.version).toBe(2)
+    expect(loaded.state.version).toBe(3)
     expect(loaded.state.sessions).toEqual([])
   })
 
-  it('migrates a V1 payload into the V2 shape', () => {
+  it('migrates a V1 payload into the V3 shape', () => {
     const storage = memoryStorage({
       [STORAGE_KEY]: JSON.stringify({
         version: 1,
@@ -98,7 +123,7 @@ describe('storage', () => {
       }),
     })
     const loaded = loadAppState(storage)
-    expect(loaded.state.version).toBe(2)
+    expect(loaded.state.version).toBe(3)
     expect(loaded.state.recentChunkIds).toEqual(['e001'])
     expect(loaded.state.wordGaps).toEqual([])
     expect(loaded.state.chunkReviews).toEqual([])
