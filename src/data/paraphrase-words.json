@@ -3,1500 +3,3000 @@
     "id": "w001",
     "word": "interrupteur",
     "category": "quotidien",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Où est-ce qu'on le trouve ou l'utilise ?",
+      "À quoi ça ressemble ?",
+      "Dans quelle situation en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w002",
     "word": "prise électrique",
     "category": "quotidien",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Où est-ce qu'on le trouve ou l'utilise ?",
+      "À quoi ça ressemble ?",
+      "Dans quelle situation en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w003",
     "word": "rallonge",
     "category": "quotidien",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Où est-ce qu'on le trouve ou l'utilise ?",
+      "À quoi ça ressemble ?",
+      "Dans quelle situation en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w004",
     "word": "étagère",
     "category": "quotidien",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Où est-ce qu'on le trouve ou l'utilise ?",
+      "À quoi ça ressemble ?",
+      "Dans quelle situation en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w005",
     "word": "tiroir",
     "category": "quotidien",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Où est-ce qu'on le trouve ou l'utilise ?",
+      "À quoi ça ressemble ?",
+      "Dans quelle situation en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w006",
     "word": "passoire",
     "category": "quotidien",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Où est-ce qu'on le trouve ou l'utilise ?",
+      "À quoi ça ressemble ?",
+      "Dans quelle situation en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w007",
     "word": "bouilloire",
     "category": "quotidien",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Où est-ce qu'on le trouve ou l'utilise ?",
+      "À quoi ça ressemble ?",
+      "Dans quelle situation en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w008",
     "word": "ouvre-boîte",
     "category": "quotidien",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Où est-ce qu'on le trouve ou l'utilise ?",
+      "À quoi ça ressemble ?",
+      "Dans quelle situation en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w009",
     "word": "torchon",
     "category": "quotidien",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Où est-ce qu'on le trouve ou l'utilise ?",
+      "À quoi ça ressemble ?",
+      "Dans quelle situation en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w010",
     "word": "cintre",
     "category": "quotidien",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Où est-ce qu'on le trouve ou l'utilise ?",
+      "À quoi ça ressemble ?",
+      "Dans quelle situation en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w011",
     "word": "poubelle",
     "category": "quotidien",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Où est-ce qu'on le trouve ou l'utilise ?",
+      "À quoi ça ressemble ?",
+      "Dans quelle situation en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w012",
     "word": "aspirateur",
     "category": "quotidien",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Où est-ce qu'on le trouve ou l'utilise ?",
+      "À quoi ça ressemble ?",
+      "Dans quelle situation en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w013",
     "word": "balai",
     "category": "quotidien",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Où est-ce qu'on le trouve ou l'utilise ?",
+      "À quoi ça ressemble ?",
+      "Dans quelle situation en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w014",
     "word": "serpillière",
     "category": "quotidien",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Où est-ce qu'on le trouve ou l'utilise ?",
+      "À quoi ça ressemble ?",
+      "Dans quelle situation en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w015",
     "word": "réveil",
     "category": "quotidien",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Où est-ce qu'on le trouve ou l'utilise ?",
+      "À quoi ça ressemble ?",
+      "Dans quelle situation en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w016",
     "word": "embouteillage",
     "category": "quotidien",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Où est-ce qu'on le trouve ou l'utilise ?",
+      "À quoi ça ressemble ?",
+      "Dans quelle situation en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w017",
     "word": "trottoir",
     "category": "quotidien",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Où est-ce qu'on le trouve ou l'utilise ?",
+      "À quoi ça ressemble ?",
+      "Dans quelle situation en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w018",
     "word": "passage piéton",
     "category": "quotidien",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Où est-ce qu'on le trouve ou l'utilise ?",
+      "À quoi ça ressemble ?",
+      "Dans quelle situation en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w019",
     "word": "feu rouge",
     "category": "quotidien",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Où est-ce qu'on le trouve ou l'utilise ?",
+      "À quoi ça ressemble ?",
+      "Dans quelle situation en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w020",
     "word": "rond-point",
     "category": "quotidien",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Où est-ce qu'on le trouve ou l'utilise ?",
+      "À quoi ça ressemble ?",
+      "Dans quelle situation en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w021",
     "word": "bouchon",
     "category": "quotidien",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Où est-ce qu'on le trouve ou l'utilise ?",
+      "À quoi ça ressemble ?",
+      "Dans quelle situation en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w022",
     "word": "reçu",
     "category": "quotidien",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Où est-ce qu'on le trouve ou l'utilise ?",
+      "À quoi ça ressemble ?",
+      "Dans quelle situation en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w023",
     "word": "ticket de caisse",
     "category": "quotidien",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Où est-ce qu'on le trouve ou l'utilise ?",
+      "À quoi ça ressemble ?",
+      "Dans quelle situation en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w024",
     "word": "monnaie",
     "category": "quotidien",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Où est-ce qu'on le trouve ou l'utilise ?",
+      "À quoi ça ressemble ?",
+      "Dans quelle situation en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w025",
     "word": "pourboire",
     "category": "quotidien",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Où est-ce qu'on le trouve ou l'utilise ?",
+      "À quoi ça ressemble ?",
+      "Dans quelle situation en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w026",
     "word": "réunion",
     "category": "travail",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Dans quel contexte professionnel on l'utilise ?",
+      "À quoi ça sert au travail ?",
+      "Qui l'utilise ou s'en occupe ?",
+      "Donne une situation concrète."
+    ]
   },
   {
     "id": "w027",
     "word": "télétravail",
     "category": "travail",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Dans quel contexte professionnel on l'utilise ?",
+      "À quoi ça sert au travail ?",
+      "Qui l'utilise ou s'en occupe ?",
+      "Donne une situation concrète."
+    ]
   },
   {
     "id": "w028",
     "word": "échéance",
     "category": "travail",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Dans quel contexte professionnel on l'utilise ?",
+      "À quoi ça sert au travail ?",
+      "Qui l'utilise ou s'en occupe ?",
+      "Donne une situation concrète."
+    ]
   },
   {
     "id": "w029",
     "word": "collègue",
     "category": "travail",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Dans quel contexte professionnel on l'utilise ?",
+      "À quoi ça sert au travail ?",
+      "Qui l'utilise ou s'en occupe ?",
+      "Donne une situation concrète."
+    ]
   },
   {
     "id": "w030",
     "word": "hiérarchie",
     "category": "travail",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Dans quel contexte professionnel on l'utilise ?",
+      "À quoi ça sert au travail ?",
+      "Qui l'utilise ou s'en occupe ?",
+      "Donne une situation concrète."
+    ]
   },
   {
     "id": "w031",
     "word": "recrutement",
     "category": "travail",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Dans quel contexte professionnel on l'utilise ?",
+      "À quoi ça sert au travail ?",
+      "Qui l'utilise ou s'en occupe ?",
+      "Donne une situation concrète."
+    ]
   },
   {
     "id": "w032",
     "word": "candidature",
     "category": "travail",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Dans quel contexte professionnel on l'utilise ?",
+      "À quoi ça sert au travail ?",
+      "Qui l'utilise ou s'en occupe ?",
+      "Donne une situation concrète."
+    ]
   },
   {
     "id": "w033",
     "word": "entretien",
     "category": "travail",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Dans quel contexte professionnel on l'utilise ?",
+      "À quoi ça sert au travail ?",
+      "Qui l'utilise ou s'en occupe ?",
+      "Donne une situation concrète."
+    ]
   },
   {
     "id": "w034",
     "word": "salaire",
     "category": "travail",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Dans quel contexte professionnel on l'utilise ?",
+      "À quoi ça sert au travail ?",
+      "Qui l'utilise ou s'en occupe ?",
+      "Donne une situation concrète."
+    ]
   },
   {
     "id": "w035",
     "word": "prime",
     "category": "travail",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Dans quel contexte professionnel on l'utilise ?",
+      "À quoi ça sert au travail ?",
+      "Qui l'utilise ou s'en occupe ?",
+      "Donne une situation concrète."
+    ]
   },
   {
     "id": "w036",
     "word": "promotion",
     "category": "travail",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Dans quel contexte professionnel on l'utilise ?",
+      "À quoi ça sert au travail ?",
+      "Qui l'utilise ou s'en occupe ?",
+      "Donne une situation concrète."
+    ]
   },
   {
     "id": "w037",
     "word": "démission",
     "category": "travail",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Dans quel contexte professionnel on l'utilise ?",
+      "À quoi ça sert au travail ?",
+      "Qui l'utilise ou s'en occupe ?",
+      "Donne une situation concrète."
+    ]
   },
   {
     "id": "w038",
     "word": "congé",
     "category": "travail",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Dans quel contexte professionnel on l'utilise ?",
+      "À quoi ça sert au travail ?",
+      "Qui l'utilise ou s'en occupe ?",
+      "Donne une situation concrète."
+    ]
   },
   {
     "id": "w039",
     "word": "planning",
     "category": "travail",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Dans quel contexte professionnel on l'utilise ?",
+      "À quoi ça sert au travail ?",
+      "Qui l'utilise ou s'en occupe ?",
+      "Donne une situation concrète."
+    ]
   },
   {
     "id": "w040",
     "word": "priorité",
     "category": "travail",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Dans quel contexte professionnel on l'utilise ?",
+      "À quoi ça sert au travail ?",
+      "Qui l'utilise ou s'en occupe ?",
+      "Donne une situation concrète."
+    ]
   },
   {
     "id": "w041",
     "word": "délai",
     "category": "travail",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Dans quel contexte professionnel on l'utilise ?",
+      "À quoi ça sert au travail ?",
+      "Qui l'utilise ou s'en occupe ?",
+      "Donne une situation concrète."
+    ]
   },
   {
     "id": "w042",
     "word": "compte rendu",
     "category": "travail",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Dans quel contexte professionnel on l'utilise ?",
+      "À quoi ça sert au travail ?",
+      "Qui l'utilise ou s'en occupe ?",
+      "Donne une situation concrète."
+    ]
   },
   {
     "id": "w043",
     "word": "négociation",
     "category": "travail",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Dans quel contexte professionnel on l'utilise ?",
+      "À quoi ça sert au travail ?",
+      "Qui l'utilise ou s'en occupe ?",
+      "Donne une situation concrète."
+    ]
   },
   {
     "id": "w044",
     "word": "responsabilité",
     "category": "travail",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Dans quel contexte professionnel on l'utilise ?",
+      "À quoi ça sert au travail ?",
+      "Qui l'utilise ou s'en occupe ?",
+      "Donne une situation concrète."
+    ]
   },
   {
     "id": "w045",
     "word": "autonomie",
     "category": "travail",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "Dans quel contexte professionnel on l'utilise ?",
+      "À quoi ça sert au travail ?",
+      "Qui l'utilise ou s'en occupe ?",
+      "Donne une situation concrète."
+    ]
   },
   {
     "id": "w046",
     "word": "surcharge",
     "category": "travail",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "Dans quel contexte professionnel on l'utilise ?",
+      "À quoi ça sert au travail ?",
+      "Qui l'utilise ou s'en occupe ?",
+      "Donne une situation concrète."
+    ]
   },
   {
     "id": "w047",
     "word": "pause",
     "category": "travail",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "Dans quel contexte professionnel on l'utilise ?",
+      "À quoi ça sert au travail ?",
+      "Qui l'utilise ou s'en occupe ?",
+      "Donne une situation concrète."
+    ]
   },
   {
     "id": "w048",
     "word": "formation",
     "category": "travail",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "Dans quel contexte professionnel on l'utilise ?",
+      "À quoi ça sert au travail ?",
+      "Qui l'utilise ou s'en occupe ?",
+      "Donne une situation concrète."
+    ]
   },
   {
     "id": "w049",
     "word": "compétence",
     "category": "travail",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "Dans quel contexte professionnel on l'utilise ?",
+      "À quoi ça sert au travail ?",
+      "Qui l'utilise ou s'en occupe ?",
+      "Donne une situation concrète."
+    ]
   },
   {
     "id": "w050",
     "word": "objectif",
     "category": "travail",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "Dans quel contexte professionnel on l'utilise ?",
+      "À quoi ça sert au travail ?",
+      "Qui l'utilise ou s'en occupe ?",
+      "Donne une situation concrète."
+    ]
   },
   {
     "id": "w051",
     "word": "formulaire",
     "category": "administratif",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Dans quelle démarche on le rencontre ?",
+      "Qui le demande ou le délivre ?",
+      "À quoi sert-il ?",
+      "À quel moment en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w052",
     "word": "justificatif",
     "category": "administratif",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Dans quelle démarche on le rencontre ?",
+      "Qui le demande ou le délivre ?",
+      "À quoi sert-il ?",
+      "À quel moment en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w053",
     "word": "attestation",
     "category": "administratif",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Dans quelle démarche on le rencontre ?",
+      "Qui le demande ou le délivre ?",
+      "À quoi sert-il ?",
+      "À quel moment en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w054",
     "word": "facture",
     "category": "administratif",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Dans quelle démarche on le rencontre ?",
+      "Qui le demande ou le délivre ?",
+      "À quoi sert-il ?",
+      "À quel moment en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w055",
     "word": "ordonnance",
     "category": "administratif",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Dans quelle démarche on le rencontre ?",
+      "Qui le demande ou le délivre ?",
+      "À quoi sert-il ?",
+      "À quel moment en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w056",
     "word": "remboursement",
     "category": "administratif",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Dans quelle démarche on le rencontre ?",
+      "Qui le demande ou le délivre ?",
+      "À quoi sert-il ?",
+      "À quel moment en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w057",
     "word": "dossier",
     "category": "administratif",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Dans quelle démarche on le rencontre ?",
+      "Qui le demande ou le délivre ?",
+      "À quoi sert-il ?",
+      "À quel moment en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w058",
     "word": "échéancier",
     "category": "administratif",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Dans quelle démarche on le rencontre ?",
+      "Qui le demande ou le délivre ?",
+      "À quoi sert-il ?",
+      "À quel moment en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w059",
     "word": "prélèvement",
     "category": "administratif",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Dans quelle démarche on le rencontre ?",
+      "Qui le demande ou le délivre ?",
+      "À quoi sert-il ?",
+      "À quel moment en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w060",
     "word": "virement",
     "category": "administratif",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Dans quelle démarche on le rencontre ?",
+      "Qui le demande ou le délivre ?",
+      "À quoi sert-il ?",
+      "À quel moment en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w061",
     "word": "assurance",
     "category": "administratif",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Dans quelle démarche on le rencontre ?",
+      "Qui le demande ou le délivre ?",
+      "À quoi sert-il ?",
+      "À quel moment en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w062",
     "word": "abonnement",
     "category": "administratif",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Dans quelle démarche on le rencontre ?",
+      "Qui le demande ou le délivre ?",
+      "À quoi sert-il ?",
+      "À quel moment en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w063",
     "word": "résiliation",
     "category": "administratif",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Dans quelle démarche on le rencontre ?",
+      "Qui le demande ou le délivre ?",
+      "À quoi sert-il ?",
+      "À quel moment en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w064",
     "word": "signature",
     "category": "administratif",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Dans quelle démarche on le rencontre ?",
+      "Qui le demande ou le délivre ?",
+      "À quoi sert-il ?",
+      "À quel moment en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w065",
     "word": "pièce d'identité",
     "category": "administratif",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Dans quelle démarche on le rencontre ?",
+      "Qui le demande ou le délivre ?",
+      "À quoi sert-il ?",
+      "À quel moment en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w066",
     "word": "rendez-vous",
     "category": "administratif",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Dans quelle démarche on le rencontre ?",
+      "Qui le demande ou le délivre ?",
+      "À quoi sert-il ?",
+      "À quel moment en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w067",
     "word": "guichet",
     "category": "administratif",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Dans quelle démarche on le rencontre ?",
+      "Qui le demande ou le délivre ?",
+      "À quoi sert-il ?",
+      "À quel moment en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w068",
     "word": "file d'attente",
     "category": "administratif",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Dans quelle démarche on le rencontre ?",
+      "Qui le demande ou le délivre ?",
+      "À quoi sert-il ?",
+      "À quel moment en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w069",
     "word": "réclamation",
     "category": "administratif",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Dans quelle démarche on le rencontre ?",
+      "Qui le demande ou le délivre ?",
+      "À quoi sert-il ?",
+      "À quel moment en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w070",
     "word": "déclaration",
     "category": "administratif",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "Dans quelle démarche on le rencontre ?",
+      "Qui le demande ou le délivre ?",
+      "À quoi sert-il ?",
+      "À quel moment en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w071",
     "word": "impôt",
     "category": "administratif",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "Dans quelle démarche on le rencontre ?",
+      "Qui le demande ou le délivre ?",
+      "À quoi sert-il ?",
+      "À quel moment en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w072",
     "word": "amende",
     "category": "administratif",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "Dans quelle démarche on le rencontre ?",
+      "Qui le demande ou le délivre ?",
+      "À quoi sert-il ?",
+      "À quel moment en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w073",
     "word": "contrat",
     "category": "administratif",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "Dans quelle démarche on le rencontre ?",
+      "Qui le demande ou le délivre ?",
+      "À quoi sert-il ?",
+      "À quel moment en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w074",
     "word": "caution",
     "category": "administratif",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "Dans quelle démarche on le rencontre ?",
+      "Qui le demande ou le délivre ?",
+      "À quoi sert-il ?",
+      "À quel moment en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w075",
     "word": "acompte",
     "category": "administratif",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "Dans quelle démarche on le rencontre ?",
+      "Qui le demande ou le délivre ?",
+      "À quoi sert-il ?",
+      "À quel moment en a-t-on besoin ?"
+    ]
   },
   {
     "id": "w076",
     "word": "valise",
     "category": "voyage",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Où le rencontre-t-on pendant un voyage ?",
+      "À quoi ça sert ?",
+      "Qui l'utilise ?",
+      "Donne une situation de voyage concrète."
+    ]
   },
   {
     "id": "w077",
     "word": "bagage cabine",
     "category": "voyage",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Où le rencontre-t-on pendant un voyage ?",
+      "À quoi ça sert ?",
+      "Qui l'utilise ?",
+      "Donne une situation de voyage concrète."
+    ]
   },
   {
     "id": "w078",
     "word": "correspondance",
     "category": "voyage",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Où le rencontre-t-on pendant un voyage ?",
+      "À quoi ça sert ?",
+      "Qui l'utilise ?",
+      "Donne une situation de voyage concrète."
+    ]
   },
   {
     "id": "w079",
     "word": "escale",
     "category": "voyage",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Où le rencontre-t-on pendant un voyage ?",
+      "À quoi ça sert ?",
+      "Qui l'utilise ?",
+      "Donne une situation de voyage concrète."
+    ]
   },
   {
     "id": "w080",
     "word": "quai",
     "category": "voyage",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Où le rencontre-t-on pendant un voyage ?",
+      "À quoi ça sert ?",
+      "Qui l'utilise ?",
+      "Donne une situation de voyage concrète."
+    ]
   },
   {
     "id": "w081",
     "word": "voie",
     "category": "voyage",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Où le rencontre-t-on pendant un voyage ?",
+      "À quoi ça sert ?",
+      "Qui l'utilise ?",
+      "Donne une situation de voyage concrète."
+    ]
   },
   {
     "id": "w082",
     "word": "billet",
     "category": "voyage",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Où le rencontre-t-on pendant un voyage ?",
+      "À quoi ça sert ?",
+      "Qui l'utilise ?",
+      "Donne une situation de voyage concrète."
+    ]
   },
   {
     "id": "w083",
     "word": "réservation",
     "category": "voyage",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Où le rencontre-t-on pendant un voyage ?",
+      "À quoi ça sert ?",
+      "Qui l'utilise ?",
+      "Donne une situation de voyage concrète."
+    ]
   },
   {
     "id": "w084",
     "word": "hébergement",
     "category": "voyage",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Où le rencontre-t-on pendant un voyage ?",
+      "À quoi ça sert ?",
+      "Qui l'utilise ?",
+      "Donne une situation de voyage concrète."
+    ]
   },
   {
     "id": "w085",
     "word": "auberge",
     "category": "voyage",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Où le rencontre-t-on pendant un voyage ?",
+      "À quoi ça sert ?",
+      "Qui l'utilise ?",
+      "Donne une situation de voyage concrète."
+    ]
   },
   {
     "id": "w086",
     "word": "itinéraire",
     "category": "voyage",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Où le rencontre-t-on pendant un voyage ?",
+      "À quoi ça sert ?",
+      "Qui l'utilise ?",
+      "Donne une situation de voyage concrète."
+    ]
   },
   {
     "id": "w087",
     "word": "détour",
     "category": "voyage",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Où le rencontre-t-on pendant un voyage ?",
+      "À quoi ça sert ?",
+      "Qui l'utilise ?",
+      "Donne une situation de voyage concrète."
+    ]
   },
   {
     "id": "w088",
     "word": "retard",
     "category": "voyage",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Où le rencontre-t-on pendant un voyage ?",
+      "À quoi ça sert ?",
+      "Qui l'utilise ?",
+      "Donne une situation de voyage concrète."
+    ]
   },
   {
     "id": "w089",
     "word": "annulation",
     "category": "voyage",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Où le rencontre-t-on pendant un voyage ?",
+      "À quoi ça sert ?",
+      "Qui l'utilise ?",
+      "Donne une situation de voyage concrète."
+    ]
   },
   {
     "id": "w090",
     "word": "embarquement",
     "category": "voyage",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Où le rencontre-t-on pendant un voyage ?",
+      "À quoi ça sert ?",
+      "Qui l'utilise ?",
+      "Donne une situation de voyage concrète."
+    ]
   },
   {
     "id": "w091",
     "word": "douane",
     "category": "voyage",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Où le rencontre-t-on pendant un voyage ?",
+      "À quoi ça sert ?",
+      "Qui l'utilise ?",
+      "Donne une situation de voyage concrète."
+    ]
   },
   {
     "id": "w092",
     "word": "frontière",
     "category": "voyage",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Où le rencontre-t-on pendant un voyage ?",
+      "À quoi ça sert ?",
+      "Qui l'utilise ?",
+      "Donne une situation de voyage concrète."
+    ]
   },
   {
     "id": "w093",
     "word": "passeport",
     "category": "voyage",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Où le rencontre-t-on pendant un voyage ?",
+      "À quoi ça sert ?",
+      "Qui l'utilise ?",
+      "Donne une situation de voyage concrète."
+    ]
   },
   {
     "id": "w094",
     "word": "dépaysement",
     "category": "voyage",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Où le rencontre-t-on pendant un voyage ?",
+      "À quoi ça sert ?",
+      "Qui l'utilise ?",
+      "Donne une situation de voyage concrète."
+    ]
   },
   {
     "id": "w095",
     "word": "souvenir",
     "category": "voyage",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "Où le rencontre-t-on pendant un voyage ?",
+      "À quoi ça sert ?",
+      "Qui l'utilise ?",
+      "Donne une situation de voyage concrète."
+    ]
   },
   {
     "id": "w096",
     "word": "guide",
     "category": "voyage",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "Où le rencontre-t-on pendant un voyage ?",
+      "À quoi ça sert ?",
+      "Qui l'utilise ?",
+      "Donne une situation de voyage concrète."
+    ]
   },
   {
     "id": "w097",
     "word": "excursion",
     "category": "voyage",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "Où le rencontre-t-on pendant un voyage ?",
+      "À quoi ça sert ?",
+      "Qui l'utilise ?",
+      "Donne une situation de voyage concrète."
+    ]
   },
   {
     "id": "w098",
     "word": "navette",
     "category": "voyage",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "Où le rencontre-t-on pendant un voyage ?",
+      "À quoi ça sert ?",
+      "Qui l'utilise ?",
+      "Donne une situation de voyage concrète."
+    ]
   },
   {
     "id": "w099",
     "word": "location",
     "category": "voyage",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "Où le rencontre-t-on pendant un voyage ?",
+      "À quoi ça sert ?",
+      "Qui l'utilise ?",
+      "Donne une situation de voyage concrète."
+    ]
   },
   {
     "id": "w100",
     "word": "destination",
     "category": "voyage",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "Où le rencontre-t-on pendant un voyage ?",
+      "À quoi ça sert ?",
+      "Qui l'utilise ?",
+      "Donne une situation de voyage concrète."
+    ]
   },
   {
     "id": "w101",
     "word": "complicité",
     "category": "relations",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Qui est concerné ?",
+      "Dans quelle situation cela arrive ?",
+      "Quel effet cela peut avoir ?",
+      "Donne un exemple sans dire le mot."
+    ]
   },
   {
     "id": "w102",
     "word": "confiance",
     "category": "relations",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Qui est concerné ?",
+      "Dans quelle situation cela arrive ?",
+      "Quel effet cela peut avoir ?",
+      "Donne un exemple sans dire le mot."
+    ]
   },
   {
     "id": "w103",
     "word": "jalousie",
     "category": "relations",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Qui est concerné ?",
+      "Dans quelle situation cela arrive ?",
+      "Quel effet cela peut avoir ?",
+      "Donne un exemple sans dire le mot."
+    ]
   },
   {
     "id": "w104",
     "word": "dispute",
     "category": "relations",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Qui est concerné ?",
+      "Dans quelle situation cela arrive ?",
+      "Quel effet cela peut avoir ?",
+      "Donne un exemple sans dire le mot."
+    ]
   },
   {
     "id": "w105",
     "word": "réconciliation",
     "category": "relations",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Qui est concerné ?",
+      "Dans quelle situation cela arrive ?",
+      "Quel effet cela peut avoir ?",
+      "Donne un exemple sans dire le mot."
+    ]
   },
   {
     "id": "w106",
     "word": "compromis",
     "category": "relations",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Qui est concerné ?",
+      "Dans quelle situation cela arrive ?",
+      "Quel effet cela peut avoir ?",
+      "Donne un exemple sans dire le mot."
+    ]
   },
   {
     "id": "w107",
     "word": "soutien",
     "category": "relations",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Qui est concerné ?",
+      "Dans quelle situation cela arrive ?",
+      "Quel effet cela peut avoir ?",
+      "Donne un exemple sans dire le mot."
+    ]
   },
   {
     "id": "w108",
     "word": "écoute",
     "category": "relations",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Qui est concerné ?",
+      "Dans quelle situation cela arrive ?",
+      "Quel effet cela peut avoir ?",
+      "Donne un exemple sans dire le mot."
+    ]
   },
   {
     "id": "w109",
     "word": "malentendu",
     "category": "relations",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Qui est concerné ?",
+      "Dans quelle situation cela arrive ?",
+      "Quel effet cela peut avoir ?",
+      "Donne un exemple sans dire le mot."
+    ]
   },
   {
     "id": "w110",
     "word": "respect",
     "category": "relations",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Qui est concerné ?",
+      "Dans quelle situation cela arrive ?",
+      "Quel effet cela peut avoir ?",
+      "Donne un exemple sans dire le mot."
+    ]
   },
   {
     "id": "w111",
     "word": "limite",
     "category": "relations",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Qui est concerné ?",
+      "Dans quelle situation cela arrive ?",
+      "Quel effet cela peut avoir ?",
+      "Donne un exemple sans dire le mot."
+    ]
   },
   {
     "id": "w112",
     "word": "invitation",
     "category": "relations",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Qui est concerné ?",
+      "Dans quelle situation cela arrive ?",
+      "Quel effet cela peut avoir ?",
+      "Donne un exemple sans dire le mot."
+    ]
   },
   {
     "id": "w113",
     "word": "rencontre",
     "category": "relations",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Qui est concerné ?",
+      "Dans quelle situation cela arrive ?",
+      "Quel effet cela peut avoir ?",
+      "Donne un exemple sans dire le mot."
+    ]
   },
   {
     "id": "w114",
     "word": "voisin",
     "category": "relations",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Qui est concerné ?",
+      "Dans quelle situation cela arrive ?",
+      "Quel effet cela peut avoir ?",
+      "Donne un exemple sans dire le mot."
+    ]
   },
   {
     "id": "w115",
     "word": "proche",
     "category": "relations",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Qui est concerné ?",
+      "Dans quelle situation cela arrive ?",
+      "Quel effet cela peut avoir ?",
+      "Donne un exemple sans dire le mot."
+    ]
   },
   {
     "id": "w116",
     "word": "confidant",
     "category": "relations",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Qui est concerné ?",
+      "Dans quelle situation cela arrive ?",
+      "Quel effet cela peut avoir ?",
+      "Donne un exemple sans dire le mot."
+    ]
   },
   {
     "id": "w117",
     "word": "entraide",
     "category": "relations",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Qui est concerné ?",
+      "Dans quelle situation cela arrive ?",
+      "Quel effet cela peut avoir ?",
+      "Donne un exemple sans dire le mot."
+    ]
   },
   {
     "id": "w118",
     "word": "promesse",
     "category": "relations",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Qui est concerné ?",
+      "Dans quelle situation cela arrive ?",
+      "Quel effet cela peut avoir ?",
+      "Donne un exemple sans dire le mot."
+    ]
   },
   {
     "id": "w119",
     "word": "excuse",
     "category": "relations",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Qui est concerné ?",
+      "Dans quelle situation cela arrive ?",
+      "Quel effet cela peut avoir ?",
+      "Donne un exemple sans dire le mot."
+    ]
   },
   {
     "id": "w120",
     "word": "pardon",
     "category": "relations",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "Qui est concerné ?",
+      "Dans quelle situation cela arrive ?",
+      "Quel effet cela peut avoir ?",
+      "Donne un exemple sans dire le mot."
+    ]
   },
   {
     "id": "w121",
     "word": "désaccord",
     "category": "relations",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "Qui est concerné ?",
+      "Dans quelle situation cela arrive ?",
+      "Quel effet cela peut avoir ?",
+      "Donne un exemple sans dire le mot."
+    ]
   },
   {
     "id": "w122",
     "word": "accord",
     "category": "relations",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "Qui est concerné ?",
+      "Dans quelle situation cela arrive ?",
+      "Quel effet cela peut avoir ?",
+      "Donne un exemple sans dire le mot."
+    ]
   },
   {
     "id": "w123",
     "word": "rumeur",
     "category": "relations",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "Qui est concerné ?",
+      "Dans quelle situation cela arrive ?",
+      "Quel effet cela peut avoir ?",
+      "Donne un exemple sans dire le mot."
+    ]
   },
   {
     "id": "w124",
     "word": "réputation",
     "category": "relations",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "Qui est concerné ?",
+      "Dans quelle situation cela arrive ?",
+      "Quel effet cela peut avoir ?",
+      "Donne un exemple sans dire le mot."
+    ]
   },
   {
     "id": "w125",
     "word": "tolérance",
     "category": "relations",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "Qui est concerné ?",
+      "Dans quelle situation cela arrive ?",
+      "Quel effet cela peut avoir ?",
+      "Donne un exemple sans dire le mot."
+    ]
   },
   {
     "id": "w126",
     "word": "soulagement",
     "category": "emotions",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Dans quelle situation ressent-on cela ?",
+      "Comment le corps ou le comportement peut-il changer ?",
+      "Quel est le contraire ou une émotion proche ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w127",
     "word": "frustration",
     "category": "emotions",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Dans quelle situation ressent-on cela ?",
+      "Comment le corps ou le comportement peut-il changer ?",
+      "Quel est le contraire ou une émotion proche ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w128",
     "word": "fierté",
     "category": "emotions",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Dans quelle situation ressent-on cela ?",
+      "Comment le corps ou le comportement peut-il changer ?",
+      "Quel est le contraire ou une émotion proche ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w129",
     "word": "honte",
     "category": "emotions",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Dans quelle situation ressent-on cela ?",
+      "Comment le corps ou le comportement peut-il changer ?",
+      "Quel est le contraire ou une émotion proche ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w130",
     "word": "peur",
     "category": "emotions",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Dans quelle situation ressent-on cela ?",
+      "Comment le corps ou le comportement peut-il changer ?",
+      "Quel est le contraire ou une émotion proche ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w131",
     "word": "surprise",
     "category": "emotions",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Dans quelle situation ressent-on cela ?",
+      "Comment le corps ou le comportement peut-il changer ?",
+      "Quel est le contraire ou une émotion proche ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w132",
     "word": "déception",
     "category": "emotions",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Dans quelle situation ressent-on cela ?",
+      "Comment le corps ou le comportement peut-il changer ?",
+      "Quel est le contraire ou une émotion proche ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w133",
     "word": "enthousiasme",
     "category": "emotions",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Dans quelle situation ressent-on cela ?",
+      "Comment le corps ou le comportement peut-il changer ?",
+      "Quel est le contraire ou une émotion proche ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w134",
     "word": "motivation",
     "category": "emotions",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Dans quelle situation ressent-on cela ?",
+      "Comment le corps ou le comportement peut-il changer ?",
+      "Quel est le contraire ou une émotion proche ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w135",
     "word": "stress",
     "category": "emotions",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Dans quelle situation ressent-on cela ?",
+      "Comment le corps ou le comportement peut-il changer ?",
+      "Quel est le contraire ou une émotion proche ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w136",
     "word": "inquiétude",
     "category": "emotions",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Dans quelle situation ressent-on cela ?",
+      "Comment le corps ou le comportement peut-il changer ?",
+      "Quel est le contraire ou une émotion proche ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w137",
     "word": "colère",
     "category": "emotions",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Dans quelle situation ressent-on cela ?",
+      "Comment le corps ou le comportement peut-il changer ?",
+      "Quel est le contraire ou une émotion proche ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w138",
     "word": "tristesse",
     "category": "emotions",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Dans quelle situation ressent-on cela ?",
+      "Comment le corps ou le comportement peut-il changer ?",
+      "Quel est le contraire ou une émotion proche ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w139",
     "word": "joie",
     "category": "emotions",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Dans quelle situation ressent-on cela ?",
+      "Comment le corps ou le comportement peut-il changer ?",
+      "Quel est le contraire ou une émotion proche ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w140",
     "word": "nostalgie",
     "category": "emotions",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Dans quelle situation ressent-on cela ?",
+      "Comment le corps ou le comportement peut-il changer ?",
+      "Quel est le contraire ou une émotion proche ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w141",
     "word": "impatience",
     "category": "emotions",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Dans quelle situation ressent-on cela ?",
+      "Comment le corps ou le comportement peut-il changer ?",
+      "Quel est le contraire ou une émotion proche ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w142",
     "word": "gêne",
     "category": "emotions",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Dans quelle situation ressent-on cela ?",
+      "Comment le corps ou le comportement peut-il changer ?",
+      "Quel est le contraire ou une émotion proche ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w143",
     "word": "culpabilité",
     "category": "emotions",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Dans quelle situation ressent-on cela ?",
+      "Comment le corps ou le comportement peut-il changer ?",
+      "Quel est le contraire ou une émotion proche ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w144",
     "word": "gratitude",
     "category": "emotions",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Dans quelle situation ressent-on cela ?",
+      "Comment le corps ou le comportement peut-il changer ?",
+      "Quel est le contraire ou une émotion proche ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w145",
     "word": "confiance en soi",
     "category": "emotions",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "Dans quelle situation ressent-on cela ?",
+      "Comment le corps ou le comportement peut-il changer ?",
+      "Quel est le contraire ou une émotion proche ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w146",
     "word": "doute",
     "category": "emotions",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "Dans quelle situation ressent-on cela ?",
+      "Comment le corps ou le comportement peut-il changer ?",
+      "Quel est le contraire ou une émotion proche ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w147",
     "word": "lassitude",
     "category": "emotions",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "Dans quelle situation ressent-on cela ?",
+      "Comment le corps ou le comportement peut-il changer ?",
+      "Quel est le contraire ou une émotion proche ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w148",
     "word": "curiosité",
     "category": "emotions",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "Dans quelle situation ressent-on cela ?",
+      "Comment le corps ou le comportement peut-il changer ?",
+      "Quel est le contraire ou une émotion proche ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w149",
     "word": "espoir",
     "category": "emotions",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "Dans quelle situation ressent-on cela ?",
+      "Comment le corps ou le comportement peut-il changer ?",
+      "Quel est le contraire ou une émotion proche ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w150",
     "word": "satisfaction",
     "category": "emotions",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "Dans quelle situation ressent-on cela ?",
+      "Comment le corps ou le comportement peut-il changer ?",
+      "Quel est le contraire ou une émotion proche ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w151",
     "word": "mot de passe",
     "category": "technologie",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Sur quel appareil ou service le trouve-t-on ?",
+      "Comment l'utiliserait-on ?",
+      "À quoi cela ressemble-t-il ?"
+    ]
   },
   {
     "id": "w152",
     "word": "sauvegarde",
     "category": "technologie",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Sur quel appareil ou service le trouve-t-on ?",
+      "Comment l'utiliserait-on ?",
+      "À quoi cela ressemble-t-il ?"
+    ]
   },
   {
     "id": "w153",
     "word": "mise à jour",
     "category": "technologie",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Sur quel appareil ou service le trouve-t-on ?",
+      "Comment l'utiliserait-on ?",
+      "À quoi cela ressemble-t-il ?"
+    ]
   },
   {
     "id": "w154",
     "word": "téléchargement",
     "category": "technologie",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Sur quel appareil ou service le trouve-t-on ?",
+      "Comment l'utiliserait-on ?",
+      "À quoi cela ressemble-t-il ?"
+    ]
   },
   {
     "id": "w155",
     "word": "connexion",
     "category": "technologie",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Sur quel appareil ou service le trouve-t-on ?",
+      "Comment l'utiliserait-on ?",
+      "À quoi cela ressemble-t-il ?"
+    ]
   },
   {
     "id": "w156",
     "word": "réseau",
     "category": "technologie",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Sur quel appareil ou service le trouve-t-on ?",
+      "Comment l'utiliserait-on ?",
+      "À quoi cela ressemble-t-il ?"
+    ]
   },
   {
     "id": "w157",
     "word": "navigateur",
     "category": "technologie",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Sur quel appareil ou service le trouve-t-on ?",
+      "Comment l'utiliserait-on ?",
+      "À quoi cela ressemble-t-il ?"
+    ]
   },
   {
     "id": "w158",
     "word": "onglet",
     "category": "technologie",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Sur quel appareil ou service le trouve-t-on ?",
+      "Comment l'utiliserait-on ?",
+      "À quoi cela ressemble-t-il ?"
+    ]
   },
   {
     "id": "w159",
     "word": "raccourci",
     "category": "technologie",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Sur quel appareil ou service le trouve-t-on ?",
+      "Comment l'utiliserait-on ?",
+      "À quoi cela ressemble-t-il ?"
+    ]
   },
   {
     "id": "w160",
     "word": "batterie",
     "category": "technologie",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Sur quel appareil ou service le trouve-t-on ?",
+      "Comment l'utiliserait-on ?",
+      "À quoi cela ressemble-t-il ?"
+    ]
   },
   {
     "id": "w161",
     "word": "chargeur",
     "category": "technologie",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Sur quel appareil ou service le trouve-t-on ?",
+      "Comment l'utiliserait-on ?",
+      "À quoi cela ressemble-t-il ?"
+    ]
   },
   {
     "id": "w162",
     "word": "notification",
     "category": "technologie",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Sur quel appareil ou service le trouve-t-on ?",
+      "Comment l'utiliserait-on ?",
+      "À quoi cela ressemble-t-il ?"
+    ]
   },
   {
     "id": "w163",
     "word": "réglage",
     "category": "technologie",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Sur quel appareil ou service le trouve-t-on ?",
+      "Comment l'utiliserait-on ?",
+      "À quoi cela ressemble-t-il ?"
+    ]
   },
   {
     "id": "w164",
     "word": "bug",
     "category": "technologie",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Sur quel appareil ou service le trouve-t-on ?",
+      "Comment l'utiliserait-on ?",
+      "À quoi cela ressemble-t-il ?"
+    ]
   },
   {
     "id": "w165",
     "word": "panne",
     "category": "technologie",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Sur quel appareil ou service le trouve-t-on ?",
+      "Comment l'utiliserait-on ?",
+      "À quoi cela ressemble-t-il ?"
+    ]
   },
   {
     "id": "w166",
     "word": "serveur",
     "category": "technologie",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Sur quel appareil ou service le trouve-t-on ?",
+      "Comment l'utiliserait-on ?",
+      "À quoi cela ressemble-t-il ?"
+    ]
   },
   {
     "id": "w167",
     "word": "stockage",
     "category": "technologie",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Sur quel appareil ou service le trouve-t-on ?",
+      "Comment l'utiliserait-on ?",
+      "À quoi cela ressemble-t-il ?"
+    ]
   },
   {
     "id": "w168",
     "word": "cloud",
     "category": "technologie",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Sur quel appareil ou service le trouve-t-on ?",
+      "Comment l'utiliserait-on ?",
+      "À quoi cela ressemble-t-il ?"
+    ]
   },
   {
     "id": "w169",
     "word": "confidentialité",
     "category": "technologie",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Sur quel appareil ou service le trouve-t-on ?",
+      "Comment l'utiliserait-on ?",
+      "À quoi cela ressemble-t-il ?"
+    ]
   },
   {
     "id": "w170",
     "word": "géolocalisation",
     "category": "technologie",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Sur quel appareil ou service le trouve-t-on ?",
+      "Comment l'utiliserait-on ?",
+      "À quoi cela ressemble-t-il ?"
+    ]
   },
   {
     "id": "w171",
     "word": "application",
     "category": "technologie",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Sur quel appareil ou service le trouve-t-on ?",
+      "Comment l'utiliserait-on ?",
+      "À quoi cela ressemble-t-il ?"
+    ]
   },
   {
     "id": "w172",
     "word": "streaming",
     "category": "technologie",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Sur quel appareil ou service le trouve-t-on ?",
+      "Comment l'utiliserait-on ?",
+      "À quoi cela ressemble-t-il ?"
+    ]
   },
   {
     "id": "w173",
     "word": "écran",
     "category": "technologie",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Sur quel appareil ou service le trouve-t-on ?",
+      "Comment l'utiliserait-on ?",
+      "À quoi cela ressemble-t-il ?"
+    ]
   },
   {
     "id": "w174",
     "word": "clavier",
     "category": "technologie",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Sur quel appareil ou service le trouve-t-on ?",
+      "Comment l'utiliserait-on ?",
+      "À quoi cela ressemble-t-il ?"
+    ]
   },
   {
     "id": "w175",
     "word": "souris",
     "category": "technologie",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "À quoi ça sert ?",
+      "Sur quel appareil ou service le trouve-t-on ?",
+      "Comment l'utiliserait-on ?",
+      "À quoi cela ressemble-t-il ?"
+    ]
   },
   {
     "id": "w176",
     "word": "sommeil",
     "category": "sante",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "À quoi cela sert-il ou que décrit-il ?",
+      "Dans quelle situation de santé en parle-t-on ?",
+      "Qui peut être concerné ?",
+      "Donne un exemple concret sans diagnostic."
+    ]
   },
   {
     "id": "w177",
     "word": "sieste",
     "category": "sante",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "À quoi cela sert-il ou que décrit-il ?",
+      "Dans quelle situation de santé en parle-t-on ?",
+      "Qui peut être concerné ?",
+      "Donne un exemple concret sans diagnostic."
+    ]
   },
   {
     "id": "w178",
     "word": "fatigue",
     "category": "sante",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "À quoi cela sert-il ou que décrit-il ?",
+      "Dans quelle situation de santé en parle-t-on ?",
+      "Qui peut être concerné ?",
+      "Donne un exemple concret sans diagnostic."
+    ]
   },
   {
     "id": "w179",
     "word": "respiration",
     "category": "sante",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "À quoi cela sert-il ou que décrit-il ?",
+      "Dans quelle situation de santé en parle-t-on ?",
+      "Qui peut être concerné ?",
+      "Donne un exemple concret sans diagnostic."
+    ]
   },
   {
     "id": "w180",
     "word": "étirement",
     "category": "sante",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "À quoi cela sert-il ou que décrit-il ?",
+      "Dans quelle situation de santé en parle-t-on ?",
+      "Qui peut être concerné ?",
+      "Donne un exemple concret sans diagnostic."
+    ]
   },
   {
     "id": "w181",
     "word": "échauffement",
     "category": "sante",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "À quoi cela sert-il ou que décrit-il ?",
+      "Dans quelle situation de santé en parle-t-on ?",
+      "Qui peut être concerné ?",
+      "Donne un exemple concret sans diagnostic."
+    ]
   },
   {
     "id": "w182",
     "word": "récupération",
     "category": "sante",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "À quoi cela sert-il ou que décrit-il ?",
+      "Dans quelle situation de santé en parle-t-on ?",
+      "Qui peut être concerné ?",
+      "Donne un exemple concret sans diagnostic."
+    ]
   },
   {
     "id": "w183",
     "word": "hydratation",
     "category": "sante",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "À quoi cela sert-il ou que décrit-il ?",
+      "Dans quelle situation de santé en parle-t-on ?",
+      "Qui peut être concerné ?",
+      "Donne un exemple concret sans diagnostic."
+    ]
   },
   {
     "id": "w184",
     "word": "appétit",
     "category": "sante",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "À quoi cela sert-il ou que décrit-il ?",
+      "Dans quelle situation de santé en parle-t-on ?",
+      "Qui peut être concerné ?",
+      "Donne un exemple concret sans diagnostic."
+    ]
   },
   {
     "id": "w185",
     "word": "douleur",
     "category": "sante",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "À quoi cela sert-il ou que décrit-il ?",
+      "Dans quelle situation de santé en parle-t-on ?",
+      "Qui peut être concerné ?",
+      "Donne un exemple concret sans diagnostic."
+    ]
   },
   {
     "id": "w186",
     "word": "blessure",
     "category": "sante",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "À quoi cela sert-il ou que décrit-il ?",
+      "Dans quelle situation de santé en parle-t-on ?",
+      "Qui peut être concerné ?",
+      "Donne un exemple concret sans diagnostic."
+    ]
   },
   {
     "id": "w187",
     "word": "entorse",
     "category": "sante",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "À quoi cela sert-il ou que décrit-il ?",
+      "Dans quelle situation de santé en parle-t-on ?",
+      "Qui peut être concerné ?",
+      "Donne un exemple concret sans diagnostic."
+    ]
   },
   {
     "id": "w188",
     "word": "pansement",
     "category": "sante",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "À quoi cela sert-il ou que décrit-il ?",
+      "Dans quelle situation de santé en parle-t-on ?",
+      "Qui peut être concerné ?",
+      "Donne un exemple concret sans diagnostic."
+    ]
   },
   {
     "id": "w189",
     "word": "thermomètre",
     "category": "sante",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "À quoi cela sert-il ou que décrit-il ?",
+      "Dans quelle situation de santé en parle-t-on ?",
+      "Qui peut être concerné ?",
+      "Donne un exemple concret sans diagnostic."
+    ]
   },
   {
     "id": "w190",
     "word": "tension",
     "category": "sante",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "À quoi cela sert-il ou que décrit-il ?",
+      "Dans quelle situation de santé en parle-t-on ?",
+      "Qui peut être concerné ?",
+      "Donne un exemple concret sans diagnostic."
+    ]
   },
   {
     "id": "w191",
     "word": "consultation",
     "category": "sante",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "À quoi cela sert-il ou que décrit-il ?",
+      "Dans quelle situation de santé en parle-t-on ?",
+      "Qui peut être concerné ?",
+      "Donne un exemple concret sans diagnostic."
+    ]
   },
   {
     "id": "w192",
     "word": "pharmacie",
     "category": "sante",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "À quoi cela sert-il ou que décrit-il ?",
+      "Dans quelle situation de santé en parle-t-on ?",
+      "Qui peut être concerné ?",
+      "Donne un exemple concret sans diagnostic."
+    ]
   },
   {
     "id": "w193",
     "word": "traitement",
     "category": "sante",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "À quoi cela sert-il ou que décrit-il ?",
+      "Dans quelle situation de santé en parle-t-on ?",
+      "Qui peut être concerné ?",
+      "Donne un exemple concret sans diagnostic."
+    ]
   },
   {
     "id": "w194",
     "word": "prévention",
     "category": "sante",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "À quoi cela sert-il ou que décrit-il ?",
+      "Dans quelle situation de santé en parle-t-on ?",
+      "Qui peut être concerné ?",
+      "Donne un exemple concret sans diagnostic."
+    ]
   },
   {
     "id": "w195",
     "word": "équilibre",
     "category": "sante",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "À quoi cela sert-il ou que décrit-il ?",
+      "Dans quelle situation de santé en parle-t-on ?",
+      "Qui peut être concerné ?",
+      "Donne un exemple concret sans diagnostic."
+    ]
   },
   {
     "id": "w196",
     "word": "posture",
     "category": "sante",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "À quoi cela sert-il ou que décrit-il ?",
+      "Dans quelle situation de santé en parle-t-on ?",
+      "Qui peut être concerné ?",
+      "Donne un exemple concret sans diagnostic."
+    ]
   },
   {
     "id": "w197",
     "word": "marche",
     "category": "sante",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "À quoi cela sert-il ou que décrit-il ?",
+      "Dans quelle situation de santé en parle-t-on ?",
+      "Qui peut être concerné ?",
+      "Donne un exemple concret sans diagnostic."
+    ]
   },
   {
     "id": "w198",
     "word": "exercice",
     "category": "sante",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "À quoi cela sert-il ou que décrit-il ?",
+      "Dans quelle situation de santé en parle-t-on ?",
+      "Qui peut être concerné ?",
+      "Donne un exemple concret sans diagnostic."
+    ]
   },
   {
     "id": "w199",
     "word": "régime",
     "category": "sante",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "À quoi cela sert-il ou que décrit-il ?",
+      "Dans quelle situation de santé en parle-t-on ?",
+      "Qui peut être concerné ?",
+      "Donne un exemple concret sans diagnostic."
+    ]
   },
   {
     "id": "w200",
     "word": "alimentation",
     "category": "sante",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "À quoi cela sert-il ou que décrit-il ?",
+      "Dans quelle situation de santé en parle-t-on ?",
+      "Qui peut être concerné ?",
+      "Donne un exemple concret sans diagnostic."
+    ]
   },
   {
     "id": "w201",
     "word": "recyclage",
     "category": "environnement",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Où observe-t-on cela ?",
+      "Quelle en est une cause possible ?",
+      "Quelle conséquence peut-on décrire ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w202",
     "word": "tri",
     "category": "environnement",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Où observe-t-on cela ?",
+      "Quelle en est une cause possible ?",
+      "Quelle conséquence peut-on décrire ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w203",
     "word": "déchet",
     "category": "environnement",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Où observe-t-on cela ?",
+      "Quelle en est une cause possible ?",
+      "Quelle conséquence peut-on décrire ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w204",
     "word": "gaspillage",
     "category": "environnement",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Où observe-t-on cela ?",
+      "Quelle en est une cause possible ?",
+      "Quelle conséquence peut-on décrire ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w205",
     "word": "pollution",
     "category": "environnement",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Où observe-t-on cela ?",
+      "Quelle en est une cause possible ?",
+      "Quelle conséquence peut-on décrire ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w206",
     "word": "emballage",
     "category": "environnement",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Où observe-t-on cela ?",
+      "Quelle en est une cause possible ?",
+      "Quelle conséquence peut-on décrire ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w207",
     "word": "compost",
     "category": "environnement",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Où observe-t-on cela ?",
+      "Quelle en est une cause possible ?",
+      "Quelle conséquence peut-on décrire ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w208",
     "word": "énergie",
     "category": "environnement",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Où observe-t-on cela ?",
+      "Quelle en est une cause possible ?",
+      "Quelle conséquence peut-on décrire ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w209",
     "word": "électricité",
     "category": "environnement",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "Où observe-t-on cela ?",
+      "Quelle en est une cause possible ?",
+      "Quelle conséquence peut-on décrire ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w210",
     "word": "chauffage",
     "category": "environnement",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Où observe-t-on cela ?",
+      "Quelle en est une cause possible ?",
+      "Quelle conséquence peut-on décrire ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w211",
     "word": "isolation",
     "category": "environnement",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Où observe-t-on cela ?",
+      "Quelle en est une cause possible ?",
+      "Quelle conséquence peut-on décrire ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w212",
     "word": "sécheresse",
     "category": "environnement",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Où observe-t-on cela ?",
+      "Quelle en est une cause possible ?",
+      "Quelle conséquence peut-on décrire ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w213",
     "word": "inondation",
     "category": "environnement",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Où observe-t-on cela ?",
+      "Quelle en est une cause possible ?",
+      "Quelle conséquence peut-on décrire ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w214",
     "word": "canicule",
     "category": "environnement",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Où observe-t-on cela ?",
+      "Quelle en est une cause possible ?",
+      "Quelle conséquence peut-on décrire ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w215",
     "word": "climat",
     "category": "environnement",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Où observe-t-on cela ?",
+      "Quelle en est une cause possible ?",
+      "Quelle conséquence peut-on décrire ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w216",
     "word": "biodiversité",
     "category": "environnement",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Où observe-t-on cela ?",
+      "Quelle en est une cause possible ?",
+      "Quelle conséquence peut-on décrire ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w217",
     "word": "forêt",
     "category": "environnement",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Où observe-t-on cela ?",
+      "Quelle en est une cause possible ?",
+      "Quelle conséquence peut-on décrire ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w218",
     "word": "transport public",
     "category": "environnement",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Où observe-t-on cela ?",
+      "Quelle en est une cause possible ?",
+      "Quelle conséquence peut-on décrire ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w219",
     "word": "covoiturage",
     "category": "environnement",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "Où observe-t-on cela ?",
+      "Quelle en est une cause possible ?",
+      "Quelle conséquence peut-on décrire ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w220",
     "word": "seconde main",
     "category": "environnement",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "Où observe-t-on cela ?",
+      "Quelle en est une cause possible ?",
+      "Quelle conséquence peut-on décrire ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w221",
     "word": "réparation",
     "category": "environnement",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "Où observe-t-on cela ?",
+      "Quelle en est une cause possible ?",
+      "Quelle conséquence peut-on décrire ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w222",
     "word": "consommation",
     "category": "environnement",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "Où observe-t-on cela ?",
+      "Quelle en est une cause possible ?",
+      "Quelle conséquence peut-on décrire ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w223",
     "word": "ressource",
     "category": "environnement",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "Où observe-t-on cela ?",
+      "Quelle en est une cause possible ?",
+      "Quelle conséquence peut-on décrire ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w224",
     "word": "économie d'eau",
     "category": "environnement",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "Où observe-t-on cela ?",
+      "Quelle en est une cause possible ?",
+      "Quelle conséquence peut-on décrire ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w225",
     "word": "empreinte carbone",
     "category": "environnement",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "Où observe-t-on cela ?",
+      "Quelle en est une cause possible ?",
+      "Quelle conséquence peut-on décrire ?",
+      "Donne un exemple concret."
+    ]
   },
   {
     "id": "w226",
     "word": "roman",
     "category": "culture",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "À quel domaine culturel cela appartient-il ?",
+      "À quoi cela sert-il ou que représente-t-il ?",
+      "Où peut-on le rencontrer ?",
+      "Donne un exemple connu sans dire le mot."
+    ]
   },
   {
     "id": "w227",
     "word": "intrigue",
     "category": "culture",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "À quel domaine culturel cela appartient-il ?",
+      "À quoi cela sert-il ou que représente-t-il ?",
+      "Où peut-on le rencontrer ?",
+      "Donne un exemple connu sans dire le mot."
+    ]
   },
   {
     "id": "w228",
     "word": "personnage",
     "category": "culture",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "À quel domaine culturel cela appartient-il ?",
+      "À quoi cela sert-il ou que représente-t-il ?",
+      "Où peut-on le rencontrer ?",
+      "Donne un exemple connu sans dire le mot."
+    ]
   },
   {
     "id": "w229",
     "word": "réalisateur",
     "category": "culture",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "À quel domaine culturel cela appartient-il ?",
+      "À quoi cela sert-il ou que représente-t-il ?",
+      "Où peut-on le rencontrer ?",
+      "Donne un exemple connu sans dire le mot."
+    ]
   },
   {
     "id": "w230",
     "word": "scénario",
     "category": "culture",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "À quel domaine culturel cela appartient-il ?",
+      "À quoi cela sert-il ou que représente-t-il ?",
+      "Où peut-on le rencontrer ?",
+      "Donne un exemple connu sans dire le mot."
+    ]
   },
   {
     "id": "w231",
     "word": "documentaire",
     "category": "culture",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "À quel domaine culturel cela appartient-il ?",
+      "À quoi cela sert-il ou que représente-t-il ?",
+      "Où peut-on le rencontrer ?",
+      "Donne un exemple connu sans dire le mot."
+    ]
   },
   {
     "id": "w232",
     "word": "exposition",
     "category": "culture",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "À quel domaine culturel cela appartient-il ?",
+      "À quoi cela sert-il ou que représente-t-il ?",
+      "Où peut-on le rencontrer ?",
+      "Donne un exemple connu sans dire le mot."
+    ]
   },
   {
     "id": "w233",
     "word": "musée",
     "category": "culture",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "À quel domaine culturel cela appartient-il ?",
+      "À quoi cela sert-il ou que représente-t-il ?",
+      "Où peut-on le rencontrer ?",
+      "Donne un exemple connu sans dire le mot."
+    ]
   },
   {
     "id": "w234",
     "word": "concert",
     "category": "culture",
-    "difficulty": "easy"
+    "difficulty": "easy",
+    "rescueAngles": [
+      "À quel domaine culturel cela appartient-il ?",
+      "À quoi cela sert-il ou que représente-t-il ?",
+      "Où peut-on le rencontrer ?",
+      "Donne un exemple connu sans dire le mot."
+    ]
   },
   {
     "id": "w235",
     "word": "festival",
     "category": "culture",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "À quel domaine culturel cela appartient-il ?",
+      "À quoi cela sert-il ou que représente-t-il ?",
+      "Où peut-on le rencontrer ?",
+      "Donne un exemple connu sans dire le mot."
+    ]
   },
   {
     "id": "w236",
     "word": "podcast",
     "category": "culture",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "À quel domaine culturel cela appartient-il ?",
+      "À quoi cela sert-il ou que représente-t-il ?",
+      "Où peut-on le rencontrer ?",
+      "Donne un exemple connu sans dire le mot."
+    ]
   },
   {
     "id": "w237",
     "word": "épisode",
     "category": "culture",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "À quel domaine culturel cela appartient-il ?",
+      "À quoi cela sert-il ou que représente-t-il ?",
+      "Où peut-on le rencontrer ?",
+      "Donne un exemple connu sans dire le mot."
+    ]
   },
   {
     "id": "w238",
     "word": "saison",
     "category": "culture",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "À quel domaine culturel cela appartient-il ?",
+      "À quoi cela sert-il ou que représente-t-il ?",
+      "Où peut-on le rencontrer ?",
+      "Donne un exemple connu sans dire le mot."
+    ]
   },
   {
     "id": "w239",
     "word": "sous-titre",
     "category": "culture",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "À quel domaine culturel cela appartient-il ?",
+      "À quoi cela sert-il ou que représente-t-il ?",
+      "Où peut-on le rencontrer ?",
+      "Donne un exemple connu sans dire le mot."
+    ]
   },
   {
     "id": "w240",
     "word": "doublage",
     "category": "culture",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "À quel domaine culturel cela appartient-il ?",
+      "À quoi cela sert-il ou que représente-t-il ?",
+      "Où peut-on le rencontrer ?",
+      "Donne un exemple connu sans dire le mot."
+    ]
   },
   {
     "id": "w241",
     "word": "critique",
     "category": "culture",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "À quel domaine culturel cela appartient-il ?",
+      "À quoi cela sert-il ou que représente-t-il ?",
+      "Où peut-on le rencontrer ?",
+      "Donne un exemple connu sans dire le mot."
+    ]
   },
   {
     "id": "w242",
     "word": "créativité",
     "category": "culture",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "À quel domaine culturel cela appartient-il ?",
+      "À quoi cela sert-il ou que représente-t-il ?",
+      "Où peut-on le rencontrer ?",
+      "Donne un exemple connu sans dire le mot."
+    ]
   },
   {
     "id": "w243",
     "word": "improvisation",
     "category": "culture",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "À quel domaine culturel cela appartient-il ?",
+      "À quoi cela sert-il ou que représente-t-il ?",
+      "Où peut-on le rencontrer ?",
+      "Donne un exemple connu sans dire le mot."
+    ]
   },
   {
     "id": "w244",
     "word": "apprentissage",
     "category": "culture",
-    "difficulty": "medium"
+    "difficulty": "medium",
+    "rescueAngles": [
+      "À quel domaine culturel cela appartient-il ?",
+      "À quoi cela sert-il ou que représente-t-il ?",
+      "Où peut-on le rencontrer ?",
+      "Donne un exemple connu sans dire le mot."
+    ]
   },
   {
     "id": "w245",
     "word": "révision",
     "category": "culture",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "À quel domaine culturel cela appartient-il ?",
+      "À quoi cela sert-il ou que représente-t-il ?",
+      "Où peut-on le rencontrer ?",
+      "Donne un exemple connu sans dire le mot."
+    ]
   },
   {
     "id": "w246",
     "word": "examen",
     "category": "culture",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "À quel domaine culturel cela appartient-il ?",
+      "À quoi cela sert-il ou que représente-t-il ?",
+      "Où peut-on le rencontrer ?",
+      "Donne un exemple connu sans dire le mot."
+    ]
   },
   {
     "id": "w247",
     "word": "diplôme",
     "category": "culture",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "À quel domaine culturel cela appartient-il ?",
+      "À quoi cela sert-il ou que représente-t-il ?",
+      "Où peut-on le rencontrer ?",
+      "Donne un exemple connu sans dire le mot."
+    ]
   },
   {
     "id": "w248",
     "word": "savoir",
     "category": "culture",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "À quel domaine culturel cela appartient-il ?",
+      "À quoi cela sert-il ou que représente-t-il ?",
+      "Où peut-on le rencontrer ?",
+      "Donne un exemple connu sans dire le mot."
+    ]
   },
   {
     "id": "w249",
     "word": "persévérance",
     "category": "culture",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "À quel domaine culturel cela appartient-il ?",
+      "À quoi cela sert-il ou que représente-t-il ?",
+      "Où peut-on le rencontrer ?",
+      "Donne un exemple connu sans dire le mot."
+    ]
   },
   {
     "id": "w250",
     "word": "bénévolat",
     "category": "culture",
-    "difficulty": "hard"
+    "difficulty": "hard",
+    "rescueAngles": [
+      "À quel domaine culturel cela appartient-il ?",
+      "À quoi cela sert-il ou que représente-t-il ?",
+      "Où peut-on le rencontrer ?",
+      "Donne un exemple connu sans dire le mot."
+    ]
   }
 ]
