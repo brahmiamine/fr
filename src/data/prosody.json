@@ -2008,5 +2008,333 @@
       "finalLengthening"
     ],
     "timing": "estimated"
+  },
+  {
+    "id": "prosody_real_001",
+    "level": "A2",
+    "category": "interaction",
+    "modelKind": "recording",
+    "audio": "audio/prosody/prosody_real_001.ogg",
+    "transcript": "Bonjour. Comment vous appelez-vous ? Je m'appelle Jean-Paul Lambert. Et vous ? Moi, je suis Marc Bernard. Enchanté. Enchanté.",
+    "groups": [
+      {
+        "text": "Bonjour. Comment vous appelez-vous ?",
+        "start": 0.668,
+        "end": 3.133,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "Je m'appelle Jean-Paul Lambert. Et vous ?",
+        "start": 4.643,
+        "end": 7.897,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "Moi, je suis Marc Bernard. Enchanté.",
+        "start": 9.127,
+        "end": 12.391,
+        "intonation": "fall",
+        "finalLengthening": true
+      },
+      {
+        "text": "Enchanté.",
+        "start": 13.709,
+        "end": 15.354,
+        "intonation": "fall",
+        "finalLengthening": true
+      }
+    ],
+    "imitation": {
+      "start": 0.668,
+      "end": 7.897
+    },
+    "retelling": {
+      "idea": "Te présenter poliment à une personne que tu rencontres pour la première fois."
+    },
+    "ready": true,
+    "source": "Wikimedia Commons",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:French_Dialogue_-_A_Formal_Conversation.ogg",
+    "license": "CC-BY-SA-3.0",
+    "attribution": "Hagindaz / Jonojet (French Wikibook), via Wikimedia Commons. Fichier réencodé en OGG mono pour l'application.",
+    "sourceRange": {
+      "start": 0,
+      "end": 15.418
+    },
+    "voiceLocale": "fr-FR",
+    "register": "courant",
+    "speed": "normal",
+    "focus": [
+      "grouping",
+      "intonation",
+      "continuity"
+    ],
+    "timing": "measured"
+  },
+  {
+    "id": "prosody_real_002",
+    "level": "A2",
+    "category": "salutation",
+    "modelKind": "recording",
+    "audio": "audio/prosody/prosody_real_002.ogg",
+    "transcript": "Hello, coucou, et bienvenue à Paris pour la Wikimania 2026. Un petit bonjour à tous les fans de Wikipédia, depuis l'espace, à bord de la Station Spatiale Internationale.",
+    "groups": [
+      {
+        "text": "Hello, coucou",
+        "start": 0,
+        "end": 2.9,
+        "intonation": "level"
+      },
+      {
+        "text": "et bienvenue à Paris pour la Wikimania 2026",
+        "start": 3,
+        "end": 5.9,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "Un petit bonjour à tous les fans de Wikipédia",
+        "start": 6,
+        "end": 9.9,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "depuis l'espace, à bord de la Station Spatiale Internationale",
+        "start": 10,
+        "end": 14.8,
+        "intonation": "fall",
+        "finalLengthening": true
+      }
+    ],
+    "imitation": {
+      "start": 3,
+      "end": 14.8
+    },
+    "retelling": {
+      "idea": "Accueillir chaleureusement un public et préciser depuis quel endroit tu lui parles."
+    },
+    "ready": true,
+    "source": "Wikimedia Commons",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sophie_Adenot_addresses_for_the_Opening_Ceremony_of_Wikimania_2026_from_the_International_Space_Station.webm",
+    "license": "CC-BY-SA-4.0",
+    "attribution": "Sophie Adenot, via Wikimedia Commons. Extrait découpé et piste audio réencodée en OGG mono.",
+    "sourceRange": {
+      "start": 0,
+      "end": 14.9
+    },
+    "voiceLocale": "fr-FR",
+    "register": "courant",
+    "speed": "normal",
+    "focus": [
+      "grouping",
+      "intonation",
+      "energy"
+    ],
+    "timing": "measured"
+  },
+  {
+    "id": "prosody_real_003",
+    "level": "B1",
+    "category": "opinion",
+    "modelKind": "recording",
+    "audio": "audio/prosody/prosody_real_003.ogg",
+    "transcript": "Ce que j'aime chez Wikipédia, c'est que ça fait converger trois des moteurs les plus puissants de l'humanité : la curiosité, le partage et la science. Ces trois thèmes me tiennent à cœur et je suis heureuse de m'associer à ce bel événement.",
+    "groups": [
+      {
+        "text": "Ce que j'aime chez Wikipédia, c'est que ça fait converger trois des moteurs les plus puissants de l'humanité : la curiosité, le partage et la science",
+        "start": 0,
+        "end": 9.9,
+        "intonation": "fall",
+        "finalLengthening": true
+      },
+      {
+        "text": "Ces trois thèmes me tiennent à cœur et je suis heureuse de m'associer à ce bel événement",
+        "start": 10,
+        "end": 14.9,
+        "intonation": "fall",
+        "finalLengthening": true
+      }
+    ],
+    "imitation": {
+      "start": 0,
+      "end": 9.9
+    },
+    "retelling": {
+      "idea": "Dire ce que tu apprécies dans un projet et expliquer les valeurs qui comptent pour toi."
+    },
+    "ready": true,
+    "source": "Wikimedia Commons",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sophie_Adenot_addresses_for_the_Opening_Ceremony_of_Wikimania_2026_from_the_International_Space_Station.webm",
+    "license": "CC-BY-SA-4.0",
+    "attribution": "Sophie Adenot, via Wikimedia Commons. Extrait 15–29,9 s découpé et piste audio réencodée en OGG mono.",
+    "sourceRange": {
+      "start": 15,
+      "end": 29.9
+    },
+    "voiceLocale": "fr-FR",
+    "register": "courant",
+    "speed": "normal",
+    "focus": [
+      "rhythm",
+      "finalLengthening",
+      "continuity"
+    ],
+    "timing": "measured"
+  },
+  {
+    "id": "prosody_real_004",
+    "level": "B1",
+    "category": "explication",
+    "modelKind": "recording",
+    "audio": "audio/prosody/prosody_real_004.ogg",
+    "transcript": "Et ces trois thèmes d'ailleurs sont aussi bien présent dans le vol spatial habité. Pour la mission spatiale, des personnes issues du monde entier coopèrent, échangent et font avancer ensemble une mission riche de sens : faire progresser le savoir.",
+    "groups": [
+      {
+        "text": "Et ces trois thèmes d'ailleurs sont aussi bien présent dans le vol spatial habité",
+        "start": 0,
+        "end": 4.9,
+        "intonation": "fall",
+        "finalLengthening": true
+      },
+      {
+        "text": "Pour la mission spatiale, des personnes issues du monde entier coopèrent, échangent et font avancer ensemble une mission riche de sens : faire progresser le savoir",
+        "start": 5,
+        "end": 14.9,
+        "intonation": "fall",
+        "finalLengthening": true
+      }
+    ],
+    "imitation": {
+      "start": 5,
+      "end": 14.9
+    },
+    "retelling": {
+      "idea": "Expliquer comment des personnes différentes coopèrent autour d'un objectif commun."
+    },
+    "ready": true,
+    "source": "Wikimedia Commons",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sophie_Adenot_addresses_for_the_Opening_Ceremony_of_Wikimania_2026_from_the_International_Space_Station.webm",
+    "license": "CC-BY-SA-4.0",
+    "attribution": "Sophie Adenot, via Wikimedia Commons. Extrait 30–44,9 s découpé et piste audio réencodée en OGG mono.",
+    "sourceRange": {
+      "start": 30,
+      "end": 44.9
+    },
+    "voiceLocale": "fr-FR",
+    "register": "courant",
+    "speed": "normal",
+    "focus": [
+      "rhythm",
+      "grouping",
+      "continuity"
+    ],
+    "timing": "measured"
+  },
+  {
+    "id": "prosody_real_005",
+    "level": "B1",
+    "category": "transmission",
+    "modelKind": "recording",
+    "audio": "audio/prosody/prosody_real_005.ogg",
+    "transcript": "Et avec l'encyclopédie libre, comme Wikipédia, chacun peut contribuer, apprendre et transmettre, et surtout faire progresser les autres avec soi. Et aujourd'hui, alors que le flot continu d'information peut parfois brouiller les repères.",
+    "groups": [
+      {
+        "text": "Et avec l'encyclopédie libre, comme Wikipédia",
+        "start": 0,
+        "end": 4.9,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "chacun peut contribuer, apprendre et transmettre, et surtout faire progresser les autres avec soi",
+        "start": 5,
+        "end": 10.9,
+        "intonation": "fall",
+        "finalLengthening": true
+      },
+      {
+        "text": "Et aujourd'hui, alors que le flot continu d'information peut parfois brouiller les repères",
+        "start": 11,
+        "end": 14.9,
+        "intonation": "rise",
+        "finalLengthening": true
+      }
+    ],
+    "imitation": {
+      "start": 5,
+      "end": 14.9
+    },
+    "retelling": {
+      "idea": "Expliquer comment le partage de connaissances peut aider les autres."
+    },
+    "ready": true,
+    "source": "Wikimedia Commons",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sophie_Adenot_addresses_for_the_Opening_Ceremony_of_Wikimania_2026_from_the_International_Space_Station.webm",
+    "license": "CC-BY-SA-4.0",
+    "attribution": "Sophie Adenot, via Wikimedia Commons. Extrait 45–59,9 s découpé et piste audio réencodée en OGG mono.",
+    "sourceRange": {
+      "start": 45,
+      "end": 59.9
+    },
+    "voiceLocale": "fr-FR",
+    "register": "courant",
+    "speed": "normal",
+    "focus": [
+      "grouping",
+      "rhythm",
+      "intonation"
+    ],
+    "timing": "measured"
+  },
+  {
+    "id": "prosody_real_006",
+    "level": "B2",
+    "category": "interview",
+    "modelKind": "recording",
+    "audio": "audio/prosody/prosody_real_006.ogg",
+    "transcript": "Bonjour docteur Jean-Pierre Hubert, vous êtes le fondateur de l'école de sophrologie analytique, en quelques mots simple, qu'est-ce que signifie la sophrologie ? La sophrologie signifie la conscience humaine, une ouverture de vigilance, établir des possibilités.",
+    "groups": [
+      {
+        "text": "Bonjour docteur Jean-Pierre Hubert, vous êtes le fondateur de l'école de sophrologie analytique, en quelques mots simple, qu'est-ce que signifie la sophrologie ?",
+        "start": 0,
+        "end": 18.679,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "La sophrologie signifie la conscience humaine, une ouverture de vigilance, établir des possibilités",
+        "start": 19.987,
+        "end": 29.8,
+        "intonation": "fall",
+        "finalLengthening": true
+      }
+    ],
+    "imitation": {
+      "start": 19.987,
+      "end": 29.8
+    },
+    "retelling": {
+      "idea": "Répondre simplement à une question d'interview en définissant une notion."
+    },
+    "ready": true,
+    "source": "Wikimedia Commons",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Dr-Jean-Pierre-Hubert-Interview-de-8mn-r%C3%A9alis%C3%A9-en-2006-.ogg",
+    "license": "CC0-1.0",
+    "attribution": "Ghylaine Manet (enregistrement), avec Jean-Pierre Hubert, via Wikimedia Commons. Extrait 0–29,8 s découpé et réencodé en OGG mono.",
+    "sourceRange": {
+      "start": 0,
+      "end": 29.8
+    },
+    "voiceLocale": "fr-FR",
+    "register": "courant",
+    "speed": "normal",
+    "focus": [
+      "pause",
+      "grouping",
+      "continuity"
+    ],
+    "timing": "measured"
   }
 ]
