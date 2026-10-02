@@ -33,6 +33,7 @@ export type TrainingAction =
   | { type: 'GAP_START_PARAPHRASE' }
   | { type: 'GAP_REVEAL' }
   | { type: 'GAP_NEXT' }
+  | { type: 'FLUENCY_TOGGLE_REMINDER_USED'; reminderId: string }
   | {
       type: 'FEEDBACK_SET'
       field: keyof SessionFeedback
@@ -64,6 +65,7 @@ export function createSessionState(
     chunks: { index: 0, step: 'retrieve' },
     chunkResults: [],
     chunksOfDayShown: false,
+    usedFluencyReminderIds: [],
     fluency: { roundIndex: 0, stage: 'prep', keywords: [] },
     fluencyFeedback: {
       missingWord: '',
@@ -202,9 +204,15 @@ export function sessionReducer(
     case 'QUESTION_RATE': {
       const question = state.plan.questions[state.questions.index]
       if (!question) return state
+      const isFinalQuestion =
+        state.questions.index === state.plan.questions.length - 1
+      const ratedQuestion =
+        state.level === 3 && isFinalQuestion && state.plan.pivotQuestion
+          ? state.plan.pivotQuestion
+          : question
       const questionRatings = [
         ...state.questionRatings,
-        { questionId: question.id, rating: action.rating },
+        { questionId: ratedQuestion.id, rating: action.rating },
       ]
 
       if (state.questions.index + 1 < state.plan.questions.length) {
@@ -278,6 +286,17 @@ export function sessionReducer(
           index: nextIndex,
           step: initialGapStep(state.plan.gapItems[nextIndex]),
         },
+      }
+    }
+
+    case 'FLUENCY_TOGGLE_REMINDER_USED': {
+      const current = state.usedFluencyReminderIds ?? []
+      const alreadyUsed = current.includes(action.reminderId)
+      return {
+        ...state,
+        usedFluencyReminderIds: alreadyUsed
+          ? current.filter((id) => id !== action.reminderId)
+          : [...current, action.reminderId],
       }
     }
 
