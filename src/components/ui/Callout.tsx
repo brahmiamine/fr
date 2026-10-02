@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 
 export interface CalloutProps {
+  id?: string
   title?: ReactNode
   tone?: 'plain' | 'soft' | 'dashed'
   className?: string

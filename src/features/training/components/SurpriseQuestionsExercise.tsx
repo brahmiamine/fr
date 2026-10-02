@@ -185,15 +185,20 @@ export function SurpriseQuestionsExercise({
         <InfoLine label="Mots à réutiliser :">{focusWords.join(' · ')}</InfoLine>
       ) : null}
 
-      {!showStarters ? (
-        <Button variant="dashed" block onClick={() => setShowStarters(true)}>
-          Besoin d'une amorce ?
-        </Button>
-      ) : (
-        <Callout title="Amorces possibles">
+      <Button
+        variant="dashed"
+        block
+        aria-expanded={showStarters}
+        aria-controls="question-starters"
+        onClick={() => setShowStarters((open) => !open)}
+      >
+        {showStarters ? 'Masquer les amorces' : "Besoin d'une amorce ?"}
+      </Button>
+      {showStarters ? (
+        <Callout title="Amorces possibles" id="question-starters">
           <DotList items={QUESTION_STARTERS} />
         </Callout>
-      )}
+      ) : null}
 
       {skipButton}
     </Card>

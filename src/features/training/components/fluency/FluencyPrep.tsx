@@ -68,15 +68,20 @@ export function FluencyPrep({
         <SpeakButton text={topic.title} label="Écouter le sujet" ariaLabel="Écouter le sujet" />
       )}
 
+      <Button
+        variant="dashed"
+        block
+        aria-expanded={showPrompts}
+        aria-controls="fluency-prompts"
+        onClick={() => setShowPrompts((open) => !open)}
+      >
+        {showPrompts ? 'Masquer les pistes' : "Besoin d'une piste ?"}
+      </Button>
       {showPrompts ? (
-        <Callout title="Quelques pistes">
+        <Callout title="Quelques pistes" id="fluency-prompts">
           <DotList items={topic.prompts} />
         </Callout>
-      ) : (
-        <Button variant="dashed" block onClick={() => setShowPrompts(true)}>
-          Besoin d'une piste ?
-        </Button>
-      )}
+      ) : null}
 
       {fluencyReminders.length > 0 ? (
         <Callout title="Correction à réutiliser aujourd'hui" tone="soft">
