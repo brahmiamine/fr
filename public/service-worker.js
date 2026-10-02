@@ -1,9 +1,13 @@
-const CACHE_NAME = 'parle-plus-v3'
+const CACHE_NAME = 'parle-plus-v4'
 const APP_SHELL = [
   './',
   './manifest.webmanifest',
   './icons/parle-plus.svg',
   './icons/parle-plus-maskable.svg',
+  './icons/icon-192.png',
+  './icons/icon-512.png',
+  './icons/maskable-192.png',
+  './icons/maskable-512.png',
 ]
 
 self.addEventListener('install', (event) => {
