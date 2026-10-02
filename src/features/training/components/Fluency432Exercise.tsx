@@ -2,7 +2,7 @@ import { useState } from 'react'
 import type { FormEvent } from 'react'
 import type { Chunk, Topic } from '../../../types/content'
 import { Timer } from '../../../components/Timer/Timer'
-import { useAudioRecorder } from '../../../hooks/useAudioRecorder'
+import type { AudioRecorder } from '../../../hooks/useAudioRecorder'
 import { FLUENCY_ROUND_SECONDS } from '../types'
 import type { FluencyFeedback, FluencyReminder } from '../types'
 import { AudioRecorderButton } from './AudioRecorderButton'
@@ -16,6 +16,7 @@ export interface Fluency432ExerciseProps {
   chunksOfDay: Chunk[]
   focusWords: string[]
   fluencyReminders: FluencyReminder[]
+  recorder?: AudioRecorder
   onKeywordsChange: (keywords: string[]) => void
   onStartRound: () => void
   onRoundComplete: () => void
@@ -53,6 +54,7 @@ export function Fluency432Exercise({
   chunksOfDay,
   focusWords,
   fluencyReminders,
+  recorder,
   onKeywordsChange,
   onStartRound,
   onRoundComplete,
@@ -64,7 +66,7 @@ export function Fluency432Exercise({
   )
   const [difficultPhrase, setDifficultPhrase] = useState(feedback.difficultPhrase)
   const [importantError, setImportantError] = useState(feedback.importantError)
-  const recorder = useAudioRecorder()
+  const [showPrompts, setShowPrompts] = useState(false)
 
   const isTransfer = roundIndex === FLUENCY_ROUND_SECONDS.length - 1
   const seconds = FLUENCY_ROUND_SECONDS[roundIndex] ?? 60
@@ -77,14 +79,24 @@ export function Fluency432Exercise({
           {topic.title}
         </h1>
 
-        <div className="exercise__rescue">
-          <h3>Quelques pistes</h3>
-          <ul>
-            {topic.prompts.map((prompt) => (
-              <li key={prompt}>{prompt}</li>
-            ))}
-          </ul>
-        </div>
+        {showPrompts ? (
+          <div className="exercise__rescue">
+            <h3>Quelques pistes</h3>
+            <ul>
+              {topic.prompts.map((prompt) => (
+                <li key={prompt}>{prompt}</li>
+              ))}
+            </ul>
+          </div>
+        ) : (
+          <button
+            type="button"
+            className="button button--ghost button--block"
+            onClick={() => setShowPrompts(true)}
+          >
+            Besoin d'une piste ?
+          </button>
+        )}
 
         {fluencyReminders.length > 0 ? (
           <div className="exercise__rescue">
@@ -138,7 +150,7 @@ export function Fluency432Exercise({
       <section className="card exercise" aria-labelledby="feedback-title">
         <h2 id="feedback-title">Petit retour (30–60 s)</h2>
 
-        {recorder.blobUrl ? (
+        {recorder?.blobUrl ? (
           <div className="exercise__rescue">
             <h3>Écoute environ 1 minute</h3>
             <p className="muted">
@@ -184,7 +196,9 @@ export function Fluency432Exercise({
           ) : null}
 
           <div className="field">
-            <label htmlFor="difficult-phrase">Une phrase difficile à reformuler ?</label>
+            <label htmlFor="difficult-phrase">
+              Reformulation corrigée d'une phrase difficile (facultatif)
+            </label>
             <input
               id="difficult-phrase"
               value={difficultPhrase}
@@ -194,7 +208,7 @@ export function Fluency432Exercise({
           </div>
           <div className="field">
             <label htmlFor="important-error">
-              Une erreur importante à éviter au prochain 4 → 3 → 2 ?
+              Formulation corrigée à réutiliser au prochain 4 → 3 → 2
             </label>
             <input
               id="important-error"
@@ -213,7 +227,7 @@ export function Fluency432Exercise({
 
   const prompt = isTransfer ? topic.transferPrompt : topic.title
   const finishRound = () => {
-    recorder.stop()
+    recorder?.stop()
     onRoundComplete()
   }
 
@@ -252,7 +266,9 @@ export function Fluency432Exercise({
         </p>
       ) : null}
 
-      {roundIndex === 0 ? <AudioRecorderButton recorder={recorder} /> : null}
+      {roundIndex === 0 && recorder ? (
+        <AudioRecorderButton recorder={recorder} />
+      ) : null}
     </section>
   )
 }
