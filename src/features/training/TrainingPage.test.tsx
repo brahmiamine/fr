@@ -123,6 +123,50 @@ describe('TrainingPage', () => {
     })
   })
 
+  it('advances a prior correction after the learner confirms using it', async () => {
+    const user = userEvent.setup()
+    const note = {
+      id: 'note-1',
+      kind: 'importantError' as const,
+      text: 'Je suis arrivé il y a trois ans.',
+      createdAt: '2026-10-01',
+      nextReview: '2026-10-02',
+      timesSeen: 0,
+    }
+    const session = {
+      ...createSessionState(
+        { ...plan, fluencyReminders: [note] },
+        2,
+        new Date('2026-10-02T10:00:00.000Z'),
+      ),
+      stageIndex: 4,
+      usedFluencyReminderIds: ['note-1'],
+      feedback: {
+        blockedWord: '',
+        blockedWordContext: '',
+        abandonedSentence: '',
+        awkwardPhrase: '',
+        expressionToReuse: '',
+        expressionIntent: '',
+        blockCount: 0,
+        fluencyScore: 3,
+      },
+    } as TrainingSessionState & { usedFluencyReminderIds: string[] }
+
+    renderTraining({
+      ...createInitialState(),
+      fluencyNotes: [note],
+      inProgressSession: session,
+    })
+
+    await user.click(screen.getByRole('button', { name: 'Terminer la séance' }))
+
+    await waitFor(() => {
+      const parsed = JSON.parse(window.localStorage.getItem(STORAGE_KEY) as string)
+      expect(parsed.fluencyNotes[0].timesSeen).toBe(1)
+    })
+  })
+
   it('records the advanced pivot among the questions actually practised', async () => {
     const user = userEvent.setup()
     const session: TrainingSessionState = {
