@@ -2,6 +2,7 @@ import { useEffect, useMemo, useReducer, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useAppState } from '../../app/AppStateProvider'
 import { Confetti } from '../../components/Decor/Decor'
+import { useAudioRecorder } from '../../hooks/useAudioRecorder'
 import { buildSessionPlan } from '../../services/review/selectPlan'
 import {
   applyGapResult,
@@ -63,6 +64,7 @@ function CompletedScreen({ session }: { session: TrainingSessionState }) {
 
 export default function TrainingPage() {
   const { state, updateWith } = useAppState()
+  const sessionRecorder = useAudioRecorder()
 
   const initialSession = useMemo<TrainingSessionState | null>(() => {
     if (state.inProgressSession) return state.inProgressSession
@@ -243,6 +245,7 @@ export default function TrainingPage() {
           chunksOfDay={session.plan.chunksOfDay}
           focusWords={session.plan.focusWords}
           fluencyReminders={session.plan.fluencyReminders}
+          recorder={sessionRecorder}
           onKeywordsChange={(keywords) =>
             dispatch({ type: 'FLUENCY_SET_KEYWORDS', keywords })
           }
@@ -275,6 +278,7 @@ export default function TrainingPage() {
       {session.phase === 'active' && stage === 'feedback' ? (
         <SessionFeedbackView
           feedback={session.feedback}
+          audioUrl={sessionRecorder.blobUrl}
           onChange={(field, value) =>
             dispatch({ type: 'FEEDBACK_SET', field, value })
           }
