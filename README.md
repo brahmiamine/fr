@@ -38,12 +38,10 @@ Le contenu n'est **jamais tiré au hasard** : il suit les priorités
   personnelle et revient demain → dans 3 jours → dans 7 jours, jusqu'à être
   maîtrisé. Les mots génériques de `paraphrase-words.json` complètent la liste
   tant que ta base personnelle est vide (≈ 70 % perso / 30 % générique).
-- **Questions surprises** : préparation adaptée au niveau (10 s / 5 s / 3 s),
-  puis auto-évaluation du blocage. La question la plus difficile revient en
-  « revanche ».
-- **Enregistrement audio** : optionnel, via `MediaRecorder`, disponible
-  uniquement pendant la séance puis supprimé. Rien de volumineux n'est écrit
-  dans le stockage local.
+- **Questions surprises** : préparation automatiquement progressive (10 s au début, 5 s après 5 séances, 3 s après 15), puis auto-évaluation du blocage. La question la plus difficile revient en « revanche » et le niveau avancé ajoute un pivot de sujet.
+- **Enregistrement audio** : optionnel, via `MediaRecorder`. Le premier tour reste disponible jusqu'au mini-feedback pour permettre l'écoute différée, puis l'audio est supprimé. Rien de volumineux n'est écrit dans le stockage local.
+- **Boucle personnalisée** : mots manquants + contexte, phrases difficiles, erreurs importantes et expressions utiles sont réinjectés dans de futures séances. Les expressions utiles deviennent des chunks personnels.
+- **Transfert réel** : un défi hebdomadaire invite à faire 20–30 min de vraie conversation puis réinjecte les blocages observés dans l'entraînement.
 
 ## Démarrage local
 
@@ -105,8 +103,7 @@ d'anciennes données peuvent être considérées comme déjà vues.
 ## Stockage local et confidentialité
 
 - Aucune donnée ne quitte l'appareil.
-- Tout est stocké dans `localStorage` sous la clé `fr-fluency-trainer`, dans un
-  schéma versionné (`version: 2`, avec migration depuis la v1).
+- Tout est stocké dans `localStorage` sous la clé `fr-fluency-trainer`, dans un schéma versionné (`version: 3`, avec migration depuis les v1 et v2).
 - Données conservées : sessions terminées, tests hebdomadaires, **trous de
   mots** (`wordGaps`), **révisions de chunks** (`chunkReviews`), exemples
   personnels, contenus récents et session en cours.
