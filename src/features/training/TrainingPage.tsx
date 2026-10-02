@@ -5,12 +5,15 @@ import { Confetti } from '../../components/Decor/Decor'
 import { buildSessionPlan } from '../../services/review/selectPlan'
 import {
   applyGapResult,
-  createWordGap,
+  captureWordGap,
+  markFluencyNoteUsed,
   recordCompletedSession,
   setInProgressSession,
   toLocalDateString,
+  trainingLevelForSessionCount,
   upsertChunkReview,
-  upsertWordGap,
+  upsertFluencyNote,
+  upsertPersonalChunk,
 } from '../../services/progress/progress'
 import type { SessionRecord } from '../../types/progress'
 import { ChunksExercise } from './components/ChunksExercise'
@@ -33,19 +36,13 @@ function sessionDurationMinutes(session: TrainingSessionState): number {
   return Math.max(1, Math.ceil(elapsed / 60000))
 }
 
-function CompletedScreen({
-  session,
-}: {
-  session: TrainingSessionState
-}) {
+function CompletedScreen({ session }: { session: TrainingSessionState }) {
   const plan = session.plan
   return (
     <section className="card exercise exercise--center">
       <Confetti />
       <h1>Séance terminée</h1>
-      <p className="exercise__expression">
-        {sessionDurationMinutes(session)} min
-      </p>
+      <p className="exercise__expression">{sessionDurationMinutes(session)} min</p>
       <ul className="summary-list">
         <li>{plan.chunks.length} chunks travaillés</li>
         <li>{plan.gapItems.length} mots travaillés</li>
@@ -71,7 +68,10 @@ export default function TrainingPage() {
     if (state.inProgressSession) return state.inProgressSession
     try {
       const plan = buildSessionPlan(state)
-      return createSessionState(plan, state.level)
+      return createSessionState(
+        plan,
+        trainingLevelForSessionCount(state.sessions.length),
+      )
     } catch {
       return null
     }
@@ -84,7 +84,6 @@ export default function TrainingPage() {
     initialSession as TrainingSessionState,
   )
 
-  // Persist the in-progress session after every transition.
   useEffect(() => {
     if (!session || session.phase === 'complete') return
     updateWith((prev) => setInProgressSession(prev, session))
@@ -125,12 +124,10 @@ export default function TrainingPage() {
     updateWith((prev) => {
       let next = recordCompletedSession(prev, record)
 
-      // 1. Apply chunk review results to the spaced schedule.
       for (const result of session.chunkResults) {
         next = upsertChunkReview(next, result.chunkId, result.result, now)
       }
 
-      // 2. Apply gap retrieval results to personal word gaps.
       for (const result of session.gapResults) {
         const item = plan.gapItems.find((gap) => gap.key === result.itemKey)
         if (item?.isPersonal && item.sourceId) {
@@ -138,17 +135,53 @@ export default function TrainingPage() {
         }
       }
 
-      // 3. Add newly reported missing words to the personal gap bank.
-      const newTargets = [session.fluencyFeedback.missingWord, session.feedback.blockedWord]
-        .map((word) => word.trim())
-        .filter(Boolean)
-      for (const target of newTargets) {
-        const exists = next.wordGaps.some(
-          (gap) => gap.target.toLowerCase() === target.toLowerCase(),
-        )
-        if (!exists) {
-          next = upsertWordGap(next, createWordGap(target, '', now))
-        }
+      next = captureWordGap(
+        next,
+        session.fluencyFeedback.missingWord,
+        session.fluencyFeedback.missingWordContext,
+        now,
+      )
+      next = captureWordGap(
+        next,
+        session.feedback.blockedWord,
+        session.feedback.blockedWordContext,
+        now,
+      )
+
+      next = upsertFluencyNote(
+        next,
+        'difficultPhrase',
+        session.fluencyFeedback.difficultPhrase,
+        now,
+      )
+      next = upsertFluencyNote(
+        next,
+        'importantError',
+        session.fluencyFeedback.importantError,
+        now,
+      )
+      next = upsertFluencyNote(
+        next,
+        'abandonedSentence',
+        session.feedback.abandonedSentence,
+        now,
+      )
+      next = upsertFluencyNote(
+        next,
+        'awkwardPhrase',
+        session.feedback.awkwardPhrase,
+        now,
+      )
+
+      next = upsertPersonalChunk(
+        next,
+        session.feedback.expressionToReuse,
+        session.feedback.expressionIntent,
+        now,
+      )
+
+      for (const reminder of plan.fluencyReminders) {
+        next = markFluencyNoteUsed(next, reminder.id, now)
       }
 
       return next
@@ -183,9 +216,7 @@ export default function TrainingPage() {
         stageIndex={session.stageIndex}
       />
 
-      {session.phase === 'complete' ? (
-        <CompletedScreen session={session} />
-      ) : null}
+      {session.phase === 'complete' ? <CompletedScreen session={session} /> : null}
 
       {session.phase === 'active' && stage === 'chunks' ? (
         <ChunksExercise
@@ -203,12 +234,18 @@ export default function TrainingPage() {
 
       {session.phase === 'active' && stage === 'fluency' ? (
         <Fluency432Exercise
-          key={`fluency-${session.fluency.roundIndex}-${session.fluency.stage}`}
+          key={`fluency-${session.fluency.roundIndex}`}
           topic={session.plan.topic}
           roundIndex={session.fluency.roundIndex}
           stage={session.fluency.stage}
           feedback={session.fluencyFeedback}
+          keywords={session.fluency.keywords}
           chunksOfDay={session.plan.chunksOfDay}
+          focusWords={session.plan.focusWords}
+          fluencyReminders={session.plan.fluencyReminders}
+          onKeywordsChange={(keywords) =>
+            dispatch({ type: 'FLUENCY_SET_KEYWORDS', keywords })
+          }
           onStartRound={() => dispatch({ type: 'FLUENCY_START' })}
           onRoundComplete={() => dispatch({ type: 'FLUENCY_ROUND_COMPLETE' })}
           onSubmitFeedback={(values) =>
@@ -288,6 +325,8 @@ function QuestionsRenderer({
         total={plan.questions.length}
         stage={session.revenge.stage as 'countdown' | 'prep' | 'speaking'}
         prepSeconds={prepSeconds(session)}
+        chunksOfDay={plan.chunksOfDay}
+        focusWords={plan.focusWords}
         revenge
         onCountdownDone={() => onSession({ type: 'REVENGE_COUNTDOWN_DONE' })}
         onPrepDone={() => onSession({ type: 'REVENGE_PREP_DONE' })}
@@ -300,6 +339,9 @@ function QuestionsRenderer({
 
   const question = plan.questions[session.questions.index]
   if (!question) return null
+  const isLastQuestion = session.questions.index === plan.questions.length - 1
+  const pivotQuestion =
+    session.level === 3 && isLastQuestion ? plan.pivotQuestion : null
 
   return (
     <SurpriseQuestionsExercise
@@ -309,6 +351,9 @@ function QuestionsRenderer({
       total={plan.questions.length}
       stage={session.questions.stage}
       prepSeconds={prepSeconds(session)}
+      chunksOfDay={plan.chunksOfDay}
+      focusWords={plan.focusWords}
+      pivotQuestion={pivotQuestion}
       onCountdownDone={() => onSession({ type: 'QUESTION_COUNTDOWN_DONE' })}
       onPrepDone={() => onSession({ type: 'QUESTION_PREP_DONE' })}
       onSpeakingDone={() => onSession({ type: 'QUESTION_SPEAKING_DONE' })}
