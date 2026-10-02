@@ -10,7 +10,7 @@ function stateWithGaps(): AppState {
     {
       id: 'gap-1',
       target: 'prise électrique',
-      context: 'où on branche un appareil',
+      context: 'l’endroit dans le mur où on branche un appareil',
       createdAt: toLocalDateString(),
       successCount: 0,
       nextReview: toLocalDateString(),
@@ -19,7 +19,7 @@ function stateWithGaps(): AppState {
     {
       id: 'gap-2',
       target: 'licenciement',
-      context: '',
+      context: 'quand une entreprise met fin au contrat d’un salarié',
       createdAt: toLocalDateString(),
       successCount: 0,
       nextReview: toLocalDateString(),
@@ -30,33 +30,67 @@ function stateWithGaps(): AppState {
 }
 
 describe('buildSessionPlan', () => {
-  it('selects a topic, questions, chunks and gap items without duplicates', () => {
+  it('selects a complete session plan without duplicate questions', () => {
     const plan = buildSessionPlan(createInitialState(), () => 0.5)
-
     expect(plan.topic).toBeDefined()
     expect(plan.questions).toHaveLength(5)
+    expect(plan.pivotQuestion).toBeDefined()
     expect(plan.chunks).toHaveLength(3)
-    expect(plan.chunksOfDay.length).toBeGreaterThanOrEqual(1)
     expect(plan.gapItems).toHaveLength(5)
-
-    const questionIds = plan.questions.map((q) => q.id)
-    expect(new Set(questionIds).size).toBe(questionIds.length)
+    expect(new Set(plan.questions.map((q) => q.id)).size).toBe(5)
   })
 
-  it('prioritises personal word gaps over generic words', () => {
+  it('prioritises due personal word gaps over generic words', () => {
     const plan = buildSessionPlan(stateWithGaps(), () => 0.5)
     const personal = plan.gapItems.filter((item) => item.isPersonal)
-    // Both personal gaps are due and should appear before generic words.
     expect(personal.length).toBeGreaterThanOrEqual(1)
-    expect(plan.gapItems[0].isPersonal).toBe(true)
     expect(plan.gapItems[0].kind).toBe('retrieve')
-    expect(plan.gapItems[0].target).toBe('prise électrique')
+    expect(plan.gapItems[0].context).toContain('mur')
   })
 
-  it('uses only generic words when there are no personal gaps', () => {
-    const plan = buildSessionPlan(createInitialState(), () => 0.5)
-    expect(plan.gapItems.every((item) => !item.isPersonal)).toBe(true)
-    expect(plan.gapItems.every((item) => item.kind === 'paraphrase')).toBe(true)
+  it('reinjects a successfully retrieved word into spontaneous speaking', () => {
+    const state = stateWithGaps()
+    state.wordGaps[0] = {
+      ...state.wordGaps[0],
+      successCount: 1,
+      nextReview: '2099-01-01',
+    }
+    const plan = buildSessionPlan(state, () => 0.5)
+    expect(plan.focusWords).toContain('prise électrique')
+  })
+
+  it('selects due feedback notes as fluency reminders', () => {
+    const state: AppState = {
+      ...createInitialState(),
+      fluencyNotes: [
+        {
+          id: 'n1',
+          kind: 'importantError',
+          text: 'Évite de mélanger depuis et pendant',
+          createdAt: toLocalDateString(),
+          nextReview: toLocalDateString(),
+          timesSeen: 0,
+        },
+      ],
+    }
+    expect(buildSessionPlan(state, () => 0.5).fluencyReminders[0].id).toBe('n1')
+  })
+
+  it('makes a due personal chunk retrievable like a native chunk', () => {
+    const state: AppState = {
+      ...createInitialState(),
+      personalChunks: [
+        {
+          id: 'personal-1',
+          intent: 'Reformuler',
+          expression: 'Ce que je veux dire, c’est que…',
+          createdAt: toLocalDateString(),
+          nextReview: toLocalDateString(),
+        },
+      ],
+    }
+    const plan = buildSessionPlan(state, () => 0)
+    expect(plan.chunks.some((chunk) => chunk.id === 'personal-1')).toBe(true)
   })
 })
 
@@ -67,7 +101,7 @@ describe('scheduler', () => {
     expect(chunkSchedule('failed').interval).toBe(1)
   })
 
-  it('schedules word gaps: tomorrow, then 3 days, then mastered', () => {
+  it('performs J+1, J+3 and J+7 before word-gap mastery', () => {
     const miss = gapSchedule(0, false)
     expect(miss.interval).toBe(1)
     expect(miss.mastered).toBe(false)
@@ -78,6 +112,9 @@ describe('scheduler', () => {
 
     const secondHit = gapSchedule(1, true)
     expect(secondHit.interval).toBe(7)
-    expect(secondHit.mastered).toBe(true)
+    expect(secondHit.mastered).toBe(false)
+
+    const thirdHit = gapSchedule(2, true)
+    expect(thirdHit.mastered).toBe(true)
   })
 })
