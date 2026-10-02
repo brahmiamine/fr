@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import type { Chunk, Question } from '../../../types/content'
 import { Timer } from '../../../components/Timer/Timer'
 import {
@@ -25,6 +25,8 @@ export interface SurpriseQuestionsExerciseProps {
   onDone: () => void
 }
 
+const PIVOT_SECONDS = 30
+
 export function SurpriseQuestionsExercise({
   question,
   index,
@@ -42,13 +44,7 @@ export function SurpriseQuestionsExercise({
   onDone,
 }: SurpriseQuestionsExerciseProps) {
   const [showStarters, setShowStarters] = useState(false)
-  const [pivotShown, setPivotShown] = useState(false)
-
-  useEffect(() => {
-    if (stage !== 'speaking' || revenge || !pivotQuestion) return
-    const timeout = window.setTimeout(() => setPivotShown(true), 30000)
-    return () => window.clearTimeout(timeout)
-  }, [stage, revenge, pivotQuestion])
+  const [pivotActive, setPivotActive] = useState(false)
 
   const counterLabel = revenge ? 'Revanche' : `Question ${index + 1}/${total}`
 
@@ -117,19 +113,34 @@ export function SurpriseQuestionsExercise({
     )
   }
 
-  const activeQuestion = pivotShown && pivotQuestion ? pivotQuestion : question
+  const hasAdvancedPivot = Boolean(pivotQuestion && !revenge)
+  const activeQuestion = pivotActive && pivotQuestion ? pivotQuestion : question
+  const speakingSeconds = pivotActive ? PIVOT_SECONDS : QUESTION_SPEAKING_SECONDS
+
+  const completeSpeakingPhase = () => {
+    if (hasAdvancedPivot && !pivotActive) {
+      setPivotActive(true)
+      return
+    }
+    if (revenge) onDone()
+    else onSpeakingDone()
+  }
 
   return (
     <section className="card exercise" aria-labelledby="question-title">
-      <p className="pill">{pivotShown ? 'Pivot — change de sujet maintenant' : counterLabel}</p>
+      <p className="pill">
+        {pivotActive ? 'Pivot — change de sujet maintenant' : counterLabel}
+      </p>
       <h2 id="question-title" className="exercise__prompt">
         {activeQuestion.text}
       </h2>
 
       <Timer
-        durationSeconds={QUESTION_SPEAKING_SECONDS}
-        label="Parle"
-        onComplete={revenge ? onDone : onSpeakingDone}
+        key={pivotActive ? 'pivot' : 'main'}
+        durationSeconds={speakingSeconds}
+        autoStart={pivotActive}
+        label={pivotActive ? 'Continue immédiatement' : 'Parle'}
+        onComplete={completeSpeakingPhase}
       />
 
       {chunksOfDay.length > 0 ? (
@@ -165,13 +176,15 @@ export function SurpriseQuestionsExercise({
         </div>
       )}
 
-      <button
-        type="button"
-        className="button button--subtle button--block"
-        onClick={revenge ? onDone : onSpeakingDone}
-      >
-        {revenge ? 'Terminer' : "J'ai terminé"}
-      </button>
+      {hasAdvancedPivot && !pivotActive ? null : (
+        <button
+          type="button"
+          className="button button--subtle button--block"
+          onClick={revenge ? onDone : onSpeakingDone}
+        >
+          {revenge ? 'Terminer' : "J'ai terminé"}
+        </button>
+      )}
     </section>
   )
 }
