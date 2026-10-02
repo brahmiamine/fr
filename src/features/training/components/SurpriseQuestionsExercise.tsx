@@ -75,7 +75,8 @@ export function SurpriseQuestionsExercise({
       <section className="card exercise exercise--center" aria-live="polite">
         <p className="pill">{counterLabel}</p>
         <h1 className="exercise__prompt">{question.text}</h1>
-        <p className="exercise__prep-plan">Opinion → raison → exemple</p>
+        <p className="pill">Type : {question.type}</p>
+        <p className="exercise__prep-plan">Idée → raison → exemple</p>
         <Timer
           durationSeconds={prepSeconds}
           autoStart
