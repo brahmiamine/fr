@@ -33,17 +33,17 @@ Le contenu n'est **jamais tiré au hasard** : il suit les priorités
 - **Chunks** : tu retrouves une expression à partir de son intention. Une
   récupération réussie suit ensuite la progression complète
   aujourd'hui → J+1 → J+3 → J+7 avant maîtrise ; un échec la fait revenir le
-  lendemain. Les 2 chunks travaillés deviennent tes « chunks du jour », rappelés
-  pendant le 4→3→2 et les questions.
+  lendemain. Tous les chunks travaillés deviennent tes « chunks du jour » et
+  sont rappelés pendant le 4→3→2 et les questions.
 - **Trous de mots** : quand tu bloques sur un mot, il rejoint ta base
-  personnelle et revient demain → dans 3 jours → dans 7 jours, jusqu'à être
-  maîtrisé. Les mots génériques de `paraphrase-words.json` complètent la liste
+  personnelle et suit réellement J+1 → J+3 → J+7 avant maîtrise ; un échec le
+  fait revenir le lendemain. Les mots génériques de `paraphrase-words.json` complètent la liste
   tant que ta base personnelle est vide (≈ 70 % perso / 30 % générique).
-- **Questions surprises** : préparation automatiquement progressive (10 s au début, 5 s après 5 séances, 3 s après 15), diversité de catégories privilégiée, puis auto-évaluation du blocage. La question la plus difficile revient en « revanche » ; au niveau avancé, la dernière réponse dure 60 s puis enchaîne sur un pivot surprise de 30 s.
-- **Enregistrement audio** : optionnel, via `MediaRecorder`. Le premier tour reste disponible au mini-feedback puis au feedback final pour permettre la réécoute différée ; l'audio reste uniquement en mémoire et est supprimé quand la page est quittée.
-- **Boucle personnalisée** : mots manquants + contexte, formulations corrigées et expressions utiles sont réinjectés dans de futures séances. L'application demande la correction à réutiliser plutôt que de mémoriser l'erreur brute ; les expressions utiles deviennent des chunks personnels.
+- **Questions surprises** : la question apparaît pendant la préparation progressive (10 s au début, 5 s après 5 séances, 3 s après 15), puis les 60 s de parole démarrent automatiquement sans pause ni sortie anticipée. La diversité de catégories est privilégiée et la question la plus difficile revient en « revanche » ; au niveau avancé, la dernière réponse dure 60 s puis enchaîne sur un pivot surprise de 30 s, suivi lui aussi dans le feedback.
+- **Enregistrement audio** : optionnel, via `MediaRecorder`. S'il est activé, l'enregistrement du premier tour démarre avant le minuteur et s'arrête automatiquement à la fin des 4 minutes. Il reste disponible au mini-feedback puis au feedback final ; l'audio reste uniquement en mémoire.
+- **Boucle personnalisée** : mots manquants + contexte, formulations corrigées et expressions utiles sont réinjectés dans de futures séances. Une correction précédente n'avance dans son espacement que lorsque tu confirmes l'avoir réellement réutilisée à voix haute ; les expressions utiles deviennent des chunks personnels.
 - **Transfert réel** : un défi hebdomadaire exige au moins 20 min de vraie conversation puis réinjecte les corrections et blocages observés dans l'entraînement.
-- **Mesure hebdomadaire** : le benchmark de fluidité dure réellement 3 minutes complètes avant d'ouvrir le formulaire de mesures, afin de garder des conditions comparables.
+- **Mesure hebdomadaire** : le sujet et le minuteur apparaissent ensemble et le benchmark démarre automatiquement pour 3 minutes complètes, sans pause, afin de garder des conditions comparables.
 
 ## Sonner plus naturel (prosodie)
 
