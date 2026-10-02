@@ -1,0 +1,63 @@
+.timer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.timer__label {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.timer__display {
+  margin: 0;
+  font-size: clamp(3.5rem, 22vw, 6rem);
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+.timer--compact .timer__display {
+  font-size: clamp(2.4rem, 16vw, 3.5rem);
+}
+
+.timer--finished .timer__display {
+  color: var(--accent);
+}
+
+.timer__done {
+  margin: 0;
+  color: var(--accent);
+  font-weight: 600;
+  animation: timer-pulse 1.2s ease-in-out infinite;
+}
+
+.timer__controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+@keyframes timer-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .timer__done {
+    animation: none;
+  }
+}

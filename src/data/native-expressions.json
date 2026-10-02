@@ -1,0 +1,14 @@
+[
+  { "id": "e001", "expression": "Ça dépend vraiment de...", "category": "nuancer" },
+  { "id": "e002", "expression": "En fait, ce qui me frappe, c'est que...", "category": "reformuler" },
+  { "id": "e003", "expression": "Je dirais que...", "category": "donner-son-avis" },
+  { "id": "e004", "expression": "Il y a plusieurs raisons à cela.", "category": "structurer" },
+  { "id": "e005", "expression": "Autrement dit, ...", "category": "reformuler" },
+  { "id": "e006", "expression": "Ce n'est pas forcément le cas.", "category": "nuancer" },
+  { "id": "e007", "expression": "D'un côté..., de l'autre...", "category": "structurer" },
+  { "id": "e008", "expression": "Je vois ce que tu veux dire.", "category": "conversation" },
+  { "id": "e009", "expression": "Ça marche dans les deux sens.", "category": "nuancer" },
+  { "id": "e010", "expression": "Pour être honnête, ...", "category": "conversation" },
+  { "id": "e011", "expression": "C'est plutôt une bonne chose, non ?", "category": "donner-son-avis" },
+  { "id": "e012", "expression": "Tout tourne autour de...", "category": "structurer" }
+]

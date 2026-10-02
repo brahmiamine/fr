@@ -1,0 +1,20 @@
+[
+  { "id": "w001", "word": "embouteillage", "category": "quotidien", "difficulty": "easy" },
+  { "id": "w002", "word": "bénévolat", "category": "societe", "difficulty": "medium" },
+  { "id": "w003", "word": "gaspillage", "category": "environnement", "difficulty": "medium" },
+  { "id": "w004", "word": "ambiance", "category": "quotidien", "difficulty": "easy" },
+  { "id": "w005", "word": "sondage", "category": "societe", "difficulty": "medium" },
+  { "id": "w006", "word": "négociation", "category": "travail", "difficulty": "hard" },
+  { "id": "w007", "word": "réciproque", "category": "societe", "difficulty": "hard" },
+  { "id": "w008", "word": "complicité", "category": "societe", "difficulty": "medium" },
+  { "id": "w009", "word": "organisation", "category": "travail", "difficulty": "easy" },
+  { "id": "w010", "word": "tolérance", "category": "societe", "difficulty": "medium" },
+  { "id": "w011", "word": "dépaysement", "category": "voyage", "difficulty": "medium" },
+  { "id": "w012", "word": "hiérarchie", "category": "travail", "difficulty": "hard" },
+  { "id": "w013", "word": "quotidien", "category": "quotidien", "difficulty": "easy" },
+  { "id": "w014", "word": "engouement", "category": "culture", "difficulty": "hard" },
+  { "id": "w015", "word": "persévérance", "category": "education", "difficulty": "medium" },
+  { "id": "w016", "word": "solidarité", "category": "societe", "difficulty": "easy" },
+  { "id": "w017", "word": "improvisation", "category": "culture", "difficulty": "medium" },
+  { "id": "w018", "word": "réputation", "category": "travail", "difficulty": "medium" }
+]

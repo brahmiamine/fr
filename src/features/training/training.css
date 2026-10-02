@@ -1,0 +1,97 @@
+.training {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.session-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.session-header__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.session-header__title {
+  margin: 0;
+  font-size: 1.15rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.session-header__exit {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch);
+  padding: 0 0.5rem;
+  color: var(--muted);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.exercise {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.exercise--center {
+  text-align: center;
+  align-items: center;
+}
+
+.exercise__prompt {
+  font-size: 1.5rem;
+  line-height: 1.25;
+}
+
+.exercise__prompts,
+.exercise__rules,
+.exercise__rescue ul {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.exercise__prompts li,
+.exercise__rules li,
+.exercise__rescue li {
+  margin-bottom: 0.3rem;
+}
+
+.exercise__rules {
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.exercise__rescue {
+  background: var(--surface-2);
+  border-radius: var(--radius-sm);
+  padding: 0.7rem 0.9rem;
+}
+
+.exercise__rescue h3 {
+  margin-bottom: 0.35rem;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+.exercise__actions {
+  margin-top: 0.25rem;
+}
+
+.exercise__actions .button {
+  flex: 1;
+}
+
+.exercise__hint {
+  margin-top: 0.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+}

@@ -1,0 +1,106 @@
+[
+  {
+    "id": "t001",
+    "title": "Télétravail ou bureau ?",
+    "category": "travail",
+    "difficulty": "medium",
+    "prompts": [
+      "Quel est ton choix personnel ?",
+      "Quels sont les avantages ?",
+      "Quels sont les inconvénients ?",
+      "Donne un exemple personnel."
+    ],
+    "transferPrompt": "Une semaine de quatre jours serait-elle meilleure ?"
+  },
+  {
+    "id": "t002",
+    "title": "Vivre en ville ou à la campagne",
+    "category": "quotidien",
+    "difficulty": "easy",
+    "prompts": [
+      "Où préfères-tu vivre et pourquoi ?",
+      "Qu'est-ce qui change dans la vie de tous les jours ?",
+      "Quel serait le compromis idéal ?",
+      "Raconte une expérience personnelle."
+    ],
+    "transferPrompt": "Et si tu pouvais travailler n'importe où, que choisirais-tu ?"
+  },
+  {
+    "id": "t003",
+    "title": "L'intelligence artificielle au quotidien",
+    "category": "technologie",
+    "difficulty": "hard",
+    "prompts": [
+      "Comment utilises-tu la technologie chaque jour ?",
+      "Selon toi, est-ce une bonne évolution ?",
+      "Quels sont les risques ?",
+      "Quelle limite faut-il poser ?"
+    ],
+    "transferPrompt": "Faudrait-il interdire certains usages ? Pourquoi ?"
+  },
+  {
+    "id": "t004",
+    "title": "Les réseaux sociaux et l'amitié",
+    "category": "societe",
+    "difficulty": "medium",
+    "prompts": [
+      "Les réseaux sociaux rapprochent-ils vraiment les gens ?",
+      "Quels effets sur les relations réelles ?",
+      "Comment garder un usage sain ?",
+      "Donne ton propre exemple."
+    ],
+    "transferPrompt": "Et si tu devais supprimer une application, laquelle et pourquoi ?"
+  },
+  {
+    "id": "t005",
+    "title": "Voyager seul ou accompagné",
+    "category": "voyage",
+    "difficulty": "easy",
+    "prompts": [
+      "Quel type de voyage préfères-tu ?",
+      "Qu'est-ce qu'on apprend en voyageant ?",
+      "Quelles difficultés peut-on rencontrer ?",
+      "Raconte un souvenir marquant."
+    ],
+    "transferPrompt": "Un voyage sans téléphone serait-il une bonne idée ?"
+  },
+  {
+    "id": "t006",
+    "title": "L'argent et le bonheur",
+    "category": "societe",
+    "difficulty": "hard",
+    "prompts": [
+      "L'argent fait-il le bonheur ?",
+      "Qu'est-ce qui compte le plus selon toi ?",
+      "Comment trouver un équilibre ?",
+      "Quel exemple t'a marqué ?"
+    ],
+    "transferPrompt": "Si tu gagnais beaucoup plus, qu'est-ce que tu changerais ?"
+  },
+  {
+    "id": "t007",
+    "title": "L'école de demain",
+    "category": "education",
+    "difficulty": "medium",
+    "prompts": [
+      "Que garderais-tu de l'école actuelle ?",
+      "Que faudrait-il changer en priorité ?",
+      "Comment mieux motiver les élèves ?",
+      "Quel souvenir d'école te revient ?"
+    ],
+    "transferPrompt": "Les cours devraient-ils être plus pratiques que théoriques ?"
+  },
+  {
+    "id": "t008",
+    "title": "Le sport et la discipline",
+    "category": "sante",
+    "difficulty": "easy",
+    "prompts": [
+      "Quelle place le sport a-t-il dans ta vie ?",
+      "Quels bénéfices apporte-t-il ?",
+      "Comment rester régulier ?",
+      "Raconte un progrès dont tu es fier."
+    ],
+    "transferPrompt": "Faut-il obliger les enfants à faire du sport ?"
+  }
+]

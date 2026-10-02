@@ -1,0 +1,20 @@
+[
+  { "id": "q001", "text": "Pourquoi certaines personnes préfèrent-elles vivre seules ?", "category": "societe", "difficulty": "medium" },
+  { "id": "q002", "text": "À quoi ressemblerait ta journée idéale ?", "category": "quotidien", "difficulty": "easy" },
+  { "id": "q003", "text": "Les voyages forment-ils vraiment la jeunesse ?", "category": "voyage", "difficulty": "medium" },
+  { "id": "q004", "text": "Quel est le plus grand changement technologique de ces dix dernières années ?", "category": "technologie", "difficulty": "hard" },
+  { "id": "q005", "text": "Faut-il apprendre plusieurs langues dès l'enfance ?", "category": "education", "difficulty": "medium" },
+  { "id": "q006", "text": "Qu'est-ce qui rend un bon ami ?", "category": "societe", "difficulty": "easy" },
+  { "id": "q007", "text": "Le travail à distance va-t-il disparaître ?", "category": "travail", "difficulty": "medium" },
+  { "id": "q008", "text": "Comment la musique influence-t-elle notre humeur ?", "category": "culture", "difficulty": "easy" },
+  { "id": "q009", "text": "Pourquoi est-il difficile de changer ses habitudes ?", "category": "sante", "difficulty": "medium" },
+  { "id": "q010", "text": "La célébrité a-t-elle plus d'avantages ou d'inconvénients ?", "category": "societe", "difficulty": "hard" },
+  { "id": "q011", "text": "Quel serait un bon conseil pour gagner du temps ?", "category": "quotidien", "difficulty": "easy" },
+  { "id": "q012", "text": "Les grandes villes sont-elles encore vivables ?", "category": "environnement", "difficulty": "medium" },
+  { "id": "q013", "text": "Que penses-tu de l'usage des téléphones à table ?", "category": "quotidien", "difficulty": "easy" },
+  { "id": "q014", "text": "L'échec est-il nécessaire pour réussir ?", "category": "societe", "difficulty": "medium" },
+  { "id": "q015", "text": "Quelle invention changera le plus le siècle à venir ?", "category": "technologie", "difficulty": "hard" },
+  { "id": "q016", "text": "Comment créer une bonne ambiance dans une équipe ?", "category": "travail", "difficulty": "medium" },
+  { "id": "q017", "text": "Qu'est-ce qui mérite d'être appris toute sa vie ?", "category": "education", "difficulty": "hard" },
+  { "id": "q018", "text": "Préfères-tu un bon livre ou un bon film ? Pourquoi ?", "category": "culture", "difficulty": "easy" }
+]
