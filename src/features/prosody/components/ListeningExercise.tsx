@@ -1,4 +1,5 @@
 import type { ProsodyExercise } from '../types'
+import { speechRateFor } from '../types'
 import {
   REQUIRED_MEANING_LISTENS,
   REQUIRED_PROSODY_LISTENS,
@@ -38,7 +39,10 @@ export function ListeningExercise({
         <h1 className="exercise__intent">Écoute simplement.</h1>
         <p className="muted">Ne lis rien pour l'instant. Comprends seulement le sens.</p>
         <AudioClip
-          src={audioSrc}
+          src={audioSrc || undefined}
+          speechText={exercise.modelKind === 'tts' ? exercise.transcript : undefined}
+          speechLocale={exercise.voiceLocale}
+          speechRate={speechRateFor(exercise)}
           label="Écouter l'extrait complet"
           variant="block"
           onComplete={onAudioComplete}
@@ -70,7 +74,10 @@ export function ListeningExercise({
           <li>quelles fins de groupes sont légèrement plus longues</li>
         </ul>
         <AudioClip
-          src={audioSrc}
+          src={audioSrc || undefined}
+          speechText={exercise.modelKind === 'tts' ? exercise.transcript : undefined}
+          speechLocale={exercise.voiceLocale}
+          speechRate={speechRateFor(exercise)}
           label="Écouter à nouveau"
           variant="block"
           onComplete={onAudioComplete}
@@ -113,7 +120,10 @@ export function ListeningExercise({
         <span className="prosody-groups__mark">—</span> syllabe allongée
       </p>
       <AudioClip
-        src={audioSrc}
+        src={audioSrc || undefined}
+        speechText={exercise.modelKind === 'tts' ? exercise.transcript : undefined}
+        speechLocale={exercise.voiceLocale}
+        speechRate={speechRateFor(exercise)}
         label="Réécouter avec le découpage visible"
         variant="block"
       />
