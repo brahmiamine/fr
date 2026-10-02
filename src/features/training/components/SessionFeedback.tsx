@@ -24,6 +24,10 @@ export function SessionFeedbackView({
   return (
     <section className="card exercise" aria-labelledby="feedback-title">
       <h1 id="feedback-title">Feedback de fin de séance</h1>
+      <p className="muted">
+        Garde seulement les difficultés utiles : elles reviendront dans tes
+        prochaines séances.
+      </p>
 
       <form onSubmit={handleSubmit}>
         <div className="field">
@@ -38,9 +42,48 @@ export function SessionFeedbackView({
           />
         </div>
 
+        {feedback.blockedWord.trim() ? (
+          <div className="field">
+            <label htmlFor="blocked-word-context">
+              Quelle idée voulais-tu exprimer avec ce mot ?
+            </label>
+            <input
+              id="blocked-word-context"
+              value={feedback.blockedWordContext}
+              onChange={(event) => onChange('blockedWordContext', event.target.value)}
+              required
+              autoComplete="off"
+            />
+          </div>
+        ) : null}
+
+        <div className="field">
+          <label htmlFor="abandoned-sentence">
+            Une phrase que tu as abandonnée ? (facultatif)
+          </label>
+          <input
+            id="abandoned-sentence"
+            value={feedback.abandonedSentence}
+            onChange={(event) => onChange('abandonedSentence', event.target.value)}
+            autoComplete="off"
+          />
+        </div>
+
+        <div className="field">
+          <label htmlFor="awkward-phrase">
+            Une formulation maladroite à retravailler ? (facultatif)
+          </label>
+          <input
+            id="awkward-phrase"
+            value={feedback.awkwardPhrase}
+            onChange={(event) => onChange('awkwardPhrase', event.target.value)}
+            autoComplete="off"
+          />
+        </div>
+
         <div className="field">
           <label htmlFor="expression-reuse">
-            Quelle expression veux-tu réutiliser demain ? (facultatif)
+            Quelle expression utile veux-tu transformer en chunk personnel ?
           </label>
           <input
             id="expression-reuse"
@@ -49,6 +92,21 @@ export function SessionFeedbackView({
             autoComplete="off"
           />
         </div>
+
+        {feedback.expressionToReuse.trim() ? (
+          <div className="field">
+            <label htmlFor="expression-intent">
+              À quoi sert cette expression ? (ex. nuancer une opinion)
+            </label>
+            <input
+              id="expression-intent"
+              value={feedback.expressionIntent}
+              onChange={(event) => onChange('expressionIntent', event.target.value)}
+              required
+              autoComplete="off"
+            />
+          </div>
+        ) : null}
 
         <div className="field">
           <label htmlFor="block-count">Combien de vrais blocages ?</label>
@@ -86,16 +144,13 @@ export function SessionFeedbackView({
           </div>
         </fieldset>
 
-        <button
-          type="submit"
-          className="button button--block"
-          disabled={!valid}
-        >
+        <button type="submit" className="button button--block" disabled={!valid}>
           Terminer la séance
         </button>
         {!valid ? (
           <p className="muted exercise__hint">
-            Indique le nombre de blocages et ta note de fluidité.
+            Indique le nombre de blocages, ta note et le contexte des éléments
+            que tu veux mémoriser.
           </p>
         ) : null}
       </form>
