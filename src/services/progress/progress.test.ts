@@ -140,9 +140,25 @@ describe('closed learning loop', () => {
 })
 
 describe('spaced retrieval state', () => {
-  it('schedules and masters chunks', () => {
-    let state = upsertChunkReview(createInitialState(), 'chunk_001', 'easy')
-    state = upsertChunkReview(state, 'chunk_001', 'easy')
+  it('reviews chunks on J+1, J+3 and J+7 before mastery', () => {
+    let state = upsertChunkReview(
+      createInitialState(),
+      'chunk_001',
+      'easy',
+      new Date(2026, 9, 2),
+    )
+    expect(state.chunkReviews[0].nextReview).toBe('2026-10-03')
+    expect(state.chunkReviews[0].mastered).toBe(false)
+
+    state = upsertChunkReview(state, 'chunk_001', 'easy', new Date(2026, 9, 3))
+    expect(state.chunkReviews[0].nextReview).toBe('2026-10-05')
+    expect(state.chunkReviews[0].mastered).toBe(false)
+
+    state = upsertChunkReview(state, 'chunk_001', 'easy', new Date(2026, 9, 5))
+    expect(state.chunkReviews[0].nextReview).toBe('2026-10-09')
+    expect(state.chunkReviews[0].mastered).toBe(false)
+
+    state = upsertChunkReview(state, 'chunk_001', 'easy', new Date(2026, 9, 9))
     expect(state.chunkReviews[0].mastered).toBe(true)
   })
 
