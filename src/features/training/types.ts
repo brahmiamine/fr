@@ -82,6 +82,7 @@ export interface TrainingSessionState {
   }
   chunkResults: ChunkResult[]
   chunksOfDayShown: boolean
+  usedFluencyReminderIds: string[]
 
   fluency: {
     roundIndex: number
