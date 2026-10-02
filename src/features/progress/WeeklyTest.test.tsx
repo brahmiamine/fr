@@ -22,24 +22,11 @@ describe('WeeklyTest', () => {
       screen.getByRole('button', { name: 'Lancer le test de 3 minutes' }),
     )
 
-    // The topic and timer are shown once the test starts.
+    // A weekly benchmark must keep the same full 3-minute condition.
     expect(screen.getByRole('timer')).toBeInTheDocument()
-
-    await user.click(screen.getByRole('button', { name: "J'ai terminé" }))
     expect(
-      screen.getByRole('heading', { name: 'Mesures' }),
-    ).toBeInTheDocument()
-
-    await user.click(
-      screen.getByRole('button', { name: 'Enregistrer le test' }),
-    )
-
-    expect(
-      screen.getByRole('heading', { name: 'Test de la semaine ✓' }),
-    ).toBeInTheDocument()
-
-    const raw = window.localStorage.getItem(STORAGE_KEY)
-    expect(raw).toBeTruthy()
-    expect(JSON.parse(raw as string).weeklyTests).toHaveLength(1)
+      screen.queryByRole('button', { name: "J'ai terminé" }),
+    ).not.toBeInTheDocument()
+    expect(screen.queryByRole('heading', { name: 'Mesures' })).not.toBeInTheDocument()
   })
 })
