@@ -1,4 +1,4 @@
-# French Fluency Trainer — Design Spec
+# Parle+ — Design Spec
 
 Date: 2026-10-02
 Repository: brahmiamine/fr
@@ -237,7 +237,7 @@ Store:
 - current in-progress session
 
 Suggested root key:
-fr-fluency-trainer
+parle-plus
 
 The data model should be versioned to allow future migrations.
 
