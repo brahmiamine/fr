@@ -36,7 +36,7 @@ describe('WeeklyConversation', () => {
       'l’endroit dans le mur où je branche un appareil',
     )
     await user.type(
-      screen.getByLabelText(/Un moment où tu as bloqué/),
+      screen.getByLabelText(/formulation corrigée veux-tu réutiliser/),
       'je me suis arrêté au milieu de ma phrase',
     )
     await user.type(
