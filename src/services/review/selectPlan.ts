@@ -125,6 +125,41 @@ function selectFocusWords(state: AppState, random: () => number): string[] {
     .map((gap) => gap.target)
 }
 
+
+function selectDiverseQuestions(
+  state: AppState,
+  count: number,
+  random: () => number,
+) {
+  const ordered = selectUniqueItems(
+    contentRepository.questions,
+    contentRepository.questions.length,
+    state.recentQuestionIds,
+    random,
+  )
+  const chosen = []
+  const usedCategories = new Set<string>()
+
+  for (const question of ordered) {
+    if (chosen.length >= count) break
+    if (usedCategories.has(question.category)) continue
+    chosen.push(question)
+    usedCategories.add(question.category)
+  }
+
+  if (chosen.length < count) {
+    const selectedIds = new Set(chosen.map((question) => question.id))
+    for (const question of ordered) {
+      if (chosen.length >= count) break
+      if (selectedIds.has(question.id)) continue
+      chosen.push(question)
+      selectedIds.add(question.id)
+    }
+  }
+
+  return chosen
+}
+
 function selectFluencyReminders(state: AppState, random: () => number) {
   const today = toLocalDateString()
   return shuffle(
@@ -143,10 +178,9 @@ export function buildSessionPlan(
   if (topics.length === 0) throw new Error('Aucun sujet de conversation disponible.')
   const topic: Topic = topics[0]
 
-  const questionPool = selectUniqueItems(
-    contentRepository.questions,
+  const questionPool = selectDiverseQuestions(
+    state,
     QUESTIONS_PER_SESSION + 1,
-    state.recentQuestionIds,
     random,
   )
   const questions = questionPool.slice(0, QUESTIONS_PER_SESSION)
