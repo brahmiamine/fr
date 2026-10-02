@@ -107,6 +107,8 @@ export function ListeningExercise({
               <span className="prosody-groups__mark">—</span>
             ) : null}
             <span className="prosody-groups__mark">{intonationMark(group)}</span>
+            {group.liaisonAfter ? <span className="prosody-groups__mark"> ‿liaison</span> : null}
+            {group.enchainementAfter ? <span className="prosody-groups__mark"> ‿enchaînement</span> : null}
             {index < exercise.groups.length - 1 ? (
               <span className="prosody-groups__sep"> / </span>
             ) : null}
@@ -117,7 +119,8 @@ export function ListeningExercise({
         <span className="prosody-groups__mark">/</span> frontière ·{' '}
         <span className="prosody-groups__mark">↑</span> monte ·{' '}
         <span className="prosody-groups__mark">↓</span> descend ·{' '}
-        <span className="prosody-groups__mark">—</span> syllabe allongée
+        <span className="prosody-groups__mark">—</span> syllabe allongée ·{' '}
+        <span className="prosody-groups__mark">‿</span> liaison / enchaînement
       </p>
       <AudioClip
         src={audioSrc || undefined}
