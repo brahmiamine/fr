@@ -1,5 +1,6 @@
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
+import type { AudioRecorder } from '../../../hooks/useAudioRecorder'
 import type { Question, Topic } from '../../../types/content'
 import { Fluency432Exercise } from './Fluency432Exercise'
 import { SessionFeedbackView } from './SessionFeedback'
@@ -30,6 +31,18 @@ const pivot: Question = {
   text: "Maintenant : l'intelligence artificielle à l'école.",
   category: 'technologie',
   difficulty: 'hard',
+}
+
+function recorder(overrides: Partial<AudioRecorder> = {}): AudioRecorder {
+  return {
+    status: 'idle',
+    supported: true,
+    blobUrl: null,
+    start: vi.fn(),
+    stop: vi.fn(),
+    reset: vi.fn(),
+    ...overrides,
+  }
 }
 
 afterEach(() => {
@@ -65,6 +78,74 @@ describe('4→3→2 alignment', () => {
     expect(screen.getByText('Quel est ton choix personnel ?')).toBeInTheDocument()
   })
 
+  it('starts the optional recording before entering the timed first round', async () => {
+    const audio = recorder()
+    const onStartRound = vi.fn()
+    render(
+      <Fluency432Exercise
+        topic={topic}
+        roundIndex={0}
+        stage="prep"
+        feedback={{
+          missingWord: '',
+          missingWordContext: '',
+          difficultPhrase: '',
+          importantError: '',
+        }}
+        keywords={[]}
+        chunksOfDay={[]}
+        focusWords={[]}
+        fluencyReminders={[]}
+        recorder={audio}
+        onKeywordsChange={() => undefined}
+        onStartRound={onStartRound}
+        onRoundComplete={() => undefined}
+        onSubmitFeedback={() => undefined}
+      />,
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: 'Commencer le tour 1' }))
+    await act(async () => undefined)
+
+    expect(audio.start).toHaveBeenCalledTimes(1)
+    expect(onStartRound).toHaveBeenCalledTimes(1)
+  })
+
+  it('auto-starts a running round and does not allow pausing it', () => {
+    vi.useFakeTimers()
+    const onRoundComplete = vi.fn()
+
+    render(
+      <Fluency432Exercise
+        topic={topic}
+        roundIndex={1}
+        stage="running"
+        feedback={{
+          missingWord: '',
+          missingWordContext: '',
+          difficultPhrase: '',
+          importantError: '',
+        }}
+        keywords={[]}
+        chunksOfDay={[]}
+        focusWords={[]}
+        fluencyReminders={[]}
+        onKeywordsChange={() => undefined}
+        onStartRound={() => undefined}
+        onRoundComplete={onRoundComplete}
+        onSubmitFeedback={() => undefined}
+      />,
+    )
+
+    expect(screen.queryByRole('button', { name: 'Démarrer' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Pause' })).not.toBeInTheDocument()
+
+    act(() => {
+      vi.advanceTimersByTime(180_000)
+    })
+    expect(onRoundComplete).toHaveBeenCalledTimes(1)
+  })
+
   it('asks for a corrected formulation rather than storing the raw error', () => {
     render(
       <Fluency432Exercise
@@ -94,10 +175,73 @@ describe('4→3→2 alignment', () => {
   })
 })
 
-describe('advanced surprise-question pivot', () => {
+describe('surprise-question timing', () => {
+  it('shows the unknown question during the 10/5/3-second preparation window', () => {
+    vi.useFakeTimers()
+    const onPrepDone = vi.fn()
+    render(
+      <SurpriseQuestionsExercise
+        question={question}
+        index={0}
+        total={5}
+        stage="prep"
+        prepSeconds={5}
+        chunksOfDay={[]}
+        focusWords={[]}
+        onCountdownDone={() => undefined}
+        onPrepDone={onPrepDone}
+        onSpeakingDone={() => undefined}
+        onRate={() => undefined}
+        onDone={() => undefined}
+      />,
+    )
+
+    expect(screen.getByText(question.text)).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Pause' })).not.toBeInTheDocument()
+
+    act(() => {
+      vi.advanceTimersByTime(5_000)
+    })
+    expect(onPrepDone).toHaveBeenCalledTimes(1)
+  })
+
+  it('auto-starts the 60-second answer and cannot be ended early', () => {
+    vi.useFakeTimers()
+    const onSpeakingDone = vi.fn()
+    render(
+      <SurpriseQuestionsExercise
+        question={question}
+        index={0}
+        total={5}
+        stage="speaking"
+        prepSeconds={5}
+        chunksOfDay={[]}
+        focusWords={[]}
+        onCountdownDone={() => undefined}
+        onPrepDone={() => undefined}
+        onSpeakingDone={onSpeakingDone}
+        onRate={() => undefined}
+        onDone={() => undefined}
+      />,
+    )
+
+    expect(screen.queryByRole('button', { name: 'Démarrer' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: "J'ai terminé" })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Pause' })).not.toBeInTheDocument()
+
+    act(() => {
+      vi.advanceTimersByTime(59_000)
+    })
+    expect(onSpeakingDone).not.toHaveBeenCalled()
+
+    act(() => {
+      vi.advanceTimersByTime(1_000)
+    })
+    expect(onSpeakingDone).toHaveBeenCalledTimes(1)
+  })
+
   it('gives 60 seconds to the first question, then an additional 30-second pivot', () => {
     vi.useFakeTimers()
-    vi.setSystemTime(new Date('2026-10-02T10:00:00.000Z'))
     const onSpeakingDone = vi.fn()
 
     render(
@@ -118,7 +262,6 @@ describe('advanced surprise-question pivot', () => {
       />,
     )
 
-    fireEvent.click(screen.getByRole('button', { name: 'Démarrer' }))
     act(() => {
       vi.advanceTimersByTime(60_000)
     })
@@ -159,5 +302,37 @@ describe('final feedback', () => {
     expect(
       screen.getByLabelText(/reformulation corrigée de la phrase abandonnée/i),
     ).toBeInTheDocument()
+  })
+
+  it('requires an active confirmation before a previous correction is counted as reused', () => {
+    const onToggleReminder = vi.fn()
+    render(
+      <SessionFeedbackView
+        {...({
+          feedback: {
+            blockedWord: '',
+            blockedWordContext: '',
+            abandonedSentence: '',
+            awkwardPhrase: '',
+            expressionToReuse: '',
+            expressionIntent: '',
+            blockCount: 0,
+            fluencyScore: 3,
+          },
+          onChange: () => undefined,
+          onSubmit: () => undefined,
+          fluencyReminders: [
+            { id: 'note-1', kind: 'importantError', text: 'Je suis arrivé il y a trois ans.' },
+          ],
+          usedReminderIds: [],
+          onToggleReminder,
+        } as any)}
+      />,
+    )
+
+    fireEvent.click(
+      screen.getByRole('button', { name: /je l'ai réellement utilisée/i }),
+    )
+    expect(onToggleReminder).toHaveBeenCalledWith('note-1')
   })
 })
