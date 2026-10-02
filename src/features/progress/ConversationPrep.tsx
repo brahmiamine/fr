@@ -1,3 +1,4 @@
+import { InfoButton } from '../../components/ui'
 import { useEffect, useState } from 'react'
 import { Timer } from '../../components/Timer/Timer'
 import { contentRepository } from '../../services/content/contentRepository'
@@ -57,7 +58,10 @@ export default function ConversationPrep() {
 
   return (
     <section className="card weekly-test" aria-labelledby="conversation-prep-title">
-      <h2 id="conversation-prep-title">Situation à jouer</h2>
+      <div className="title-row">
+        <h2 id="conversation-prep-title">Situation à jouer</h2>
+        <InfoButton id="conversation" />
+      </div>
       <p>{scenario.situation}</p>
       <p className="muted">Objectif : {scenario.goal}</p>
 

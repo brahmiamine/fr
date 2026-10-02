@@ -1,3 +1,4 @@
+import { InfoButton } from '../../components/ui'
 import { useEffect, useMemo, useState } from 'react'
 import type { FormEvent } from 'react'
 import { useAppState } from '../../app/AppStateProvider'
@@ -133,7 +134,10 @@ export default function WeeklyTest() {
 
   return (
     <section className="card weekly-test" aria-labelledby="weekly-title">
-      <h2 id="weekly-title">Test de fluidité hebdomadaire</h2>
+      <div className="title-row">
+        <h2 id="weekly-title">Test de fluidité hebdomadaire</h2>
+        <InfoButton id="weeklyTest" />
+      </div>
 
       {stage === 'intro' || !topic ? (
         <>

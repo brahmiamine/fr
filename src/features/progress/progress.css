@@ -178,3 +178,14 @@
 .heatmap__cell--2 { background: color-mix(in srgb, var(--accent) 65%, var(--surface-2)); }
 .heatmap__cell--3 { background: var(--accent); }
 .heatmap__cell--future { opacity: 0.35; }
+
+.title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.title-row > h2 {
+  margin: 0;
+}

@@ -13,7 +13,7 @@ import {
   toLocalDateString,
 } from '../../services/progress/progress'
 import type { ProsodySessionRecord } from '../../types/progress'
-import type { ProsodyExercise, ProsodyFocus } from './types'
+import type { ProsodyExercise, ProsodyFocus, ProsodyStage } from './types'
 import {
   FOCUS_OPTIONS,
   STAGE_LABELS,
@@ -28,7 +28,7 @@ import { ListeningExercise } from './components/ListeningExercise'
 import { ImitationExercise } from './components/ImitationExercise'
 import { ComparisonExercise } from './components/ComparisonExercise'
 import { RetellingExercise } from './components/RetellingExercise'
-import { IconTile, SegmentedProgress } from '../../components/ui'
+import { IconTile, InfoButton, SegmentedProgress } from '../../components/ui'
 import './prosody.css'
 
 export interface ProsodyPageProps {
@@ -216,7 +216,11 @@ function ProsodySession({
 
   return (
     <div className="training">
-      <ProsodyHeader position={position} title={STAGE_LABELS[session.stage]} />
+      <ProsodyHeader
+        position={position}
+        title={STAGE_LABELS[session.stage]}
+        stage={session.stage}
+      />
 
       {recentFocusGoal && session.stage === 'listening' && session.listening.step === 'meaning' ? (
         <p className="pill pill--soft">Ton point de travail récent : {recentFocusGoal}</p>
@@ -288,7 +292,15 @@ function ProsodySession({
   )
 }
 
-function ProsodyHeader({ position, title }: { position: number; title: string }) {
+function ProsodyHeader({
+  position,
+  title,
+  stage,
+}: {
+  position: number
+  title: string
+  stage?: ProsodyStage
+}) {
   const safePosition = Math.max(0, position)
   return (
     <header className="session-header">
@@ -302,7 +314,10 @@ function ProsodyHeader({ position, title }: { position: number; title: string })
             <span className="session-header__title">Sonner plus naturel · {title}</span>
           </div>
         </div>
-        <Link to="/" className="session-header__exit">Quitter</Link>
+        <div className="session-header__actions">
+          {stage ? <InfoButton id={stage} /> : null}
+          <Link to="/" className="session-header__exit">Quitter</Link>
+        </div>
       </div>
       <SegmentedProgress
         segments={STAGE_ORDER.map((_, index) =>

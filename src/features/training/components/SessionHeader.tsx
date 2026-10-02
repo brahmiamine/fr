@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { IconTile, SegmentedProgress } from '../../../components/ui'
+import { IconTile, InfoButton, SegmentedProgress } from '../../../components/ui'
 import type { StageKind } from '../types'
 import { STAGE_META, STAGE_ORDER } from '../types'
 
@@ -35,9 +35,12 @@ export function SessionHeader({
             <span className="session-header__title">{title}</span>
           </div>
         </div>
-        <Link to="/" className="session-header__exit">
-          Quitter
-        </Link>
+        <div className="session-header__actions">
+          {stage ? <InfoButton id={stage} /> : null}
+          <Link to="/" className="session-header__exit">
+            Quitter
+          </Link>
+        </div>
       </div>
       <SegmentedProgress
         segments={segments}

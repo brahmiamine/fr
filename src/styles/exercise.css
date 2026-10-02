@@ -27,6 +27,12 @@
   gap: 10px;
 }
 
+.session-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .session-header__stage {
   display: flex;
   align-items: center;

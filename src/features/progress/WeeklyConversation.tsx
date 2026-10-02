@@ -1,3 +1,4 @@
+import { InfoButton } from '../../components/ui'
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { useAppState } from '../../app/AppStateProvider'
@@ -76,7 +77,10 @@ export default function WeeklyConversation() {
 
   return (
     <section className="card weekly-test" aria-labelledby="conversation-title">
-      <h2 id="conversation-title">Défi de vraie conversation</h2>
+      <div className="title-row">
+        <h2 id="conversation-title">Défi de vraie conversation</h2>
+        <InfoButton id="conversation" />
+      </div>
       <p className="muted">
         Une fois par semaine, parle 20–30 minutes avec une vraie personne en
         français. Les monologues entraînent le moteur ; cette étape vérifie les
