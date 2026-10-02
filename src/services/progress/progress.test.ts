@@ -162,17 +162,29 @@ describe('spaced retrieval state', () => {
     expect(state.chunkReviews[0].mastered).toBe(true)
   })
 
-  it('requires three successful word recalls before mastery', () => {
+  it('reviews word gaps on J+1, J+3 and J+7 before mastery', () => {
     let state: AppState = {
       ...createInitialState(),
-      wordGaps: [createWordGap('prise électrique', 'où brancher un appareil')],
+      wordGaps: [
+        createWordGap(
+          'prise électrique',
+          'où brancher un appareil',
+          new Date(2026, 9, 2),
+        ),
+      ],
     }
     const id = state.wordGaps[0].id
-    state = applyGapResult(state, id, true)
+    expect(state.wordGaps[0].nextReview).toBe('2026-10-03')
+
+    state = applyGapResult(state, id, true, new Date(2026, 9, 3))
+    expect(state.wordGaps[0].nextReview).toBe('2026-10-05')
     expect(state.wordGaps[0].status).toBe('learning')
-    state = applyGapResult(state, id, true)
+
+    state = applyGapResult(state, id, true, new Date(2026, 9, 5))
+    expect(state.wordGaps[0].nextReview).toBe('2026-10-09')
     expect(state.wordGaps[0].status).toBe('learning')
-    state = applyGapResult(state, id, true)
+
+    state = applyGapResult(state, id, true, new Date(2026, 9, 9))
     expect(state.wordGaps[0].status).toBe('mastered')
     expect(masteredGapCount(state)).toBe(1)
   })
