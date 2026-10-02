@@ -18,6 +18,7 @@ describe('App routing', () => {
     expect(
       screen.getByRole('heading', { name: 'Prêt pour ta séance ?' }),
     ).toBeInTheDocument()
+    expect(screen.getByText('Parle+')).toBeInTheDocument()
   })
 
   it('navigates to progress from the top navigation', async () => {
