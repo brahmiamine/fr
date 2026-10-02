@@ -11,7 +11,6 @@ export function nextReviewAfter(days: number, from: Date = new Date()): string {
   return toLocalDateString(addDays(from, days))
 }
 
-/** Spaced schedule for a chunk, based on how well it was recalled. */
 export function chunkSchedule(
   result: RecallResult,
   now: Date = new Date(),
@@ -28,31 +27,45 @@ export interface GapSchedule {
 }
 
 /**
- * Spaced schedule for a personal word gap. A missed word returns tomorrow,
- * then after 3 days, then after 7 days. Two successful retrievals mark it as
- * mastered.
+ * Personal word gaps follow the complete J+1 -> J+3 -> J+7 path.
+ * A miss returns tomorrow; three successful retrievals are required before
+ * mastery so the J+7 retrieval is actually performed rather than skipped.
  */
 export function gapSchedule(
   successCount: number,
   found: boolean,
   now: Date = new Date(),
 ): GapSchedule {
-  if (found) {
-    const nextCount = successCount + 1
-    const mastered = nextCount >= 2
-    const interval = nextCount === 1 ? 3 : 7
+  if (!found) {
     return {
-      interval,
-      nextReview: mastered ? nextReviewAfter(30, now) : nextReviewAfter(interval, now),
-      successCount: nextCount,
-      mastered,
+      interval: 1,
+      nextReview: nextReviewAfter(1, now),
+      successCount: 0,
+      mastered: false,
     }
   }
 
+  const nextCount = successCount + 1
+  if (nextCount === 1) {
+    return {
+      interval: 3,
+      nextReview: nextReviewAfter(3, now),
+      successCount: nextCount,
+      mastered: false,
+    }
+  }
+  if (nextCount === 2) {
+    return {
+      interval: 7,
+      nextReview: nextReviewAfter(7, now),
+      successCount: nextCount,
+      mastered: false,
+    }
+  }
   return {
-    interval: 1,
-    nextReview: nextReviewAfter(1, now),
-    successCount: 0,
-    mastered: false,
+    interval: 30,
+    nextReview: nextReviewAfter(30, now),
+    successCount: nextCount,
+    mastered: true,
   }
 }
