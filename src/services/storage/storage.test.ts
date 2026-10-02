@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { createInitialState, RECENT_WINDOWS, STORAGE_KEY } from '../../types/progress'
+import { createInitialState, LEGACY_STORAGE_KEY, RECENT_WINDOWS, STORAGE_KEY } from '../../types/progress'
 import type { AppState, StorageLike } from '../../types/progress'
 import { loadAppState, saveAppState } from './storage'
 
@@ -67,6 +67,20 @@ describe('storage', () => {
     expect(loaded.state.version).toBe(3)
     expect(loaded.state.sessions).toHaveLength(1)
     expect(loaded.state.recentTopicIds).toEqual(['t001'])
+  })
+
+  it('migrates the legacy Fluidité storage key to Parle+ without losing progress', () => {
+    const state = stateWithSession()
+    const storage = memoryStorage({
+      [LEGACY_STORAGE_KEY]: JSON.stringify(state),
+    })
+
+    const loaded = loadAppState(storage)
+
+    expect(loaded.available).toBe(true)
+    expect(loaded.state.sessions).toHaveLength(1)
+    expect(storage.data.has(LEGACY_STORAGE_KEY)).toBe(false)
+    expect(storage.data.get(STORAGE_KEY)).toBeTruthy()
   })
 
   it('migrates V2 data and restarts only the incompatible in-progress session', () => {
