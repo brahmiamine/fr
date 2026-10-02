@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { WaveBars } from '../../../components/ui'
 import { cancelSpeech, speakText } from '../speech'
 
 export interface AudioClipProps {
@@ -9,7 +10,9 @@ export interface AudioClipProps {
   start?: number
   end?: number
   label?: string
-  variant?: 'button' | 'block'
+  variant?: 'button' | 'block' | 'player'
+  /** Caption shown under the waveform in the player variant. */
+  caption?: string
   disabled?: boolean
   onPlaybackChange?: (playing: boolean) => void
   onComplete?: () => void
@@ -24,6 +27,7 @@ export function AudioClip({
   end,
   label = 'Écouter',
   variant = 'button',
+  caption,
   disabled = false,
   onPlaybackChange,
   onComplete,
@@ -93,6 +97,48 @@ export function AudioClip({
     }
   }
 
+  const audioElement =
+    src && !speechText ? (
+      <audio
+        ref={audioRef}
+        src={src}
+        preload="metadata"
+        onTimeUpdate={handleTimeUpdate}
+        onEnded={completePlayback}
+        onPause={() => {
+          if (!completedRef.current) setPlayback(false)
+        }}
+      />
+    ) : null
+
+  if (variant === 'player') {
+    return (
+      <div className="audio-clip audio-clip--player">
+        <button
+          type="button"
+          className="audio-player__play"
+          onClick={togglePlayback}
+          aria-pressed={playing}
+          aria-label={playing ? 'Pause' : label}
+          disabled={disabled || (!src && !speechText)}
+        >
+          <span aria-hidden="true">{playing ? '❚❚' : '▶'}</span>
+        </button>
+        <div className="audio-player__body">
+          <WaveBars
+            count={32}
+            height={44}
+            playing={playing}
+            tone={playing ? 'gradient' : 'accent'}
+            className={`audio-player__wave${playing ? ' is-playing' : ''}`}
+          />
+          {caption ? <p className="audio-player__caption">{caption}</p> : null}
+        </div>
+        {audioElement}
+      </div>
+    )
+  }
+
   return (
     <span className={`audio-clip audio-clip--${variant}`}>
       <button
@@ -105,18 +151,7 @@ export function AudioClip({
         <span aria-hidden="true">{playing ? '⏸' : '▶'}</span>
         {label}
       </button>
-      {src && !speechText ? (
-        <audio
-          ref={audioRef}
-          src={src}
-          preload="metadata"
-          onTimeUpdate={handleTimeUpdate}
-          onEnded={completePlayback}
-          onPause={() => {
-            if (!completedRef.current) setPlayback(false)
-          }}
-        />
-      ) : null}
+      {audioElement}
     </span>
   )
 }
