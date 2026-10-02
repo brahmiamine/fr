@@ -29,6 +29,7 @@ export type TrainingAction =
   | { type: 'QUESTION_PREP_DONE' }
   | { type: 'QUESTION_SPEAKING_DONE' }
   | { type: 'QUESTION_RATE'; rating: BlockRating }
+  | { type: 'QUESTION_SKIP' }
   | { type: 'REVENGE_COUNTDOWN_DONE' }
   | { type: 'REVENGE_PREP_DONE' }
   | { type: 'REVENGE_DONE' }
@@ -224,15 +225,17 @@ export function sessionReducer(
     case 'QUESTION_SPEAKING_DONE':
       return { ...state, questions: { ...state.questions, stage: 'rate' } }
 
+    case 'QUESTION_SKIP':
     case 'QUESTION_RATE': {
       const question = state.plan.questions[state.questions.index]
       if (!question) return state
       // The rating always belongs to the question that was asked, even when an
       // advanced pivot followed it, so it can be chosen for the revenge.
-      const questionRatings = [
-        ...state.questionRatings,
-        { questionId: question.id, rating: action.rating },
-      ]
+      // A skipped question is not rated.
+      const questionRatings =
+        action.type === 'QUESTION_RATE'
+          ? [...state.questionRatings, { questionId: question.id, rating: action.rating }]
+          : state.questionRatings
 
       if (state.questions.index + 1 < state.plan.questions.length) {
         return {

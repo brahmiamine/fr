@@ -11,6 +11,7 @@ export const MAIN_NAV: NavItem[] = [
   { to: '/', label: 'Accueil', icon: 'home', end: true },
   { to: '/prosody', label: 'Prosodie', icon: 'music' },
   { to: '/progress', label: 'Progression', icon: 'chart' },
+  { to: '/settings', label: 'Paramètres', icon: 'settings' },
 ]
 
 export const TAB_NAV: NavItem[] = [
@@ -18,6 +19,7 @@ export const TAB_NAV: NavItem[] = [
   { to: '/training', label: 'Séance', icon: 'play' },
   { to: '/prosody', label: 'Prosodie', icon: 'music' },
   { to: '/progress', label: 'Progrès', icon: 'chart' },
+  { to: '/settings', label: 'Réglages', icon: 'settings' },
 ]
 
 /** The guided session takes the whole screen: no tab bar, a stage rail instead of the menu. */

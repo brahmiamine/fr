@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { Chunk, Question } from '../../../types/content'
+import { useSettings } from '../../../app/SettingsProvider'
 import { Timer } from '../../../components/Timer/Timer'
 import { Button, Callout, Card, ChoiceButton, ChoiceGrid, DotList, InfoLine, Pill } from '../../../components/ui'
 import {
@@ -26,6 +27,8 @@ export interface SurpriseQuestionsExerciseProps {
   onPrepDone: () => void
   onSpeakingDone: () => void
   onRate: (rating: BlockRating) => void
+  /** Skips the current question without rating it. */
+  onSkip?: () => void
   onDone: () => void
 }
 
@@ -46,10 +49,18 @@ export function SurpriseQuestionsExercise({
   onPrepDone,
   onSpeakingDone,
   onRate,
+  onSkip,
   onDone,
 }: SurpriseQuestionsExerciseProps) {
   const [showStarters, setShowStarters] = useState(false)
   const [pivotActive, setPivotActive] = useState(false)
+  const { settings } = useSettings()
+  const skipButton =
+    settings.allowSkip && onSkip ? (
+      <Button variant="dashed" block onClick={onSkip}>
+        {revenge ? 'Passer la revanche' : 'Passer cette question'}
+      </Button>
+    ) : null
 
   const timerKey = revenge ? 'revenge' : `question-${index}`
 
@@ -75,6 +86,7 @@ export function SurpriseQuestionsExercise({
           variant="bubble"
           onComplete={onCountdownDone}
         />
+        {skipButton}
       </Card>
     )
   }
@@ -101,6 +113,7 @@ export function SurpriseQuestionsExercise({
           variant="bubble"
           onComplete={onPrepDone}
         />
+        {skipButton}
       </Card>
     )
   }
@@ -181,6 +194,8 @@ export function SurpriseQuestionsExercise({
           <DotList items={QUESTION_STARTERS} />
         </Callout>
       )}
+
+      {skipButton}
     </Card>
   )
 }

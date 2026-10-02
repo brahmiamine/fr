@@ -247,3 +247,21 @@ describe('feedback validation', () => {
     expect(isFeedbackValid({ ...valid, blockCount: -1 })).toBe(false)
   })
 })
+
+describe('skipping questions', () => {
+  it('moves on without recording a rating', () => {
+    let state = { ...newSession(), stageIndex: 2 }
+    state = sessionReducer(state, { type: 'QUESTION_SKIP' })
+    expect(state.questions).toEqual({ index: 1, stage: 'countdown' })
+    expect(state.questionRatings).toHaveLength(0)
+  })
+
+  it('goes straight to the next stage when every question was skipped', () => {
+    let state = { ...newSession(), stageIndex: 2 }
+    for (let i = 0; i < plan.questions.length; i += 1) {
+      state = sessionReducer(state, { type: 'QUESTION_SKIP' })
+    }
+    expect(state.revenge.questionId).toBeNull()
+    expect(getCurrentStage(state)).not.toBe('questions')
+  })
+})

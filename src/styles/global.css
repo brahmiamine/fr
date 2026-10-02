@@ -368,11 +368,17 @@ ul.warning-banner {
 }
 
 @media (prefers-color-scheme: dark) {
-  .warning-banner {
+  :root:not([data-theme]) .warning-banner {
     background: #3a2c10;
     color: #ffd591;
     border-color: #5c4718;
   }
+}
+
+:root[data-theme='dark'] .warning-banner {
+  background: #3a2c10;
+  color: #ffd591;
+  border-color: #5c4718;
 }
 
 .sr-only {

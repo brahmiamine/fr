@@ -1,13 +1,16 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
+import { SettingsProvider } from './SettingsProvider'
 import { AppStateProvider } from './AppStateProvider'
 import { AppShell } from '../components/Layout/AppShell'
 import HomePage from '../features/home/HomePage'
 import ProgressPage from '../features/progress/ProgressPage'
 import TrainingPage from '../features/training/TrainingPage'
+import SettingsPage from '../features/settings/SettingsPage'
 import ProsodyPage from '../features/prosody/ProsodyPage'
 
 export default function App() {
   return (
+    <SettingsProvider>
     <AppStateProvider>
       <Routes>
         <Route element={<AppShell />}>
@@ -15,9 +18,11 @@ export default function App() {
           <Route path="/training" element={<TrainingPage />} />
           <Route path="/progress" element={<ProgressPage />} />
           <Route path="/prosody" element={<ProsodyPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </AppStateProvider>
+    </SettingsProvider>
   )
 }

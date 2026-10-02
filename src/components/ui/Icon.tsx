@@ -16,6 +16,8 @@ const PATHS = {
   play: 'M7 4.5v15l13-7.5z',
   upload: 'M12 16V4M7 9l5-5 5 5M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3',
   file: 'M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8zM14 3v5h5M9 15l2 2 4-4',
+  settings:
+    'M4 7h9M17 7h3M4 17h3M11 17h9M15 4v6M9 14v6',
   check: 'M5 12.5l4.5 4.5L19 7.5',
 } as const
 

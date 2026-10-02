@@ -426,6 +426,7 @@ function QuestionsRenderer({
         onPrepDone={() => onSession({ type: 'REVENGE_PREP_DONE' })}
         onSpeakingDone={() => onSession({ type: 'REVENGE_DONE' })}
         onRate={() => undefined}
+        onSkip={() => onSession({ type: 'REVENGE_DONE' })}
         onDone={() => onSession({ type: 'REVENGE_DONE' })}
       />
     )
@@ -453,6 +454,7 @@ function QuestionsRenderer({
       onPrepDone={() => onSession({ type: 'QUESTION_PREP_DONE' })}
       onSpeakingDone={() => onSession({ type: 'QUESTION_SPEAKING_DONE' })}
       onRate={(rating) => onSession({ type: 'QUESTION_RATE', rating })}
+      onSkip={() => onSession({ type: 'QUESTION_SKIP' })}
       onDone={() => undefined}
     />
   )
