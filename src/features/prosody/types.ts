@@ -27,7 +27,7 @@ export interface ProsodyExercise {
   id: string
   level: string
   category: string
-  modelKind: ProsodyModelKind
+  modelKind?: ProsodyModelKind
   audio?: string
   transcript: string
   groups: ProsodyGroup[]
