@@ -38,7 +38,7 @@ const RUNNING_HINTS = [
 
 function splitKeywords(value: string): string[] {
   return value
-    .split(/[,\\n]+/)
+    .split(/[,\n]+/)
     .map((item) => item.trim())
     .filter(Boolean)
     .slice(0, 3)
