@@ -128,7 +128,7 @@ export function WordGapsExercise({
           </Callout>
         ) : null}
 
-        <Callout title="Structures de secours">
+        <Callout title="Structures de secours" collapsible>
           <div className="chip-row">
             {RESCUE_STRUCTURES.map((structure) => (
               <span key={structure} className="rescue-chip">{structure}</span>

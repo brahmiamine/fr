@@ -64,8 +64,8 @@ export function FluencyMiniFeedback({
         </Callout>
       ) : (
         <p className="muted">
-          La prochaine fois, enregistre le premier tour : l'écoute différée rend
-          le feedback beaucoup plus fiable.
+          La prochaine fois, active l'enregistrement des tours : l'écoute différée
+          rend le feedback beaucoup plus fiable.
         </p>
       )}
 

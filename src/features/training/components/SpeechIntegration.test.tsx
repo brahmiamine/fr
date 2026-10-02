@@ -192,9 +192,13 @@ describe('guided text-to-speech placement', () => {
       chunksOfDay: [chunk],
       focusWords: ['embouteillage'],
       fluencyReminders: [reminder],
+      recordAll: true,
+      recordings: {},
       onKeywordsChange: vi.fn(),
+      onRecordAllChange: vi.fn(),
       onStartRound: vi.fn(),
       onRoundComplete: vi.fn(),
+      onSummaryDone: vi.fn(),
       onSubmitFeedback: vi.fn(),
     }
 
@@ -231,9 +235,13 @@ describe('guided text-to-speech placement', () => {
         chunksOfDay={[chunk]}
         focusWords={[]}
         fluencyReminders={[]}
+        recordAll={false}
+        recordings={{}}
         onKeywordsChange={vi.fn()}
+        onRecordAllChange={vi.fn()}
         onStartRound={vi.fn()}
         onRoundComplete={vi.fn()}
+        onSummaryDone={vi.fn()}
         onSubmitFeedback={vi.fn()}
       />,
     )

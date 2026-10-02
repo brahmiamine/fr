@@ -190,7 +190,7 @@ export function ChunksExercise({
       <FlipCard revealed={revealed} front={front} back={back} />
 
       {!revealed && ready ? (
-        <Button variant="animated" size="lg" block trailing="↻" onClick={onReveal}>
+        <Button variant="animated" size="lg" block trailing="→" onClick={onReveal}>
           {isNew ? "Découvrir l'expression" : "Voir l'expression"}
         </Button>
       ) : null}

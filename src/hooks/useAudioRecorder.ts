@@ -58,8 +58,12 @@ export function useAudioRecorder(options: AudioRecorderOptions = {}): AudioRecor
 
   const recorderRef = useRef<MediaRecorder | null>(null)
   const streamRef = useRef<MediaStream | null>(null)
-  const chunksRef = useRef<Blob[]>([])
-  const urlRef = useRef<string | null>(null)
+  /** True while `getUserMedia` + recorder setup is in flight. */
+  const startingRef = useRef(false)
+  /** Raised when `stop()` arrives before the microphone has opened. */
+  const stopRequestedRef = useRef(false)
+  /** Every URL created this session, kept alive for later playback (round replays). */
+  const urlsRef = useRef<string[]>([])
   const levelsRef = useRef<number[]>([])
   const meterRef = useRef<{ context: AudioContext; timer: ReturnType<typeof setInterval> } | null>(null)
 
@@ -94,14 +98,13 @@ export function useAudioRecorder(options: AudioRecorderOptions = {}): AudioRecor
   }, [])
 
   const releaseUrl = useCallback(() => {
-    if (urlRef.current) {
-      URL.revokeObjectURL(urlRef.current)
-      urlRef.current = null
-    }
+    for (const url of urlsRef.current) URL.revokeObjectURL(url)
+    urlsRef.current = []
     setBlobUrl(null)
   }, [])
 
   const stop = useCallback(() => {
+    stopRequestedRef.current = true
     const recorder = recorderRef.current
     if (recorder && recorder.state !== 'inactive') recorder.stop()
   }, [])
@@ -111,18 +114,32 @@ export function useAudioRecorder(options: AudioRecorderOptions = {}): AudioRecor
       setStatus('unsupported')
       return
     }
+    // React mounts the same effect twice in StrictMode, and a round can ask to
+    // record again: never open a second microphone over a running capture.
+    if (startingRef.current || (recorderRef.current?.state ?? 'inactive') !== 'inactive') {
+      stopRequestedRef.current = false
+      return
+    }
+    startingRef.current = true
+    stopRequestedRef.current = false
     try {
       setStatus('requesting')
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      // The round ended while the microphone was opening: release it unwrapped.
+      if (stopRequestedRef.current) {
+        stream.getTracks().forEach((track) => track.stop())
+        setStatus('idle')
+        return
+      }
       streamRef.current = stream
 
+      const chunks: Blob[] = []
       const recorder = new MediaRecorder(stream)
-      chunksRef.current = []
       setActivity(null)
       if (measureLevels) startMeter(stream)
 
       recorder.ondataavailable = (event) => {
-        if (event.data.size > 0) chunksRef.current.push(event.data)
+        if (event.data.size > 0) chunks.push(event.data)
       }
 
       recorder.onstop = () => {
@@ -134,12 +151,11 @@ export function useAudioRecorder(options: AudioRecorderOptions = {}): AudioRecor
             }),
           )
         }
-        const blob = new Blob(chunksRef.current, {
+        const blob = new Blob(chunks, {
           type: recorder.mimeType || 'audio/webm',
         })
-        releaseUrl()
         const url = URL.createObjectURL(blob)
-        urlRef.current = url
+        urlsRef.current.push(url)
         setBlobUrl(url)
         stream.getTracks().forEach((track) => track.stop())
         streamRef.current = null

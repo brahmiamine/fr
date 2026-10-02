@@ -1,6 +1,5 @@
 import { Timer } from '../../../../components/Timer/Timer'
 import { Callout, Card, InfoLine } from '../../../../components/ui'
-import type { AudioRecorder } from '../../../../hooks/useAudioRecorder'
 import type { Chunk, RetellingStory, Topic } from '../../../../types/content'
 import { FLUENCY_ROUND_SECONDS } from '../../types'
 import type { FluencyFeedback, FluencyReminder } from '../../types'
@@ -27,7 +26,8 @@ export interface FluencyRunProps {
   chunksOfDay: Chunk[]
   focusWords: string[]
   fluencyReminders: FluencyReminder[]
-  recorder?: AudioRecorder
+  /** The microphone is currently capturing this round. */
+  recording: boolean
   retellingStory: RetellingStory | null
   prosodyFocusGoal: string | null
   onRoundComplete: () => void
@@ -41,7 +41,7 @@ export function FluencyRun({
   chunksOfDay,
   focusWords,
   fluencyReminders,
-  recorder,
+  recording,
   retellingStory,
   prosodyFocusGoal,
   onRoundComplete,
@@ -49,7 +49,6 @@ export function FluencyRun({
   const isTransfer = roundIndex === FLUENCY_ROUND_SECONDS.length - 1
   const seconds = FLUENCY_ROUND_SECONDS[roundIndex] ?? 60
   const prompt = isTransfer ? topic.transferPrompt : topic.title
-  const recording = roundIndex === 0 && recorder?.status === 'recording'
 
   const retryTargets =
     roundIndex === 1 || roundIndex === 2
@@ -60,17 +59,14 @@ export function FluencyRun({
         ].filter((target) => target.text.trim())
       : []
 
-  const finishRound = () => {
-    if (roundIndex === 0) recorder?.stop()
-    onRoundComplete()
-  }
+  const finishRound = () => onRoundComplete()
 
   return (
     <Card center className="fluency-run" aria-live="polite">
       {recording ? (
         <span className="rec-badge">
           <span className="rec-badge__dot" aria-hidden="true" />
-          Enregistrement du tour 1
+          {`Enregistrement du tour ${roundIndex + 1}`}
         </span>
       ) : null}
       <h2 className="fluency-run__prompt">{prompt}</h2>

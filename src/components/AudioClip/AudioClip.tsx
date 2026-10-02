@@ -186,41 +186,43 @@ export function AudioClip({
   const showClock = canSeek && clock.total > 0
 
   return (
-    <div className="audio-clip">
-      <button
-        type="button"
-        className="audio-player__play"
-        onClick={togglePlayback}
-        aria-pressed={playing}
-        aria-label={label}
-        disabled={disabled || (!src && !speechText)}
-      >
-        <span aria-hidden="true">{playing ? '❚❚' : '▶'}</span>
-      </button>
-      <div className="audio-player__body">
-        <VoiceWaveform progress={progress} onSeek={canSeek ? seekTo : undefined} />
-        <div className="audio-player__meta">
-          <p className="audio-player__caption">{caption ?? label}</p>
+    <>
+      <div className="audio-clip">
+        <button
+          type="button"
+          className="audio-player__play"
+          onClick={togglePlayback}
+          aria-pressed={playing}
+          aria-label={label}
+          disabled={disabled || (!src && !speechText)}
+        >
+          <span aria-hidden="true">{playing ? '❚❚' : '▶'}</span>
+        </button>
+        <div className="audio-player__body">
+          <VoiceWaveform progress={progress} onSeek={canSeek ? seekTo : undefined} />
           {showClock ? (
-            <span className="audio-player__time" aria-hidden="true">
-              {formatClock(clock.current)} / {formatClock(clock.total)}
-            </span>
+            <div className="audio-player__meta audio-player__meta--clock">
+              <span className="audio-player__time" aria-hidden="true">
+                {formatClock(clock.current)} / {formatClock(clock.total)}
+              </span>
+            </div>
           ) : null}
         </div>
+        {src && !speechText ? (
+          <audio
+            ref={audioRef}
+            src={src}
+            preload="metadata"
+            onLoadedMetadata={handleLoadedMetadata}
+            onTimeUpdate={handleTimeUpdate}
+            onEnded={completePlayback}
+            onPause={() => {
+              if (!completedRef.current) setPlayback(false)
+            }}
+          />
+        ) : null}
       </div>
-      {src && !speechText ? (
-        <audio
-          ref={audioRef}
-          src={src}
-          preload="metadata"
-          onLoadedMetadata={handleLoadedMetadata}
-          onTimeUpdate={handleTimeUpdate}
-          onEnded={completePlayback}
-          onPause={() => {
-            if (!completedRef.current) setPlayback(false)
-          }}
-        />
-      ) : null}
-    </div>
+      <p className="audio-player__caption">{caption ?? label}</p>
+    </>
   )
 }

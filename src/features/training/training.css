@@ -59,6 +59,8 @@
 
 .flip__countdown {
   gap: 14px;
+  /* Extra air between the intention title and the 3-2-1 bubble. */
+  margin-top: 24px;
 }
 
 .flip__hint {
@@ -92,6 +94,29 @@
 .flip__instruction {
   font-size: 14px;
   font-weight: 700;
+}
+
+/* ---------- 4 → 3 → 2 summary ---------- */
+.fluency-summary {
+  /* Numbered rounds: "1. Tour 1 — 4:00", each with its own player. */
+  margin: 0;
+  padding-left: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.fluency-summary li::marker {
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.fluency-summary__download {
+  display: inline-block;
+  margin-top: 0.35rem;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent);
 }
 
 .chunks-day__list {

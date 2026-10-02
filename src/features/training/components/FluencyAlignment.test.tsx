@@ -1,8 +1,10 @@
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import type { AudioRecorder } from '../../../hooks/useAudioRecorder'
-import type { Question, Topic } from '../../../types/content'
+import type { Chunk, Question, Topic } from '../../../types/content'
+import type { FluencyFeedback, FluencyReminder } from '../types'
 import { Fluency432Exercise } from './Fluency432Exercise'
+import type { Fluency432ExerciseProps } from './Fluency432Exercise'
 import { SessionFeedbackView } from './SessionFeedback'
 import { SurpriseQuestionsExercise } from './SurpriseQuestionsExercise'
 
@@ -45,97 +47,93 @@ function recorder(overrides: Partial<AudioRecorder> = {}): AudioRecorder {
   }
 }
 
+const fluencyFeedback: FluencyFeedback = {
+  missingWord: '',
+  missingWordContext: '',
+  difficultPhrase: '',
+  importantError: '',
+}
+
+const fluencyProps: Fluency432ExerciseProps = {
+  topic,
+  roundIndex: 0,
+  stage: 'prep',
+  feedback: fluencyFeedback,
+  keywords: [],
+  chunksOfDay: [] as Chunk[],
+  focusWords: [],
+  fluencyReminders: [] as FluencyReminder[],
+  recordAll: true,
+  recordings: {},
+  onKeywordsChange: () => undefined,
+  onRecordAllChange: () => undefined,
+  onStartRound: () => undefined,
+  onRoundComplete: () => undefined,
+  onSummaryDone: () => undefined,
+  onSubmitFeedback: () => undefined,
+}
+
+function renderFluency(overrides: Partial<Fluency432ExerciseProps> = {}) {
+  return render(<Fluency432Exercise {...fluencyProps} {...overrides} />)
+}
+
 afterEach(() => {
   vi.useRealTimers()
 })
 
 describe('4→3→2 alignment', () => {
   it('hides preparation prompts until the learner explicitly asks for a hint', () => {
-    render(
-      <Fluency432Exercise
-        topic={topic}
-        roundIndex={0}
-        stage="prep"
-        feedback={{
-          missingWord: '',
-          missingWordContext: '',
-          difficultPhrase: '',
-          importantError: '',
-        }}
-        keywords={[]}
-        chunksOfDay={[]}
-        focusWords={[]}
-        fluencyReminders={[]}
-        onKeywordsChange={() => undefined}
-        onStartRound={() => undefined}
-        onRoundComplete={() => undefined}
-        onSubmitFeedback={() => undefined}
-      />,
-    )
+    renderFluency()
 
     expect(screen.queryByText('Quel est ton choix personnel ?')).not.toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: /besoin d'une piste/i }))
     expect(screen.getByText('Quel est ton choix personnel ?')).toBeInTheDocument()
   })
 
-  it('starts the optional recording before entering the timed first round', async () => {
-    const audio = recorder()
+  it('lets the learner opt into recording every round, or none at all', () => {
+    const onRecordAllChange = vi.fn()
     const onStartRound = vi.fn()
-    render(
-      <Fluency432Exercise
-        topic={topic}
-        roundIndex={0}
-        stage="prep"
-        feedback={{
-          missingWord: '',
-          missingWordContext: '',
-          difficultPhrase: '',
-          importantError: '',
-        }}
-        keywords={[]}
-        chunksOfDay={[]}
-        focusWords={[]}
-        fluencyReminders={[]}
-        recorder={audio}
-        onKeywordsChange={() => undefined}
-        onStartRound={onStartRound}
-        onRoundComplete={() => undefined}
-        onSubmitFeedback={() => undefined}
-      />,
-    )
+    renderFluency({ recorder: recorder(), onRecordAllChange, onStartRound })
+
+    const toggle = screen.getByLabelText(/enregistrer les 4 tours/i)
+    expect(toggle).toBeChecked()
+
+    fireEvent.click(toggle)
+    expect(onRecordAllChange).toHaveBeenCalledWith(false)
 
     fireEvent.click(screen.getByRole('button', { name: 'Commencer le tour 1' }))
-    await act(async () => undefined)
-
-    expect(audio.start).toHaveBeenCalledTimes(1)
     expect(onStartRound).toHaveBeenCalledTimes(1)
+  })
+
+  it('replays every recorded round in the end-of-exercise summary', () => {
+    const onSummaryDone = vi.fn()
+    const { container } = renderFluency({
+      roundIndex: 3,
+      stage: 'summary',
+      recordings: {
+        0: 'blob:tour-1',
+        1: 'blob:tour-2',
+        2: 'blob:tour-3',
+        3: 'blob:tour-4',
+      },
+      onSummaryDone,
+    })
+
+    expect(screen.getByRole('heading', { name: /réécoute/i })).toBeInTheDocument()
+    expect(container.querySelectorAll('audio')).toHaveLength(4)
+    // Once in the round pills, once as the AudioClip caption.
+    expect(screen.getAllByText('Transfert — 1:00')).toHaveLength(2)
+    expect(screen.getAllByRole('link', { name: 'Télécharger' })).toHaveLength(4)
+
+    fireEvent.click(screen.getByRole('button', { name: /continuer/i }))
+    expect(onSummaryDone).toHaveBeenCalledTimes(1)
   })
 
   it('auto-starts a running round and does not allow pausing it', () => {
     vi.useFakeTimers()
     const onRoundComplete = vi.fn()
 
-    render(
-      <Fluency432Exercise
-        topic={topic}
-        roundIndex={1}
-        stage="running"
-        feedback={{
-          missingWord: '',
-          missingWordContext: '',
-          difficultPhrase: '',
-          importantError: '',
-        }}
-        keywords={[]}
-        chunksOfDay={[]}
-        focusWords={[]}
-        fluencyReminders={[]}
-        onKeywordsChange={() => undefined}
-        onStartRound={() => undefined}
-        onRoundComplete={onRoundComplete}
-        onSubmitFeedback={() => undefined}
-      />,
-    )
+    renderFluency({ roundIndex: 1, stage: 'running', onRoundComplete })
 
     expect(screen.queryByRole('button', { name: 'Démarrer' })).not.toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'Pause' })).not.toBeInTheDocument()
@@ -147,27 +145,7 @@ describe('4→3→2 alignment', () => {
   })
 
   it('asks for a corrected formulation rather than storing the raw error', () => {
-    render(
-      <Fluency432Exercise
-        topic={topic}
-        roundIndex={0}
-        stage="feedback"
-        feedback={{
-          missingWord: '',
-          missingWordContext: '',
-          difficultPhrase: '',
-          importantError: '',
-        }}
-        keywords={[]}
-        chunksOfDay={[]}
-        focusWords={[]}
-        fluencyReminders={[]}
-        onKeywordsChange={() => undefined}
-        onStartRound={() => undefined}
-        onRoundComplete={() => undefined}
-        onSubmitFeedback={() => undefined}
-      />,
-    )
+    renderFluency({ stage: 'feedback' })
 
     expect(
       screen.getByLabelText(/formulation corrigée à réutiliser/i),

@@ -24,7 +24,8 @@
   border-color: var(--accent);
 }
 
-.card--center .speech-button {
+.card--center .speech-button,
+.exercise--center .speech-button {
   align-self: center;
 }
 

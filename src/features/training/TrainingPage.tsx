@@ -32,7 +32,12 @@ import {
   sessionReducer,
 } from './sessionReducer'
 import type { TrainingSessionState } from './types'
-import { TRAINING_SESSION_SCHEMA, speakingSecondsForLevel } from './types'
+import {
+  FLUENCY_ROUND_SECONDS,
+  TRAINING_SESSION_SCHEMA,
+  speakingSecondsForLevel,
+} from './types'
+import { useFluencyRecordings } from './useFluencyRecordings'
 import './training.css'
 
 function sessionDurationMinutes(session: TrainingSessionState): number {
@@ -86,7 +91,11 @@ function stageProgress(session: TrainingSessionState): number {
   const stage = getCurrentStage(session)
   const plan = session.plan
   if (stage === 'chunks') return session.chunks.index / Math.max(1, plan.chunks.length)
-  if (stage === 'fluency') return session.fluency.roundIndex / 4
+  if (stage === 'fluency') {
+    const rounds = FLUENCY_ROUND_SECONDS.length
+    const done = session.fluency.roundIndex + (session.fluency.stage === 'summary' ? 1 : 0)
+    return done / rounds
+  }
   if (stage === 'questions') return session.questions.index / Math.max(1, plan.questions.length)
   if (stage === 'gaps') return session.gaps.index / Math.max(1, plan.gapItems.length)
   return 0.5
@@ -104,7 +113,10 @@ function skipFor(
       if (session.chunks.step === 'day') return null
       return { label: 'Passer ce chunk', run: () => dispatch({ type: 'CHUNK_SKIP' }) }
     case 'fluency':
-      return { label: 'Passer cet exercice', run: () => dispatch({ type: 'FLUENCY_SKIP' }) }
+      if (session.fluency.stage === 'summary') {
+        return { label: 'Passer le résumé', run: () => dispatch({ type: 'FLUENCY_SUMMARY_DONE' }) }
+      }
+      return { label: 'Passer ce tour', run: () => dispatch({ type: 'FLUENCY_SKIP' }) }
     case 'questions':
       if (session.revenge.stage !== 'idle' && session.revenge.stage !== 'done') {
         return { label: 'Passer la revanche', run: () => dispatch({ type: 'REVENGE_DONE' }) }
@@ -142,6 +154,8 @@ export default function TrainingPage() {
     sessionReducer,
     initialSession as TrainingSessionState,
   )
+
+  const roundRecordings = useFluencyRecordings(sessionRecorder, session?.fluency)
 
   useEffect(() => {
     if (!session || session.phase === 'complete') return
@@ -340,13 +354,19 @@ export default function TrainingPage() {
           focusWords={session.plan.focusWords}
           fluencyReminders={session.plan.fluencyReminders}
           recorder={sessionRecorder}
+          recordAll={session.fluency.recordAll}
+          recordings={roundRecordings}
           retellingStory={session.plan.retellingStory ?? null}
           prosodyFocusGoal={session.plan.prosodyFocusGoal ?? null}
           onKeywordsChange={(keywords) =>
             dispatch({ type: 'FLUENCY_SET_KEYWORDS', keywords })
           }
+          onRecordAllChange={(recordAll) =>
+            dispatch({ type: 'FLUENCY_SET_RECORD_ALL', recordAll })
+          }
           onStartRound={() => dispatch({ type: 'FLUENCY_START' })}
           onRoundComplete={() => dispatch({ type: 'FLUENCY_ROUND_COMPLETE' })}
+          onSummaryDone={() => dispatch({ type: 'FLUENCY_SUMMARY_DONE' })}
           onSubmitFeedback={(values) =>
             dispatch({ type: 'FLUENCY_SUBMIT_FEEDBACK', ...values })
           }

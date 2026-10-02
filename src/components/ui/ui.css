@@ -496,6 +496,33 @@
   color: var(--muted);
 }
 
+.callout__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.callout__chevron {
+  flex: none;
+  font-size: 0.9rem;
+  transition: transform 0.2s var(--ease);
+}
+
+.callout__toggle[aria-expanded='true'] .callout__chevron {
+  transform: rotate(180deg);
+}
+
 .callout ul {
   display: flex;
   flex-direction: column;

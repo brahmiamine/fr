@@ -14,9 +14,11 @@ export interface FluencyPrepProps {
   focusWords: string[]
   fluencyReminders: FluencyReminder[]
   recorder?: AudioRecorder
+  recordAll: boolean
   retellingStory: RetellingStory | null
   prosodyFocusGoal: string | null
   onKeywordsChange: (keywords: string[]) => void
+  onRecordAllChange: (recordAll: boolean) => void
   onStartRound: () => void
 }
 
@@ -35,22 +37,14 @@ export function FluencyPrep({
   focusWords,
   fluencyReminders,
   recorder,
+  recordAll,
   retellingStory,
   prosodyFocusGoal,
   onKeywordsChange,
+  onRecordAllChange,
   onStartRound,
 }: FluencyPrepProps) {
   const [showPrompts, setShowPrompts] = useState(false)
-  const [recordFirstRound, setRecordFirstRound] = useState(true)
-
-  const start = () => {
-    void (async () => {
-      if (roundIndex === 0 && recordFirstRound && recorder?.supported) {
-        await recorder.start()
-      }
-      onStartRound()
-    })()
-  }
 
   return (
     <Card aria-labelledby="fluency-title">
@@ -130,13 +124,13 @@ export function FluencyPrep({
 
       {roundIndex === 0 && recorder?.supported ? (
         <RecordSwitch
-          checked={recordFirstRound}
-          onChange={setRecordFirstRound}
-          label="Enregistrer le tour 1 pour le feedback"
+          checked={recordAll}
+          onChange={onRecordAllChange}
+          label="Enregistrer les 4 tours (résumé à la fin)"
         />
       ) : null}
 
-      <Button variant="animated" size="lg" block trailing="▶" onClick={start}>
+      <Button variant="animated" size="lg" block trailing="▶" onClick={onStartRound}>
         Commencer le tour 1
       </Button>
     </Card>

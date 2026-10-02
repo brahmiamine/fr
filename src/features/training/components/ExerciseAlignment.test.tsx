@@ -46,9 +46,13 @@ function fluencyProps(overrides: Partial<Parameters<typeof Fluency432Exercise>[0
     chunksOfDay: [],
     focusWords: [],
     fluencyReminders: [],
+    recordAll: true,
+    recordings: {},
     onKeywordsChange: () => undefined,
+    onRecordAllChange: () => undefined,
     onStartRound: () => undefined,
     onRoundComplete: () => undefined,
+    onSummaryDone: () => undefined,
     onSubmitFeedback: () => undefined,
     ...overrides,
   }

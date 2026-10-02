@@ -5,7 +5,7 @@ import type {
   SessionPlan,
   TrainingSessionState,
 } from './types'
-import { STAGE_ORDER, TRAINING_SESSION_SCHEMA, prepSecondsForLevel } from './types'
+import { FLUENCY_ROUND_SECONDS, STAGE_ORDER, TRAINING_SESSION_SCHEMA, prepSecondsForLevel } from './types'
 import type { SessionFeedback } from './types'
 import type { TimerSnapshot } from '../../hooks/useCountdownTimer'
 
@@ -15,9 +15,11 @@ export type TrainingAction =
   | { type: 'CHUNK_SKIP' }
   | { type: 'CHUNKS_OF_DAY_CONTINUE' }
   | { type: 'FLUENCY_SET_KEYWORDS'; keywords: string[] }
+  | { type: 'FLUENCY_SET_RECORD_ALL'; recordAll: boolean }
   | { type: 'FLUENCY_START' }
   | { type: 'FLUENCY_ROUND_COMPLETE' }
   | { type: 'FLUENCY_SKIP' }
+  | { type: 'FLUENCY_SUMMARY_DONE' }
   | {
       type: 'FLUENCY_SUBMIT_FEEDBACK'
       missingWord: string
@@ -79,7 +81,7 @@ export function createSessionState(
     chunksOfDayShown: false,
     usedChunkIds: [],
     usedFluencyReminderIds: [],
-    fluency: { roundIndex: 0, stage: 'prep', keywords: [] },
+    fluency: { roundIndex: 0, stage: 'prep', keywords: [], recordAll: true },
     fluencyFeedback: {
       missingWord: '',
       missingWordContext: '',
@@ -141,6 +143,36 @@ function advanceStage(state: TrainingSessionState): TrainingSessionState {
   return { ...state, stageIndex: state.stageIndex + 1 }
 }
 
+/**
+ * Moves to the next fluency round. After the transfert round, the recorded
+ * rounds are replayed in a summary — unless recording was turned off.
+ */
+function advanceFluencyRound(state: TrainingSessionState): TrainingSessionState {
+  if (state.fluency.roundIndex + 1 >= FLUENCY_ROUND_SECONDS.length) {
+    if (!state.fluency.recordAll) return advanceStage(state)
+    return { ...state, fluency: { ...state.fluency, stage: 'summary' } }
+  }
+  return {
+    ...state,
+    fluency: {
+      ...state.fluency,
+      roundIndex: state.fluency.roundIndex + 1,
+      stage: 'running',
+    },
+  }
+}
+
+/**
+ * Leaves a running round: the first one asks for the mini feedback before
+ * round 2, the others move straight on.
+ */
+function completeFluencyRound(state: TrainingSessionState): TrainingSessionState {
+  if (state.fluency.roundIndex === 0) {
+    return { ...state, fluency: { ...state.fluency, stage: 'feedback' } }
+  }
+  return advanceFluencyRound(state)
+}
+
 export function sessionReducer(
   state: TrainingSessionState,
   action: TrainingAction,
@@ -186,29 +218,26 @@ export function sessionReducer(
         fluency: { ...state.fluency, keywords: action.keywords.slice(0, 3) },
       }
 
+    case 'FLUENCY_SET_RECORD_ALL':
+      return { ...state, fluency: { ...state.fluency, recordAll: action.recordAll } }
+
+    case 'FLUENCY_SUMMARY_DONE':
+      return advanceStage(state)
+
     case 'FLUENCY_START':
       return { ...state, fluency: { ...state.fluency, stage: 'running' } }
 
     case 'FLUENCY_ROUND_COMPLETE': {
       if (state.fluency.stage !== 'running') return state
-      if (state.fluency.roundIndex === 0) {
-        return { ...state, fluency: { ...state.fluency, stage: 'feedback' } }
-      }
-      if (state.fluency.roundIndex < 3) {
-        return {
-          ...state,
-          fluency: {
-            ...state.fluency,
-            roundIndex: state.fluency.roundIndex + 1,
-            stage: 'running',
-          },
-        }
-      }
-      return advanceStage(state)
+      return completeFluencyRound(state)
     }
 
+    // Skipping a running round follows the same path as finishing it; from the
+    // preparation screen it just moves on to the next round.
     case 'FLUENCY_SKIP':
-      return advanceStage(state)
+      return state.fluency.stage === 'running'
+        ? completeFluencyRound(state)
+        : advanceFluencyRound(state)
 
     case 'FLUENCY_SUBMIT_FEEDBACK':
       return {

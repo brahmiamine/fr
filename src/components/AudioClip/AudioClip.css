@@ -83,6 +83,11 @@
   min-width: 0;
 }
 
+/* The clock sits alone in the player once the caption moved below the clip. */
+.audio-player__meta--clock {
+  justify-content: flex-end;
+}
+
 .audio-player__time {
   flex: none;
   font-size: 12px;
@@ -92,13 +97,16 @@
 }
 
 .audio-player__caption {
-  flex: 1;
-  min-width: 0;
   margin: 0;
   font-size: 13px;
   font-weight: 600;
   line-height: 1.25;
   color: var(--muted);
+}
+
+.audio-player__meta .audio-player__caption {
+  flex: 1;
+  min-width: 0;
 }
 
 @media (max-width: 480px) {

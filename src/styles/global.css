@@ -290,6 +290,13 @@ code {
   gap: 0.9rem;
 }
 
+/* A 1-line and a 2-line label would offset the inputs of the same row: keep
+   two label lines reserved so every field of a row lines up. */
+.form-grid .field label {
+  min-height: 2.64rem;
+  min-height: 2lh;
+}
+
 .form-stack {
   display: flex;
   flex-direction: column;

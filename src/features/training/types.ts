@@ -87,7 +87,7 @@ export interface SessionFeedback {
 }
 
 /** Bump when the in-progress session shape changes: older ones restart. */
-export const TRAINING_SESSION_SCHEMA = 2
+export const TRAINING_SESSION_SCHEMA = 3
 
 export interface TrainingSessionState {
   schema?: number
@@ -110,8 +110,10 @@ export interface TrainingSessionState {
 
   fluency: {
     roundIndex: number
-    stage: 'prep' | 'running' | 'feedback'
+    stage: 'prep' | 'running' | 'feedback' | 'summary'
     keywords: string[]
+    /** Record every round through the microphone to replay them at the end. */
+    recordAll: boolean
   }
   fluencyFeedback: FluencyFeedback
 

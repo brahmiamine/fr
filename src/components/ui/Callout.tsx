@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import type { ReactNode } from 'react'
 
 export interface CalloutProps {
@@ -6,15 +7,48 @@ export interface CalloutProps {
   tone?: 'plain' | 'soft' | 'dashed'
   className?: string
   children?: ReactNode
+  /** Turns the title into a button that expands/collapses the content. */
+  collapsible?: boolean
+  /** Initial state when `collapsible`; collapsed by default. */
+  defaultOpen?: boolean
   'aria-live'?: 'polite' | 'assertive' | 'off'
 }
 
 /** Secondary box inside a card: hints, rescue structures, reminders. */
-export function Callout({ title, tone = 'plain', className, children, ...rest }: CalloutProps) {
+export function Callout({
+  title,
+  tone = 'plain',
+  className,
+  children,
+  collapsible = false,
+  defaultOpen = false,
+  ...rest
+}: CalloutProps) {
+  const [open, setOpen] = useState(defaultOpen)
+  const body = collapsible && !open ? null : children
+
   return (
     <div className={`callout callout--${tone}${className ? ` ${className}` : ''}`} {...rest}>
-      {title ? <h3 className="callout__title">{title}</h3> : null}
-      {children}
+      {title ? (
+        <h3 className="callout__title">
+          {collapsible ? (
+            <button
+              type="button"
+              className="callout__toggle"
+              aria-expanded={open}
+              onClick={() => setOpen((value) => !value)}
+            >
+              {title}
+              <span className="callout__chevron" aria-hidden="true">
+                ▾
+              </span>
+            </button>
+          ) : (
+            title
+          )}
+        </h3>
+      ) : null}
+      {body}
     </div>
   )
 }

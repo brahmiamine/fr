@@ -73,6 +73,8 @@ describe('full session walk', () => {
     for (let i = 0; i < 3; i += 1) {
       state = sessionReducer(state, { type: 'FLUENCY_ROUND_COMPLETE' })
     }
+    expect(state.fluency.stage).toBe('summary')
+    state = sessionReducer(state, { type: 'FLUENCY_SUMMARY_DONE' })
     expect(getCurrentStage(state)).toBe('questions')
 
     for (let i = 0; i < 4; i += 1) {
@@ -276,14 +278,55 @@ describe('skipping other exercises', () => {
     expect(state.chunks.step).toBe('day')
   })
 
-  it('skips the fluency exercise and a gap word', () => {
+  it('sends a skipped running round to the mini feedback, exactly like a finished one', () => {
+    const runningFirstRound = {
+      ...newSession(),
+      stageIndex: 1,
+      fluency: { roundIndex: 0, stage: 'running' as const, keywords: [], recordAll: true },
+    }
+
+    const skipped = sessionReducer(runningFirstRound, { type: 'FLUENCY_SKIP' })
+    expect(skipped.fluency).toMatchObject({ roundIndex: 0, stage: 'feedback' })
+
+    const nextRound = sessionReducer(skipped, { type: 'FLUENCY_SKIP' })
+    expect(nextRound.fluency).toMatchObject({ roundIndex: 1, stage: 'running' })
+  })
+
+  it('skips one fluency round at a time, then reaches the summary after the transfert', () => {
     let state = { ...newSession(), stageIndex: 1 }
+
+    // Skipped from the preparation screen: straight to the next round.
     state = sessionReducer(state, { type: 'FLUENCY_SKIP' })
+    expect(state.fluency).toMatchObject({ roundIndex: 1, stage: 'running' })
+    expect(getCurrentStage(state)).toBe('fluency')
+
+    for (let i = 0; i < 3; i += 1) {
+      state = sessionReducer(state, { type: 'FLUENCY_SKIP' })
+    }
+    expect(state.fluency.stage).toBe('summary')
+
+    state = sessionReducer(state, { type: 'FLUENCY_SUMMARY_DONE' })
     expect(getCurrentStage(state)).toBe('questions')
 
     state = { ...state, stageIndex: 3 }
     state = sessionReducer(state, { type: 'GAP_NEXT' })
     expect(state.gapResults).toHaveLength(0)
+  })
+
+  it('replays the recorded rounds after the transfert, or moves on when recording is off', () => {
+    const atTransfert = { ...newSession(), stageIndex: 1, fluency: { roundIndex: 3, stage: 'running' as const, keywords: [], recordAll: true } }
+
+    const withSummary = sessionReducer(atTransfert, { type: 'FLUENCY_ROUND_COMPLETE' })
+    expect(withSummary.fluency.stage).toBe('summary')
+    expect(
+      sessionReducer(withSummary, { type: 'FLUENCY_SUMMARY_DONE' }).stageIndex,
+    ).toBe(2)
+
+    const withoutSummary = sessionReducer(
+      { ...atTransfert, fluency: { ...atTransfert.fluency, recordAll: false } },
+      { type: 'FLUENCY_ROUND_COMPLETE' },
+    )
+    expect(getCurrentStage(withoutSummary)).toBe('questions')
   })
 
   it('completes the session when the feedback is skipped', () => {
