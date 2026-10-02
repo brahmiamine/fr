@@ -94,7 +94,7 @@ function ProsodySession({ exercise }: { exercise: ProsodyExercise }) {
   )
   const finalizedRef = useRef(false)
 
-  const audioSrc = assetUrl(exercise.audio)
+  const audioSrc = exercise.audio ? assetUrl(exercise.audio) : ''
   const position = STAGE_ORDER.indexOf(session.stage) + 1
 
   useEffect(() => {
