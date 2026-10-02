@@ -18,13 +18,16 @@ const PATHS = {
   file: 'M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8zM14 3v5h5M9 15l2 2 4-4',
   settings:
     'M4 7h9M17 7h3M4 17h3M11 17h9M15 4v6M9 14v6',
+  mic: 'M9 5a3 3 0 0 1 6 0v6a3 3 0 0 1-6 0zM5 11a7 7 0 0 0 14 0M12 18v3M9 21h6',
+  stop: 'M7 7h10v10H7z',
+  redo: 'M20 11a8 8 0 1 0-2.3 5.7M20 5v6h-6',
   check: 'M5 12.5l4.5 4.5L19 7.5',
 } as const
 
 export type IconName = keyof typeof PATHS
 
 /** Icons drawn as filled shapes rather than strokes. */
-const FILLED: ReadonlySet<IconName> = new Set<IconName>(['play'])
+const FILLED: ReadonlySet<IconName> = new Set<IconName>(['play', 'stop'])
 
 export interface IconProps {
   name: IconName

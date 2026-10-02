@@ -1,3 +1,4 @@
+import { Icon } from '../../../components/ui'
 import { AudioClip } from '../../../components/AudioClip/AudioClip'
 import type { AudioRecorder } from '../../../hooks/useAudioRecorder'
 import '../training.css'
@@ -13,7 +14,7 @@ export function AudioRecorderButton({ recorder }: { recorder: AudioRecorder }) {
           className="button button--ghost audio__button"
           onClick={() => void recorder.start()}
         >
-          🎤 Enregistrer ce tour
+          <Icon name="mic" size={18} /> Enregistrer ce tour
         </button>
       ) : null}
       {recorder.status === 'requesting' ? (
@@ -25,7 +26,7 @@ export function AudioRecorderButton({ recorder }: { recorder: AudioRecorder }) {
           className="button audio__button"
           onClick={recorder.stop}
         >
-          ⏹ Arrêter l'enregistrement
+          <Icon name="stop" size={18} /> Arrêter l'enregistrement
         </button>
       ) : null}
       {recorder.status === 'stopped' && recorder.blobUrl ? (

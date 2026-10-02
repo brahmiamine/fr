@@ -1,6 +1,7 @@
 import { useAudioRecorder } from '../../../hooks/useAudioRecorder'
 import type { ProsodyExercise } from '../types'
 import { imitationTranscript, speechRateFor } from '../types'
+import { Icon } from '../../../components/ui'
 import { AudioClip } from '../../../components/AudioClip/AudioClip'
 
 export interface MelodyWarmupProps {
@@ -19,6 +20,7 @@ export function MelodyWarmup({ exercise, audioSrc }: MelodyWarmupProps) {
   return (
     <details className="exercise__rescue melody-warmup">
       <summary>Échauffement mélodique « la-la-la » <span className="muted">(optionnel, 1–2 min)</span></summary>
+      <div className="melody-warmup__body">
       <p className="muted">
         Reproduis seulement la musique du segment avec des « la » : même
         nombre de syllabes, mêmes durées, mêmes montées et descentes. Sans les
@@ -38,7 +40,7 @@ export function MelodyWarmup({ exercise, audioSrc }: MelodyWarmupProps) {
         <div className="stack">
           {recording ? (
             <button type="button" className="button button--block" onClick={recorder.stop}>
-              ⏹ Arrêter l'enregistrement
+              <Icon name="stop" size={18} /> Arrêter l'enregistrement
             </button>
           ) : (
             <button
@@ -46,7 +48,7 @@ export function MelodyWarmup({ exercise, audioSrc }: MelodyWarmupProps) {
               className="button button--ghost button--block"
               onClick={() => void recorder.start()}
             >
-              🎤 {recorder.blobUrl ? 'Refaire mon « la-la-la »' : 'Enregistrer mon « la-la-la »'}
+              <Icon name="mic" size={18} /> {recorder.blobUrl ? 'Refaire mon « la-la-la »' : 'Enregistrer mon « la-la-la »'}
             </button>
           )}
           {recorder.blobUrl ? (
@@ -56,6 +58,7 @@ export function MelodyWarmup({ exercise, audioSrc }: MelodyWarmupProps) {
       ) : (
         <p className="muted">Fais-le à voix haute juste après l'écoute.</p>
       )}
+      </div>
     </details>
   )
 }

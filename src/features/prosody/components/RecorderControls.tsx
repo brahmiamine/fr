@@ -1,3 +1,4 @@
+import { Icon } from '../../../components/ui'
 import { AudioClip } from '../../../components/AudioClip/AudioClip'
 import type { ProsodyRecorder } from '../hooks/useProsodyRecorder'
 
@@ -43,7 +44,7 @@ export function RecorderControls({
           className="button button--gradient"
           onClick={() => void recorder.start()}
         >
-          🎤 {recordLabel ?? 'Enregistrer'}
+          <Icon name="mic" size={18} /> {recordLabel ?? 'Enregistrer'}
         </button>
       ) : null}
       {recorder.status === 'requesting' ? (
@@ -51,9 +52,9 @@ export function RecorderControls({
       ) : null}
       {recorder.status === 'recording' ? (
         <>
-          <span className="pill">⏱ {formatSeconds(recorder.recordingSeconds)}</span>
+          <span className="pill">{formatSeconds(recorder.recordingSeconds)}</span>
           <button type="button" className="button" onClick={recorder.stop}>
-            ⏹ Arrêter l'enregistrement
+            <Icon name="stop" size={18} /> Arrêter l'enregistrement
           </button>
         </>
       ) : null}
@@ -71,7 +72,7 @@ export function RecorderControls({
             onClick={() => void recorder.start()}
             disabled={disabled}
           >
-            ↻ Refaire l'enregistrement
+            <Icon name="redo" size={18} /> Refaire l'enregistrement
           </button>
         </div>
       ) : null}
