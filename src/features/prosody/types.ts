@@ -10,26 +10,36 @@ export type ProsodyFocus =
   | 'tempo'
   | 'energy'
 
+export type ProsodyModelKind = 'recording' | 'tts'
+export type ProsodySpeed = 'slow' | 'normal' | 'fast'
+
 export interface ProsodyGroup {
   text: string
   start: number
   end: number
   intonation: 'level' | 'rise' | 'fall'
   finalLengthening?: boolean
+  liaisonAfter?: boolean
+  enchainementAfter?: boolean
 }
 
 export interface ProsodyExercise {
   id: string
   level: string
   category: string
-  audio: string
+  modelKind: ProsodyModelKind
+  audio?: string
   transcript: string
   groups: ProsodyGroup[]
   imitation: { start: number; end: number }
   retelling: { idea: string }
-  /** True only when the file contains a real, licensed/natively recorded model. */
+  /** True when the model is usable: licensed recording or browser TTS fallback. */
   ready: boolean
-  source?: string
+  source: string
+  voiceLocale?: string
+  register?: 'familier' | 'courant' | 'soutenu'
+  speed?: ProsodySpeed
+  focus?: ProsodyFocus[]
 }
 
 export const REQUIRED_MEANING_LISTENS = 1
@@ -92,46 +102,14 @@ export interface FocusOption {
 }
 
 export const FOCUS_OPTIONS: FocusOption[] = [
-  {
-    value: 'pause',
-    label: 'Je coupe au mauvais endroit',
-    goal: 'Ne coupe pas le groupe au mauvais endroit.',
-  },
-  {
-    value: 'grouping',
-    label: 'Mes groupes sont différents',
-    goal: 'Regroupe les mots comme le locuteur.',
-  },
-  {
-    value: 'rhythm',
-    label: 'Mon rythme est trop haché',
-    goal: 'Lisse le rythme : enchaîne les syllabes.',
-  },
-  {
-    value: 'intonation',
-    label: "Mon intonation est différente du modèle",
-    goal: 'Reproduis le mouvement de voix du modèle.',
-  },
-  {
-    value: 'finalLengthening',
-    label: 'Ma fin de groupe est trop courte',
-    goal: 'Allonge la dernière syllabe du groupe.',
-  },
-  {
-    value: 'continuity',
-    label: "Je n'enchaîne pas assez",
-    goal: "Enchaîne d'un groupe à l'autre sans t'arrêter.",
-  },
-  {
-    value: 'tempo',
-    label: 'Je parle trop vite ou trop lentement',
-    goal: 'Rapproche ta durée et ta vitesse de celles du modèle.',
-  },
-  {
-    value: 'energy',
-    label: "Mon énergie est différente",
-    goal: "Copie aussi l'énergie et l'intensité du locuteur.",
-  },
+  { value: 'pause', label: 'Je coupe au mauvais endroit', goal: 'Ne coupe pas le groupe au mauvais endroit.' },
+  { value: 'grouping', label: 'Mes groupes sont différents', goal: 'Regroupe les mots comme le locuteur.' },
+  { value: 'rhythm', label: 'Mon rythme est trop haché', goal: 'Lisse le rythme : enchaîne les syllabes.' },
+  { value: 'intonation', label: "Mon intonation est différente du modèle", goal: 'Reproduis le mouvement de voix du modèle.' },
+  { value: 'finalLengthening', label: 'Ma fin de groupe est trop courte', goal: 'Allonge la dernière syllabe du groupe.' },
+  { value: 'continuity', label: "Je n'enchaîne pas assez", goal: "Enchaîne d'un groupe à l'autre sans t'arrêter." },
+  { value: 'tempo', label: 'Je parle trop vite ou trop lentement', goal: 'Rapproche ta durée et ta vitesse de celles du modèle.' },
+  { value: 'energy', label: "Mon énergie est différente", goal: "Copie aussi l'énergie et l'intensité du locuteur." },
 ]
 
 function intonationMark(value: ProsodyGroup['intonation']): string {
@@ -152,4 +130,21 @@ export function focusGoal(
     return `Reproduis le mouvement de voix du modèle : ${intonationPattern(exercise)}.`
   }
   return FOCUS_OPTIONS.find((option) => option.value === focus)?.goal ?? ''
+}
+
+export function imitationTranscript(exercise: ProsodyExercise): string {
+  return exercise.groups
+    .filter(
+      (group) =>
+        group.end > exercise.imitation.start &&
+        group.start < exercise.imitation.end,
+    )
+    .map((group) => group.text)
+    .join(' ')
+}
+
+export function speechRateFor(exercise: ProsodyExercise): number {
+  if (exercise.speed === 'slow') return 0.82
+  if (exercise.speed === 'fast') return 1.08
+  return 0.95
 }
