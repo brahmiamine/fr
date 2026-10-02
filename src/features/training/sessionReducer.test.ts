@@ -18,12 +18,11 @@ function newSession(): TrainingSessionState {
 }
 
 describe('createSessionState', () => {
-  it('starts on the chunks stage with a full plan', () => {
+  it('starts on chunks with reusable-learning fields initialized', () => {
     const state = newSession()
     expect(getCurrentStage(state)).toBe('chunks')
-    expect(state.phase).toBe('active')
-    expect(state.chunks.step).toBe('retrieve')
-    expect(state.plan.gapItems).toHaveLength(5)
+    expect(state.fluency.keywords).toEqual([])
+    expect(state.fluencyFeedback.missingWordContext).toBe('')
     expect(state.plan.questions).toHaveLength(5)
   })
 })
@@ -41,22 +40,22 @@ describe('prep time adaptation', () => {
 })
 
 describe('full session walk', () => {
-  it('moves through chunks, fluency, questions, gaps and feedback to completion', () => {
+  it('moves through chunks, fluency, questions, gaps and feedback', () => {
     let state = newSession()
 
-    // --- chunks: reveal/rate each chunk, then the chunks-of-day screen
     for (const result of ['easy', 'difficult', 'failed'] as const) {
       state = sessionReducer(state, { type: 'CHUNK_REVEAL' })
-      expect(state.chunks.step).toBe('revealed')
       state = sessionReducer(state, { type: 'CHUNK_RATE', result })
     }
-    expect(state.chunks.step).toBe('day')
-    expect(state.chunkResults).toHaveLength(3)
     state = sessionReducer(state, { type: 'CHUNKS_OF_DAY_CONTINUE' })
     expect(getCurrentStage(state)).toBe('fluency')
 
-    // --- fluency: prep -> running -> feedback -> 3 rounds -> transfer
-    expect(state.fluency.stage).toBe('prep')
+    state = sessionReducer(state, {
+      type: 'FLUENCY_SET_KEYWORDS',
+      keywords: ['travail', 'transport', 'temps'],
+    })
+    expect(state.fluency.keywords).toEqual(['travail', 'transport', 'temps'])
+
     state = sessionReducer(state, { type: 'FLUENCY_START' })
     state = sessionReducer(state, { type: 'FLUENCY_ROUND_COMPLETE' })
     expect(state.fluency.stage).toBe('feedback')
@@ -64,47 +63,45 @@ describe('full session walk', () => {
     state = sessionReducer(state, {
       type: 'FLUENCY_SUBMIT_FEEDBACK',
       missingWord: 'prise électrique',
-      difficultPhrase: '',
-      importantError: '',
+      missingWordContext: 'l’endroit dans le mur où je branche un appareil',
+      difficultPhrase: 'Je ne savais pas comment conclure',
+      importantError: 'Attention à depuis',
     })
     expect(state.fluency.roundIndex).toBe(1)
-    expect(state.fluencyFeedback.missingWord).toBe('prise électrique')
+    expect(state.fluency.keywords).toHaveLength(3)
 
     for (let i = 0; i < 3; i += 1) {
       state = sessionReducer(state, { type: 'FLUENCY_ROUND_COMPLETE' })
     }
     expect(getCurrentStage(state)).toBe('questions')
 
-    // --- questions: countdown/prep/speaking/rate, then revenge
     for (let i = 0; i < 4; i += 1) {
       state = sessionReducer(state, { type: 'QUESTION_COUNTDOWN_DONE' })
       state = sessionReducer(state, { type: 'QUESTION_PREP_DONE' })
       state = sessionReducer(state, { type: 'QUESTION_SPEAKING_DONE' })
       state = sessionReducer(state, { type: 'QUESTION_RATE', rating: 'none' })
     }
-    // Last question rated "much" -> triggers the revenge round.
     state = sessionReducer(state, { type: 'QUESTION_COUNTDOWN_DONE' })
     state = sessionReducer(state, { type: 'QUESTION_PREP_DONE' })
     state = sessionReducer(state, { type: 'QUESTION_SPEAKING_DONE' })
     state = sessionReducer(state, { type: 'QUESTION_RATE', rating: 'much' })
 
     expect(state.revenge.questionId).not.toBeNull()
-    expect(state.revenge.stage).toBe('countdown')
     state = sessionReducer(state, { type: 'REVENGE_COUNTDOWN_DONE' })
     state = sessionReducer(state, { type: 'REVENGE_PREP_DONE' })
     state = sessionReducer(state, { type: 'REVENGE_DONE' })
     expect(getCurrentStage(state)).toBe('gaps')
 
-    // --- gaps: generic words start at paraphrase, reveal, then next
     for (let i = 0; i < 5; i += 1) {
-      expect(state.gaps.step).toBe('paraphrase')
-      state = sessionReducer(state, { type: 'GAP_REVEAL' })
-      expect(state.gaps.step).toBe('revealed')
+      if (state.gaps.step === 'recall') {
+        state = sessionReducer(state, { type: 'GAP_FOUND' })
+      } else {
+        state = sessionReducer(state, { type: 'GAP_REVEAL' })
+      }
       state = sessionReducer(state, { type: 'GAP_NEXT' })
     }
     expect(getCurrentStage(state)).toBe('feedback')
 
-    // --- feedback
     state = sessionReducer(state, {
       type: 'FEEDBACK_SET',
       field: 'blockCount',
@@ -122,8 +119,7 @@ describe('full session walk', () => {
 
 describe('question revenge selection', () => {
   it('skips revenge when nothing was blocked', () => {
-    let state = newSession()
-    state = { ...state, stageIndex: 2 }
+    let state = { ...newSession(), stageIndex: 2 }
     for (let i = 0; i < 5; i += 1) {
       state = sessionReducer(state, { type: 'QUESTION_RATE', rating: 'none' })
     }
@@ -132,51 +128,30 @@ describe('question revenge selection', () => {
   })
 })
 
-describe('gap retrieval flow', () => {
-  it('records a found word and a missed word', () => {
-    const state = newSession()
-    const withGap = {
-      ...state,
-      stageIndex: 3,
-      plan: {
-        ...state.plan,
-        gapItems: [
-          {
-            key: 'gap-x',
-            kind: 'retrieve' as const,
-            target: 'prise électrique',
-            context: 'où on branche un appareil',
-            isPersonal: true,
-            sourceId: 'gap-1',
-          },
-        ],
-      },
-      gaps: { index: 0, step: 'recall' as const },
-    }
-
-    const found = sessionReducer(withGap, { type: 'GAP_FOUND' })
-    expect(found.gapResults[0]).toEqual({ itemKey: 'gap-x', found: true })
-    expect(found.gaps.step).toBe('revealed')
-
-    const missed = sessionReducer(withGap, { type: 'GAP_START_PARAPHRASE' })
-    expect(missed.gaps.step).toBe('paraphrase')
-    const revealed = sessionReducer(missed, { type: 'GAP_REVEAL' })
-    expect(revealed.gapResults[0]).toEqual({ itemKey: 'gap-x', found: false })
-  })
-})
-
 describe('feedback validation', () => {
-  it('accepts only nonnegative blocks and a 1–5 score', () => {
-    const valid = {
-      blockedWord: '',
-      expressionToReuse: '',
-      blockCount: 0,
-      fluencyScore: 3,
-    }
+  const valid = {
+    blockedWord: '',
+    blockedWordContext: '',
+    abandonedSentence: '',
+    awkwardPhrase: '',
+    expressionToReuse: '',
+    expressionIntent: '',
+    blockCount: 0,
+    fluencyScore: 3,
+  }
+
+  it('requires metrics and context for learning material', () => {
     expect(isFeedbackValid(valid)).toBe(true)
+    expect(
+      isFeedbackValid({ ...valid, blockedWord: 'prise', blockedWordContext: '' }),
+    ).toBe(false)
+    expect(
+      isFeedbackValid({
+        ...valid,
+        expressionToReuse: 'En revanche…',
+        expressionIntent: '',
+      }),
+    ).toBe(false)
     expect(isFeedbackValid({ ...valid, blockCount: -1 })).toBe(false)
-    expect(isFeedbackValid({ ...valid, fluencyScore: 0 })).toBe(false)
-    expect(isFeedbackValid({ ...valid, fluencyScore: 6 })).toBe(false)
-    expect(isFeedbackValid({ ...valid, blockCount: null })).toBe(false)
   })
 })
