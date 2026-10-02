@@ -41,6 +41,7 @@ Le contenu n'est **jamais tiré au hasard** : il suit les priorités
   tant que ta base personnelle est vide (≈ 70 % perso / 30 % générique).
 - **Questions surprises** : la question apparaît pendant la préparation progressive (10 s au début, 5 s après 5 séances, 3 s après 15), puis les 60 s de parole démarrent automatiquement sans pause ni sortie anticipée. La diversité de catégories est privilégiée et la question la plus difficile revient en « revanche » ; au niveau avancé, la dernière réponse dure 60 s puis enchaîne sur un pivot surprise de 30 s, suivi lui aussi dans le feedback.
 - **Enregistrement audio** : optionnel, via `MediaRecorder`. S'il est activé, l'enregistrement du premier tour démarre avant le minuteur et s'arrête automatiquement à la fin des 4 minutes. Il reste disponible au mini-feedback puis au feedback final ; l'audio reste uniquement en mémoire.
+- **Lecture vocale guidée** : le moteur de synthèse vocale déjà utilisé par les modèles prosodiques TTS est partagé avec la fluidité. Les chunks et mots ne deviennent écoutables qu'après révélation ; le sujet 4→3→2 et les formulations corrigées sont écoutables avant réutilisation. Les questions surprises et les phases de parole chronométrées restent sans lecture pour ne pas modifier la contrainte de production.
 - **Boucle personnalisée** : mots manquants + contexte, formulations corrigées et expressions utiles sont réinjectés dans de futures séances. Une correction précédente n'avance dans son espacement que lorsque tu confirmes l'avoir réellement réutilisée à voix haute ; les expressions utiles deviennent des chunks personnels.
 - **Transfert réel** : un défi hebdomadaire exige au moins 20 min de vraie conversation puis réinjecte les corrections et blocages observés dans l'entraînement.
 - **Mesure hebdomadaire** : le sujet et le minuteur apparaissent ensemble et le benchmark démarre automatiquement pour 3 minutes complètes, sans pause, afin de garder des conditions comparables.
@@ -174,6 +175,7 @@ La suite Vitest + React Testing Library couvre notamment :
 - ordonnanceur de révision espacée (chunks et trous de mots) ;
 - persistance et migration du schéma local (v1/v2/v3 → v4) ;
 - précision, pause/reprise et récupération après rafraîchissement des minuteurs ;
+- lecture vocale partagée entre prosodie et fluidité, avec garde-fous contre la révélation et l'écoute pendant la parole ;
 - calcul des séries, de la progression hebdomadaire et des minutes totales ;
 - machine à états de la session complète (chunks, 4→3→2, questions + revanche,
   trous de mots, feedback) et parcours de bout en bout.
