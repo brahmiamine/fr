@@ -20,7 +20,7 @@ export function AppShell() {
           <Link to="/" className="site__brand">
             <Logo />
             <span className="site__brand-text">
-              Fluidité
+              Parle+
               <small>français parlé</small>
             </span>
           </Link>
@@ -64,7 +64,7 @@ export function AppShell() {
         <footer className="site__footer">
           <div className="site__footer-inner">
             <p>
-              Fluidité — entraîneur de français parlé. Ta progression reste
+              Parle+ — entraîneur de français parlé. Ta progression reste
               stockée localement sur ton appareil.
             </p>
           </div>
