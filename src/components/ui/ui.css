@@ -286,8 +286,15 @@
 
 /* ---------- Stats ---------- */
 .stat-grid {
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
   gap: 12px;
+}
+
+/* Orphan tiles stretch to fill the last row instead of leaving a hole. */
+.stat-grid > .stat {
+  flex: 1 1 var(--stat-min, 150px);
+  min-width: 0;
 }
 
 .stat {
@@ -328,10 +335,15 @@
 }
 
 .mini-stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 10px;
   width: 100%;
+}
+
+.mini-stats > .mini-stat {
+  flex: 1 1 110px;
+  min-width: 0;
 }
 
 .mini-stat {
@@ -485,7 +497,12 @@
 }
 
 .callout ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
   margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .dot-list {

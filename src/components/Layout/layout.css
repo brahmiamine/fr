@@ -3,6 +3,8 @@
 .shell {
   position: relative;
   display: flex;
+  /* Entry animations translate content sideways: never let them widen the page. */
+  overflow-x: clip;
   min-height: 100vh;
   background: var(--bg);
 }
@@ -196,7 +198,8 @@
 
 .streak-card__cta {
   min-height: 44px;
-  padding: 0 16px;
+  padding: 0 14px;
+  white-space: nowrap;
   font-size: 14px;
   font-weight: 700;
 }

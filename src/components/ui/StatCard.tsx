@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react'
 import type { IconName } from './Icon'
 import { IconTile } from './IconTile'
 import type { TileTone } from './IconTile'
@@ -34,7 +35,7 @@ export function StatGrid({
     <section
       className="stat-grid"
       aria-label={label}
-      style={{ gridTemplateColumns: `repeat(auto-fit, minmax(${minWidth}px, 1fr))` }}
+      style={{ '--stat-min': `${minWidth}px` } as CSSProperties}
     >
       {stats.map((stat, index) => (
         <StatCard key={stat.label} {...stat} delay={baseDelay + index * 0.05} />

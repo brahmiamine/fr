@@ -52,6 +52,7 @@
   height: 48px;
   cursor: pointer;
   border-radius: 8px;
+  overflow: hidden;
 }
 
 .audio-player__wave[aria-disabled='true'] {
@@ -59,8 +60,8 @@
 }
 
 .audio-player__bar {
-  flex: 1;
-  min-width: 2px;
+  flex: 1 1 0;
+  min-width: 0;
   border-radius: 3px;
   background: rgba(91, 91, 214, 0.18);
   transition: background-color 0.15s ease;
@@ -72,6 +73,7 @@
 
 .audio-player__meta {
   display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
   justify-content: space-between;
   gap: 12px;
