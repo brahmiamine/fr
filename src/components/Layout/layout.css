@@ -20,11 +20,14 @@
   max-width: 680px;
   margin: 0 auto;
   padding: 1rem;
+  padding-top: calc(1rem + env(safe-area-inset-top));
+  padding-left: calc(1rem + env(safe-area-inset-left));
+  padding-right: calc(1rem + env(safe-area-inset-right));
 }
 
 .shell--training .shell__main {
   max-width: 680px;
-  padding-bottom: 1.5rem;
+  padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
 }
 
 .shell__nav {

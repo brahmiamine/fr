@@ -117,3 +117,21 @@ l'application et la publie sur GitHub Pages à chaque push sur `main`.
 
 Vite est configuré avec `base: '/fr/'` pour respecter le chemin du dépôt.
 Dans les paramètres GitHub du dépôt, la source Pages doit être **GitHub Actions**.
+
+## Application installable (PWA)
+
+L'application est **mobile-first** et installable comme une app :
+
+- `public/manifest.webmanifest` (mode `standalone`, portrait, couleurs, icônes
+  `any` + `maskable`).
+- `public/sw.js` : service worker réseau-d'abord avec repli hors ligne.
+- Icônes générées sans dépendance via `node scripts/generate-icons.mjs`.
+- iOS : `apple-touch-icon` et mode plein écran
+  (`apple-mobile-web-app-capable`).
+- Zones sûres (`env(safe-area-inset-*)`) pour les encoches et la barre système.
+- Champs en `font-size: 16px` pour éviter le zoom automatique sur iOS, cibles
+  tactiles de 44 px minimum et suppression du délai de tap de 300 ms.
+
+Sur Android/Chrome, une bannière « Installer l'application » apparaît. Le
+service worker n'est enregistré qu'en production.
+

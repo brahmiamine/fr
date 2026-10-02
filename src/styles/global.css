@@ -42,6 +42,11 @@
   box-sizing: border-box;
 }
 
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
 html,
 body,
 #root {
@@ -53,6 +58,19 @@ body {
   background: var(--bg);
   color: var(--text);
   line-height: 1.5;
+  min-height: 100dvh;
+  overscroll-behavior-y: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a,
+input,
+textarea,
+select,
+[role='button'] {
+  /* Remove the 300ms tap delay on mobile browsers. */
+  touch-action: manipulation;
 }
 
 button,
@@ -102,6 +120,8 @@ a {
   color: #fff;
   font-weight: 600;
   cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
   transition: transform 0.12s ease, background 0.12s ease, opacity 0.12s ease;
 }
 
@@ -163,6 +183,8 @@ a {
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   background: var(--surface);
+  /* 16px prevents automatic zoom on iOS when focusing a field. */
+  font-size: 16px;
 }
 
 .field textarea {
