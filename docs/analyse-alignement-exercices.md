@@ -4,6 +4,10 @@
 > documents de méthode : **« Parler sans bloquer »** (fluidité) et
 > **« Sonner plus naturel »** (prosodie).
 > Les 124 tests passent (`npx vitest --run`) et `tsc -b` ne signale aucune erreur.
+>
+> **Mise à jour** : la plupart des écarts décrits ci-dessous ont depuis été
+> corrigés. Les sections 0 à 6 décrivent l'état *avant* corrections ; la
+> **section 7** liste ce qui a été corrigé et ce qui reste à faire.
 
 ---
 
@@ -551,3 +555,58 @@ En résumé, **l'application a la bonne structure**. Pour qu'elle soit aussi
 *efficace* que la méthode le promet, il faut surtout de **vrais modèles
 audio**, une **mesure objective** de la progression et une **vérification
 honnête** des réponses. Le reste relève de l'ajustement.
+
+---
+
+## 7. Corrections appliquées
+
+État après corrections : 160 tests passent (contre 124), `tsc -b` et
+`npm run build` sont OK, et le parcours a été vérifié dans un vrai navigateur
+(test hebdomadaire avec micro simulé).
+
+| # | Écart relevé | Correction | Fichiers principaux |
+|---|---|---|---|
+| 4.1 | Un échec ne remettait pas l'espacement du chunk à zéro | Compteur `streak` de succès consécutifs : un échec le remet à 0, J+1 → J+3 → J+7 recommence | `progress.ts:upsertChunkReview` |
+| 2.1 | « Facile » = « difficile » | Une récupération difficile ne peut pas terminer le parcours : la maîtrise exige une récupération facile | idem |
+| 2.1 | Chunk jamais vu présenté comme une devinette | Mode **« Nouveau »** : proposer, découvrir, puis 1re récupération à J+1 (`discovered`) | `ChunksExercise.tsx`, `selectPlan.ts` |
+| 2.1 | Usage des chunks du jour jamais vérifié | Confirmation « Je l'ai placé » au feedback final, stockée dans la séance | `SessionFeedback.tsx` |
+| 2.1 | 3 chunks ≈ 2–4 min | **4 chunks** par séance, consigne « 2 ou 3 phrases » | `types.ts` |
+| 2.2 | Il manquait « le chunk que j'aurais pu utiliser » | Nouveau champ (avec son intention), rappelé « À placer dans ce tour » aux tours 2 et 3, puis transformé en chunk personnel | `Fluency432Exercise.tsx` |
+| 2.2 | Mini-feedback non chronométré | Minuteur indicatif de 60 s | idem |
+| 2.2 | « Tour 1 / 3 » | « Tour 1 / 4 » | idem |
+| 2.2 | Pas de variante retelling | Une séance sur trois : écoute d'une histoire (12 histoires), 2–3 expressions notées, récit en 4→3→2, transfert sur une expérience proche | `retelling-stories.json`, `selectPlan.ts` |
+| 2.3 | 60 s fixes au lieu de 60–90 s | 60 s → 75 s → 90 s selon le niveau (pivot avancé : 60 s puis 30 s) | `SurpriseQuestionsExercise.tsx` |
+| 2.3 | Pas de revanche si tout est noté « Non » | La revanche a **toujours** lieu, sur la question la plus mal notée | `sessionReducer.ts` |
+| 2.3 / 4.3 | Note du niveau 3 attribuée au pivot | La note revient à la question posée, qui peut donc être reprise en revanche | idem |
+| 2.3 | Niveau basé seulement sur le nombre de séances | Le niveau ne monte que si moins de 40 % des réponses des 3 dernières séances ont « beaucoup » bloqué | `progress.ts:trainingLevelForSessions` |
+| 4.5 | Type de question en anglais | Libellés français | `types.ts` |
+| 4.2 | « Je l'ai trouvé » compté avant vérification | « J'ai une réponse » → réponse affichée → « juste / faux », puis seulement l'enregistrement | `WordGapsExercise.tsx`, `sessionReducer.ts` |
+| 2.4 | Pas de limite sur le rappel | 5 s, puis passage automatique à la circumlocution ; le minuteur de paraphrase démarre seul | idem |
+| 2.4 | Mots génériques jamais ajoutés aux trous personnels | « Ajouter à mes trous de mots » avec ta propre description de l'idée | idem |
+| 2.7 | Test hebdo sans enregistrement | Enregistrement + **mesure automatique** (premier son, pauses > 1 s, plus longue séquence, temps de parole) via Web Audio, puis réécoute pour la saisie | `speechActivity.ts`, `useAudioRecorder.ts`, `WeeklyTest.tsx` |
+| 2.7 | Comparaison seulement à S-4 exactement | Test le plus proche de 4 semaines (3 à 6 semaines en arrière) + tableau d'évolution | `progress.ts:findComparisonTest`, `ProgressPage.tsx` |
+| 2.8 / 4.4 | Scénarios de conversation inutilisés | Carte « Situation à jouer » + répétition solo de 2 min avec interruptions lues à voix haute | `ConversationPrep.tsx` |
+| 3.0 | Horodatages fictifs (4 s par groupe) | Extraits allongés à 2 phrases (10–14 s), durées **estimées par syllabes**, segment d'imitation de 5–7 s ; un test refuse toute durée invraisemblable | `prosody.json`, `prosodyTiming.ts`, `scripts/estimate-prosody-timings.mjs` |
+| 3.0 | Voix de synthèse présentée comme un modèle natif | Mention explicite « voix de synthèse » + **import de son propre extrait** (vraie voix, 10–60 s, segment choisi à l'écoute, audio gardé en mémoire) | `CustomExtractForm.tsx`, `customExtract.ts` |
+| 3.1 | Découpage révélé, pas produit | Étape **Marquage** : l'apprenant place `/` et ↑ ↓ → puis reçoit un score (frontières, intonations) | `marking.ts`, `ListeningExercise.tsx` |
+| 3.4 | Retelling bloqué à 30 s | 30–60 s → 45–90 s → 60–120 s selon le nombre de séances de prosodie | `types.ts:retellingGoalFor` |
+| 3.5 | Pas de « la-la-la » | Échauffement mélodique optionnel avec enregistrement | `MelodyWarmup.tsx` |
+| 3.6 | Aucune convergence | Le point de prosodie le plus travaillé guide le choix des extraits et est rappelé pendant le 4→3→2 | `progress.ts:recentProsodyFocus`, `selectPlan.ts` |
+
+Une session interrompue enregistrée par l'ancienne version redémarre
+proprement (champ `schema`), sans perte de l'historique.
+
+### Ce qui reste volontairement hors du code
+
+- **De vrais enregistrements natifs dans la banque** : ça demande des fichiers
+  audio dont on a les droits. L'application les accepte (`modelKind:
+  "recording"`, `timing: "measured"`), et l'import personnel permet dès
+  maintenant de travailler sur une vraie voix.
+- **Courbe de pitch hebdomadaire** (option « Praat » de la méthode) : non
+  implémentée, la méthode la juge facultative.
+- **Exemples d'usage réels pour les 377 chunks** (`usageTip` reste générique) :
+  c'est un travail de contenu, pas de code.
+- **Enregistrement des questions surprises** pour la réécoute finale : seul le
+  tour 1 du 4→3→2 est enregistré.
+- La répartition des pauses (milieu de phrase / entre deux idées) reste
+  manuelle : distinguer les deux demande une analyse syntaxique.
