@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import type { Question } from '../../../types/content'
+import { useEffect, useState } from 'react'
+import type { Chunk, Question } from '../../../types/content'
 import { Timer } from '../../../components/Timer/Timer'
 import {
   QUESTION_COUNTDOWN_SECONDS,
@@ -14,6 +14,9 @@ export interface SurpriseQuestionsExerciseProps {
   total: number
   stage: 'countdown' | 'prep' | 'speaking' | 'rate'
   prepSeconds: number
+  chunksOfDay: Chunk[]
+  focusWords: string[]
+  pivotQuestion?: Question | null
   revenge?: boolean
   onCountdownDone: () => void
   onPrepDone: () => void
@@ -28,6 +31,9 @@ export function SurpriseQuestionsExercise({
   total,
   stage,
   prepSeconds,
+  chunksOfDay,
+  focusWords,
+  pivotQuestion = null,
   revenge = false,
   onCountdownDone,
   onPrepDone,
@@ -36,10 +42,15 @@ export function SurpriseQuestionsExercise({
   onDone,
 }: SurpriseQuestionsExerciseProps) {
   const [showStarters, setShowStarters] = useState(false)
+  const [pivotShown, setPivotShown] = useState(false)
 
-  const counterLabel = revenge
-    ? 'Revanche'
-    : `Question ${index + 1}/${total}`
+  useEffect(() => {
+    if (stage !== 'speaking' || revenge || !pivotQuestion) return
+    const timeout = window.setTimeout(() => setPivotShown(true), 30000)
+    return () => window.clearTimeout(timeout)
+  }, [stage, revenge, pivotQuestion])
+
+  const counterLabel = revenge ? 'Revanche' : `Question ${index + 1}/${total}`
 
   if (stage === 'countdown') {
     return (
@@ -106,12 +117,13 @@ export function SurpriseQuestionsExercise({
     )
   }
 
-  // speaking
+  const activeQuestion = pivotShown && pivotQuestion ? pivotQuestion : question
+
   return (
     <section className="card exercise" aria-labelledby="question-title">
-      <p className="pill">{counterLabel}</p>
+      <p className="pill">{pivotShown ? 'Pivot — change de sujet maintenant' : counterLabel}</p>
       <h2 id="question-title" className="exercise__prompt">
-        {question.text}
+        {activeQuestion.text}
       </h2>
 
       <Timer
@@ -119,6 +131,20 @@ export function SurpriseQuestionsExercise({
         label="Parle"
         onComplete={revenge ? onDone : onSpeakingDone}
       />
+
+      {chunksOfDay.length > 0 ? (
+        <p className="exercise__chunks">
+          <span className="muted">Essaie de placer :</span>{' '}
+          {chunksOfDay.map((chunk) => chunk.expression).join(' · ')}
+        </p>
+      ) : null}
+
+      {focusWords.length > 0 ? (
+        <p className="exercise__chunks">
+          <span className="muted">Mots à réutiliser :</span>{' '}
+          {focusWords.join(' · ')}
+        </p>
+      ) : null}
 
       {!showStarters ? (
         <button
