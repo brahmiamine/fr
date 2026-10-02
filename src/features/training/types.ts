@@ -1,20 +1,22 @@
 import type { Chunk, Question, Topic } from '../../types/content'
+import type { FluencyNoteKind } from '../../types/progress'
 
 export type StageKind = 'chunks' | 'fluency' | 'questions' | 'gaps' | 'feedback'
-
 export type Phase = 'active' | 'complete'
 
 export interface GapItem {
-  /** Unique key inside the session. */
   key: string
-  /** retrieve = personal word gap (guess the word), paraphrase = generic word. */
   kind: 'retrieve' | 'paraphrase'
   target: string
-  /** Hint sentence for personal gaps, empty for generic words. */
   context: string
   isPersonal: boolean
-  /** wordGap id for personal items, generic word id otherwise. */
   sourceId: string | null
+}
+
+export interface FluencyReminder {
+  id: string
+  kind: FluencyNoteKind
+  text: string
 }
 
 export interface SessionPlan {
@@ -22,7 +24,10 @@ export interface SessionPlan {
   chunks: Chunk[]
   chunksOfDay: Chunk[]
   questions: Question[]
+  pivotQuestion: Question | null
   gapItems: GapItem[]
+  focusWords: string[]
+  fluencyReminders: FluencyReminder[]
 }
 
 export type RecallResult = 'easy' | 'difficult' | 'failed'
@@ -45,13 +50,18 @@ export interface GapResult {
 
 export interface FluencyFeedback {
   missingWord: string
+  missingWordContext: string
   difficultPhrase: string
   importantError: string
 }
 
 export interface SessionFeedback {
   blockedWord: string
+  blockedWordContext: string
+  abandonedSentence: string
+  awkwardPhrase: string
   expressionToReuse: string
+  expressionIntent: string
   blockCount: number | null
   fluencyScore: number | null
 }
@@ -74,6 +84,7 @@ export interface TrainingSessionState {
   fluency: {
     roundIndex: number
     stage: 'prep' | 'running' | 'feedback'
+    keywords: string[]
   }
   fluencyFeedback: FluencyFeedback
 
@@ -113,16 +124,13 @@ export const STAGE_META: Record<StageKind, { title: string; minutes: number }> =
 }
 
 export const FLUENCY_ROUND_SECONDS = [240, 180, 120, 60] as const
-
 export const CHUNKS_PER_SESSION = 3
 export const QUESTIONS_PER_SESSION = 5
 export const GAPS_PER_SESSION = 5
-
 export const QUESTION_COUNTDOWN_SECONDS = 3
 export const QUESTION_SPEAKING_SECONDS = 60
 export const GAP_PARAPHRASE_SECONDS = 15
 
-/** Preparation time in seconds, adjusted to the learner's level. */
 export function prepSecondsForLevel(level: 1 | 2 | 3): number {
   if (level === 1) return 10
   if (level === 2) return 5
@@ -134,6 +142,7 @@ export const RESCUE_STRUCTURES = [
   'Ça sert à…',
   "C'est quelque chose qui…",
   "C'est quand…",
+  'Je ne me souviens plus du mot exact, mais…',
 ] as const
 
 export const QUESTION_STARTERS = [
