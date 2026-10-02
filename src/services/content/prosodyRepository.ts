@@ -86,7 +86,13 @@ export function pickReadyProsodyExercise(
 ): ProsodyExercise | null {
   if (readyProsodyExercises.length === 0) return null
   const fresh = readyProsodyExercises.filter((exercise) => !recentIds.includes(exercise.id))
-  const base = fresh.length > 0 ? fresh : readyProsodyExercises
+  const freshRecordings = fresh.filter((exercise) => exercise.modelKind === 'recording')
+  const base =
+    freshRecordings.length > 0
+      ? freshRecordings
+      : fresh.length > 0
+        ? fresh
+        : readyProsodyExercises
   const focused = preferredFocus
     ? base.filter((exercise) => exercise.focus?.includes(preferredFocus))
     : []
