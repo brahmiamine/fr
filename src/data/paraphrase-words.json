@@ -1,20 +1,1502 @@
 [
-  { "id": "w001", "word": "embouteillage", "category": "quotidien", "difficulty": "easy" },
-  { "id": "w002", "word": "bénévolat", "category": "societe", "difficulty": "medium" },
-  { "id": "w003", "word": "gaspillage", "category": "environnement", "difficulty": "medium" },
-  { "id": "w004", "word": "ambiance", "category": "quotidien", "difficulty": "easy" },
-  { "id": "w005", "word": "sondage", "category": "societe", "difficulty": "medium" },
-  { "id": "w006", "word": "négociation", "category": "travail", "difficulty": "hard" },
-  { "id": "w007", "word": "réciproque", "category": "societe", "difficulty": "hard" },
-  { "id": "w008", "word": "complicité", "category": "societe", "difficulty": "medium" },
-  { "id": "w009", "word": "organisation", "category": "travail", "difficulty": "easy" },
-  { "id": "w010", "word": "tolérance", "category": "societe", "difficulty": "medium" },
-  { "id": "w011", "word": "dépaysement", "category": "voyage", "difficulty": "medium" },
-  { "id": "w012", "word": "hiérarchie", "category": "travail", "difficulty": "hard" },
-  { "id": "w013", "word": "quotidien", "category": "quotidien", "difficulty": "easy" },
-  { "id": "w014", "word": "engouement", "category": "culture", "difficulty": "hard" },
-  { "id": "w015", "word": "persévérance", "category": "education", "difficulty": "medium" },
-  { "id": "w016", "word": "solidarité", "category": "societe", "difficulty": "easy" },
-  { "id": "w017", "word": "improvisation", "category": "culture", "difficulty": "medium" },
-  { "id": "w018", "word": "réputation", "category": "travail", "difficulty": "medium" }
+  {
+    "id": "w001",
+    "word": "interrupteur",
+    "category": "quotidien",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w002",
+    "word": "prise électrique",
+    "category": "quotidien",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w003",
+    "word": "rallonge",
+    "category": "quotidien",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w004",
+    "word": "étagère",
+    "category": "quotidien",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w005",
+    "word": "tiroir",
+    "category": "quotidien",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w006",
+    "word": "passoire",
+    "category": "quotidien",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w007",
+    "word": "bouilloire",
+    "category": "quotidien",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w008",
+    "word": "ouvre-boîte",
+    "category": "quotidien",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w009",
+    "word": "torchon",
+    "category": "quotidien",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w010",
+    "word": "cintre",
+    "category": "quotidien",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w011",
+    "word": "poubelle",
+    "category": "quotidien",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w012",
+    "word": "aspirateur",
+    "category": "quotidien",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w013",
+    "word": "balai",
+    "category": "quotidien",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w014",
+    "word": "serpillière",
+    "category": "quotidien",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w015",
+    "word": "réveil",
+    "category": "quotidien",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w016",
+    "word": "embouteillage",
+    "category": "quotidien",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w017",
+    "word": "trottoir",
+    "category": "quotidien",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w018",
+    "word": "passage piéton",
+    "category": "quotidien",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w019",
+    "word": "feu rouge",
+    "category": "quotidien",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w020",
+    "word": "rond-point",
+    "category": "quotidien",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w021",
+    "word": "bouchon",
+    "category": "quotidien",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w022",
+    "word": "reçu",
+    "category": "quotidien",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w023",
+    "word": "ticket de caisse",
+    "category": "quotidien",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w024",
+    "word": "monnaie",
+    "category": "quotidien",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w025",
+    "word": "pourboire",
+    "category": "quotidien",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w026",
+    "word": "réunion",
+    "category": "travail",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w027",
+    "word": "télétravail",
+    "category": "travail",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w028",
+    "word": "échéance",
+    "category": "travail",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w029",
+    "word": "collègue",
+    "category": "travail",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w030",
+    "word": "hiérarchie",
+    "category": "travail",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w031",
+    "word": "recrutement",
+    "category": "travail",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w032",
+    "word": "candidature",
+    "category": "travail",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w033",
+    "word": "entretien",
+    "category": "travail",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w034",
+    "word": "salaire",
+    "category": "travail",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w035",
+    "word": "prime",
+    "category": "travail",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w036",
+    "word": "promotion",
+    "category": "travail",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w037",
+    "word": "démission",
+    "category": "travail",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w038",
+    "word": "congé",
+    "category": "travail",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w039",
+    "word": "planning",
+    "category": "travail",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w040",
+    "word": "priorité",
+    "category": "travail",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w041",
+    "word": "délai",
+    "category": "travail",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w042",
+    "word": "compte rendu",
+    "category": "travail",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w043",
+    "word": "négociation",
+    "category": "travail",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w044",
+    "word": "responsabilité",
+    "category": "travail",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w045",
+    "word": "autonomie",
+    "category": "travail",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w046",
+    "word": "surcharge",
+    "category": "travail",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w047",
+    "word": "pause",
+    "category": "travail",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w048",
+    "word": "formation",
+    "category": "travail",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w049",
+    "word": "compétence",
+    "category": "travail",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w050",
+    "word": "objectif",
+    "category": "travail",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w051",
+    "word": "formulaire",
+    "category": "administratif",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w052",
+    "word": "justificatif",
+    "category": "administratif",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w053",
+    "word": "attestation",
+    "category": "administratif",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w054",
+    "word": "facture",
+    "category": "administratif",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w055",
+    "word": "ordonnance",
+    "category": "administratif",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w056",
+    "word": "remboursement",
+    "category": "administratif",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w057",
+    "word": "dossier",
+    "category": "administratif",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w058",
+    "word": "échéancier",
+    "category": "administratif",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w059",
+    "word": "prélèvement",
+    "category": "administratif",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w060",
+    "word": "virement",
+    "category": "administratif",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w061",
+    "word": "assurance",
+    "category": "administratif",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w062",
+    "word": "abonnement",
+    "category": "administratif",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w063",
+    "word": "résiliation",
+    "category": "administratif",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w064",
+    "word": "signature",
+    "category": "administratif",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w065",
+    "word": "pièce d'identité",
+    "category": "administratif",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w066",
+    "word": "rendez-vous",
+    "category": "administratif",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w067",
+    "word": "guichet",
+    "category": "administratif",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w068",
+    "word": "file d'attente",
+    "category": "administratif",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w069",
+    "word": "réclamation",
+    "category": "administratif",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w070",
+    "word": "déclaration",
+    "category": "administratif",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w071",
+    "word": "impôt",
+    "category": "administratif",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w072",
+    "word": "amende",
+    "category": "administratif",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w073",
+    "word": "contrat",
+    "category": "administratif",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w074",
+    "word": "caution",
+    "category": "administratif",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w075",
+    "word": "acompte",
+    "category": "administratif",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w076",
+    "word": "valise",
+    "category": "voyage",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w077",
+    "word": "bagage cabine",
+    "category": "voyage",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w078",
+    "word": "correspondance",
+    "category": "voyage",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w079",
+    "word": "escale",
+    "category": "voyage",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w080",
+    "word": "quai",
+    "category": "voyage",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w081",
+    "word": "voie",
+    "category": "voyage",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w082",
+    "word": "billet",
+    "category": "voyage",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w083",
+    "word": "réservation",
+    "category": "voyage",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w084",
+    "word": "hébergement",
+    "category": "voyage",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w085",
+    "word": "auberge",
+    "category": "voyage",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w086",
+    "word": "itinéraire",
+    "category": "voyage",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w087",
+    "word": "détour",
+    "category": "voyage",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w088",
+    "word": "retard",
+    "category": "voyage",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w089",
+    "word": "annulation",
+    "category": "voyage",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w090",
+    "word": "embarquement",
+    "category": "voyage",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w091",
+    "word": "douane",
+    "category": "voyage",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w092",
+    "word": "frontière",
+    "category": "voyage",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w093",
+    "word": "passeport",
+    "category": "voyage",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w094",
+    "word": "dépaysement",
+    "category": "voyage",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w095",
+    "word": "souvenir",
+    "category": "voyage",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w096",
+    "word": "guide",
+    "category": "voyage",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w097",
+    "word": "excursion",
+    "category": "voyage",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w098",
+    "word": "navette",
+    "category": "voyage",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w099",
+    "word": "location",
+    "category": "voyage",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w100",
+    "word": "destination",
+    "category": "voyage",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w101",
+    "word": "complicité",
+    "category": "relations",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w102",
+    "word": "confiance",
+    "category": "relations",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w103",
+    "word": "jalousie",
+    "category": "relations",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w104",
+    "word": "dispute",
+    "category": "relations",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w105",
+    "word": "réconciliation",
+    "category": "relations",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w106",
+    "word": "compromis",
+    "category": "relations",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w107",
+    "word": "soutien",
+    "category": "relations",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w108",
+    "word": "écoute",
+    "category": "relations",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w109",
+    "word": "malentendu",
+    "category": "relations",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w110",
+    "word": "respect",
+    "category": "relations",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w111",
+    "word": "limite",
+    "category": "relations",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w112",
+    "word": "invitation",
+    "category": "relations",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w113",
+    "word": "rencontre",
+    "category": "relations",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w114",
+    "word": "voisin",
+    "category": "relations",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w115",
+    "word": "proche",
+    "category": "relations",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w116",
+    "word": "confidant",
+    "category": "relations",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w117",
+    "word": "entraide",
+    "category": "relations",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w118",
+    "word": "promesse",
+    "category": "relations",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w119",
+    "word": "excuse",
+    "category": "relations",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w120",
+    "word": "pardon",
+    "category": "relations",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w121",
+    "word": "désaccord",
+    "category": "relations",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w122",
+    "word": "accord",
+    "category": "relations",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w123",
+    "word": "rumeur",
+    "category": "relations",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w124",
+    "word": "réputation",
+    "category": "relations",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w125",
+    "word": "tolérance",
+    "category": "relations",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w126",
+    "word": "soulagement",
+    "category": "emotions",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w127",
+    "word": "frustration",
+    "category": "emotions",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w128",
+    "word": "fierté",
+    "category": "emotions",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w129",
+    "word": "honte",
+    "category": "emotions",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w130",
+    "word": "peur",
+    "category": "emotions",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w131",
+    "word": "surprise",
+    "category": "emotions",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w132",
+    "word": "déception",
+    "category": "emotions",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w133",
+    "word": "enthousiasme",
+    "category": "emotions",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w134",
+    "word": "motivation",
+    "category": "emotions",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w135",
+    "word": "stress",
+    "category": "emotions",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w136",
+    "word": "inquiétude",
+    "category": "emotions",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w137",
+    "word": "colère",
+    "category": "emotions",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w138",
+    "word": "tristesse",
+    "category": "emotions",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w139",
+    "word": "joie",
+    "category": "emotions",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w140",
+    "word": "nostalgie",
+    "category": "emotions",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w141",
+    "word": "impatience",
+    "category": "emotions",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w142",
+    "word": "gêne",
+    "category": "emotions",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w143",
+    "word": "culpabilité",
+    "category": "emotions",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w144",
+    "word": "gratitude",
+    "category": "emotions",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w145",
+    "word": "confiance en soi",
+    "category": "emotions",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w146",
+    "word": "doute",
+    "category": "emotions",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w147",
+    "word": "lassitude",
+    "category": "emotions",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w148",
+    "word": "curiosité",
+    "category": "emotions",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w149",
+    "word": "espoir",
+    "category": "emotions",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w150",
+    "word": "satisfaction",
+    "category": "emotions",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w151",
+    "word": "mot de passe",
+    "category": "technologie",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w152",
+    "word": "sauvegarde",
+    "category": "technologie",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w153",
+    "word": "mise à jour",
+    "category": "technologie",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w154",
+    "word": "téléchargement",
+    "category": "technologie",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w155",
+    "word": "connexion",
+    "category": "technologie",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w156",
+    "word": "réseau",
+    "category": "technologie",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w157",
+    "word": "navigateur",
+    "category": "technologie",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w158",
+    "word": "onglet",
+    "category": "technologie",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w159",
+    "word": "raccourci",
+    "category": "technologie",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w160",
+    "word": "batterie",
+    "category": "technologie",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w161",
+    "word": "chargeur",
+    "category": "technologie",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w162",
+    "word": "notification",
+    "category": "technologie",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w163",
+    "word": "réglage",
+    "category": "technologie",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w164",
+    "word": "bug",
+    "category": "technologie",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w165",
+    "word": "panne",
+    "category": "technologie",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w166",
+    "word": "serveur",
+    "category": "technologie",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w167",
+    "word": "stockage",
+    "category": "technologie",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w168",
+    "word": "cloud",
+    "category": "technologie",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w169",
+    "word": "confidentialité",
+    "category": "technologie",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w170",
+    "word": "géolocalisation",
+    "category": "technologie",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w171",
+    "word": "application",
+    "category": "technologie",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w172",
+    "word": "streaming",
+    "category": "technologie",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w173",
+    "word": "écran",
+    "category": "technologie",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w174",
+    "word": "clavier",
+    "category": "technologie",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w175",
+    "word": "souris",
+    "category": "technologie",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w176",
+    "word": "sommeil",
+    "category": "sante",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w177",
+    "word": "sieste",
+    "category": "sante",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w178",
+    "word": "fatigue",
+    "category": "sante",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w179",
+    "word": "respiration",
+    "category": "sante",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w180",
+    "word": "étirement",
+    "category": "sante",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w181",
+    "word": "échauffement",
+    "category": "sante",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w182",
+    "word": "récupération",
+    "category": "sante",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w183",
+    "word": "hydratation",
+    "category": "sante",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w184",
+    "word": "appétit",
+    "category": "sante",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w185",
+    "word": "douleur",
+    "category": "sante",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w186",
+    "word": "blessure",
+    "category": "sante",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w187",
+    "word": "entorse",
+    "category": "sante",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w188",
+    "word": "pansement",
+    "category": "sante",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w189",
+    "word": "thermomètre",
+    "category": "sante",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w190",
+    "word": "tension",
+    "category": "sante",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w191",
+    "word": "consultation",
+    "category": "sante",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w192",
+    "word": "pharmacie",
+    "category": "sante",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w193",
+    "word": "traitement",
+    "category": "sante",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w194",
+    "word": "prévention",
+    "category": "sante",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w195",
+    "word": "équilibre",
+    "category": "sante",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w196",
+    "word": "posture",
+    "category": "sante",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w197",
+    "word": "marche",
+    "category": "sante",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w198",
+    "word": "exercice",
+    "category": "sante",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w199",
+    "word": "régime",
+    "category": "sante",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w200",
+    "word": "alimentation",
+    "category": "sante",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w201",
+    "word": "recyclage",
+    "category": "environnement",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w202",
+    "word": "tri",
+    "category": "environnement",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w203",
+    "word": "déchet",
+    "category": "environnement",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w204",
+    "word": "gaspillage",
+    "category": "environnement",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w205",
+    "word": "pollution",
+    "category": "environnement",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w206",
+    "word": "emballage",
+    "category": "environnement",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w207",
+    "word": "compost",
+    "category": "environnement",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w208",
+    "word": "énergie",
+    "category": "environnement",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w209",
+    "word": "électricité",
+    "category": "environnement",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w210",
+    "word": "chauffage",
+    "category": "environnement",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w211",
+    "word": "isolation",
+    "category": "environnement",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w212",
+    "word": "sécheresse",
+    "category": "environnement",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w213",
+    "word": "inondation",
+    "category": "environnement",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w214",
+    "word": "canicule",
+    "category": "environnement",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w215",
+    "word": "climat",
+    "category": "environnement",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w216",
+    "word": "biodiversité",
+    "category": "environnement",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w217",
+    "word": "forêt",
+    "category": "environnement",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w218",
+    "word": "transport public",
+    "category": "environnement",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w219",
+    "word": "covoiturage",
+    "category": "environnement",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w220",
+    "word": "seconde main",
+    "category": "environnement",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w221",
+    "word": "réparation",
+    "category": "environnement",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w222",
+    "word": "consommation",
+    "category": "environnement",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w223",
+    "word": "ressource",
+    "category": "environnement",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w224",
+    "word": "économie d'eau",
+    "category": "environnement",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w225",
+    "word": "empreinte carbone",
+    "category": "environnement",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w226",
+    "word": "roman",
+    "category": "culture",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w227",
+    "word": "intrigue",
+    "category": "culture",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w228",
+    "word": "personnage",
+    "category": "culture",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w229",
+    "word": "réalisateur",
+    "category": "culture",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w230",
+    "word": "scénario",
+    "category": "culture",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w231",
+    "word": "documentaire",
+    "category": "culture",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w232",
+    "word": "exposition",
+    "category": "culture",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w233",
+    "word": "musée",
+    "category": "culture",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w234",
+    "word": "concert",
+    "category": "culture",
+    "difficulty": "easy"
+  },
+  {
+    "id": "w235",
+    "word": "festival",
+    "category": "culture",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w236",
+    "word": "podcast",
+    "category": "culture",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w237",
+    "word": "épisode",
+    "category": "culture",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w238",
+    "word": "saison",
+    "category": "culture",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w239",
+    "word": "sous-titre",
+    "category": "culture",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w240",
+    "word": "doublage",
+    "category": "culture",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w241",
+    "word": "critique",
+    "category": "culture",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w242",
+    "word": "créativité",
+    "category": "culture",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w243",
+    "word": "improvisation",
+    "category": "culture",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w244",
+    "word": "apprentissage",
+    "category": "culture",
+    "difficulty": "medium"
+  },
+  {
+    "id": "w245",
+    "word": "révision",
+    "category": "culture",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w246",
+    "word": "examen",
+    "category": "culture",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w247",
+    "word": "diplôme",
+    "category": "culture",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w248",
+    "word": "savoir",
+    "category": "culture",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w249",
+    "word": "persévérance",
+    "category": "culture",
+    "difficulty": "hard"
+  },
+  {
+    "id": "w250",
+    "word": "bénévolat",
+    "category": "culture",
+    "difficulty": "hard"
+  }
 ]
