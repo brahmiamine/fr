@@ -1,20 +1,2641 @@
 [
-  { "id": "chunk_001", "intent": "Nuancer une opinion", "expression": "D'un autre côté…", "category": "opinion", "level": "B2" },
-  { "id": "chunk_002", "intent": "Donner un exemple", "expression": "Par exemple, …", "category": "structure", "level": "A2" },
-  { "id": "chunk_003", "intent": "Introduire une hésitation", "expression": "Pour être honnête, …", "category": "opinion", "level": "B1" },
-  { "id": "chunk_004", "intent": "Structurer un argument", "expression": "D'abord…, ensuite…", "category": "structure", "level": "B1" },
-  { "id": "chunk_005", "intent": "Reformuler une idée", "expression": "Autrement dit, …", "category": "structure", "level": "B1" },
-  { "id": "chunk_006", "intent": "Exprimer une cause", "expression": "C'est en grande partie dû à…", "category": "argumentation", "level": "B2" },
-  { "id": "chunk_007", "intent": "Exprimer une conséquence", "expression": "Du coup, …", "category": "argumentation", "level": "B1" },
-  { "id": "chunk_008", "intent": "Exprimer un doute", "expression": "Je n'en suis pas si sûr…", "category": "opinion", "level": "B2" },
-  { "id": "chunk_009", "intent": "Reconnaître le point de vue de l'autre", "expression": "Je vois ce que tu veux dire.", "category": "conversation", "level": "B1" },
-  { "id": "chunk_010", "intent": "Opposer un argument", "expression": "Par contre, …", "category": "argumentation", "level": "B1" },
-  { "id": "chunk_011", "intent": "Conclure une idée", "expression": "Au final, …", "category": "structure", "level": "B1" },
-  { "id": "chunk_012", "intent": "Généraliser", "expression": "Dans l'ensemble, …", "category": "argumentation", "level": "B1" },
-  { "id": "chunk_013", "intent": "Relativiser", "expression": "Ça dépend vraiment de…", "category": "opinion", "level": "B1" },
-  { "id": "chunk_014", "intent": "Mettre en avant l'essentiel", "expression": "Ce qui compte, c'est que…", "category": "structure", "level": "B2" },
-  { "id": "chunk_015", "intent": "Donner son avis", "expression": "À mon avis, …", "category": "opinion", "level": "A2" },
-  { "id": "chunk_016", "intent": "Marquer un accord partiel", "expression": "Oui, mais…", "category": "conversation", "level": "B1" },
-  { "id": "chunk_017", "intent": "Exprimer une impression", "expression": "Ce qui me frappe, c'est que…", "category": "opinion", "level": "B2" },
-  { "id": "chunk_018", "intent": "Recentrer le propos", "expression": "Pour en revenir à…", "category": "structure", "level": "B2" }
+  {
+    "id": "chunk_001",
+    "intent": "Nuancer une opinion",
+    "expression": "D'un autre côté…",
+    "category": "opinion",
+    "level": "B2"
+  },
+  {
+    "id": "chunk_002",
+    "intent": "Donner un exemple",
+    "expression": "Par exemple, …",
+    "category": "structure",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_003",
+    "intent": "Introduire une hésitation",
+    "expression": "Pour être honnête, …",
+    "category": "opinion",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_004",
+    "intent": "Structurer un argument",
+    "expression": "D'abord…, ensuite…",
+    "category": "structure",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_005",
+    "intent": "Reformuler une idée",
+    "expression": "Autrement dit, …",
+    "category": "structure",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_006",
+    "intent": "Exprimer une cause",
+    "expression": "C'est en grande partie dû à…",
+    "category": "argumentation",
+    "level": "B2"
+  },
+  {
+    "id": "chunk_007",
+    "intent": "Exprimer une conséquence",
+    "expression": "Du coup, …",
+    "category": "argumentation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_008",
+    "intent": "Exprimer un doute",
+    "expression": "Je n'en suis pas si sûr…",
+    "category": "opinion",
+    "level": "B2"
+  },
+  {
+    "id": "chunk_009",
+    "intent": "Reconnaître le point de vue de l'autre",
+    "expression": "Je vois ce que tu veux dire.",
+    "category": "conversation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_010",
+    "intent": "Opposer un argument",
+    "expression": "Par contre, …",
+    "category": "argumentation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_011",
+    "intent": "Conclure une idée",
+    "expression": "Au final, …",
+    "category": "structure",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_012",
+    "intent": "Généraliser",
+    "expression": "Dans l'ensemble, …",
+    "category": "argumentation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_013",
+    "intent": "Relativiser",
+    "expression": "Ça dépend vraiment de…",
+    "category": "opinion",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_014",
+    "intent": "Mettre en avant l'essentiel",
+    "expression": "Ce qui compte, c'est que…",
+    "category": "structure",
+    "level": "B2"
+  },
+  {
+    "id": "chunk_015",
+    "intent": "Donner son avis",
+    "expression": "À mon avis, …",
+    "category": "opinion",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_016",
+    "intent": "Marquer un accord partiel",
+    "expression": "Oui, mais…",
+    "category": "conversation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_017",
+    "intent": "Exprimer une impression",
+    "expression": "Ce qui me frappe, c'est que…",
+    "category": "opinion",
+    "level": "B2"
+  },
+  {
+    "id": "chunk_018",
+    "intent": "Recentrer le propos",
+    "expression": "Pour en revenir à…",
+    "category": "structure",
+    "level": "B2"
+  },
+  {
+    "id": "chunk_019",
+    "intent": "Relancer le discours",
+    "expression": "Alors, du coup…",
+    "category": "structure",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_020",
+    "intent": "Commencer une réponse spontanément",
+    "expression": "Alors…",
+    "category": "conversation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_021",
+    "intent": "Gagner une seconde pour réfléchir",
+    "expression": "Bon…",
+    "category": "conversation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_022",
+    "intent": "Hésiter naturellement",
+    "expression": "Ben…",
+    "category": "conversation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_023",
+    "intent": "Hésiter de façon familière",
+    "expression": "Bah…",
+    "category": "conversation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_024",
+    "intent": "Reprendre après une hésitation",
+    "expression": "Enfin…",
+    "category": "structure",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_025",
+    "intent": "Corriger ce qu'on vient de dire",
+    "expression": "Enfin, je veux dire…",
+    "category": "reformulation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_026",
+    "intent": "Reformuler plus simplement",
+    "expression": "En gros…",
+    "category": "reformulation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_027",
+    "intent": "Rectifier une idée",
+    "expression": "En fait…",
+    "category": "reformulation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_028",
+    "intent": "Introduire une suite",
+    "expression": "Et puis…",
+    "category": "structure",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_029",
+    "intent": "Ajouter un dernier élément",
+    "expression": "Et puis surtout…",
+    "category": "structure",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_030",
+    "intent": "Passer à la suite",
+    "expression": "Après…",
+    "category": "structure",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_031",
+    "intent": "Résumer rapidement",
+    "expression": "Bref…",
+    "category": "structure",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_032",
+    "intent": "Conclure après une explication",
+    "expression": "Voilà.",
+    "category": "structure",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_033",
+    "intent": "Clore de façon orale",
+    "expression": "Voilà quoi.",
+    "category": "conversation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_034",
+    "intent": "Conclure avec résignation",
+    "expression": "Enfin bon…",
+    "category": "conversation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_035",
+    "intent": "Passer outre un détail",
+    "expression": "Mais bon…",
+    "category": "conversation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_036",
+    "intent": "Relancer après une conclusion",
+    "expression": "Bon, du coup…",
+    "category": "conversation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_037",
+    "intent": "Reprendre le fil",
+    "expression": "Donc voilà…",
+    "category": "structure",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_038",
+    "intent": "Reprendre avec une conséquence",
+    "expression": "Et donc…",
+    "category": "argumentation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_039",
+    "intent": "Nuancer après une conséquence",
+    "expression": "Du coup, enfin…",
+    "category": "conversation",
+    "level": "B2"
+  },
+  {
+    "id": "chunk_040",
+    "intent": "Résumer avant de conclure",
+    "expression": "En gros, voilà…",
+    "category": "structure",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_041",
+    "intent": "Fermer un sujet",
+    "expression": "Enfin bref…",
+    "category": "structure",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_042",
+    "intent": "Revenir à l'essentiel",
+    "expression": "Bref, tout ça pour dire que…",
+    "category": "structure",
+    "level": "B2"
+  },
+  {
+    "id": "chunk_043",
+    "intent": "Donner son avis spontanément",
+    "expression": "Moi, je dirais que…",
+    "category": "opinion",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_044",
+    "intent": "Donner son avis personnel",
+    "expression": "Personnellement, je trouve que…",
+    "category": "opinion",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_045",
+    "intent": "Exprimer ce qu'on pense",
+    "expression": "Je pense que…",
+    "category": "opinion",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_046",
+    "intent": "Exprimer une conviction légère",
+    "expression": "Je crois que…",
+    "category": "opinion",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_047",
+    "intent": "Exprimer une conviction forte",
+    "expression": "Je suis convaincu que…",
+    "category": "opinion",
+    "level": "B2"
+  },
+  {
+    "id": "chunk_048",
+    "intent": "Exprimer une impression",
+    "expression": "J'ai l'impression que…",
+    "category": "opinion",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_049",
+    "intent": "Donner son ressenti",
+    "expression": "Je trouve que…",
+    "category": "opinion",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_050",
+    "intent": "Donner une préférence",
+    "expression": "Je préfère…",
+    "category": "opinion",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_051",
+    "intent": "Dire ce qu'on aurait tendance à penser",
+    "expression": "J'aurais tendance à dire que…",
+    "category": "opinion",
+    "level": "B2"
+  },
+  {
+    "id": "chunk_052",
+    "intent": "Prendre position avec prudence",
+    "expression": "Je dirais plutôt que…",
+    "category": "opinion",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_053",
+    "intent": "Introduire son point de vue",
+    "expression": "De mon point de vue…",
+    "category": "opinion",
+    "level": "B2"
+  },
+  {
+    "id": "chunk_054",
+    "intent": "Présenter sa façon de voir",
+    "expression": "Moi, je vois ça comme ça…",
+    "category": "opinion",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_055",
+    "intent": "Donner une opinion franche",
+    "expression": "Franchement, je pense que…",
+    "category": "opinion",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_056",
+    "intent": "Donner une opinion sincère",
+    "expression": "Honnêtement, je trouve que…",
+    "category": "opinion",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_057",
+    "intent": "Exprimer une opinion actuelle",
+    "expression": "En vrai, je pense que…",
+    "category": "opinion",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_058",
+    "intent": "Dire ce qu'on ressent vraiment",
+    "expression": "Pour être franc, …",
+    "category": "opinion",
+    "level": "B2"
+  },
+  {
+    "id": "chunk_059",
+    "intent": "Reconnaître une vérité",
+    "expression": "Il faut reconnaître que…",
+    "category": "opinion",
+    "level": "B2"
+  },
+  {
+    "id": "chunk_060",
+    "intent": "Admettre quelque chose",
+    "expression": "J'avoue que…",
+    "category": "opinion",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_061",
+    "intent": "Faire une réserve personnelle",
+    "expression": "Après, moi, ce que j'en dis…",
+    "category": "opinion",
+    "level": "B2"
+  },
+  {
+    "id": "chunk_062",
+    "intent": "Exprimer un jugement modéré",
+    "expression": "Je trouve ça plutôt…",
+    "category": "opinion",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_063",
+    "intent": "Exprimer une réaction positive",
+    "expression": "Je trouve ça pas mal.",
+    "category": "reaction",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_064",
+    "intent": "Exprimer une réaction très positive",
+    "expression": "C'est vraiment bien.",
+    "category": "reaction",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_065",
+    "intent": "Exprimer une réaction enthousiaste",
+    "expression": "C'est génial !",
+    "category": "reaction",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_066",
+    "intent": "Exprimer une réaction familière positive",
+    "expression": "C'est trop bien !",
+    "category": "reaction",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_067",
+    "intent": "Exprimer qu'on apprécie",
+    "expression": "J'aime bien.",
+    "category": "reaction",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_068",
+    "intent": "Exprimer qu'on apprécie beaucoup",
+    "expression": "J'adore.",
+    "category": "reaction",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_069",
+    "intent": "Dire qu'on comprend",
+    "expression": "Je comprends.",
+    "category": "conversation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_070",
+    "intent": "Montrer qu'on suit",
+    "expression": "Je vois.",
+    "category": "conversation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_071",
+    "intent": "Confirmer qu'on a compris",
+    "expression": "D'accord, je vois.",
+    "category": "conversation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_072",
+    "intent": "Accepter une proposition",
+    "expression": "Ça marche.",
+    "category": "conversation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_073",
+    "intent": "Dire que ça convient",
+    "expression": "Ça me va.",
+    "category": "conversation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_074",
+    "intent": "Dire qu'il n'y a pas de problème",
+    "expression": "Pas de souci.",
+    "category": "conversation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_075",
+    "intent": "Répondre positivement simplement",
+    "expression": "Bien sûr.",
+    "category": "conversation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_076",
+    "intent": "Répondre avec évidence",
+    "expression": "Bah oui.",
+    "category": "conversation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_077",
+    "intent": "Répondre négativement avec évidence",
+    "expression": "Bah non.",
+    "category": "conversation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_078",
+    "intent": "Marquer un accord",
+    "expression": "Oui, exactement.",
+    "category": "agreement",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_079",
+    "intent": "Confirmer fortement",
+    "expression": "C'est exactement ça.",
+    "category": "agreement",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_080",
+    "intent": "Confirmer simplement",
+    "expression": "C'est ça.",
+    "category": "agreement",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_081",
+    "intent": "Confirmer un raisonnement",
+    "expression": "Tout à fait.",
+    "category": "agreement",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_082",
+    "intent": "Exprimer un accord familier",
+    "expression": "Carrément.",
+    "category": "agreement",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_083",
+    "intent": "Dire qu'on est d'accord",
+    "expression": "Je suis d'accord.",
+    "category": "agreement",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_084",
+    "intent": "Dire qu'on partage l'idée",
+    "expression": "Je pense pareil.",
+    "category": "agreement",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_085",
+    "intent": "Reconnaître que l'idée tient",
+    "expression": "Ça se tient.",
+    "category": "agreement",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_086",
+    "intent": "Reconnaître un bon argument",
+    "expression": "C'est vrai.",
+    "category": "agreement",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_087",
+    "intent": "Reconnaître un point",
+    "expression": "Oui, c'est vrai que…",
+    "category": "agreement",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_088",
+    "intent": "Accorder un point avant de nuancer",
+    "expression": "C'est vrai, mais…",
+    "category": "nuance",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_089",
+    "intent": "Accorder partiellement",
+    "expression": "Je suis d'accord sur ce point, mais…",
+    "category": "nuance",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_090",
+    "intent": "Admettre avant d'opposer",
+    "expression": "D'accord, mais…",
+    "category": "nuance",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_091",
+    "intent": "Nuancer une généralisation",
+    "expression": "Pas forcément.",
+    "category": "nuance",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_092",
+    "intent": "Dire que ça dépend",
+    "expression": "Ça dépend.",
+    "category": "nuance",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_093",
+    "intent": "Préciser ce dont ça dépend",
+    "expression": "Ça dépend de…",
+    "category": "nuance",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_094",
+    "intent": "Nuancer selon les cas",
+    "expression": "Ça dépend des cas.",
+    "category": "nuance",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_095",
+    "intent": "Relativiser",
+    "expression": "C'est relatif.",
+    "category": "nuance",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_096",
+    "intent": "Dire qu'il y a des exceptions",
+    "expression": "Il y a quand même des exceptions.",
+    "category": "nuance",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_097",
+    "intent": "Ajouter une réserve",
+    "expression": "Cela dit…",
+    "category": "nuance",
+    "level": "B2"
+  },
+  {
+    "id": "chunk_098",
+    "intent": "Ajouter une réserve orale",
+    "expression": "Après, faut voir…",
+    "category": "nuance",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_099",
+    "intent": "Exprimer une concession",
+    "expression": "Quand même…",
+    "category": "nuance",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_100",
+    "intent": "Dire qu'on peut comprendre les deux côtés",
+    "expression": "Je comprends les deux points de vue.",
+    "category": "nuance",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_101",
+    "intent": "Dire qu'une idée n'est pas entièrement fausse",
+    "expression": "C'est pas complètement faux.",
+    "category": "nuance",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_102",
+    "intent": "Reconnaître partiellement",
+    "expression": "Il y a du vrai là-dedans.",
+    "category": "nuance",
+    "level": "B2"
+  },
+  {
+    "id": "chunk_103",
+    "intent": "Exprimer un désaccord poli",
+    "expression": "Je ne suis pas tout à fait d'accord.",
+    "category": "disagreement",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_104",
+    "intent": "Exprimer un désaccord simple",
+    "expression": "Je suis pas d'accord.",
+    "category": "disagreement",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_105",
+    "intent": "Exprimer un désaccord léger",
+    "expression": "Pas vraiment.",
+    "category": "disagreement",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_106",
+    "intent": "Exprimer un désaccord fort",
+    "expression": "Pas du tout.",
+    "category": "disagreement",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_107",
+    "intent": "Opposer le contraire",
+    "expression": "Au contraire…",
+    "category": "disagreement",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_108",
+    "intent": "Mettre en doute une affirmation",
+    "expression": "Je suis pas sûr que…",
+    "category": "disagreement",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_109",
+    "intent": "Dire qu'on a du mal à croire",
+    "expression": "J'ai du mal à croire que…",
+    "category": "disagreement",
+    "level": "B2"
+  },
+  {
+    "id": "chunk_110",
+    "intent": "Exprimer un scepticisme",
+    "expression": "Ça m'étonnerait.",
+    "category": "disagreement",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_111",
+    "intent": "Refuser une généralisation",
+    "expression": "On peut pas dire ça comme ça.",
+    "category": "disagreement",
+    "level": "B2"
+  },
+  {
+    "id": "chunk_112",
+    "intent": "Dire que c'est plus compliqué",
+    "expression": "C'est plus compliqué que ça.",
+    "category": "disagreement",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_113",
+    "intent": "Rejeter une opposition trop simple",
+    "expression": "C'est pas si simple.",
+    "category": "disagreement",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_114",
+    "intent": "Préciser qu'on ne voit pas pareil",
+    "expression": "Je le vois pas comme ça.",
+    "category": "disagreement",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_115",
+    "intent": "Adoucir un désaccord",
+    "expression": "Je vois ce que tu veux dire, mais…",
+    "category": "disagreement",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_116",
+    "intent": "Dire qu'on n'est qu'à moitié convaincu",
+    "expression": "Je suis moyen convaincu.",
+    "category": "disagreement",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_117",
+    "intent": "Clarifier son idée",
+    "expression": "Ce que je veux dire, c'est que…",
+    "category": "reformulation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_118",
+    "intent": "Reprendre plus précisément",
+    "expression": "Plus précisément…",
+    "category": "reformulation",
+    "level": "B2"
+  },
+  {
+    "id": "chunk_119",
+    "intent": "Simplifier une explication",
+    "expression": "Pour faire simple…",
+    "category": "reformulation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_120",
+    "intent": "Présenter l'idée centrale",
+    "expression": "L'idée, c'est que…",
+    "category": "reformulation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_121",
+    "intent": "Présenter le vrai problème",
+    "expression": "Le truc, c'est que…",
+    "category": "reformulation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_122",
+    "intent": "Présenter un problème",
+    "expression": "Le problème, c'est que…",
+    "category": "reformulation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_123",
+    "intent": "Présenter une difficulté",
+    "expression": "Ce qui est compliqué, c'est que…",
+    "category": "reformulation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_124",
+    "intent": "Présenter l'essentiel",
+    "expression": "Le plus important, c'est que…",
+    "category": "reformulation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_125",
+    "intent": "Revenir sur ses mots",
+    "expression": "Enfin, pas exactement…",
+    "category": "reformulation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_126",
+    "intent": "Corriger une exagération",
+    "expression": "Enfin, j'exagère un peu…",
+    "category": "reformulation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_127",
+    "intent": "Corriger une formulation",
+    "expression": "C'est pas le bon mot, mais…",
+    "category": "reformulation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_128",
+    "intent": "Chercher une formulation",
+    "expression": "Comment dire…",
+    "category": "hesitation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_129",
+    "intent": "Chercher le mot exact",
+    "expression": "Comment je pourrais dire ça…",
+    "category": "hesitation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_130",
+    "intent": "Admettre qu'on ne trouve pas le mot",
+    "expression": "J'ai pas le mot exact, mais…",
+    "category": "hesitation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_131",
+    "intent": "Reformuler faute de mot",
+    "expression": "Je sais pas comment l'expliquer, mais…",
+    "category": "hesitation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_132",
+    "intent": "Faire comprendre approximativement",
+    "expression": "Tu vois ce que je veux dire ?",
+    "category": "conversation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_133",
+    "intent": "Vérifier que l'autre suit",
+    "expression": "Tu vois ?",
+    "category": "conversation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_134",
+    "intent": "Vérifier que l'autre comprend",
+    "expression": "Tu comprends ?",
+    "category": "conversation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_135",
+    "intent": "Chercher l'accord de l'autre",
+    "expression": "Tu trouves pas ?",
+    "category": "conversation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_136",
+    "intent": "Chercher une confirmation",
+    "expression": "Non ?",
+    "category": "conversation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_137",
+    "intent": "Chercher une confirmation familière",
+    "expression": "Hein ?",
+    "category": "conversation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_138",
+    "intent": "Inviter l'autre à imaginer",
+    "expression": "Imagine…",
+    "category": "conversation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_139",
+    "intent": "Attirer l'attention",
+    "expression": "Écoute…",
+    "category": "conversation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_140",
+    "intent": "Reprendre l'attention",
+    "expression": "Regarde…",
+    "category": "conversation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_141",
+    "intent": "Donner un exemple personnel",
+    "expression": "Dans mon cas…",
+    "category": "example",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_142",
+    "intent": "Donner un exemple concret",
+    "expression": "Concrètement…",
+    "category": "example",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_143",
+    "intent": "Illustrer simplement",
+    "expression": "Typiquement…",
+    "category": "example",
+    "level": "B2"
+  },
+  {
+    "id": "chunk_144",
+    "intent": "Introduire une situation hypothétique",
+    "expression": "Imagine que…",
+    "category": "example",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_145",
+    "intent": "Introduire un cas possible",
+    "expression": "Disons que…",
+    "category": "example",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_146",
+    "intent": "Donner un exemple approximatif",
+    "expression": "Genre…",
+    "category": "example",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_147",
+    "intent": "Donner un exemple parmi d'autres",
+    "expression": "Comme par exemple…",
+    "category": "example",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_148",
+    "intent": "Introduire une expérience",
+    "expression": "Ça m'est déjà arrivé de…",
+    "category": "narration",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_149",
+    "intent": "Introduire un souvenir",
+    "expression": "Je me souviens que…",
+    "category": "narration",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_150",
+    "intent": "Introduire une anecdote",
+    "expression": "Une fois, …",
+    "category": "narration",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_151",
+    "intent": "Commencer un récit",
+    "expression": "En fait, un jour…",
+    "category": "narration",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_152",
+    "intent": "Situer le début d'une histoire",
+    "expression": "Au début…",
+    "category": "narration",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_153",
+    "intent": "Continuer un récit",
+    "expression": "Ensuite…",
+    "category": "narration",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_154",
+    "intent": "Continuer plus naturellement à l'oral",
+    "expression": "Et après…",
+    "category": "narration",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_155",
+    "intent": "Marquer une évolution",
+    "expression": "Petit à petit…",
+    "category": "narration",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_156",
+    "intent": "Marquer un changement",
+    "expression": "À un moment…",
+    "category": "narration",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_157",
+    "intent": "Marquer un tournant",
+    "expression": "Et là…",
+    "category": "narration",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_158",
+    "intent": "Introduire une surprise",
+    "expression": "Et là, surprise…",
+    "category": "narration",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_159",
+    "intent": "Introduire ce qui s'est passé ensuite",
+    "expression": "Et finalement…",
+    "category": "narration",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_160",
+    "intent": "Résumer un récit",
+    "expression": "Bref, au final…",
+    "category": "narration",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_161",
+    "intent": "Revenir en arrière",
+    "expression": "Avant ça…",
+    "category": "narration",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_162",
+    "intent": "Situer une habitude passée",
+    "expression": "À l'époque…",
+    "category": "narration",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_163",
+    "intent": "Situer l'origine d'une situation",
+    "expression": "À la base…",
+    "category": "narration",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_164",
+    "intent": "Situer le présent",
+    "expression": "Maintenant…",
+    "category": "narration",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_165",
+    "intent": "Comparer avec aujourd'hui",
+    "expression": "Aujourd'hui, c'est différent.",
+    "category": "narration",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_166",
+    "intent": "Présenter une répétition",
+    "expression": "À chaque fois…",
+    "category": "narration",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_167",
+    "intent": "Présenter une habitude",
+    "expression": "En général…",
+    "category": "narration",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_168",
+    "intent": "Présenter quelque chose de fréquent",
+    "expression": "La plupart du temps…",
+    "category": "narration",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_169",
+    "intent": "Introduire une cause",
+    "expression": "Parce que…",
+    "category": "cause",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_170",
+    "intent": "Introduire une explication",
+    "expression": "C'est parce que…",
+    "category": "cause",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_171",
+    "intent": "Donner la raison principale",
+    "expression": "Surtout parce que…",
+    "category": "cause",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_172",
+    "intent": "Donner une raison parmi d'autres",
+    "expression": "Entre autres parce que…",
+    "category": "cause",
+    "level": "B2"
+  },
+  {
+    "id": "chunk_173",
+    "intent": "Présenter le vrai motif",
+    "expression": "La vraie raison, c'est que…",
+    "category": "cause",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_174",
+    "intent": "Introduire une conséquence",
+    "expression": "Donc…",
+    "category": "consequence",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_175",
+    "intent": "Introduire une conséquence logique",
+    "expression": "Résultat, …",
+    "category": "consequence",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_176",
+    "intent": "Dire ce que cela entraîne",
+    "expression": "Ça fait que…",
+    "category": "consequence",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_177",
+    "intent": "Enchaîner cause et conséquence",
+    "expression": "Et donc forcément…",
+    "category": "consequence",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_178",
+    "intent": "Montrer un effet",
+    "expression": "Ce qui fait que…",
+    "category": "consequence",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_179",
+    "intent": "Expliquer une conséquence personnelle",
+    "expression": "Du coup, moi, …",
+    "category": "consequence",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_180",
+    "intent": "Déduire",
+    "expression": "Donc forcément…",
+    "category": "consequence",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_181",
+    "intent": "Introduire un contraste",
+    "expression": "Mais…",
+    "category": "argumentation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_182",
+    "intent": "Opposer de façon plus soutenue",
+    "expression": "En revanche…",
+    "category": "argumentation",
+    "level": "B2"
+  },
+  {
+    "id": "chunk_183",
+    "intent": "Ajouter un argument",
+    "expression": "En plus…",
+    "category": "argumentation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_184",
+    "intent": "Ajouter quelque chose de fort",
+    "expression": "Et en plus…",
+    "category": "argumentation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_185",
+    "intent": "Ajouter une précision",
+    "expression": "D'ailleurs…",
+    "category": "argumentation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_186",
+    "intent": "Mettre en avant un élément",
+    "expression": "Surtout que…",
+    "category": "argumentation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_187",
+    "intent": "Présenter une exception",
+    "expression": "Sauf que…",
+    "category": "argumentation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_188",
+    "intent": "Faire une concession",
+    "expression": "Même si…",
+    "category": "argumentation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_189",
+    "intent": "Mettre en perspective",
+    "expression": "En même temps…",
+    "category": "argumentation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_190",
+    "intent": "Introduire un autre angle",
+    "expression": "Après, il y a aussi…",
+    "category": "argumentation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_191",
+    "intent": "Hiérarchiser",
+    "expression": "D'abord…",
+    "category": "structure",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_192",
+    "intent": "Ajouter le dernier point",
+    "expression": "Et enfin…",
+    "category": "structure",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_193",
+    "intent": "Annoncer deux aspects",
+    "expression": "Il y a deux choses…",
+    "category": "structure",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_194",
+    "intent": "Annoncer plusieurs raisons",
+    "expression": "Il y a plusieurs raisons…",
+    "category": "structure",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_195",
+    "intent": "Mettre l'accent sur un point",
+    "expression": "Le point principal, c'est…",
+    "category": "structure",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_196",
+    "intent": "Revenir au sujet",
+    "expression": "Pour revenir à…",
+    "category": "structure",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_197",
+    "intent": "Changer légèrement de sujet",
+    "expression": "À propos de ça…",
+    "category": "structure",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_198",
+    "intent": "Changer de sujet naturellement",
+    "expression": "Sinon…",
+    "category": "structure",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_199",
+    "intent": "Faire une transition",
+    "expression": "Et justement…",
+    "category": "structure",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_200",
+    "intent": "Relier à ce qui vient d'être dit",
+    "expression": "Justement…",
+    "category": "structure",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_201",
+    "intent": "Rappeler une idée précédente",
+    "expression": "Comme je disais…",
+    "category": "structure",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_202",
+    "intent": "Rappeler une information",
+    "expression": "Comme je te disais…",
+    "category": "structure",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_203",
+    "intent": "Faire avancer la discussion",
+    "expression": "Bon, on en revient à…",
+    "category": "structure",
+    "level": "B2"
+  },
+  {
+    "id": "chunk_204",
+    "intent": "Résumer une longue explication",
+    "expression": "Pour résumer…",
+    "category": "structure",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_205",
+    "intent": "Annoncer la conclusion",
+    "expression": "En conclusion, …",
+    "category": "structure",
+    "level": "B2"
+  },
+  {
+    "id": "chunk_206",
+    "intent": "Conclure naturellement à l'oral",
+    "expression": "Au final, je pense que…",
+    "category": "structure",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_207",
+    "intent": "Conclure sans dramatiser",
+    "expression": "Bref, c'est pas si mal.",
+    "category": "structure",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_208",
+    "intent": "Insister sur une évidence",
+    "expression": "Évidemment…",
+    "category": "emphasis",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_209",
+    "intent": "Insister sur quelque chose",
+    "expression": "Clairement…",
+    "category": "emphasis",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_210",
+    "intent": "Renforcer une affirmation",
+    "expression": "Vraiment…",
+    "category": "emphasis",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_211",
+    "intent": "Marquer une forte évidence",
+    "expression": "Forcément…",
+    "category": "emphasis",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_212",
+    "intent": "Souligner que c'est logique",
+    "expression": "Logiquement…",
+    "category": "emphasis",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_213",
+    "intent": "Souligner un point",
+    "expression": "Surtout…",
+    "category": "emphasis",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_214",
+    "intent": "Souligner une réalité",
+    "expression": "En réalité…",
+    "category": "emphasis",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_215",
+    "intent": "Souligner ce qui est vrai",
+    "expression": "En fait, c'est surtout que…",
+    "category": "emphasis",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_216",
+    "intent": "Mettre un élément au premier plan",
+    "expression": "Ce qui compte surtout, c'est…",
+    "category": "emphasis",
+    "level": "B2"
+  },
+  {
+    "id": "chunk_217",
+    "intent": "Dire que ce n'est pas négligeable",
+    "expression": "Mine de rien…",
+    "category": "emphasis",
+    "level": "B2"
+  },
+  {
+    "id": "chunk_218",
+    "intent": "Exprimer une intensité orale",
+    "expression": "C'est vraiment…",
+    "category": "emphasis",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_219",
+    "intent": "Exprimer une forte intensité familière",
+    "expression": "C'est trop…",
+    "category": "emphasis",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_220",
+    "intent": "Exprimer une appréciation forte",
+    "expression": "C'est hyper…",
+    "category": "emphasis",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_221",
+    "intent": "Exprimer une appréciation modérée",
+    "expression": "C'est plutôt…",
+    "category": "emphasis",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_222",
+    "intent": "Atténuer",
+    "expression": "C'est un peu…",
+    "category": "approximation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_223",
+    "intent": "Atténuer davantage",
+    "expression": "C'est quand même un peu…",
+    "category": "approximation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_224",
+    "intent": "Approximer une quantité",
+    "expression": "À peu près…",
+    "category": "approximation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_225",
+    "intent": "Approximer une durée ou quantité",
+    "expression": "Environ…",
+    "category": "approximation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_226",
+    "intent": "Donner un ordre de grandeur",
+    "expression": "Dans les…",
+    "category": "approximation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_227",
+    "intent": "Donner une approximation familière",
+    "expression": "Genre dix minutes.",
+    "category": "approximation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_228",
+    "intent": "Exprimer une possibilité",
+    "expression": "Peut-être que…",
+    "category": "uncertainty",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_229",
+    "intent": "Exprimer une incertitude",
+    "expression": "Je sais pas trop…",
+    "category": "uncertainty",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_230",
+    "intent": "Exprimer une forte incertitude",
+    "expression": "J'en sais rien.",
+    "category": "uncertainty",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_231",
+    "intent": "Ne pas pouvoir répondre",
+    "expression": "Aucune idée.",
+    "category": "uncertainty",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_232",
+    "intent": "Exprimer une supposition",
+    "expression": "J'imagine que…",
+    "category": "uncertainty",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_233",
+    "intent": "Exprimer une hypothèse",
+    "expression": "Je suppose que…",
+    "category": "uncertainty",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_234",
+    "intent": "Exprimer une apparence",
+    "expression": "On dirait que…",
+    "category": "uncertainty",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_235",
+    "intent": "Exprimer une probabilité",
+    "expression": "Ça doit être…",
+    "category": "uncertainty",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_236",
+    "intent": "Exprimer une possibilité prudente",
+    "expression": "Il se peut que…",
+    "category": "uncertainty",
+    "level": "B2"
+  },
+  {
+    "id": "chunk_237",
+    "intent": "Exprimer une réserve",
+    "expression": "Je peux me tromper, mais…",
+    "category": "uncertainty",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_238",
+    "intent": "Dire qu'on n'en est pas certain",
+    "expression": "Je suis pas certain, mais…",
+    "category": "uncertainty",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_239",
+    "intent": "Donner une estimation personnelle",
+    "expression": "À mon avis, ça doit être…",
+    "category": "uncertainty",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_240",
+    "intent": "Dire que c'est plausible",
+    "expression": "C'est possible.",
+    "category": "uncertainty",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_241",
+    "intent": "Dire que ce n'est pas impossible",
+    "expression": "C'est pas impossible.",
+    "category": "uncertainty",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_242",
+    "intent": "Accepter une possibilité",
+    "expression": "Pourquoi pas.",
+    "category": "uncertainty",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_243",
+    "intent": "Exprimer un doute spontané",
+    "expression": "Mouais…",
+    "category": "uncertainty",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_244",
+    "intent": "Exprimer qu'on hésite",
+    "expression": "Je sais pas…",
+    "category": "hesitation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_245",
+    "intent": "Hésiter entre deux possibilités",
+    "expression": "Je sais pas si…",
+    "category": "hesitation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_246",
+    "intent": "Prendre le temps de réfléchir",
+    "expression": "Attends…",
+    "category": "hesitation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_247",
+    "intent": "Revenir sur ce qu'on pensait",
+    "expression": "En fait, attends…",
+    "category": "hesitation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_248",
+    "intent": "Se rappeler quelque chose",
+    "expression": "Ah oui, c'est vrai…",
+    "category": "reaction",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_249",
+    "intent": "Montrer qu'on vient de comprendre",
+    "expression": "Ah d'accord !",
+    "category": "reaction",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_250",
+    "intent": "Exprimer une découverte",
+    "expression": "Ah bon ?",
+    "category": "reaction",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_251",
+    "intent": "Exprimer une surprise",
+    "expression": "Sérieux ?",
+    "category": "reaction",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_252",
+    "intent": "Exprimer une surprise forte",
+    "expression": "Mais non !",
+    "category": "reaction",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_253",
+    "intent": "Exprimer de l'incrédulité",
+    "expression": "C'est pas vrai !",
+    "category": "reaction",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_254",
+    "intent": "Exprimer qu'on trouve ça incroyable",
+    "expression": "C'est fou !",
+    "category": "reaction",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_255",
+    "intent": "Exprimer qu'on trouve ça étonnant",
+    "expression": "C'est dingue !",
+    "category": "reaction",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_256",
+    "intent": "Exprimer de la compassion",
+    "expression": "Ah mince…",
+    "category": "reaction",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_257",
+    "intent": "Exprimer un petit problème",
+    "expression": "Mince…",
+    "category": "reaction",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_258",
+    "intent": "Exprimer une frustration légère",
+    "expression": "C'est dommage.",
+    "category": "reaction",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_259",
+    "intent": "Exprimer une résignation",
+    "expression": "Tant pis.",
+    "category": "reaction",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_260",
+    "intent": "Exprimer du soulagement",
+    "expression": "Heureusement !",
+    "category": "reaction",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_261",
+    "intent": "Exprimer qu'on est content",
+    "expression": "Tant mieux !",
+    "category": "reaction",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_262",
+    "intent": "Exprimer que tout va bien",
+    "expression": "C'est pas grave.",
+    "category": "reaction",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_263",
+    "intent": "Rassurer",
+    "expression": "T'inquiète.",
+    "category": "conversation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_264",
+    "intent": "Rassurer poliment",
+    "expression": "Ne t'inquiète pas.",
+    "category": "conversation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_265",
+    "intent": "Dire qu'on gère",
+    "expression": "C'est bon, je gère.",
+    "category": "conversation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_266",
+    "intent": "Dire que c'est terminé",
+    "expression": "Ça y est.",
+    "category": "conversation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_267",
+    "intent": "Dire qu'on est prêt",
+    "expression": "C'est bon pour moi.",
+    "category": "conversation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_268",
+    "intent": "Proposer de commencer",
+    "expression": "On y va ?",
+    "category": "conversation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_269",
+    "intent": "Accepter de commencer",
+    "expression": "Allez, c'est parti.",
+    "category": "conversation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_270",
+    "intent": "Encourager à continuer",
+    "expression": "Vas-y.",
+    "category": "conversation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_271",
+    "intent": "Inviter l'autre à parler",
+    "expression": "Je t'écoute.",
+    "category": "conversation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_272",
+    "intent": "Demander de répéter",
+    "expression": "Tu peux répéter ?",
+    "category": "conversation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_273",
+    "intent": "Demander une précision",
+    "expression": "Qu'est-ce que tu veux dire ?",
+    "category": "conversation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_274",
+    "intent": "Demander un exemple",
+    "expression": "Tu as un exemple ?",
+    "category": "conversation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_275",
+    "intent": "Demander l'avis",
+    "expression": "T'en penses quoi ?",
+    "category": "conversation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_276",
+    "intent": "Donner la parole",
+    "expression": "Et toi ?",
+    "category": "conversation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_277",
+    "intent": "Rebondir sur l'autre",
+    "expression": "Oui, je vois ce que tu veux dire.",
+    "category": "conversation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_278",
+    "intent": "Montrer qu'on comprend une situation",
+    "expression": "Je vois le truc.",
+    "category": "conversation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_279",
+    "intent": "Dire qu'on connaît la situation",
+    "expression": "Je vois très bien.",
+    "category": "conversation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_280",
+    "intent": "Dire qu'on n'a pas bien compris",
+    "expression": "J'ai pas bien compris.",
+    "category": "conversation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_281",
+    "intent": "Demander de reformuler",
+    "expression": "Tu peux le dire autrement ?",
+    "category": "conversation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_282",
+    "intent": "Revenir à une question",
+    "expression": "Du coup, tu disais quoi ?",
+    "category": "conversation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_283",
+    "intent": "Reprendre après une interruption",
+    "expression": "Bref, je disais…",
+    "category": "conversation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_284",
+    "intent": "Revenir au point précédent",
+    "expression": "Comme je disais tout à l'heure…",
+    "category": "conversation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_285",
+    "intent": "Dire qu'on comprend maintenant",
+    "expression": "Ah oui, je comprends mieux.",
+    "category": "conversation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_286",
+    "intent": "Dire qu'on suit le raisonnement",
+    "expression": "Oui, je vois l'idée.",
+    "category": "conversation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_287",
+    "intent": "Introduire quelque chose qu'on sait",
+    "expression": "Ce que je sais, c'est que…",
+    "category": "opinion",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_288",
+    "intent": "Introduire une certitude",
+    "expression": "Ce qui est sûr, c'est que…",
+    "category": "opinion",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_289",
+    "intent": "Introduire une chose importante",
+    "expression": "Ce qui est important, c'est…",
+    "category": "opinion",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_290",
+    "intent": "Introduire ce qu'on aime",
+    "expression": "Ce que j'aime bien, c'est…",
+    "category": "opinion",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_291",
+    "intent": "Introduire ce qu'on n'aime pas",
+    "expression": "Ce que j'aime moins, c'est…",
+    "category": "opinion",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_292",
+    "intent": "Introduire ce qui dérange",
+    "expression": "Ce qui me dérange, c'est…",
+    "category": "opinion",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_293",
+    "intent": "Introduire ce qui surprend",
+    "expression": "Ce qui me surprend, c'est…",
+    "category": "opinion",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_294",
+    "intent": "Introduire ce qui plaît",
+    "expression": "Ce qui est sympa, c'est…",
+    "category": "opinion",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_295",
+    "intent": "Introduire un avantage",
+    "expression": "L'avantage, c'est que…",
+    "category": "argumentation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_296",
+    "intent": "Introduire un inconvénient",
+    "expression": "L'inconvénient, c'est que…",
+    "category": "argumentation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_297",
+    "intent": "Comparer avantages et inconvénients",
+    "expression": "Il y a du pour et du contre.",
+    "category": "argumentation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_298",
+    "intent": "Donner un avantage majeur",
+    "expression": "Le gros avantage, c'est…",
+    "category": "argumentation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_299",
+    "intent": "Donner un problème majeur",
+    "expression": "Le gros problème, c'est…",
+    "category": "argumentation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_300",
+    "intent": "Présenter un choix",
+    "expression": "Si je devais choisir, …",
+    "category": "opinion",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_301",
+    "intent": "Répondre à une hypothèse",
+    "expression": "Si ça dépendait de moi, …",
+    "category": "opinion",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_302",
+    "intent": "Dire ce qu'on ferait",
+    "expression": "Moi, à ta place, …",
+    "category": "opinion",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_303",
+    "intent": "Prendre du recul",
+    "expression": "Avec le recul…",
+    "category": "opinion",
+    "level": "B2"
+  },
+  {
+    "id": "chunk_304",
+    "intent": "Comparer avec son expérience",
+    "expression": "D'après mon expérience…",
+    "category": "opinion",
+    "level": "B2"
+  },
+  {
+    "id": "chunk_305",
+    "intent": "Généraliser prudemment",
+    "expression": "En général, je dirais que…",
+    "category": "opinion",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_306",
+    "intent": "Éviter de généraliser",
+    "expression": "Ça dépend vraiment des personnes.",
+    "category": "nuance",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_307",
+    "intent": "Éviter une réponse binaire",
+    "expression": "C'est pas tout blanc ou tout noir.",
+    "category": "nuance",
+    "level": "B2"
+  },
+  {
+    "id": "chunk_308",
+    "intent": "Nuancer une opposition",
+    "expression": "Il y a un juste milieu.",
+    "category": "nuance",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_309",
+    "intent": "Dire que deux choses sont vraies",
+    "expression": "Les deux peuvent être vrais.",
+    "category": "nuance",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_310",
+    "intent": "Relativiser un problème",
+    "expression": "C'est pas la fin du monde.",
+    "category": "nuance",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_311",
+    "intent": "Minimiser une difficulté",
+    "expression": "C'est pas si grave.",
+    "category": "nuance",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_312",
+    "intent": "Dire que ce n'est pas idéal",
+    "expression": "C'est pas idéal, mais…",
+    "category": "nuance",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_313",
+    "intent": "Dire que ça pourrait être pire",
+    "expression": "Ça pourrait être pire.",
+    "category": "nuance",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_314",
+    "intent": "Dire que ça reste acceptable",
+    "expression": "Ça va quand même.",
+    "category": "nuance",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_315",
+    "intent": "Faire une concession familière",
+    "expression": "Bon, après…",
+    "category": "nuance",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_316",
+    "intent": "Reconnaître un détail",
+    "expression": "C'est vrai que…",
+    "category": "nuance",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_317",
+    "intent": "Dire que le contexte change tout",
+    "expression": "Ça dépend du contexte.",
+    "category": "nuance",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_318",
+    "intent": "Dire que le moment compte",
+    "expression": "Ça dépend du moment.",
+    "category": "nuance",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_319",
+    "intent": "Dire que la situation compte",
+    "expression": "Ça dépend de la situation.",
+    "category": "nuance",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_320",
+    "intent": "Recentrer sur l'essentiel",
+    "expression": "Au fond, …",
+    "category": "structure",
+    "level": "B2"
+  },
+  {
+    "id": "chunk_321",
+    "intent": "Donner une conclusion globale",
+    "expression": "Globalement…",
+    "category": "structure",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_322",
+    "intent": "Conclure malgré les nuances",
+    "expression": "En tout cas…",
+    "category": "structure",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_323",
+    "intent": "Écarter les autres possibilités",
+    "expression": "De toute façon…",
+    "category": "structure",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_324",
+    "intent": "Conclure sur un résultat",
+    "expression": "Au bout du compte…",
+    "category": "structure",
+    "level": "B2"
+  },
+  {
+    "id": "chunk_325",
+    "intent": "Ramener au message principal",
+    "expression": "Tout ça pour dire que…",
+    "category": "structure",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_326",
+    "intent": "Conclure une explication",
+    "expression": "Voilà, c'est ça.",
+    "category": "structure",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_327",
+    "intent": "Conclure une démonstration",
+    "expression": "Donc, en gros…",
+    "category": "structure",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_328",
+    "intent": "Fermer une parenthèse",
+    "expression": "Mais bref…",
+    "category": "structure",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_329",
+    "intent": "Reprendre après une parenthèse",
+    "expression": "Enfin bref, revenons à…",
+    "category": "structure",
+    "level": "B2"
+  },
+  {
+    "id": "chunk_330",
+    "intent": "Utiliser un marqueur oral fréquent",
+    "expression": "Pour le coup…",
+    "category": "conversation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_331",
+    "intent": "Gagner du temps avant de répondre",
+    "expression": "Bah écoute…",
+    "category": "conversation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_332",
+    "intent": "Gagner du temps avant de répondre avec hésitation",
+    "expression": "Ben écoute…",
+    "category": "conversation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_333",
+    "intent": "Reprendre familièrement",
+    "expression": "Bon bah…",
+    "category": "conversation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_334",
+    "intent": "Reprendre avec hésitation",
+    "expression": "Bon ben…",
+    "category": "conversation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_335",
+    "intent": "Introduire une explication partagée",
+    "expression": "Tu sais…",
+    "category": "conversation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_336",
+    "intent": "Introduire une explication très orale",
+    "expression": "T'sais…",
+    "category": "conversation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_337",
+    "intent": "Présenter une façon ou un scénario",
+    "expression": "En mode…",
+    "category": "conversation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_338",
+    "intent": "Exprimer un accord bref",
+    "expression": "J'avoue.",
+    "category": "agreement",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_339",
+    "intent": "Introduire une vérité orale",
+    "expression": "Faut dire que…",
+    "category": "opinion",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_340",
+    "intent": "Proposer une formulation approximative",
+    "expression": "On va dire que…",
+    "category": "reformulation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_341",
+    "intent": "Préciser sans être catégorique",
+    "expression": "Disons plutôt que…",
+    "category": "reformulation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_342",
+    "intent": "Donner une autre manière de voir",
+    "expression": "Si tu veux…",
+    "category": "reformulation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_343",
+    "intent": "Atténuer fortement une proposition",
+    "expression": "À la limite…",
+    "category": "nuance",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_344",
+    "intent": "Atténuer familièrement",
+    "expression": "Limite…",
+    "category": "nuance",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_345",
+    "intent": "Dire qu'un élément reste vrai",
+    "expression": "N'empêche que…",
+    "category": "nuance",
+    "level": "B2"
+  },
+  {
+    "id": "chunk_346",
+    "intent": "Introduire une solution de secours",
+    "expression": "Au pire…",
+    "category": "conversation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_347",
+    "intent": "Introduire le meilleur scénario",
+    "expression": "Au mieux…",
+    "category": "conversation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_348",
+    "intent": "Dire qu'on verra plus tard",
+    "expression": "On verra.",
+    "category": "uncertainty",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_349",
+    "intent": "Accepter l'incertitude",
+    "expression": "On verra bien.",
+    "category": "uncertainty",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_350",
+    "intent": "Prendre une précaution",
+    "expression": "On sait jamais.",
+    "category": "uncertainty",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_351",
+    "intent": "Dire qu'il faut encore évaluer",
+    "expression": "Faut voir.",
+    "category": "uncertainty",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_352",
+    "intent": "Suspendre son jugement",
+    "expression": "À voir.",
+    "category": "uncertainty",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_353",
+    "intent": "Exprimer qu'une idée évoque quelque chose",
+    "expression": "Ça me dit quelque chose.",
+    "category": "reaction",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_354",
+    "intent": "Dire qu'une situation n'étonne pas",
+    "expression": "Ça m'étonne pas.",
+    "category": "reaction",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_355",
+    "intent": "Réagir avec évidence familière",
+    "expression": "Tu m'étonnes !",
+    "category": "reaction",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_356",
+    "intent": "Introduire une limite temporelle",
+    "expression": "Pour l'instant…",
+    "category": "structure",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_357",
+    "intent": "Introduire une limite temporelle alternative",
+    "expression": "Pour le moment…",
+    "category": "structure",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_358",
+    "intent": "Montrer une progression",
+    "expression": "Au fur et à mesure…",
+    "category": "structure",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_359",
+    "intent": "Exprimer une accumulation progressive",
+    "expression": "À force…",
+    "category": "structure",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_360",
+    "intent": "Dire que quelque chose suffit à lui seul",
+    "expression": "Rien que…",
+    "category": "emphasis",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_361",
+    "intent": "Donner un exemple minimal",
+    "expression": "Ne serait-ce que…",
+    "category": "emphasis",
+    "level": "B2"
+  },
+  {
+    "id": "chunk_362",
+    "intent": "Poser une condition de départ",
+    "expression": "À partir du moment où…",
+    "category": "argumentation",
+    "level": "B2"
+  },
+  {
+    "id": "chunk_363",
+    "intent": "Poser une condition suffisante",
+    "expression": "Du moment que…",
+    "category": "argumentation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_364",
+    "intent": "Introduire une exception conditionnelle",
+    "expression": "Sauf si…",
+    "category": "argumentation",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_365",
+    "intent": "Introduire une option malgré tout",
+    "expression": "Tant qu'à faire…",
+    "category": "conversation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_366",
+    "intent": "Assumer le coût d'un choix",
+    "expression": "Quitte à…",
+    "category": "argumentation",
+    "level": "B2"
+  },
+  {
+    "id": "chunk_367",
+    "intent": "Exprimer une forte négation orale",
+    "expression": "Même pas.",
+    "category": "reaction",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_368",
+    "intent": "Clore de façon très orale",
+    "expression": "Enfin voilà quoi.",
+    "category": "conversation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_369",
+    "intent": "Enchaîner deux marqueurs naturels",
+    "expression": "En fait, tu vois…",
+    "category": "conversation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_370",
+    "intent": "Simplifier en vérifiant la compréhension",
+    "expression": "En gros, tu vois…",
+    "category": "conversation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_371",
+    "intent": "Illustrer très oralement",
+    "expression": "Genre, tu vois…",
+    "category": "conversation",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_372",
+    "intent": "Réagir puis expliquer",
+    "expression": "Oui mais bon…",
+    "category": "nuance",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_373",
+    "intent": "Nuancer en prenant du recul",
+    "expression": "Bon, en même temps…",
+    "category": "nuance",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_374",
+    "intent": "Reformuler avec franchise",
+    "expression": "À vrai dire…",
+    "category": "reformulation",
+    "level": "B2"
+  },
+  {
+    "id": "chunk_375",
+    "intent": "Introduire une conclusion orale",
+    "expression": "Et voilà…",
+    "category": "structure",
+    "level": "A2"
+  },
+  {
+    "id": "chunk_376",
+    "intent": "Conclure avec une reformulation",
+    "expression": "Enfin voilà…",
+    "category": "structure",
+    "level": "B1"
+  },
+  {
+    "id": "chunk_377",
+    "intent": "Conclure très brièvement",
+    "expression": "Bref, voilà.",
+    "category": "structure",
+    "level": "B1"
+  }
 ]
