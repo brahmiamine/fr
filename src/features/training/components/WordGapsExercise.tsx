@@ -28,15 +28,13 @@ export function WordGapsExercise({
   if (step === 'recall') {
     return (
       <section className="card exercise exercise--center" aria-live="polite">
-        <p className="pill">
-          Mot {index + 1}/{total}
+        <p className="pill">Mot {index + 1}/{total}</p>
+        <p className="exercise__context">
+          Tu voulais exprimer :<br />
+          <em>
+            « {item.context || 'Contexte non enregistré pour cet ancien mot.'} »
+          </em>
         </p>
-        {item.context ? (
-          <p className="exercise__context">
-            Tu voulais parler de :<br />
-            <em>« {item.context} »</em>
-          </p>
-        ) : null}
         <h1 className="exercise__intent">Retrouve le mot.</h1>
 
         <div className="stack exercise__ratings">
@@ -58,11 +56,9 @@ export function WordGapsExercise({
   if (step === 'paraphrase') {
     return (
       <section className="card exercise" aria-live="polite">
-        <p className="pill">
-          Mot {index + 1}/{total}
-        </p>
+        <p className="pill">Mot {index + 1}/{total}</p>
         {item.kind === 'retrieve' ? (
-          <h1 className="exercise__intent">Explique-le sans le mot.</h1>
+          <h1 className="exercise__intent">Explique l'idée sans le mot.</h1>
         ) : (
           <>
             <h1 className="exercise__intent">
@@ -90,17 +86,14 @@ export function WordGapsExercise({
     )
   }
 
-  // revealed
   return (
     <section className="card exercise exercise--center">
-      <p className="pill">
-        Mot {index + 1}/{total}
-      </p>
+      <p className="pill">Mot {index + 1}/{total}</p>
       <h1 className="exercise__expression">
         Réponse : <strong>{item.target}</strong>
       </h1>
       <p className="muted">
-        Fais maintenant deux phrases avec « {item.target} », à voix haute.
+        Fais maintenant 2 ou 3 phrases avec « {item.target} », à voix haute.
       </p>
       <button type="button" className="button button--block" onClick={onNext}>
         {isLast ? 'Terminer l’exercice' : 'Mot suivant'}
