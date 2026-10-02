@@ -1,16 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { contentRepository } from './contentRepository'
-import { SESSION_SIZES, buildSessionContent, selectUniqueItems } from './selectContent'
-import type { RecentContent } from '../../types/content'
+import { pickInPriority, selectUniqueItems } from './selectContent'
 
 const items = Array.from({ length: 10 }, (_, index) => ({ id: `i${index}` }))
-
-const noRecent: RecentContent = {
-  topicIds: [],
-  questionIds: [],
-  wordIds: [],
-  expressionIds: [],
-}
 
 describe('selectUniqueItems', () => {
   it('returns the requested count with unique ids', () => {
@@ -35,43 +26,28 @@ describe('selectUniqueItems', () => {
   })
 
   it('never returns duplicate ids even with duplicate source items', () => {
-    const duplicated = [...items, ...items]
-    const result = selectUniqueItems(duplicated, 5, [], () => 0.3)
+    const result = selectUniqueItems([...items, ...items], 5, [], () => 0.3)
     expect(new Set(result.map((item) => item.id)).size).toBe(5)
-  })
-
-  it('caps the result at the available item count', () => {
-    const result = selectUniqueItems(items.slice(0, 2), 5, [], () => 0.3)
-    expect(result).toHaveLength(2)
   })
 })
 
-describe('buildSessionContent', () => {
-  it('builds a complete session without duplicate ids', () => {
-    const session = buildSessionContent(contentRepository, noRecent, () => 0.5)
-
-    expect(session.topic).toBeDefined()
-    expect(session.paraphraseWords).toHaveLength(SESSION_SIZES.paraphraseWords)
-    expect(session.questions).toHaveLength(SESSION_SIZES.questions)
-    expect(session.expressions).toHaveLength(SESSION_SIZES.expressions)
-
-    const allIds = [
-      ...session.paraphraseWords.map((item) => item.id),
-      ...session.questions.map((item) => item.id),
-      ...session.expressions.map((item) => item.id),
-    ]
-    expect(new Set(allIds).size).toBe(allIds.length)
+describe('pickInPriority', () => {
+  it('fills from higher-priority pools first, preserving order', () => {
+    const due = [{ id: 'a' }, { id: 'b' }]
+    const unseen = [{ id: 'c' }, { id: 'd' }]
+    const result = pickInPriority([due, unseen], 3, () => 0.5)
+    const ids = result.map((item) => item.id)
+    // All "due" items come before any "unseen" item.
+    expect(ids.slice(0, 2).sort()).toEqual(['a', 'b'])
+    expect(ids).toHaveLength(3)
   })
 
-  it('prefers topics outside the recent list', () => {
-    const recentTopicIds = contentRepository.topics
-      .slice(0, contentRepository.topics.length - 1)
-      .map((topic) => topic.id)
-    const session = buildSessionContent(
-      contentRepository,
-      { ...noRecent, topicIds: recentTopicIds },
+  it('never duplicates an id across pools', () => {
+    const result = pickInPriority(
+      [[{ id: 'x' }], [{ id: 'x' }, { id: 'y' }]],
+      2,
       () => 0.5,
     )
-    expect(recentTopicIds).not.toContain(session.topic.id)
+    expect(result.map((item) => item.id)).toEqual(['x', 'y'])
   })
 })

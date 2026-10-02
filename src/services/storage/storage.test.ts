@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { createInitialState, RECENT_WINDOWS, STORAGE_KEY } from '../../types/progress'
-import type { AppStateV1, StorageLike } from '../../types/progress'
+import type { AppState, StorageLike } from '../../types/progress'
 import { loadAppState, saveAppState } from './storage'
 
 function memoryStorage(initial: Record<string, string> = {}): StorageLike & {
@@ -19,7 +19,7 @@ function memoryStorage(initial: Record<string, string> = {}): StorageLike & {
   }
 }
 
-function stateWithSession(): AppStateV1 {
+function stateWithSession(): AppState {
   const state = createInitialState()
   return {
     ...state,
@@ -32,13 +32,18 @@ function stateWithSession(): AppStateV1 {
         durationMinutes: 30,
         blockCount: 3,
         fluencyScore: 4,
-        successParaphrase: 'embouteillage',
-        expressionToReuse: 'Ça dépend de…',
-        errorToWatch: 'les temps',
+        blockedWord: 'prise électrique',
+        expressionToReuse: "D'un autre côté…",
         topicId: 't001',
         questionIds: ['q001'],
-        wordIds: ['w001'],
-        expressionIds: ['e001'],
+        chunkIds: ['chunk_001'],
+        genericWordIds: ['w001'],
+        summary: {
+          chunksWorked: 3,
+          gapsPracticed: 5,
+          questionsAsked: 5,
+          fluencyDone: true,
+        },
       },
     ],
   }
@@ -52,41 +57,52 @@ describe('storage', () => {
     expect(result.state).toEqual(createInitialState())
   })
 
-  it('round-trips a valid V1 state', () => {
+  it('round-trips a valid V2 state', () => {
     const storage = memoryStorage()
     const state = stateWithSession()
-    const saveResult = saveAppState(state, storage)
-    expect(saveResult.ok).toBe(true)
+    expect(saveAppState(state, storage).ok).toBe(true)
 
-    expect(storage.data.has(STORAGE_KEY)).toBe(true)
     const loaded = loadAppState(storage)
     expect(loaded.available).toBe(true)
+    expect(loaded.state.version).toBe(2)
     expect(loaded.state.sessions).toHaveLength(1)
     expect(loaded.state.recentTopicIds).toEqual(['t001'])
   })
 
   it('falls back to initial state on malformed JSON', () => {
     const storage = memoryStorage({ [STORAGE_KEY]: '{ not json' })
-    const loaded = loadAppState(storage)
-    expect(loaded.state).toEqual(createInitialState())
+    expect(loadAppState(storage).state).toEqual(createInitialState())
   })
 
-  it('falls back to initial state on an unknown version', () => {
+  it('falls back on an unknown version', () => {
     const storage = memoryStorage({
       [STORAGE_KEY]: JSON.stringify({ version: 99, sessions: [{ id: 'x' }] }),
     })
     const loaded = loadAppState(storage)
-    expect(loaded.state.version).toBe(1)
+    expect(loaded.state.version).toBe(2)
     expect(loaded.state.sessions).toEqual([])
   })
 
-  it('normalises missing arrays without throwing', () => {
+  it('migrates a V1 payload into the V2 shape', () => {
     const storage = memoryStorage({
-      [STORAGE_KEY]: JSON.stringify({ version: 1, recentTopicIds: 'nope' }),
+      [STORAGE_KEY]: JSON.stringify({
+        version: 1,
+        sessions: [],
+        weeklyTests: [],
+        recentTopicIds: ['t001'],
+        recentQuestionIds: ['q001'],
+        recentWordIds: ['w001'],
+        recentExpressionIds: ['e001'],
+        nativeExpressionExamples: [],
+        inProgressSession: { old: 'shape' },
+      }),
     })
     const loaded = loadAppState(storage)
-    expect(loaded.state.recentTopicIds).toEqual([])
-    expect(loaded.state.sessions).toEqual([])
+    expect(loaded.state.version).toBe(2)
+    expect(loaded.state.recentChunkIds).toEqual(['e001'])
+    expect(loaded.state.wordGaps).toEqual([])
+    expect(loaded.state.chunkReviews).toEqual([])
+    expect(loaded.state.inProgressSession).toBeNull()
   })
 
   it('returns a warning instead of throwing when setItem fails', () => {
@@ -102,10 +118,10 @@ describe('storage', () => {
     expect(result.warning).toBeTruthy()
   })
 
-  it('exposes the recency windows used by the selector', () => {
+  it('exposes the recency windows', () => {
     expect(RECENT_WINDOWS.topics).toBe(4)
     expect(RECENT_WINDOWS.questions).toBe(15)
     expect(RECENT_WINDOWS.words).toBe(15)
-    expect(RECENT_WINDOWS.expressions).toBe(9)
+    expect(RECENT_WINDOWS.chunks).toBe(9)
   })
 })

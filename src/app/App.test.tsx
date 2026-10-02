@@ -16,15 +16,15 @@ describe('App routing', () => {
   it('renders home at /', () => {
     renderApp('/')
     expect(
-      screen.getByRole('heading', { name: 'Prêt à parler français ?' }),
+      screen.getByRole('heading', { name: 'Prêt pour ta séance ?' }),
     ).toBeInTheDocument()
   })
 
-  it('navigates to progress from the bottom navigation', async () => {
+  it('navigates to progress from the top navigation', async () => {
     const user = userEvent.setup()
     renderApp('/')
 
-    await user.click(screen.getByRole('link', { name: /Progression/ }))
+    await user.click(screen.getByRole('link', { name: 'Progression' }))
     expect(
       screen.getByRole('heading', { name: 'Progression' }),
     ).toBeInTheDocument()
@@ -33,7 +33,7 @@ describe('App routing', () => {
   it('falls back to home for unknown routes', () => {
     renderApp('/inconnu')
     expect(
-      screen.getByRole('heading', { name: 'Prêt à parler français ?' }),
+      screen.getByRole('heading', { name: 'Prêt pour ta séance ?' }),
     ).toBeInTheDocument()
   })
 })

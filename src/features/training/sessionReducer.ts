@@ -1,125 +1,111 @@
 import type {
-  ContentRepository,
-  SessionContent,
-} from '../../types/content'
-import {
-  EXERCISE_ORDER,
-  FLUENCY_ROUND_SECONDS,
-  NATURAL_EXAMPLES_PER_EXPRESSION,
-  PARAPHRASE_SECONDS,
-  QUESTION_SPEAKING_SECONDS,
-} from './types'
-import type {
-  ExerciseKind,
-  PersistedSessionContent,
-  ReviewDraft,
-  SessionReflection,
+  BlockRating,
+  GapItem,
+  RecallResult,
+  SessionPlan,
   TrainingSessionState,
 } from './types'
+import { STAGE_ORDER, prepSecondsForLevel } from './types'
+import type { SessionFeedback } from './types'
 
 export type TrainingAction =
+  | { type: 'CHUNK_REVEAL' }
+  | { type: 'CHUNK_RATE'; result: RecallResult }
+  | { type: 'CHUNKS_OF_DAY_CONTINUE' }
+  | { type: 'FLUENCY_START' }
   | { type: 'FLUENCY_ROUND_COMPLETE' }
   | {
-      type: 'SUBMIT_REFLECTION'
+      type: 'FLUENCY_SUBMIT_FEEDBACK'
       missingWord: string
       difficultPhrase: string
       importantError: string
     }
-  | { type: 'PARAPHRASE_NEXT' }
-  | { type: 'PARAPHRASE_FINISH' }
   | { type: 'QUESTION_COUNTDOWN_DONE' }
-  | { type: 'QUESTION_NEXT' }
-  | { type: 'QUESTIONS_FINISH' }
+  | { type: 'QUESTION_PREP_DONE' }
+  | { type: 'QUESTION_SPEAKING_DONE' }
+  | { type: 'QUESTION_RATE'; rating: BlockRating }
+  | { type: 'REVENGE_COUNTDOWN_DONE' }
+  | { type: 'REVENGE_PREP_DONE' }
+  | { type: 'REVENGE_DONE' }
+  | { type: 'GAP_FOUND' }
+  | { type: 'GAP_START_PARAPHRASE' }
+  | { type: 'GAP_REVEAL' }
+  | { type: 'GAP_NEXT' }
   | {
-      type: 'SET_EXAMPLE'
-      expressionId: string
-      index: number
-      value: string
-    }
-  | { type: 'NATURAL_NEXT' }
-  | {
-      type: 'UPDATE_REVIEW'
-      field: keyof ReviewDraft
+      type: 'FEEDBACK_SET'
+      field: keyof SessionFeedback
       value: string | number | null
     }
-  | { type: 'SUBMIT_REVIEW' }
-
-export function toPersistedContent(content: SessionContent): PersistedSessionContent {
-  return {
-    topicId: content.topic.id,
-    wordIds: content.paraphraseWords.map((word) => word.id),
-    questionIds: content.questions.map((question) => question.id),
-    expressionIds: content.expressions.map((expression) => expression.id),
-  }
-}
+  | { type: 'FEEDBACK_SUBMIT' }
 
 export function createSessionId(now: Date = new Date()): string {
   return `s-${now.getTime()}-${Math.random().toString(36).slice(2, 8)}`
 }
 
-function emptyExamples(content: PersistedSessionContent): Record<string, string[]> {
-  const examples: Record<string, string[]> = {}
-  for (const id of content.expressionIds) {
-    examples[id] = Array.from(
-      { length: NATURAL_EXAMPLES_PER_EXPRESSION },
-      () => '',
-    )
-  }
-  return examples
+function initialGapStep(item: GapItem | undefined): 'recall' | 'paraphrase' | 'revealed' {
+  if (!item) return 'revealed'
+  return item.kind === 'retrieve' ? 'recall' : 'paraphrase'
 }
 
 export function createSessionState(
-  content: SessionContent,
+  plan: SessionPlan,
+  level: 1 | 2 | 3,
   now: Date = new Date(),
 ): TrainingSessionState {
-  const persisted = toPersistedContent(content)
   return {
     sessionId: createSessionId(now),
     startedAt: now.toISOString(),
-    content: persisted,
-    exerciseIndex: 0,
-    phase: 'exercise',
-    fluency: { roundIndex: 0, stage: 'running' },
-    paraphrase: { index: 0 },
+    level,
+    stageIndex: 0,
+    phase: 'active',
+    plan,
+    chunks: { index: 0, step: 'retrieve' },
+    chunkResults: [],
+    chunksOfDayShown: false,
+    fluency: { roundIndex: 0, stage: 'prep' },
+    fluencyFeedback: { missingWord: '', difficultPhrase: '', importantError: '' },
     questions: { index: 0, stage: 'countdown' },
-    natural: { index: 0 },
-    examples: emptyExamples(persisted),
-    reflection: { missingWord: '', difficultPhrase: '', importantError: '' },
-    review: {
-      blockCount: null,
-      successParaphrase: '',
+    questionRatings: [],
+    revenge: { questionId: null, stage: 'idle' },
+    gaps: { index: 0, step: initialGapStep(plan.gapItems[0]) },
+    gapResults: [],
+    feedback: {
+      blockedWord: '',
       expressionToReuse: '',
-      errorToWatch: '',
+      blockCount: null,
       fluencyScore: null,
     },
   }
 }
 
-export function getCurrentExercise(
+export function getCurrentStage(
   state: TrainingSessionState,
-): ExerciseKind | null {
-  if (state.phase !== 'exercise') return null
-  return EXERCISE_ORDER[state.exerciseIndex] ?? null
+): (typeof STAGE_ORDER)[number] {
+  return STAGE_ORDER[state.stageIndex] ?? 'feedback'
 }
 
-export function isReviewValid(review: ReviewDraft): boolean {
+export function isFeedbackValid(feedback: SessionFeedback): boolean {
   const blocksValid =
-    review.blockCount !== null &&
-    Number.isFinite(review.blockCount) &&
-    review.blockCount >= 0
+    feedback.blockCount !== null &&
+    Number.isFinite(feedback.blockCount) &&
+    feedback.blockCount >= 0
   const scoreValid =
-    review.fluencyScore !== null &&
-    Number.isInteger(review.fluencyScore) &&
-    review.fluencyScore >= 1 &&
-    review.fluencyScore <= 5
+    feedback.fluencyScore !== null &&
+    Number.isInteger(feedback.fluencyScore) &&
+    feedback.fluencyScore >= 1 &&
+    feedback.fluencyScore <= 5
   return blocksValid && scoreValid
 }
 
-function advanceExercise(state: TrainingSessionState): TrainingSessionState {
-  if (state.exerciseIndex + 1 >= EXERCISE_ORDER.length) {
-    return { ...state, phase: 'review' }
+export function prepSeconds(state: TrainingSessionState): number {
+  return prepSecondsForLevel(state.level)
+}
+
+function advanceStage(state: TrainingSessionState): TrainingSessionState {
+  if (state.stageIndex + 1 >= STAGE_ORDER.length) {
+    return { ...state, phase: 'complete' }
   }
-  return { ...state, exerciseIndex: state.exerciseIndex + 1 }
+  return { ...state, stageIndex: state.stageIndex + 1 }
 }
 
 export function sessionReducer(
@@ -127,145 +113,162 @@ export function sessionReducer(
   action: TrainingAction,
 ): TrainingSessionState {
   switch (action.type) {
-    case 'FLUENCY_ROUND_COMPLETE': {
-      if (state.phase !== 'exercise') return state
-      if (getCurrentExercise(state) !== 'fluency432') return state
+    case 'CHUNK_REVEAL':
+      return { ...state, chunks: { ...state.chunks, step: 'revealed' } }
 
-      if (state.fluency.roundIndex === 0 && state.fluency.stage === 'running') {
-        return { ...state, fluency: { ...state.fluency, stage: 'reflection' } }
+    case 'CHUNK_RATE': {
+      const chunk = state.plan.chunks[state.chunks.index]
+      if (!chunk) return state
+      const result = { chunkId: chunk.id, result: action.result }
+      const chunkResults = [...state.chunkResults, result]
+
+      if (state.chunks.index + 1 < state.plan.chunks.length) {
+        return {
+          ...state,
+          chunkResults,
+          chunks: { index: state.chunks.index + 1, step: 'retrieve' },
+        }
       }
-
-      const isLastRound =
-        state.fluency.roundIndex >= FLUENCY_ROUND_SECONDS.length - 1
-      if (isLastRound) return advanceExercise(state)
-
-      return {
-        ...state,
-        fluency: { roundIndex: state.fluency.roundIndex + 1, stage: 'running' },
-      }
+      return { ...state, chunkResults, chunks: { ...state.chunks, step: 'day' } }
     }
 
-    case 'SUBMIT_REFLECTION': {
-      const reflection: SessionReflection = {
-        missingWord: action.missingWord,
-        difficultPhrase: action.difficultPhrase,
-        importantError: action.importantError,
+    case 'CHUNKS_OF_DAY_CONTINUE':
+      return advanceStage(state)
+
+    case 'FLUENCY_START':
+      return { ...state, fluency: { ...state.fluency, stage: 'running' } }
+
+    case 'FLUENCY_ROUND_COMPLETE': {
+      if (state.fluency.stage !== 'running') return state
+      if (state.fluency.roundIndex === 0) {
+        return { ...state, fluency: { ...state.fluency, stage: 'feedback' } }
       }
+      if (state.fluency.roundIndex < 3) {
+        return {
+          ...state,
+          fluency: {
+            roundIndex: state.fluency.roundIndex + 1,
+            stage: 'running',
+          },
+        }
+      }
+      return advanceStage(state)
+    }
+
+    case 'FLUENCY_SUBMIT_FEEDBACK':
       return {
         ...state,
-        reflection,
+        fluencyFeedback: {
+          missingWord: action.missingWord,
+          difficultPhrase: action.difficultPhrase,
+          importantError: action.importantError,
+        },
         fluency: { roundIndex: 1, stage: 'running' },
       }
-    }
 
-    case 'PARAPHRASE_NEXT': {
-      if (getCurrentExercise(state) !== 'paraphrase') return state
-      if (state.paraphrase.index + 1 >= state.content.wordIds.length) {
-        return advanceExercise(state)
-      }
-      return {
-        ...state,
-        paraphrase: { index: state.paraphrase.index + 1 },
-      }
-    }
+    case 'QUESTION_COUNTDOWN_DONE':
+      return { ...state, questions: { ...state.questions, stage: 'prep' } }
 
-    case 'PARAPHRASE_FINISH': {
-      if (getCurrentExercise(state) !== 'paraphrase') return state
-      return advanceExercise(state)
-    }
-
-    case 'QUESTION_COUNTDOWN_DONE': {
-      if (getCurrentExercise(state) !== 'questions') return state
+    case 'QUESTION_PREP_DONE':
       return { ...state, questions: { ...state.questions, stage: 'speaking' } }
+
+    case 'QUESTION_SPEAKING_DONE':
+      return { ...state, questions: { ...state.questions, stage: 'rate' } }
+
+    case 'QUESTION_RATE': {
+      const question = state.plan.questions[state.questions.index]
+      if (!question) return state
+      const questionRatings = [
+        ...state.questionRatings,
+        { questionId: question.id, rating: action.rating },
+      ]
+
+      if (state.questions.index + 1 < state.plan.questions.length) {
+        return {
+          ...state,
+          questionRatings,
+          questions: { index: state.questions.index + 1, stage: 'countdown' },
+        }
+      }
+
+      const rank: Record<BlockRating, number> = { none: 0, some: 1, much: 2 }
+      let worstId: string | null = null
+      let worstRank = 0
+      for (const entry of questionRatings) {
+        if (rank[entry.rating] > worstRank) {
+          worstRank = rank[entry.rating]
+          worstId = entry.questionId
+        }
+      }
+
+      if (worstId) {
+        return {
+          ...state,
+          questionRatings,
+          revenge: { questionId: worstId, stage: 'countdown' },
+        }
+      }
+
+      return advanceStage({ ...state, questionRatings })
     }
 
-    case 'QUESTION_NEXT': {
-      if (getCurrentExercise(state) !== 'questions') return state
-      if (state.questions.index + 1 >= state.content.questionIds.length) {
-        return advanceExercise(state)
+    case 'REVENGE_COUNTDOWN_DONE':
+      return { ...state, revenge: { ...state.revenge, stage: 'prep' } }
+
+    case 'REVENGE_PREP_DONE':
+      return { ...state, revenge: { ...state.revenge, stage: 'speaking' } }
+
+    case 'REVENGE_DONE':
+      return advanceStage({ ...state, revenge: { ...state.revenge, stage: 'done' } })
+
+    case 'GAP_FOUND': {
+      const item = state.plan.gapItems[state.gaps.index]
+      if (!item) return state
+      return {
+        ...state,
+        gapResults: [...state.gapResults, { itemKey: item.key, found: true }],
+        gaps: { ...state.gaps, step: 'revealed' },
+      }
+    }
+
+    case 'GAP_START_PARAPHRASE':
+      return { ...state, gaps: { ...state.gaps, step: 'paraphrase' } }
+
+    case 'GAP_REVEAL': {
+      const item = state.plan.gapItems[state.gaps.index]
+      if (!item) return state
+      const gapResults = state.gapResults.some((r) => r.itemKey === item.key)
+        ? state.gapResults
+        : [...state.gapResults, { itemKey: item.key, found: false }]
+      return { ...state, gapResults, gaps: { ...state.gaps, step: 'revealed' } }
+    }
+
+    case 'GAP_NEXT': {
+      const nextIndex = state.gaps.index + 1
+      if (nextIndex >= state.plan.gapItems.length) {
+        return advanceStage(state)
       }
       return {
         ...state,
-        questions: { index: state.questions.index + 1, stage: 'countdown' },
+        gaps: {
+          index: nextIndex,
+          step: initialGapStep(state.plan.gapItems[nextIndex]),
+        },
       }
     }
 
-    case 'QUESTIONS_FINISH': {
-      if (getCurrentExercise(state) !== 'questions') return state
-      return advanceExercise(state)
-    }
-
-    case 'SET_EXAMPLE': {
-      const current = state.examples[action.expressionId] ?? []
-      const next = [...current]
-      next[action.index] = action.value
+    case 'FEEDBACK_SET':
       return {
         ...state,
-        examples: { ...state.examples, [action.expressionId]: next },
+        feedback: { ...state.feedback, [action.field]: action.value },
       }
-    }
 
-    case 'NATURAL_NEXT': {
-      if (getCurrentExercise(state) !== 'natural') return state
-      if (state.natural.index + 1 >= state.content.expressionIds.length) {
-        return advanceExercise(state)
-      }
-      return { ...state, natural: { index: state.natural.index + 1 } }
-    }
-
-    case 'UPDATE_REVIEW': {
-      return {
-        ...state,
-        review: { ...state.review, [action.field]: action.value },
-      }
-    }
-
-    case 'SUBMIT_REVIEW': {
-      if (!isReviewValid(state.review)) return state
+    case 'FEEDBACK_SUBMIT': {
+      if (!isFeedbackValid(state.feedback)) return state
       return { ...state, phase: 'complete' }
     }
 
     default:
       return state
-  }
-}
-
-/** Seconds allocated to the active step, used to drive the current timer. */
-export function currentStepSeconds(state: TrainingSessionState): number | null {
-  const exercise = getCurrentExercise(state)
-  if (!exercise) return null
-  if (exercise === 'fluency432') {
-    if (state.fluency.stage !== 'running') return null
-    return FLUENCY_ROUND_SECONDS[state.fluency.roundIndex] ?? null
-  }
-  if (exercise === 'paraphrase') return PARAPHRASE_SECONDS
-  if (exercise === 'questions') {
-    return state.questions.stage === 'speaking'
-      ? QUESTION_SPEAKING_SECONDS
-      : null
-  }
-  return null
-}
-
-export function resolveContent(
-  persisted: PersistedSessionContent,
-  repository: ContentRepository,
-): SessionContent | null {
-  const topic = repository.topics.find((item) => item.id === persisted.topicId)
-  if (!topic) return null
-
-  const mapById = <T extends { id: string }>(
-    ids: readonly string[],
-    items: readonly T[],
-  ): T[] =>
-    ids
-      .map((id) => items.find((item) => item.id === id))
-      .filter((item): item is T => Boolean(item))
-
-  return {
-    topic,
-    paraphraseWords: mapById(persisted.wordIds, repository.paraphraseWords),
-    questions: mapById(persisted.questionIds, repository.questions),
-    expressions: mapById(persisted.expressionIds, repository.nativeExpressions),
   }
 }

@@ -3,11 +3,11 @@ import { MemoryRouter } from 'react-router-dom'
 import { describe, expect, it } from 'vitest'
 import { AppStateProvider } from '../../app/AppStateProvider'
 import { createInitialState } from '../../types/progress'
-import type { AppStateV1, SessionRecord } from '../../types/progress'
+import type { AppState, SessionRecord } from '../../types/progress'
 import { toLocalDateString } from '../../services/progress/progress'
 import HomePage from './HomePage'
 
-function renderHome(state?: AppStateV1) {
+function renderHome(state?: AppState) {
   return render(
     <AppStateProvider initialState={state}>
       <MemoryRouter>
@@ -18,53 +18,53 @@ function renderHome(state?: AppStateV1) {
 }
 
 function completedSession(): SessionRecord {
-  const today = toLocalDateString()
   return {
     id: 's1',
-    date: today,
+    date: toLocalDateString(),
     completedAt: new Date().toISOString(),
     durationMinutes: 30,
     blockCount: 2,
     fluencyScore: 4,
-    successParaphrase: '',
+    blockedWord: '',
     expressionToReuse: '',
-    errorToWatch: '',
     topicId: 't001',
     questionIds: [],
-    wordIds: [],
-    expressionIds: [],
+    chunkIds: [],
+    genericWordIds: [],
+    summary: { chunksWorked: 3, gapsPracticed: 5, questionsAsked: 5, fluencyDone: true },
   }
 }
 
 describe('HomePage', () => {
-  it('offers to start a session and lists the exercises', () => {
+  it('offers to start a session and shows the core stats', () => {
     renderHome()
 
     expect(
-      screen.getByRole('link', { name: 'Commencer la session du jour' }),
+      screen.getByRole('link', { name: 'Commencer ma séance' }),
     ).toBeInTheDocument()
-    expect(screen.getByText('4 → 3 → 2')).toBeInTheDocument()
-    expect(screen.getByText('Questions surprise')).toBeInTheDocument()
+    expect(screen.getByText('Série actuelle')).toBeInTheDocument()
+    expect(screen.getByText('Mots débloqués')).toBeInTheDocument()
+    expect(screen.getByText('Chunks actifs')).toBeInTheDocument()
   })
 
-  it('offers to resume when a session is in progress', () => {
-    const state: AppStateV1 = {
+  it('offers to resume with the current stage', () => {
+    const state: AppState = {
       ...createInitialState(),
-      inProgressSession: {} as AppStateV1['inProgressSession'],
+      inProgressSession: {} as AppState['inProgressSession'],
     }
     renderHome(state)
     expect(
-      screen.getByRole('link', { name: 'Reprendre la session' }),
+      screen.getByRole('link', { name: /Reprendre ma séance/ }),
     ).toBeInTheDocument()
   })
 
-  it('shows aggregated stats', () => {
-    const state: AppStateV1 = {
+  it('shows weekly progress and total time', () => {
+    const state: AppState = {
       ...createInitialState(),
       sessions: [completedSession()],
     }
     renderHome(state)
-    expect(screen.getByText('30')).toBeInTheDocument()
     expect(screen.getByText('1/5')).toBeInTheDocument()
+    expect(screen.getByText('30 min')).toBeInTheDocument()
   })
 })

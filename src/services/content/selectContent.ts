@@ -1,15 +1,4 @@
-import type {
-  ContentRepository,
-  Identifiable,
-  RecentContent,
-  SessionContent,
-} from '../../types/content'
-
-export const SESSION_SIZES = {
-  paraphraseWords: 5,
-  questions: 5,
-  expressions: 3,
-} as const
+import type { Identifiable } from '../../types/content'
 
 function shuffle<T>(items: readonly T[], random: () => number): T[] {
   const copy = [...items]
@@ -55,35 +44,28 @@ export function selectUniqueItems<T extends Identifiable>(
   return [...fresh, ...used].slice(0, count)
 }
 
-export function buildSessionContent(
-  repository: ContentRepository,
-  recent: RecentContent,
+/**
+ * Fill `count` slots by concatenating ordered priority pools (without
+ * shuffling across pools), preserving each pool's priority order, and never
+ * duplicating an id. Pools later in the list are only used as a fallback.
+ */
+export function pickInPriority<T extends Identifiable>(
+  pools: readonly (readonly T[])[],
+  count: number,
   random: () => number = Math.random,
-): SessionContent {
-  const topics = selectUniqueItems(repository.topics, 1, recent.topicIds, random)
-  if (topics.length === 0) {
-    throw new Error('Aucun sujet de conversation disponible.')
+): T[] {
+  const seen = new Set<string>()
+  const result: T[] = []
+
+  for (const pool of pools) {
+    if (result.length >= count) break
+    for (const item of shuffle(pool, random)) {
+      if (result.length >= count) break
+      if (seen.has(item.id)) continue
+      seen.add(item.id)
+      result.push(item)
+    }
   }
 
-  return {
-    topic: topics[0],
-    paraphraseWords: selectUniqueItems(
-      repository.paraphraseWords,
-      SESSION_SIZES.paraphraseWords,
-      recent.wordIds,
-      random,
-    ),
-    questions: selectUniqueItems(
-      repository.questions,
-      SESSION_SIZES.questions,
-      recent.questionIds,
-      random,
-    ),
-    expressions: selectUniqueItems(
-      repository.nativeExpressions,
-      SESSION_SIZES.expressions,
-      recent.expressionIds,
-      random,
-    ),
-  }
+  return result
 }

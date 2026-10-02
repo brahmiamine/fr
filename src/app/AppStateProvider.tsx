@@ -8,14 +8,14 @@ import {
 } from 'react'
 import type { ReactNode } from 'react'
 import { loadAppState, saveAppState } from '../services/storage/storage'
-import type { AppStateV1 } from '../types/progress'
+import type { AppState } from '../types/progress'
 
 export interface AppStateContextValue {
-  state: AppStateV1
+  state: AppState
   storageAvailable: boolean
   warning: string | null
-  update: (next: AppStateV1) => void
-  updateWith: (fn: (prev: AppStateV1) => AppStateV1) => void
+  update: (next: AppState) => void
+  updateWith: (fn: (prev: AppState) => AppState) => void
 }
 
 const AppStateContext = createContext<AppStateContextValue | null>(null)
@@ -23,7 +23,7 @@ const AppStateContext = createContext<AppStateContextValue | null>(null)
 export interface AppStateProviderProps {
   children: ReactNode
   /** Optional preloaded state, used by tests and the smoke flow. */
-  initialState?: AppStateV1
+  initialState?: AppState
 }
 
 export function AppStateProvider({
@@ -35,13 +35,13 @@ export function AppStateProvider({
     [initialState],
   )
 
-  const [state, setState] = useState<AppStateV1>(loaded.state)
+  const [state, setState] = useState<AppState>(loaded.state)
   const [warning, setWarning] = useState<string | null>(
     'warning' in loaded ? (loaded.warning ?? null) : null,
   )
 
   const stateRef = useRef(state)
-  const applyState = useCallback((next: AppStateV1) => {
+  const applyState = useCallback((next: AppState) => {
     stateRef.current = next
     setState(next)
     const result = saveAppState(next)
@@ -49,12 +49,12 @@ export function AppStateProvider({
   }, [])
 
   const update = useCallback(
-    (next: AppStateV1) => applyState(next),
+    (next: AppState) => applyState(next),
     [applyState],
   )
 
   const updateWith = useCallback(
-    (fn: (prev: AppStateV1) => AppStateV1) => applyState(fn(stateRef.current)),
+    (fn: (prev: AppState) => AppState) => applyState(fn(stateRef.current)),
     [applyState],
   )
 

@@ -29,6 +29,7 @@ function emptyMeasurement() {
     successfulParaphrases: '',
     abandonedSentences: '',
     longestFluentSegmentSeconds: '',
+    score: '',
   }
 }
 
@@ -46,7 +47,7 @@ export default function WeeklyTest() {
   const [measurement, setMeasurement] = useState(emptyMeasurement())
 
   const recentTopicIds = useMemo(
-    () => [...state.recentTopicIds, ...state.weeklyTests.map((t) => t.topicId)],
+    () => [...state.recentTopicIds, ...state.weeklyTests.map((test) => test.topicId)],
     [state.recentTopicIds, state.weeklyTests],
   )
 
@@ -54,18 +55,14 @@ export default function WeeklyTest() {
     return (
       <section className="card weekly-test" aria-labelledby="weekly-done">
         <h2 id="weekly-done">Test de la semaine ✓</h2>
-        <p className="muted">
-          Déjà réalisé cette semaine. Reviens lundi pour le prochain.
-        </p>
+        <p className="muted">Déjà réalisé cette semaine. Reviens lundi.</p>
         <ul className="weekly-test__summary">
-          <li>Coup d'envoi : {existing.startDelaySeconds}s</li>
+          <li>Démarrage : {existing.startDelaySeconds}s</li>
           <li>Pauses longues : {existing.longPauses}</li>
-          <li>Faux départs : {existing.majorFillers}</li>
-          <li>Paraphrases réussies : {existing.successfulParaphrases}</li>
           <li>Phrases abandonnées : {existing.abandonedSentences}</li>
-          <li>
-            Plus long segment fluide : {existing.longestFluentSegmentSeconds}s
-          </li>
+          <li>Mots contournés : {existing.successfulParaphrases}</li>
+          <li>Plus long segment fluide : {existing.longestFluentSegmentSeconds}s</li>
+          <li>Score ressenti : {existing.score}/5</li>
         </ul>
       </section>
     )
@@ -93,6 +90,7 @@ export default function WeeklyTest() {
       longestFluentSegmentSeconds: toNumber(
         measurement.longestFluentSegmentSeconds,
       ),
+      score: Math.min(5, Math.max(1, toNumber(measurement.score) || 3)),
     }
     updateWith((prev) => recordWeeklyTest(prev, record))
     setStage('intro')
@@ -100,15 +98,19 @@ export default function WeeklyTest() {
 
   return (
     <section className="card weekly-test" aria-labelledby="weekly-title">
-      <h2 id="weekly-title">Test hebdomadaire</h2>
+      <h2 id="weekly-title">Test de fluidité hebdomadaire</h2>
 
       {stage === 'intro' || !topic ? (
         <>
           <p className="muted">
-            Une fois par semaine : 3 minutes de parole spontanée sur un nouveau
-            sujet, puis note tes mesures.
+            Un sujet jamais vu récemment, très peu de préparation, puis 3
+            minutes de parole spontanée.
           </p>
-          <button type="button" className="button button--block" onClick={handleStart}>
+          <button
+            type="button"
+            className="button button--block"
+            onClick={handleStart}
+          >
             Lancer le test de 3 minutes
           </button>
         </>
@@ -142,10 +144,9 @@ export default function WeeklyTest() {
             [
               ['startDelaySeconds', "Temps avant de démarrer (s)"],
               ['longPauses', 'Pauses longues'],
-              ['majorFillers', 'Faux départs / hésitations'],
-              ['successfulParaphrases', 'Paraphrases réussies'],
               ['abandonedSentences', 'Phrases abandonnées'],
-              ['longestFluentSegmentSeconds', 'Plus long segment fluide (s)'],
+              ['successfulParaphrases', 'Mots contournés'],
+              ['longestFluentSegmentSeconds', 'Durée max sans blocage (s)'],
             ] as const
           ).map(([field, label]) => (
             <div className="field" key={field}>
@@ -165,6 +166,25 @@ export default function WeeklyTest() {
               />
             </div>
           ))}
+
+          <div className="field">
+            <label htmlFor="wt-score">Score ressenti (1 à 5)</label>
+            <select
+              id="wt-score"
+              value={measurement.score}
+              onChange={(event) =>
+                setMeasurement((prev) => ({ ...prev, score: event.target.value }))
+              }
+            >
+              <option value="">Choisir…</option>
+              {[1, 2, 3, 4, 5].map((score) => (
+                <option key={score} value={score}>
+                  {score}
+                </option>
+              ))}
+            </select>
+          </div>
+
           <button type="submit" className="button button--block">
             Enregistrer le test
           </button>

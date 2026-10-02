@@ -1,10 +1,14 @@
 import { RECENT_WINDOWS, WEEKLY_GOAL } from '../../types/progress'
 import type {
-  AppStateV1,
-  NativeExpressionExample,
+  AppState,
+  ChunkReview,
+  PersonalExample,
   SessionRecord,
   WeeklyTestRecord,
+  WordGap,
 } from '../../types/progress'
+import { chunkSchedule, gapSchedule } from '../review/scheduler'
+import { contentRepository } from '../content/contentRepository'
 
 export function toLocalDateString(date: Date = new Date()): string {
   const year = date.getFullYear()
@@ -43,6 +47,15 @@ export function calculateTotalPracticeMinutes(
     (total, session) => total + (session.durationMinutes || 0),
     0,
   )
+}
+
+/** Formats total minutes as "4 h 35" or "35 min". */
+export function formatDuration(totalMinutes: number): string {
+  if (totalMinutes <= 0) return '0 min'
+  const hours = Math.floor(totalMinutes / 60)
+  const minutes = totalMinutes % 60
+  if (hours === 0) return `${minutes} min`
+  return `${hours} h ${minutes.toString().padStart(2, '0')}`
 }
 
 export function calculateCurrentStreak(
@@ -106,6 +119,18 @@ export function calculateWeeklyProgress(
   return { completed, goal: WEEKLY_GOAL }
 }
 
+/** Number of word gaps currently mastered. */
+export function masteredGapCount(state: AppState): number {
+  return state.wordGaps.filter((gap) => gap.status === 'mastered').length
+}
+
+/** Number of chunks currently in the review rotation (not mastered). */
+export function activeChunkCount(state: AppState): number {
+  const reviewed = state.chunkReviews.filter((review) => !review.mastered).length
+  const unseen = contentRepository.chunks.length - state.chunkReviews.length
+  return Math.max(0, reviewed + unseen)
+}
+
 function pushRecent(list: readonly string[], ids: readonly string[], max: number): string[] {
   const next: string[] = []
   for (const id of [...ids, ...list]) {
@@ -116,9 +141,9 @@ function pushRecent(list: readonly string[], ids: readonly string[], max: number
 }
 
 export function recordCompletedSession(
-  state: AppStateV1,
+  state: AppState,
   session: SessionRecord,
-): AppStateV1 {
+): AppState {
   return {
     ...state,
     sessions: [...state.sessions, session],
@@ -128,42 +153,113 @@ export function recordCompletedSession(
       session.questionIds,
       RECENT_WINDOWS.questions,
     ),
-    recentWordIds: pushRecent(state.recentWordIds, session.wordIds, RECENT_WINDOWS.words),
-    recentExpressionIds: pushRecent(
-      state.recentExpressionIds,
-      session.expressionIds,
-      RECENT_WINDOWS.expressions,
-    ),
+    recentWordIds: pushRecent(state.recentWordIds, session.genericWordIds, RECENT_WINDOWS.words),
+    recentChunkIds: pushRecent(state.recentChunkIds, session.chunkIds, RECENT_WINDOWS.chunks),
     inProgressSession: null,
   }
 }
 
 export function recordWeeklyTest(
-  state: AppStateV1,
+  state: AppState,
   test: WeeklyTestRecord,
-): AppStateV1 {
+): AppState {
   const remaining = state.weeklyTests.filter(
     (existing) => existing.weekKey !== test.weekKey,
   )
   return { ...state, weeklyTests: [...remaining, test] }
 }
 
-export function upsertExpressionExamples(
-  state: AppStateV1,
-  example: NativeExpressionExample,
-): AppStateV1 {
-  const others = state.nativeExpressionExamples.filter(
-    (existing) => existing.expressionId !== example.expressionId,
+export function upsertPersonalExample(
+  state: AppState,
+  example: PersonalExample,
+): AppState {
+  const others = state.personalExamples.filter(
+    (existing) => existing.chunkId !== example.chunkId,
   )
-  return {
-    ...state,
-    nativeExpressionExamples: [...others, example],
-  }
+  return { ...state, personalExamples: [...others, example] }
 }
 
 export function setInProgressSession(
-  state: AppStateV1,
-  session: AppStateV1['inProgressSession'],
-): AppStateV1 {
+  state: AppState,
+  session: AppState['inProgressSession'],
+): AppState {
   return { ...state, inProgressSession: session }
+}
+
+export function upsertChunkReview(
+  state: AppState,
+  chunkId: string,
+  result: 'easy' | 'difficult' | 'failed',
+  now: Date = new Date(),
+): AppState {
+  const schedule = chunkSchedule(result, now)
+  const existing = state.chunkReviews.find((review) => review.chunkId === chunkId)
+  const next: ChunkReview = existing
+    ? {
+        ...existing,
+        nextReview: schedule.nextReview,
+        interval: schedule.interval,
+        timesSeen: existing.timesSeen + 1,
+        timesRecalled:
+          existing.timesRecalled + (result === 'failed' ? 0 : 1),
+        lastResult: result,
+        mastered: result === 'easy' && existing.timesRecalled + 1 >= 2,
+      }
+    : {
+        chunkId,
+        nextReview: schedule.nextReview,
+        interval: schedule.interval,
+        timesSeen: 1,
+        timesRecalled: result === 'failed' ? 0 : 1,
+        lastResult: result,
+        mastered: false,
+      }
+
+  const others = state.chunkReviews.filter(
+    (review) => review.chunkId !== chunkId,
+  )
+  return { ...state, chunkReviews: [...others, next] }
+}
+
+export function upsertWordGap(
+  state: AppState,
+  gap: WordGap,
+): AppState {
+  const others = state.wordGaps.filter((existing) => existing.id !== gap.id)
+  return { ...state, wordGaps: [...others, gap] }
+}
+
+/** Apply the result of a gap retrieval to its personal word gap. */
+export function applyGapResult(
+  state: AppState,
+  gapId: string,
+  found: boolean,
+  now: Date = new Date(),
+): AppState {
+  const existing = state.wordGaps.find((gap) => gap.id === gapId)
+  if (!existing) return state
+
+  const schedule = gapSchedule(existing.successCount, found, now)
+  const next: WordGap = {
+    ...existing,
+    successCount: schedule.successCount,
+    nextReview: schedule.nextReview,
+    status: schedule.mastered ? 'mastered' : 'learning',
+  }
+  return upsertWordGap(state, next)
+}
+
+let gapCounter = 0
+export function createWordGap(target: string, context: string, now: Date = new Date()): WordGap {
+  gapCounter += 1
+  const schedule = gapSchedule(0, false, now)
+  return {
+    id: `gap-${now.getTime()}-${gapCounter}-${Math.random().toString(36).slice(2, 6)}`,
+    target: target.trim(),
+    context: context.trim(),
+    createdAt: toLocalDateString(now),
+    successCount: schedule.successCount,
+    nextReview: schedule.nextReview,
+    status: 'learning',
+  }
 }

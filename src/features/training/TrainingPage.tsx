@@ -1,50 +1,55 @@
 import { useEffect, useMemo, useReducer, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useAppState } from '../../app/AppStateProvider'
-import { contentRepository } from '../../services/content/contentRepository'
-import { buildSessionContent } from '../../services/content/selectContent'
+import { buildSessionPlan } from '../../services/review/selectPlan'
 import {
+  applyGapResult,
+  createWordGap,
   recordCompletedSession,
   setInProgressSession,
   toLocalDateString,
-  upsertExpressionExamples,
+  upsertChunkReview,
+  upsertWordGap,
 } from '../../services/progress/progress'
 import type { SessionRecord } from '../../types/progress'
+import { ChunksExercise } from './components/ChunksExercise'
 import { Fluency432Exercise } from './components/Fluency432Exercise'
-import { NaturalFrenchExercise } from './components/NaturalFrenchExercise'
-import { ParaphraseExercise } from './components/ParaphraseExercise'
+import { SessionFeedbackView } from './components/SessionFeedback'
 import { SessionHeader } from './components/SessionHeader'
-import { SessionReview } from './components/SessionReview'
 import { SurpriseQuestionsExercise } from './components/SurpriseQuestionsExercise'
+import { WordGapsExercise } from './components/WordGapsExercise'
 import {
   createSessionState,
-  getCurrentExercise,
-  resolveContent,
+  getCurrentStage,
+  prepSeconds,
   sessionReducer,
 } from './sessionReducer'
 import type { TrainingSessionState } from './types'
 import './training.css'
 
 function sessionDurationMinutes(session: TrainingSessionState): number {
-  const started = new Date(session.startedAt).getTime()
-  const elapsed = Date.now() - started
-  const minutes = Math.ceil(elapsed / 60000)
-  return Math.max(1, minutes)
+  const elapsed = Date.now() - new Date(session.startedAt).getTime()
+  return Math.max(1, Math.ceil(elapsed / 60000))
 }
 
-interface SessionLoaderProps {
+function CompletedScreen({
+  session,
+}: {
   session: TrainingSessionState
-  onSession: (action: Parameters<typeof sessionReducer>[1]) => void
-}
-
-function CompletedScreen() {
+}) {
+  const plan = session.plan
   return (
     <section className="card exercise exercise--center">
-      <h1>Bravo, session terminée ! 🎉</h1>
-      <p className="muted">
-        Ton travail est enregistré localement. Reviens demain pour garder ta
-        série.
+      <h1>Séance terminée</h1>
+      <p className="exercise__expression">
+        {sessionDurationMinutes(session)} min
       </p>
+      <ul className="summary-list">
+        <li>{plan.chunks.length} chunks travaillés</li>
+        <li>{plan.gapItems.length} mots travaillés</li>
+        <li>{plan.questions.length} questions spontanées</li>
+        <li>4 → 3 → 2 terminé</li>
+      </ul>
       <div className="stack">
         <Link className="button button--block" to="/progress">
           Voir ma progression
@@ -57,119 +62,18 @@ function CompletedScreen() {
   )
 }
 
-function ActiveExercise({ session, onSession }: SessionLoaderProps) {
-  const exercise = getCurrentExercise(session)
-  const content = useMemo(
-    () => resolveContent(session.content, contentRepository),
-    [session.content],
-  )
-
-  if (!content) {
-    return (
-      <section className="card exercise">
-        <h1>Contenu introuvable</h1>
-        <p className="muted">
-          Un contenu de la session a peut-être été supprimé. Quitte puis
-          recommence pour une nouvelle sélection.
-        </p>
-        <Link className="button button--block" to="/">
-          Retour à l'accueil
-        </Link>
-      </section>
-    )
-  }
-
-  if (exercise === 'fluency432') {
-    return (
-      <Fluency432Exercise
-        key={`fluency-${session.fluency.roundIndex}-${session.fluency.stage}`}
-        topic={content.topic}
-        roundIndex={session.fluency.roundIndex}
-        stage={session.fluency.stage}
-        reflection={session.reflection}
-        onRoundComplete={() => onSession({ type: 'FLUENCY_ROUND_COMPLETE' })}
-        onReflectionSubmit={(values) =>
-          onSession({ type: 'SUBMIT_REFLECTION', ...values })
-        }
-      />
-    )
-  }
-
-  if (exercise === 'paraphrase') {
-    const word = content.paraphraseWords[session.paraphrase.index]
-    if (!word) return null
-    return (
-      <ParaphraseExercise
-        key={`paraphrase-${session.paraphrase.index}`}
-        word={word}
-        index={session.paraphrase.index}
-        total={content.paraphraseWords.length}
-        onNext={() => onSession({ type: 'PARAPHRASE_NEXT' })}
-        onFinishEarly={() => onSession({ type: 'PARAPHRASE_FINISH' })}
-      />
-    )
-  }
-
-  if (exercise === 'questions') {
-    const question = content.questions[session.questions.index]
-    if (!question) return null
-    return (
-      <SurpriseQuestionsExercise
-        key={`questions-${session.questions.index}-${session.questions.stage}`}
-        question={question}
-        index={session.questions.index}
-        total={content.questions.length}
-        stage={session.questions.stage}
-        onCountdownDone={() => onSession({ type: 'QUESTION_COUNTDOWN_DONE' })}
-        onNext={() => onSession({ type: 'QUESTION_NEXT' })}
-        onFinishEarly={() => onSession({ type: 'QUESTIONS_FINISH' })}
-      />
-    )
-  }
-
-  if (exercise === 'natural') {
-    const expression = content.expressions[session.natural.index]
-    if (!expression) return null
-    return (
-      <NaturalFrenchExercise
-        key={`natural-${session.natural.index}`}
-        expression={expression}
-        index={session.natural.index}
-        total={content.expressions.length}
-        examples={session.examples[expression.id] ?? []}
-        onChangeExample={(exampleIndex, value) =>
-          onSession({
-            type: 'SET_EXAMPLE',
-            expressionId: expression.id,
-            index: exampleIndex,
-            value,
-          })
-        }
-        onNext={() => onSession({ type: 'NATURAL_NEXT' })}
-      />
-    )
-  }
-
-  return null
-}
-
 export default function TrainingPage() {
   const { state, updateWith } = useAppState()
 
   const initialSession = useMemo<TrainingSessionState | null>(() => {
     if (state.inProgressSession) return state.inProgressSession
     try {
-      const content = buildSessionContent(contentRepository, {
-        topicIds: state.recentTopicIds,
-        questionIds: state.recentQuestionIds,
-        wordIds: state.recentWordIds,
-        expressionIds: state.recentExpressionIds,
-      })
-      return createSessionState(content)
+      const plan = buildSessionPlan(state)
+      return createSessionState(plan, state.level)
     } catch {
       return null
     }
-    // The session is created exactly once per mount.
+    // Built exactly once per mount.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -178,7 +82,7 @@ export default function TrainingPage() {
     initialSession as TrainingSessionState,
   )
 
-  // Persist the in-progress session after every meaningful change.
+  // Persist the in-progress session after every transition.
   useEffect(() => {
     if (!session || session.phase === 'complete') return
     updateWith((prev) => setInProgressSession(prev, session))
@@ -189,40 +93,62 @@ export default function TrainingPage() {
     if (!session || session.phase !== 'complete' || finalizedRef.current) return
     finalizedRef.current = true
 
-    const content = resolveContent(session.content, contentRepository)
-    if (!content) return
-
     const now = new Date()
+    const plan = session.plan
+    const genericWordIds = plan.gapItems
+      .filter((item) => !item.isPersonal && item.sourceId)
+      .map((item) => item.sourceId as string)
+
     const record: SessionRecord = {
       id: session.sessionId,
       date: toLocalDateString(now),
       completedAt: now.toISOString(),
       durationMinutes: sessionDurationMinutes(session),
-      blockCount: session.review.blockCount ?? 0,
-      fluencyScore: session.review.fluencyScore ?? 3,
-      successParaphrase: session.review.successParaphrase,
-      expressionToReuse: session.review.expressionToReuse,
-      errorToWatch: session.review.errorToWatch,
-      topicId: session.content.topicId,
-      questionIds: session.content.questionIds,
-      wordIds: session.content.wordIds,
-      expressionIds: session.content.expressionIds,
+      blockCount: session.feedback.blockCount ?? 0,
+      fluencyScore: session.feedback.fluencyScore ?? 3,
+      blockedWord: session.feedback.blockedWord,
+      expressionToReuse: session.feedback.expressionToReuse,
+      topicId: plan.topic.id,
+      questionIds: plan.questions.map((question) => question.id),
+      chunkIds: plan.chunks.map((chunk) => chunk.id),
+      genericWordIds,
+      summary: {
+        chunksWorked: plan.chunks.length,
+        gapsPracticed: plan.gapItems.length,
+        questionsAsked: plan.questions.length,
+        fluencyDone: true,
+      },
     }
 
     updateWith((prev) => {
       let next = recordCompletedSession(prev, record)
-      for (const expression of content.expressions) {
-        const sentences = (session.examples[expression.id] ?? [])
-          .map((sentence) => sentence.trim())
-          .filter(Boolean)
-        if (sentences.length > 0) {
-          next = upsertExpressionExamples(next, {
-            expressionId: expression.id,
-            sentences,
-            updatedAt: now.toISOString(),
-          })
+
+      // 1. Apply chunk review results to the spaced schedule.
+      for (const result of session.chunkResults) {
+        next = upsertChunkReview(next, result.chunkId, result.result, now)
+      }
+
+      // 2. Apply gap retrieval results to personal word gaps.
+      for (const result of session.gapResults) {
+        const item = plan.gapItems.find((gap) => gap.key === result.itemKey)
+        if (item?.isPersonal && item.sourceId) {
+          next = applyGapResult(next, item.sourceId, result.found, now)
         }
       }
+
+      // 3. Add newly reported missing words to the personal gap bank.
+      const newTargets = [session.fluencyFeedback.missingWord, session.feedback.blockedWord]
+        .map((word) => word.trim())
+        .filter(Boolean)
+      for (const target of newTargets) {
+        const exists = next.wordGaps.some(
+          (gap) => gap.target.toLowerCase() === target.toLowerCase(),
+        )
+        if (!exists) {
+          next = upsertWordGap(next, createWordGap(target, '', now))
+        }
+      }
+
       return next
     })
   }, [session, updateWith])
@@ -230,7 +156,7 @@ export default function TrainingPage() {
   if (!session) {
     return (
       <div className="stack">
-        <SessionHeader exercise={null} phase="exercise" />
+        <SessionHeader stage={null} phase="active" stageIndex={0} />
         <section className="card exercise">
           <h1>Contenu indisponible</h1>
           <p className="muted">
@@ -245,31 +171,147 @@ export default function TrainingPage() {
     )
   }
 
-  const content = resolveContent(session.content, contentRepository)
+  const stage = getCurrentStage(session)
 
   return (
     <div className="training">
       <SessionHeader
-        exercise={getCurrentExercise(session)}
+        stage={session.phase === 'active' ? stage : null}
         phase={session.phase}
+        stageIndex={session.stageIndex}
       />
 
-      {session.phase === 'exercise' ? (
-        <ActiveExercise session={session} onSession={dispatch} />
+      {session.phase === 'complete' ? (
+        <CompletedScreen session={session} />
       ) : null}
 
-      {session.phase === 'review' ? (
-        <SessionReview
-          review={session.review}
-          expressionOptions={content?.expressions.map((item) => item.expression) ?? []}
-          onChange={(field, value) =>
-            dispatch({ type: 'UPDATE_REVIEW', field, value })
-          }
-          onSubmit={() => dispatch({ type: 'SUBMIT_REVIEW' })}
+      {session.phase === 'active' && stage === 'chunks' ? (
+        <ChunksExercise
+          key={`chunk-${session.chunks.index}-${session.chunks.step}`}
+          chunk={session.plan.chunks[session.chunks.index]}
+          index={session.chunks.index}
+          total={session.plan.chunks.length}
+          step={session.chunks.step}
+          chunksOfDay={session.plan.chunksOfDay}
+          onReveal={() => dispatch({ type: 'CHUNK_REVEAL' })}
+          onRate={(result) => dispatch({ type: 'CHUNK_RATE', result })}
+          onContinue={() => dispatch({ type: 'CHUNKS_OF_DAY_CONTINUE' })}
         />
       ) : null}
 
-      {session.phase === 'complete' ? <CompletedScreen /> : null}
+      {session.phase === 'active' && stage === 'fluency' ? (
+        <Fluency432Exercise
+          key={`fluency-${session.fluency.roundIndex}-${session.fluency.stage}`}
+          topic={session.plan.topic}
+          roundIndex={session.fluency.roundIndex}
+          stage={session.fluency.stage}
+          feedback={session.fluencyFeedback}
+          chunksOfDay={session.plan.chunksOfDay}
+          onStartRound={() => dispatch({ type: 'FLUENCY_START' })}
+          onRoundComplete={() => dispatch({ type: 'FLUENCY_ROUND_COMPLETE' })}
+          onSubmitFeedback={(values) =>
+            dispatch({ type: 'FLUENCY_SUBMIT_FEEDBACK', ...values })
+          }
+        />
+      ) : null}
+
+      {session.phase === 'active' && stage === 'questions' ? (
+        <QuestionsRenderer session={session} onSession={dispatch} />
+      ) : null}
+
+      {session.phase === 'active' && stage === 'gaps' ? (
+        <WordGapsExercise
+          key={`gap-${session.gaps.index}-${session.gaps.step}`}
+          item={session.plan.gapItems[session.gaps.index]}
+          index={session.gaps.index}
+          total={session.plan.gapItems.length}
+          step={session.gaps.step}
+          onFound={() => dispatch({ type: 'GAP_FOUND' })}
+          onStartParaphrase={() => dispatch({ type: 'GAP_START_PARAPHRASE' })}
+          onReveal={() => dispatch({ type: 'GAP_REVEAL' })}
+          onNext={() => dispatch({ type: 'GAP_NEXT' })}
+        />
+      ) : null}
+
+      {session.phase === 'active' && stage === 'feedback' ? (
+        <SessionFeedbackView
+          feedback={session.feedback}
+          onChange={(field, value) =>
+            dispatch({ type: 'FEEDBACK_SET', field, value })
+          }
+          onSubmit={() => dispatch({ type: 'FEEDBACK_SUBMIT' })}
+        />
+      ) : null}
     </div>
+  )
+}
+
+function QuestionsRenderer({
+  session,
+  onSession,
+}: {
+  session: TrainingSessionState
+  onSession: (action: Parameters<typeof sessionReducer>[1]) => void
+}) {
+  const plan = session.plan
+
+  if (
+    session.revenge.stage === 'countdown' ||
+    session.revenge.stage === 'prep' ||
+    session.revenge.stage === 'speaking'
+  ) {
+    const revengeQuestion = plan.questions.find(
+      (question) => question.id === session.revenge.questionId,
+    )
+    if (!revengeQuestion) {
+      return (
+        <section className="card exercise exercise--center">
+          <h2>Revanche</h2>
+          <button
+            type="button"
+            className="button button--block"
+            onClick={() => onSession({ type: 'REVENGE_DONE' })}
+          >
+            Continuer
+          </button>
+        </section>
+      )
+    }
+
+    return (
+      <SurpriseQuestionsExercise
+        key={`revenge-${session.revenge.stage}`}
+        question={revengeQuestion}
+        index={0}
+        total={plan.questions.length}
+        stage={session.revenge.stage as 'countdown' | 'prep' | 'speaking'}
+        prepSeconds={prepSeconds(session)}
+        revenge
+        onCountdownDone={() => onSession({ type: 'REVENGE_COUNTDOWN_DONE' })}
+        onPrepDone={() => onSession({ type: 'REVENGE_PREP_DONE' })}
+        onSpeakingDone={() => onSession({ type: 'REVENGE_DONE' })}
+        onRate={() => undefined}
+        onDone={() => onSession({ type: 'REVENGE_DONE' })}
+      />
+    )
+  }
+
+  const question = plan.questions[session.questions.index]
+  if (!question) return null
+
+  return (
+    <SurpriseQuestionsExercise
+      key={`question-${session.questions.index}-${session.questions.stage}`}
+      question={question}
+      index={session.questions.index}
+      total={plan.questions.length}
+      stage={session.questions.stage}
+      prepSeconds={prepSeconds(session)}
+      onCountdownDone={() => onSession({ type: 'QUESTION_COUNTDOWN_DONE' })}
+      onPrepDone={() => onSession({ type: 'QUESTION_PREP_DONE' })}
+      onSpeakingDone={() => onSession({ type: 'QUESTION_SPEAKING_DONE' })}
+      onRate={(rating) => onSession({ type: 'QUESTION_RATE', rating })}
+      onDone={() => undefined}
+    />
   )
 }

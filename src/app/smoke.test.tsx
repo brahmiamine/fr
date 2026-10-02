@@ -15,15 +15,14 @@ describe('smoke: full hash-routing journey', () => {
     )
 
     await user.click(
-      screen.getByRole('link', { name: 'Commencer la session du jour' }),
+      screen.getByRole('link', { name: 'Commencer ma séance' }),
     )
 
-    expect(
-      screen.getByText('Manche 1 · 4 minutes'),
-    ).toBeInTheDocument()
+    // First stage of the guided session is chunks retrieval.
+    expect(screen.getByText('Chunk 1/3')).toBeInTheDocument()
     // Training hides the global navigation.
     expect(
-      screen.queryByRole('link', { name: /Progression/ }),
+      screen.queryByRole('link', { name: 'Progression' }),
     ).not.toBeInTheDocument()
 
     // The in-progress session is persisted for refresh recovery.

@@ -5,6 +5,7 @@ export interface Topic {
   title: string
   category: string
   difficulty: Difficulty
+  /** Prompts are only "pistes", never full answers. */
   prompts: string[]
   transferPrompt: string
 }
@@ -23,31 +24,21 @@ export interface ParaphraseWord {
   difficulty: Difficulty
 }
 
-export interface NativeExpression {
+/** A reusable spoken-French "chunk" (expression) to retrieve and reuse. */
+export interface Chunk {
   id: string
+  /** What the speaker wants to express (shown instead of the expression). */
+  intent: string
   expression: string
   category: string
+  level: string
 }
 
 export interface ContentRepository {
   topics: readonly Topic[]
   questions: readonly Question[]
   paraphraseWords: readonly ParaphraseWord[]
-  nativeExpressions: readonly NativeExpression[]
-}
-
-export interface RecentContent {
-  topicIds: readonly string[]
-  questionIds: readonly string[]
-  wordIds: readonly string[]
-  expressionIds: readonly string[]
-}
-
-export interface SessionContent {
-  topic: Topic
-  paraphraseWords: ParaphraseWord[]
-  questions: Question[]
-  expressions: NativeExpression[]
+  chunks: readonly Chunk[]
 }
 
 export interface Identifiable {

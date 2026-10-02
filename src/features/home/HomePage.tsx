@@ -1,18 +1,22 @@
 import { Link } from 'react-router-dom'
 import { useAppState } from '../../app/AppStateProvider'
 import {
+  activeChunkCount,
   calculateCurrentStreak,
   calculateTotalPracticeMinutes,
   calculateWeeklyProgress,
+  formatDuration,
+  getWeekKey,
+  masteredGapCount,
 } from '../../services/progress/progress'
-import { EXERCISE_META, EXERCISE_ORDER } from '../training/types'
+import { STAGE_META, STAGE_ORDER } from '../training/types'
 import './home.css'
 
-function greeting(date: Date = new Date()): string {
-  const hour = date.getHours()
-  if (hour < 12) return 'Bonjour'
-  if (hour < 18) return 'Bon après-midi'
-  return 'Bonsoir'
+function sessionDurationEstimate(): number {
+  return STAGE_ORDER.reduce(
+    (total, stage) => total + STAGE_META[stage].minutes,
+    0,
+  )
 }
 
 export default function HomePage() {
@@ -20,77 +24,66 @@ export default function HomePage() {
   const streak = calculateCurrentStreak(state.sessions)
   const totalMinutes = calculateTotalPracticeMinutes(state.sessions)
   const weekly = calculateWeeklyProgress(state.sessions)
+  const mastered = masteredGapCount(state)
+  const activeChunks = activeChunkCount(state)
+
   const hasSession = Boolean(state.inProgressSession)
-  const weeklyPercent = Math.min(
-    100,
-    Math.round((weekly.completed / weekly.goal) * 100),
+  const resumeLabel = state.inProgressSession
+    ? `Reprendre ma séance — Étape ${state.inProgressSession.stageIndex + 1}/${STAGE_ORDER.length}`
+    : null
+
+  const weeklyTestAvailable = !state.weeklyTests.some(
+    (test) => test.weekKey === getWeekKey(),
   )
 
   return (
     <div className="home">
       <header className="home__hero">
-        <p className="muted">{greeting()}</p>
-        <h1>Prêt à parler français ?</h1>
+        <h1>Prêt pour ta séance ?</h1>
         <p className="muted">
-          Une session guidée, quatre exercices, environ 30 minutes.
+          Aujourd'hui : environ {sessionDurationEstimate()} min
         </p>
         <Link className="button button--block home__cta" to="/training">
-          {hasSession ? 'Reprendre la session' : 'Commencer la session du jour'}
+          {hasSession ? resumeLabel : 'Commencer ma séance'}
         </Link>
       </header>
 
       <section className="home__stats" aria-label="Statistiques">
         <div className="stat">
-          <span className="stat__value">{streak}</span>
-          <span className="stat__label">Série (jours)</span>
+          <span className="stat__value">{streak} j</span>
+          <span className="stat__label">Série actuelle</span>
         </div>
         <div className="stat">
-          <span className="stat__value">{totalMinutes}</span>
-          <span className="stat__label">Minutes parlées</span>
-        </div>
-        <div className="stat">
-          <span className="stat__value">{state.sessions.length}</span>
-          <span className="stat__label">Sessions</span>
-        </div>
-      </section>
-
-      <section className="card home__weekly" aria-label="Objectif hebdomadaire">
-        <div className="home__weekly-head">
-          <h2>Objectif de la semaine</h2>
-          <span className="pill">
+          <span className="stat__value">
             {weekly.completed}/{weekly.goal}
           </span>
+          <span className="stat__label">Cette semaine</span>
         </div>
-        <div
-          className="progress-bar"
-          role="progressbar"
-          aria-valuenow={weekly.completed}
-          aria-valuemin={0}
-          aria-valuemax={weekly.goal}
-        >
-          <div
-            className="progress-bar__fill"
-            style={{ width: `${weeklyPercent}%` }}
-          />
+        <div className="stat">
+          <span className="stat__value">{formatDuration(totalMinutes)}</span>
+          <span className="stat__label">Temps total</span>
         </div>
-        <p className="muted home__weekly-note">
-          {weekly.completed >= weekly.goal
-            ? 'Objectif atteint, continue sur ta lancée !'
-            : `${weekly.goal - weekly.completed} session(s) pour atteindre l'objectif.`}
-        </p>
+        <div className="stat">
+          <span className="stat__value">{mastered}</span>
+          <span className="stat__label">Mots débloqués</span>
+        </div>
+        <div className="stat">
+          <span className="stat__value">{activeChunks}</span>
+          <span className="stat__label">Chunks actifs</span>
+        </div>
       </section>
 
-      <section className="card" aria-labelledby="today-plan">
-        <h2 id="today-plan">Session du jour</h2>
-        <ul className="plan">
-          {EXERCISE_ORDER.map((exercise) => (
-            <li key={exercise} className="plan__item">
-              <span className="plan__title">{EXERCISE_META[exercise].title}</span>
-              <span className="muted">{EXERCISE_META[exercise].minutes} min</span>
-            </li>
-          ))}
-        </ul>
-      </section>
+      {weeklyTestAvailable ? (
+        <section className="card home__weekly-test">
+          <div>
+            <h2>Test de fluidité disponible</h2>
+            <p className="muted">Environ 10 minutes, une fois par semaine.</p>
+          </div>
+          <Link className="button button--ghost" to="/progress">
+            Faire le test
+          </Link>
+        </section>
+      ) : null}
 
       <Link className="button button--ghost button--block" to="/progress">
         Voir ma progression

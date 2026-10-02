@@ -1,9 +1,12 @@
 import { useAppState } from '../../app/AppStateProvider'
 import {
+  activeChunkCount,
   calculateCurrentStreak,
   calculateLongestStreak,
   calculateTotalPracticeMinutes,
+  formatDuration,
   getWeekKey,
+  masteredGapCount,
   toLocalDateString,
 } from '../../services/progress/progress'
 import WeeklyTest from './WeeklyTest'
@@ -57,12 +60,20 @@ export default function ProgressPage() {
           <span className="stat__label">Meilleure série</span>
         </div>
         <div className="stat">
-          <span className="stat__value">{totalMinutes}</span>
-          <span className="stat__label">Minutes</span>
+          <span className="stat__value">{formatDuration(totalMinutes)}</span>
+          <span className="stat__label">Temps total</span>
         </div>
         <div className="stat">
           <span className="stat__value">{state.sessions.length}</span>
           <span className="stat__label">Sessions</span>
+        </div>
+        <div className="stat">
+          <span className="stat__value">{masteredGapCount(state)}</span>
+          <span className="stat__label">Mots débloqués</span>
+        </div>
+        <div className="stat">
+          <span className="stat__value">{activeChunkCount(state)}</span>
+          <span className="stat__label">Chunks actifs</span>
         </div>
       </section>
 
@@ -82,12 +93,12 @@ export default function ProgressPage() {
             <tbody>
               {(
                 [
-                  ['Pauses longues', 'longPauses'],
-                  ['Faux départs', 'majorFillers'],
-                  ['Paraphrases', 'successfulParaphrases'],
-                  ['Phrases abandonnées', 'abandonedSentences'],
                   ['Démarrage (s)', 'startDelaySeconds'],
+                  ['Pauses longues', 'longPauses'],
+                  ['Phrases abandonnées', 'abandonedSentences'],
+                  ['Mots contournés', 'successfulParaphrases'],
                   ['Segment fluide (s)', 'longestFluentSegmentSeconds'],
+                  ['Score ressenti', 'score'],
                 ] as const
               ).map(([label, key]) => (
                 <tr key={key}>
@@ -109,9 +120,14 @@ export default function ProgressPage() {
               <li key={session.id} className="history__item">
                 <div>
                   <p className="history__date">{formatDate(session.date)}</p>
-                  {session.successParaphrase ? (
+                  {session.blockedWord ? (
                     <p className="muted history__note">
-                      Paraphrase : {session.successParaphrase}
+                      Mot bloquant : {session.blockedWord}
+                    </p>
+                  ) : null}
+                  {session.expressionToReuse ? (
+                    <p className="muted history__note">
+                      À réutiliser : {session.expressionToReuse}
                     </p>
                   ) : null}
                 </div>
@@ -130,6 +146,29 @@ export default function ProgressPage() {
           </p>
         )}
       </section>
+
+      {state.wordGaps.length > 0 ? (
+        <section className="card" aria-labelledby="gaps-title">
+          <h2 id="gaps-title">Mes trous de mots</h2>
+          <ul className="history">
+            {state.wordGaps.map((gap) => (
+              <li key={gap.id} className="history__item">
+                <div>
+                  <p className="history__date">{gap.target}</p>
+                  {gap.context ? (
+                    <p className="muted history__note">{gap.context}</p>
+                  ) : null}
+                </div>
+                <div className="history__meta">
+                  <span className="pill">
+                    {gap.status === 'mastered' ? 'Maîtrisé' : `Prochain : ${gap.nextReview}`}
+                  </span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
     </div>
   )
 }

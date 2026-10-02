@@ -1,57 +1,118 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
-import type { Topic } from '../../../types/content'
+import type { Chunk, Topic } from '../../../types/content'
 import { Timer } from '../../../components/Timer/Timer'
 import { FLUENCY_ROUND_SECONDS } from '../types'
-import type { SessionReflection } from '../types'
+import type { FluencyFeedback } from '../types'
+import { AudioRecorderButton } from './AudioRecorderButton'
 
 export interface Fluency432ExerciseProps {
   topic: Topic
   roundIndex: number
-  stage: 'running' | 'reflection'
-  reflection: SessionReflection
+  stage: 'prep' | 'running' | 'feedback'
+  feedback: FluencyFeedback
+  chunksOfDay: Chunk[]
+  onStartRound: () => void
   onRoundComplete: () => void
-  onReflectionSubmit: (values: SessionReflection) => void
+  onSubmitFeedback: (values: FluencyFeedback) => void
 }
 
 const ROUND_LABELS = [
-  'Manche 1 · 4 minutes',
-  'Manche 2 · 3 minutes',
-  'Manche 3 · 2 minutes',
-  'Transfert · 1 minute',
+  'Tour 1 — 4:00',
+  'Tour 2 — 3:00',
+  'Tour 3 — 2:00',
+  'Transfert — 1:00',
 ]
+
+const RUNNING_HINTS = [
+  'Continue. Un mot manque ? Explique-le autrement.',
+  'Reformule, ne récite pas.',
+  'Continue à parler.',
+  'Nouveau sujet : réutilise ce que tu viens de travailler.',
+]
+
+function splitKeywords(value: string): string[] {
+  return value
+    .split(/[,\n]+/)
+    .map((item) => item.trim())
+    .filter(Boolean)
+    .slice(0, 3)
+}
 
 export function Fluency432Exercise({
   topic,
   roundIndex,
   stage,
-  reflection,
+  feedback,
+  chunksOfDay,
+  onStartRound,
   onRoundComplete,
-  onReflectionSubmit,
+  onSubmitFeedback,
 }: Fluency432ExerciseProps) {
-  const [missingWord, setMissingWord] = useState(reflection.missingWord)
-  const [difficultPhrase, setDifficultPhrase] = useState(
-    reflection.difficultPhrase,
-  )
-  const [importantError, setImportantError] = useState(
-    reflection.importantError,
-  )
+  const [keywordsInput, setKeywordsInput] = useState('')
+  const [missingWord, setMissingWord] = useState(feedback.missingWord)
+  const [difficultPhrase, setDifficultPhrase] = useState(feedback.difficultPhrase)
+  const [importantError, setImportantError] = useState(feedback.importantError)
 
-  if (stage === 'reflection') {
+  const isTransfer = roundIndex === FLUENCY_ROUND_SECONDS.length - 1
+  const seconds = FLUENCY_ROUND_SECONDS[roundIndex] ?? 60
+  const keywords = splitKeywords(keywordsInput)
+
+  if (stage === 'prep') {
+    return (
+      <section className="card exercise" aria-labelledby="fluency-title">
+        <p className="pill">Tour 1 / 3</p>
+        <h1 id="fluency-title" className="exercise__prompt">
+          {topic.title}
+        </h1>
+
+        <div className="exercise__rescue">
+          <h3>Quelques pistes</h3>
+          <ul>
+            {topic.prompts.map((prompt) => (
+              <li key={prompt}>{prompt}</li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="field">
+          <label htmlFor="keywords">
+            Note 3 mots-clés maximum (facultatif)
+          </label>
+          <input
+            id="keywords"
+            value={keywordsInput}
+            onChange={(event) => setKeywordsInput(event.target.value)}
+            placeholder="liberté, collègues, transport"
+            autoComplete="off"
+          />
+        </div>
+
+        <button
+          type="button"
+          className="button button--block"
+          onClick={onStartRound}
+        >
+          Commencer le tour 1
+        </button>
+      </section>
+    )
+  }
+
+  if (stage === 'feedback') {
     const handleSubmit = (event: FormEvent) => {
       event.preventDefault()
-      onReflectionSubmit({ missingWord, difficultPhrase, importantError })
+      onSubmitFeedback({ missingWord, difficultPhrase, importantError })
     }
 
     return (
-      <section className="card exercise" aria-labelledby="reflection-title">
-        <h2 id="reflection-title">Petite pause réflexion</h2>
-        <p className="muted">
-          Note rapidement, puis on repart. Ne cherche pas la perfection.
-        </p>
+      <section className="card exercise" aria-labelledby="feedback-title">
+        <h2 id="feedback-title">Petit retour (30–60 s)</h2>
         <form onSubmit={handleSubmit}>
           <div className="field">
-            <label htmlFor="missing-word">Un mot qui t'a manqué</label>
+            <label htmlFor="missing-word">
+              Quel mot t'a manqué ? (rejoint « Mes trous de mots »)
+            </label>
             <input
               id="missing-word"
               value={missingWord}
@@ -60,7 +121,7 @@ export function Fluency432Exercise({
             />
           </div>
           <div className="field">
-            <label htmlFor="difficult-phrase">Une phrase difficile</label>
+            <label htmlFor="difficult-phrase">Une phrase difficile ?</label>
             <input
               id="difficult-phrase"
               value={difficultPhrase}
@@ -69,7 +130,9 @@ export function Fluency432Exercise({
             />
           </div>
           <div className="field">
-            <label htmlFor="important-error">Une erreur importante</label>
+            <label htmlFor="important-error">
+              Une erreur importante à éviter au prochain tour ?
+            </label>
             <input
               id="important-error"
               value={importantError}
@@ -78,49 +141,40 @@ export function Fluency432Exercise({
             />
           </div>
           <button type="submit" className="button button--block">
-            Continuer vers la manche 2
+            Continuer vers le tour 2
           </button>
         </form>
       </section>
     )
   }
 
-  const isTransfer = roundIndex === FLUENCY_ROUND_SECONDS.length - 1
-  const seconds = FLUENCY_ROUND_SECONDS[roundIndex] ?? 60
+  // Running: keep the screen almost empty.
   const prompt = isTransfer ? topic.transferPrompt : topic.title
 
   return (
-    <section className="card exercise" aria-labelledby="fluency-title">
-      <p className="pill">{ROUND_LABELS[roundIndex] ?? 'Manche'}</p>
-      <h2 id="fluency-title" className="exercise__prompt">
-        {prompt}
-      </h2>
+    <section className="card exercise exercise--speak" aria-live="polite">
+      <p className="pill">{ROUND_LABELS[roundIndex] ?? 'Tour'}</p>
+      <Timer durationSeconds={seconds} onComplete={onRoundComplete} label={prompt} />
+      <p className="exercise__hint">{RUNNING_HINTS[roundIndex]}</p>
 
-      {!isTransfer ? (
-        <ul className="exercise__prompts">
-          {topic.prompts.map((item) => (
-            <li key={item}>{item}</li>
+      {keywords.length > 0 ? (
+        <p className="exercise__keywords">
+          {keywords.map((word) => (
+            <span key={word} className="pill">
+              {word}
+            </span>
           ))}
-        </ul>
-      ) : (
-        <p className="muted">
-          Nouveau sujet proche : réutilise un maximum de vocabulaire.
         </p>
-      )}
-
-      {roundIndex === 0 ? (
-        <ul className="exercise__rules">
-          <li>Ne t'arrête pas pour te corriger.</li>
-          <li>Si un mot manque, paraphrase.</li>
-          <li>Pas de silence de plus de 2 secondes.</li>
-        </ul>
       ) : null}
 
-      <Timer
-        durationSeconds={seconds}
-        onComplete={onRoundComplete}
-        label="Parle à voix haute"
-      />
+      {chunksOfDay.length > 0 ? (
+        <p className="exercise__chunks">
+          <span className="muted">Chunks du jour :</span>{' '}
+          {chunksOfDay.map((item) => item.expression).join('  ·  ')}
+        </p>
+      ) : null}
+
+      <AudioRecorderButton />
     </section>
   )
 }
