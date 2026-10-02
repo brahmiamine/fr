@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">Parle+</title>
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5b5bd6"/>
+      <stop offset=".55" stop-color="#8b5cf6"/>
+      <stop offset="1" stop-color="#ff6b9d"/>
+    </linearGradient>
+    <linearGradient id="badge" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8b5cf6"/>
+      <stop offset="1" stop-color="#ff6b9d"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#g)" d="M84 72h294c43 0 78 35 78 78v206c0 43-35 78-78 78H179L78 486l28-75c-39-13-67-50-67-94V150c0-43 35-78 78-78Z"/>
+  <g fill="#fff">
+    <rect x="128" y="202" width="50" height="142" rx="25"/>
+    <rect x="218" y="151" width="50" height="242" rx="25"/>
+    <rect x="308" y="181" width="50" height="182" rx="25"/>
+  </g>
+  <circle cx="404" cy="108" r="88" fill="#fff"/>
+  <circle cx="404" cy="108" r="69" fill="url(#badge)"/>
+  <path d="M404 76v64M372 108h64" fill="none" stroke="#fff" stroke-width="26" stroke-linecap="round"/>
+</svg>
