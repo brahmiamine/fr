@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">Parle+</title>
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5b5bd6"/>
+      <stop offset=".55" stop-color="#8b5cf6"/>
+      <stop offset="1" stop-color="#ff6b9d"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="116" fill="url(#g)"/>
+  <g fill="#fff">
+    <rect x="126" y="203" width="54" height="128" rx="27"/>
+    <rect x="229" y="145" width="54" height="244" rx="27"/>
+    <rect x="332" y="184" width="54" height="166" rx="27"/>
+  </g>
+  <circle cx="385" cy="128" r="71" fill="#fff" fill-opacity=".98"/>
+  <path d="M385 94v68M351 128h68" fill="none" stroke="#ff6b9d" stroke-width="26" stroke-linecap="round"/>
+</svg>
