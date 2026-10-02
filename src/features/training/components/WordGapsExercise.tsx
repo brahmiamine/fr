@@ -68,11 +68,11 @@ export function WordGapsExercise({
           </>
         )}
 
-        {item.rescueAngles.length > 0 ? (
+        {(item.rescueAngles?.length ?? 0) > 0 ? (
           <div className="exercise__rescue">
             <h3>Angles pour continuer à parler</h3>
             <ul>
-              {item.rescueAngles.map((angle) => (
+              {item.rescueAngles?.map((angle) => (
                 <li key={angle}>{angle}</li>
               ))}
             </ul>
