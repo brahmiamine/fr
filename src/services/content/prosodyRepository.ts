@@ -21,6 +21,9 @@ export function validateProsodyExercise(exercise: ProsodyExercise): string[] {
   const imitationDuration = exercise.imitation.end - exercise.imitation.start
 
   if (!exercise.ready) errors.push('audio-placeholder')
+  const modelKind = exercise.modelKind ?? 'recording'
+  if (modelKind === 'recording' && !exercise.audio) errors.push('missing-audio')
+  if (modelKind === 'tts' && !exercise.transcript.trim()) errors.push('missing-tts-text')
   if (duration < MIN_FULL_AUDIO_SECONDS || duration > MAX_FULL_AUDIO_SECONDS) {
     errors.push('full-duration')
   }
