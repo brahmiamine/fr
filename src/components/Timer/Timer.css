@@ -2,40 +2,91 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.6rem;
 }
 
 .timer__label {
   margin: 0;
   color: var(--muted);
   font-size: 0.9rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  font-weight: 600;
+  text-align: center;
 }
 
-.timer__display {
-  margin: 0;
-  font-size: clamp(3.5rem, 22vw, 6rem);
-  font-weight: 700;
-  line-height: 1;
+.timer__ring {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  display: grid;
+  place-items: center;
+}
+
+.timer--compact .timer__ring {
+  width: 150px;
+  height: 150px;
+}
+
+.timer__svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.timer__track,
+.timer__progress {
+  fill: none;
+  stroke-width: 9;
+}
+
+.timer__track {
+  stroke: var(--surface-2);
+}
+
+.timer__progress {
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.3s linear;
+}
+
+.timer__time {
+  font-size: clamp(3rem, 15vw, 4rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
   font-variant-numeric: tabular-nums;
-  letter-spacing: -0.02em;
   color: var(--text);
 }
 
-.timer--compact .timer__display {
-  font-size: clamp(2.4rem, 16vw, 3.5rem);
+.timer--compact .timer__time {
+  font-size: 2.2rem;
 }
 
-.timer--finished .timer__display {
-  color: var(--accent);
+.timer__time--seconds {
+  font-size: clamp(4rem, 26vw, 5.5rem);
+}
+
+.timer--finished .timer__time {
+  color: var(--success);
+}
+
+.timer--finished .timer__progress {
+  stroke: var(--success);
+}
+
+.timer--low .timer__time {
+  color: var(--danger);
+  animation: pulseSoft 1s ease-in-out infinite;
+}
+
+.timer--low .timer__progress {
+  stroke: var(--danger);
 }
 
 .timer__done {
   margin: 0;
-  color: var(--accent);
-  font-weight: 600;
-  animation: timer-pulse 1.2s ease-in-out infinite;
+  color: var(--success);
+  font-weight: 700;
+  animation: pop 0.4s var(--ease) both;
 }
 
 .timer__controls {
@@ -43,21 +94,5 @@
   flex-wrap: wrap;
   gap: 0.6rem;
   justify-content: center;
-  margin-top: 0.5rem;
-}
-
-@keyframes timer-pulse {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.45;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .timer__done {
-    animation: none;
-  }
+  margin-top: 0.25rem;
 }

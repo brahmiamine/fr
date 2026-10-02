@@ -1,4 +1,6 @@
 import { useAppState } from '../../app/AppStateProvider'
+import { StatIcon } from '../../components/icons/StatIcon'
+import type { StatIconName } from '../../components/icons/StatIcon'
 import {
   activeChunkCount,
   calculateCurrentStreak,
@@ -51,30 +53,24 @@ export default function ProgressPage() {
       <h1>Progression</h1>
 
       <section className="progress__stats" aria-label="Résumé">
-        <div className="stat">
-          <span className="stat__value">{currentStreak}</span>
-          <span className="stat__label">Série actuelle</span>
-        </div>
-        <div className="stat">
-          <span className="stat__value">{longestStreak}</span>
-          <span className="stat__label">Meilleure série</span>
-        </div>
-        <div className="stat">
-          <span className="stat__value">{formatDuration(totalMinutes)}</span>
-          <span className="stat__label">Temps total</span>
-        </div>
-        <div className="stat">
-          <span className="stat__value">{state.sessions.length}</span>
-          <span className="stat__label">Sessions</span>
-        </div>
-        <div className="stat">
-          <span className="stat__value">{masteredGapCount(state)}</span>
-          <span className="stat__label">Mots débloqués</span>
-        </div>
-        <div className="stat">
-          <span className="stat__value">{activeChunkCount(state)}</span>
-          <span className="stat__label">Chunks actifs</span>
-        </div>
+        {(
+          [
+            { icon: 'streak', value: String(currentStreak), label: 'Série actuelle' },
+            { icon: 'streak', value: String(longestStreak), label: 'Meilleure série' },
+            { icon: 'time', value: formatDuration(totalMinutes), label: 'Temps total' },
+            { icon: 'week', value: String(state.sessions.length), label: 'Sessions' },
+            { icon: 'words', value: String(masteredGapCount(state)), label: 'Mots débloqués' },
+            { icon: 'chunks', value: String(activeChunkCount(state)), label: 'Chunks actifs' },
+          ] as { icon: StatIconName; value: string; label: string }[]
+        ).map((stat, index) => (
+          <div key={stat.label} className="stat" style={{ animationDelay: `${index * 0.05}s` }}>
+            <span className={`stat__icon stat__icon--${stat.icon}`}>
+              <StatIcon name={stat.icon} />
+            </span>
+            <span className="stat__value">{stat.value}</span>
+            <span className="stat__label">{stat.label}</span>
+          </div>
+        ))}
       </section>
 
       <WeeklyTest />

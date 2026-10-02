@@ -74,7 +74,9 @@ describe('TrainingPage', () => {
       screen.getByRole('button', { name: 'Terminer la séance' }),
     )
 
-    expect(await screen.findByText(/Séance terminée/)).toBeInTheDocument()
+    expect(
+      await screen.findByRole('heading', { name: /Séance terminée/ }),
+    ).toBeInTheDocument()
 
     await waitFor(() => {
       const raw = window.localStorage.getItem(STORAGE_KEY)

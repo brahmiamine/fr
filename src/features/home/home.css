@@ -1,50 +1,102 @@
 .home {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.1rem;
 }
 
+/* ---------- Hero ---------- */
 .home__hero {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0.5rem 0 0.25rem;
+}
+
+.home__hero-copy {
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
 }
 
+.home__kicker {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
 .home__hero h1 {
-  font-size: 1.8rem;
+  font-size: 2.2rem;
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .home__cta {
-  margin-top: 0.6rem;
+  margin-top: 0.5rem;
+  font-size: 1.05rem;
 }
 
+.home__hero-art {
+  display: flex;
+  justify-content: center;
+}
+
+.hero-illustration {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+}
+
+.hero-wave path {
+  animation: pulseSoft 2.2s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: left center;
+}
+.hero-wave--d1 {
+  animation-delay: 0.3s;
+}
+.hero-wave--d2 {
+  animation-delay: 0.6s;
+}
+
+.hero-avatar {
+  animation: float 5s ease-in-out infinite;
+}
+
+.hero-spark path {
+  animation: sparkle 2.6s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.hero-spark--d1 {
+  animation-delay: 0.6s;
+}
+.hero-spark--d2 {
+  animation-delay: 1.2s;
+}
+
+.hero-chip {
+  animation: float 6s ease-in-out infinite;
+}
+.hero-chip--d1 {
+  animation-delay: -2s;
+}
+
+/* ---------- Stats ---------- */
 .home__stats {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 0.6rem;
+  gap: 0.7rem;
 }
 
-.stat {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 0.75rem;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
-}
-
-.stat__value {
-  font-size: 1.35rem;
-  font-weight: 700;
-}
-
-.stat__label {
-  font-size: 0.78rem;
-  color: var(--muted);
-}
-
+/* ---------- Weekly test ---------- */
 .home__weekly-test {
   display: flex;
   align-items: center;
@@ -61,7 +113,17 @@
   margin: 0;
 }
 
-@media (min-width: 480px) {
+@media (min-width: 560px) {
+  .home__hero {
+    flex-direction: row;
+    align-items: center;
+  }
+  .home__hero-copy {
+    flex: 1.2;
+  }
+  .home__hero-art {
+    flex: 1;
+  }
   .home__stats {
     grid-template-columns: repeat(3, 1fr);
   }

@@ -149,5 +149,16 @@ Le site reste **mobile-first** : styles de base pensés pour le téléphone, pui
 `font-size: 16px` pour éviter le zoom automatique sur iOS, les cibles tactiles
 font au moins 44 px et le délai de tap de 300 ms est supprimé.
 
+### Design & animations
+
+- Palette indigo → violet → rose avec dégradés et mode sombre.
+- Fond animé (blobs), logo SVG animé, illustration héros, icônes par étape et
+  par statistique.
+- Minuteur circulaire SVG avec anneau de progression dégradé.
+- Micro-interactions (élévation des boutons, cartes, transitions de page),
+  confettis à la fin de session et barre de progression d'étape.
+- Tout respecte `prefers-reduced-motion`.
+
+
 
 

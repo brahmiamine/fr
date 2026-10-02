@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useReducer, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useAppState } from '../../app/AppStateProvider'
+import { Confetti } from '../../components/Decor/Decor'
 import { buildSessionPlan } from '../../services/review/selectPlan'
 import {
   applyGapResult,
@@ -40,6 +41,7 @@ function CompletedScreen({
   const plan = session.plan
   return (
     <section className="card exercise exercise--center">
+      <Confetti />
       <h1>Séance terminée</h1>
       <p className="exercise__expression">
         {sessionDurationMinutes(session)} min

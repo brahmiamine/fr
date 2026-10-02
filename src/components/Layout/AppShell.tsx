@@ -1,22 +1,22 @@
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { useAppState } from '../../app/AppStateProvider'
+import { Logo } from '../Brand/Logo'
+import { AnimatedBackground } from '../Decor/Decor'
 import './layout.css'
 
 export function AppShell() {
   const location = useLocation()
   const { warning } = useAppState()
-  // During a training session we keep the header minimal (brand only) so the
-  // learner stays focused on the current task.
   const isTraining = location.pathname.startsWith('/training')
 
   return (
     <div className={`site ${isTraining ? 'site--focus' : ''}`}>
+      <AnimatedBackground />
+
       <header className="site__header">
         <div className="site__header-inner">
           <Link to="/" className="site__brand">
-            <span className="site__logo" aria-hidden="true">
-              FR
-            </span>
+            <Logo />
             <span className="site__brand-text">
               Fluidité
               <small>français parlé</small>
@@ -48,7 +48,7 @@ export function AppShell() {
         ) : null}
       </header>
 
-      <main className="site__main">
+      <main key={location.pathname} className="site__main">
         <Outlet />
       </main>
 
