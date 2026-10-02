@@ -61,6 +61,7 @@ export function SurpriseQuestionsExercise({
         <Timer
           durationSeconds={QUESTION_COUNTDOWN_SECONDS}
           autoStart
+          hideControls
           compact
           secondsOnly
           onComplete={onCountdownDone}
@@ -73,13 +74,15 @@ export function SurpriseQuestionsExercise({
     return (
       <section className="card exercise exercise--center" aria-live="polite">
         <p className="pill">{counterLabel}</p>
-        <h2>Prépare-toi</h2>
+        <h1 className="exercise__prompt">{question.text}</h1>
         <p className="exercise__prep-plan">Opinion → raison → exemple</p>
         <Timer
           durationSeconds={prepSeconds}
           autoStart
+          hideControls
           compact
           secondsOnly
+          label="Préparation"
           onComplete={onPrepDone}
         />
       </section>
@@ -138,7 +141,8 @@ export function SurpriseQuestionsExercise({
       <Timer
         key={pivotActive ? 'pivot' : 'main'}
         durationSeconds={speakingSeconds}
-        autoStart={pivotActive}
+        autoStart
+        hideControls
         label={pivotActive ? 'Continue immédiatement' : 'Parle'}
         onComplete={completeSpeakingPhase}
       />
@@ -174,16 +178,6 @@ export function SurpriseQuestionsExercise({
             ))}
           </ul>
         </div>
-      )}
-
-      {hasAdvancedPivot && !pivotActive ? null : (
-        <button
-          type="button"
-          className="button button--subtle button--block"
-          onClick={revenge ? onDone : onSpeakingDone}
-        >
-          {revenge ? 'Terminer' : "J'ai terminé"}
-        </button>
       )}
     </section>
   )
