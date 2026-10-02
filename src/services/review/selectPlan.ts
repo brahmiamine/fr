@@ -186,7 +186,7 @@ export function buildSessionPlan(
   const questions = questionPool.slice(0, QUESTIONS_PER_SESSION)
   const pivotQuestion = questionPool[QUESTIONS_PER_SESSION] ?? null
   const chunks = selectChunks(state, CHUNKS_PER_SESSION, random)
-  const chunksOfDay = shuffle(chunks, random).slice(0, 2)
+  const chunksOfDay = shuffle(chunks, random)
 
   return {
     topic,
