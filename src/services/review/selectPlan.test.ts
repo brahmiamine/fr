@@ -35,8 +35,8 @@ describe('buildSessionPlan', () => {
     expect(plan.topic).toBeDefined()
     expect(plan.questions).toHaveLength(5)
     expect(plan.pivotQuestion).toBeDefined()
-    expect(plan.chunks).toHaveLength(3)
-    expect(plan.chunksOfDay).toHaveLength(3)
+    expect(plan.chunks).toHaveLength(4)
+    expect(plan.chunksOfDay).toHaveLength(4)
     expect(plan.chunksOfDay.map((chunk) => chunk.id).sort()).toEqual(
       plan.chunks.map((chunk) => chunk.id).sort(),
     )
@@ -115,5 +115,79 @@ describe('scheduler', () => {
 
     const thirdHit = gapSchedule(2, true)
     expect(thirdHit.mastered).toBe(true)
+  })
+})
+
+describe('alignment extras in the session plan', () => {
+  const fakeSession = (index: number) => ({
+    id: `s-${index}`,
+    date: '2026-10-01',
+    completedAt: `2026-10-01T0${index}:00:00.000Z`,
+    durationMinutes: 30,
+    blockCount: 1,
+    fluencyScore: 3,
+    blockedWord: '',
+    expressionToReuse: '',
+    topicId: 't001',
+    questionIds: [],
+    chunkIds: [],
+    genericWordIds: [],
+    summary: { chunksWorked: 4, gapsPracticed: 5, questionsAsked: 5, fluencyDone: true },
+  })
+
+  it('flags never-seen chunks as new so they are discovered, not guessed', () => {
+    const plan = buildSessionPlan(createInitialState(), () => 0.5)
+    expect(plan.newChunkIds).toEqual(plan.chunks.map((chunk) => chunk.id))
+
+    const reviewed = buildSessionPlan(
+      {
+        ...createInitialState(),
+        chunkReviews: plan.chunks.map((chunk) => ({
+          chunkId: chunk.id,
+          nextReview: toLocalDateString(),
+          interval: 1,
+          timesSeen: 1,
+          timesRecalled: 1,
+          streak: 1,
+          lastResult: 'easy' as const,
+          mastered: false,
+        })),
+      },
+      () => 0.5,
+    )
+    expect(reviewed.newChunkIds).toEqual([])
+  })
+
+  it('turns every third 4-3-2 into a story retelling', () => {
+    expect(buildSessionPlan(createInitialState(), () => 0.5).retellingStory).toBeNull()
+
+    const third = buildSessionPlan(
+      { ...createInitialState(), sessions: [fakeSession(1), fakeSession(2)] },
+      () => 0.5,
+    )
+    expect(third.retellingStory).not.toBeNull()
+    expect(third.topic.id).toBe(third.retellingStory?.id)
+    expect(third.topic.transferPrompt).toBe(third.retellingStory?.transferPrompt)
+  })
+
+  it('brings the recent prosody focus into fluency practice', () => {
+    const plan = buildSessionPlan(
+      {
+        ...createInitialState(),
+        prosodySessions: [
+          {
+            id: 'p1',
+            exerciseId: 'prosody_001',
+            date: '2026-10-01',
+            completedAt: '2026-10-01T08:00:00.000Z',
+            durationMinutes: 12,
+            focus: 'pause',
+            retellingSeconds: 40,
+          },
+        ],
+      },
+      () => 0.5,
+    )
+    expect(plan.prosodyFocusGoal).toMatch(/groupe/)
   })
 })

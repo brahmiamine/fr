@@ -3,12 +3,14 @@ import questionsData from '../../data/questions.json'
 import paraphraseWordsData from '../../data/paraphrase-words.json'
 import chunksData from '../../data/native-expressions.json'
 import conversationScenariosData from '../../data/conversation-scenarios.json'
+import retellingStoriesData from '../../data/retelling-stories.json'
 import type {
   Chunk,
   ConversationScenario,
   ContentRepository,
   ParaphraseWord,
   Question,
+  RetellingStory,
   Topic,
 } from '../../types/content'
 
@@ -20,4 +22,5 @@ export const contentRepository: ContentRepository = {
   paraphraseWords: paraphraseWordsData as unknown as ParaphraseWord[],
   chunks: chunksData as unknown as Chunk[],
   conversationScenarios: conversationScenariosData as unknown as ConversationScenario[],
+  retellingStories: retellingStoriesData as unknown as RetellingStory[],
 }

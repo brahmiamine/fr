@@ -62,12 +62,22 @@ export interface ConversationScenario {
   events: string[]
 }
 
+/** Short story for the retelling variant of the 4 → 3 → 2. */
+export interface RetellingStory {
+  id: string
+  title: string
+  category: string
+  text: string
+  transferPrompt: string
+}
+
 export interface ContentRepository {
   topics: readonly Topic[]
   questions: readonly Question[]
   paraphraseWords: readonly ParaphraseWord[]
   chunks: readonly Chunk[]
   conversationScenarios: readonly ConversationScenario[]
+  retellingStories: readonly RetellingStory[]
 }
 
 export interface Identifiable {

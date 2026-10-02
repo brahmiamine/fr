@@ -11,6 +11,11 @@ export interface SessionSummary {
   gapsPracticed: number
   questionsAsked: number
   fluencyDone: boolean
+  /** Chunks of the day actually placed while speaking. */
+  chunksUsed?: number
+  /** How often the learner blocked on surprise questions. */
+  questionBlocks?: { none: number; some: number; much: number }
+  retelling?: boolean
 }
 
 export interface SessionRecord {
@@ -55,6 +60,13 @@ export interface WeeklyTestRecord {
   longestFluentSegmentSeconds: number
   wordsSpoken?: number
   score: number
+  /** Values measured automatically on the recording, when available. */
+  measured?: {
+    startDelaySeconds: number
+    longPauses: number
+    longestSpeechSeconds: number
+    speechRatio: number
+  }
 }
 
 export interface WordGap {
@@ -73,7 +85,9 @@ export interface ChunkReview {
   interval: number
   timesSeen: number
   timesRecalled: number
-  lastResult: 'easy' | 'difficult' | 'failed' | null
+  /** Consecutive successful recalls; a failure resets it to 0. */
+  streak?: number
+  lastResult: 'easy' | 'difficult' | 'failed' | 'discovered' | null
   mastered: boolean
 }
 

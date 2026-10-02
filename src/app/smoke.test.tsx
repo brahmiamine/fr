@@ -19,7 +19,7 @@ describe('smoke: full hash-routing journey', () => {
     )
 
     // First stage of the guided session is chunks retrieval.
-    expect(screen.getByText('Chunk 1/3')).toBeInTheDocument()
+    expect(screen.getByText(/Chunk 1\/4/)).toBeInTheDocument()
     // Training hides the global navigation.
     expect(
       screen.queryByRole('link', { name: 'Progression' }),

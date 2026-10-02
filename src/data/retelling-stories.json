@@ -1,0 +1,86 @@
+[
+  {
+    "id": "story_001",
+    "title": "Le train manqué",
+    "category": "mobilite",
+    "text": "La semaine dernière, Julie devait prendre le train de huit heures pour un entretien important à Lyon. Elle s'était levée tôt, tout était prêt, mais au moment de partir, impossible de retrouver ses clés. Elle a fouillé partout pendant dix minutes avant de les découvrir dans la poche de son manteau. Évidemment, elle est arrivée à la gare juste au moment où le train partait. Au lieu de paniquer, elle a appelé l'entreprise pour expliquer la situation. Finalement, la recruteuse a accepté de faire l'entretien en visio, et ça s'est très bien passé. Depuis, Julie prépare toujours ses affaires la veille, clés comprises.",
+    "transferPrompt": "Raconte une fois où un imprévu t'a obligé à changer tes plans."
+  },
+  {
+    "id": "story_002",
+    "title": "Le voisin bruyant",
+    "category": "logement",
+    "text": "Quand Karim a emménagé dans son nouvel appartement, tout lui plaisait : la lumière, le quartier, le loyer raisonnable. Le problème, c'est que son voisin du dessus jouait de la batterie presque tous les soirs. Au début, Karim n'osait rien dire, parce qu'il ne voulait pas commencer par un conflit. Mais au bout de deux semaines, il n'en pouvait plus. Il est monté frapper à la porte, un peu tendu. En fait, le voisin était très sympathique et ne se rendait pas compte du bruit. Ils se sont mis d'accord : la batterie, seulement avant vingt heures. Aujourd'hui, ils se retrouvent même parfois pour boire un café.",
+    "transferPrompt": "Raconte une situation où une discussion directe a réglé un problème."
+  },
+  {
+    "id": "story_003",
+    "title": "La recette ratée",
+    "category": "quotidien",
+    "text": "Pour l'anniversaire de sa mère, Thomas voulait préparer un gâteau au chocolat, comme quand il était enfant. Il a suivi une recette trouvée sur internet, mais il a confondu le sel et le sucre. Le résultat était immangeable. Il restait seulement une heure avant l'arrivée des invités. Plutôt que d'acheter un gâteau tout fait, il a improvisé une salade de fruits avec ce qu'il avait dans le frigo. Sa mère a beaucoup ri quand il lui a raconté l'histoire, et elle a dit que c'était le meilleur cadeau, justement parce que ce n'était pas parfait.",
+    "transferPrompt": "Raconte une fois où quelque chose a raté mais a fini par bien se passer."
+  },
+  {
+    "id": "story_004",
+    "title": "Le premier jour au travail",
+    "category": "travail",
+    "text": "Le premier jour dans sa nouvelle entreprise, Léa était persuadée qu'elle allait tout oublier : les prénoms, les procédures, les mots de passe. Pour se rassurer, elle avait préparé un petit carnet. Dès la première réunion, son responsable lui a demandé de présenter son parcours devant toute l'équipe. Elle a hésité au début, puis elle a décidé de parler simplement, sans chercher les phrases parfaites. À la fin de la journée, plusieurs collègues sont venus la voir pour lui dire qu'ils avaient apprécié sa franchise. Elle a compris que les autres attendaient surtout quelqu'un de sincère, pas quelqu'un de parfait.",
+    "transferPrompt": "Raconte un moment où tu as dû parler devant des gens que tu ne connaissais pas."
+  },
+  {
+    "id": "story_005",
+    "title": "Le téléphone oublié",
+    "category": "technologie",
+    "text": "Pendant un week-end à la campagne, Marc a oublié son téléphone chez lui. Le premier jour, il se sentait vraiment perdu : il voulait vérifier la météo, regarder ses messages, prendre des photos. Il a dû demander son chemin aux habitants, ce qu'il ne faisait plus depuis des années. Le deuxième jour, il a commencé à remarquer des choses qu'il ne voyait plus : le bruit des oiseaux, les conversations au marché, le temps qui passait plus lentement. En rentrant, il n'a pas jeté son téléphone, évidemment, mais il a décidé de le laisser dans un tiroir le dimanche.",
+    "transferPrompt": "Raconte une expérience où tu as dû te passer d'un objet du quotidien."
+  },
+  {
+    "id": "story_006",
+    "title": "Le marathon",
+    "category": "sport",
+    "text": "Sophie n'avait jamais couru plus de cinq kilomètres quand ses amis l'ont inscrite, presque pour rire, à un semi-marathon. Elle avait six mois pour se préparer. Les premières semaines ont été difficiles : elle voulait aller trop vite et elle s'est blessée au genou. Un entraîneur lui a conseillé de ralentir et de courir trois fois par semaine, mais régulièrement. Petit à petit, les distances sont devenues plus faciles. Le jour de la course, elle n'a pas battu de record, mais elle a franchi la ligne d'arrivée en souriant. Ce qu'elle retient surtout, c'est que la régularité compte plus que la motivation.",
+    "transferPrompt": "Raconte un objectif que tu as atteint petit à petit."
+  },
+  {
+    "id": "story_007",
+    "title": "Le malentendu",
+    "category": "relations",
+    "text": "Antoine avait envoyé un message à son ami Paul : « On se retrouve devant le cinéma à huit heures. » Paul a compris le cinéma du centre-ville, alors qu'Antoine parlait de celui près de la gare. Chacun a attendu de son côté pendant vingt minutes, de plus en plus agacé. Ils ont fini par s'appeler, et chacun était sûr d'avoir raison. Finalement, ils ont relu le message ensemble et ont éclaté de rire : le message ne précisait pas du tout quel cinéma. Le film avait déjà commencé, alors ils sont allés dîner. Depuis, ils envoient toujours l'adresse exacte.",
+    "transferPrompt": "Raconte un malentendu que tu as vécu et comment il s'est résolu."
+  },
+  {
+    "id": "story_008",
+    "title": "Le voyage sans réservation",
+    "category": "voyage",
+    "text": "L'été dernier, Inès et sa sœur ont décidé de partir en Italie sans rien réserver à l'avance, pour voir ce que ça donnerait. Le premier soir, tous les hôtels du village étaient complets. Elles commençaient à s'inquiéter quand une vieille dame, qui les avait entendues discuter, leur a proposé une chambre chez elle. Elles y sont restées trois jours. La dame leur a appris à faire des pâtes fraîches et leur a montré des plages que les touristes ne connaissent pas. Inès dit que c'est le plus beau voyage de sa vie, même si elle réserve quand même maintenant la première nuit.",
+    "transferPrompt": "Raconte un voyage ou une sortie où l'imprévu a rendu les choses plus intéressantes."
+  },
+  {
+    "id": "story_009",
+    "title": "L'erreur de facture",
+    "category": "argent",
+    "text": "En recevant sa facture d'électricité, Nadia a eu un choc : le montant était trois fois plus élevé que d'habitude. Elle a d'abord pensé qu'elle avait laissé un appareil allumé pendant ses vacances. Après avoir vérifié son compteur, elle s'est rendu compte que les chiffres de la facture ne correspondaient pas du tout. Elle a appelé le service client, qui l'a fait attendre presque une heure. L'employé a fini par reconnaître une erreur de relevé et a promis de corriger la facture. Nadia a été remboursée deux semaines plus tard. Depuis, elle prend une photo de son compteur chaque mois.",
+    "transferPrompt": "Raconte une démarche administrative ou un problème pratique que tu as dû régler."
+  },
+  {
+    "id": "story_010",
+    "title": "Le cours de langue",
+    "category": "education",
+    "text": "Quand Paolo est arrivé en France, il connaissait toutes les règles de grammaire, mais il n'arrivait pas à suivre une conversation. Les gens parlaient trop vite, et pendant qu'il construisait sa phrase dans sa tête, la discussion était déjà passée à autre chose. Un collègue lui a conseillé d'arrêter de chercher la phrase parfaite et d'utiliser des expressions toutes faites, comme « ce que je veux dire, c'est que » ou « ça dépend ». Au début, il trouvait ça un peu artificiel. Mais après quelques semaines, il a remarqué qu'il bloquait beaucoup moins et qu'il osait enfin intervenir dans les réunions.",
+    "transferPrompt": "Raconte un conseil qui t'a aidé à progresser dans un domaine."
+  },
+  {
+    "id": "story_011",
+    "title": "Le jardin partagé",
+    "category": "environnement",
+    "text": "Dans le quartier de Camille, il y avait un terrain vide, plein de déchets, que tout le monde évitait. Un jour, avec deux voisins, elle a proposé à la mairie d'en faire un jardin partagé. Au début, peu de gens croyaient au projet. Les premiers week-ends, ils n'étaient que quatre à ramasser les déchets et à préparer la terre. Puis des familles se sont arrêtées pour demander ce qu'ils faisaient, et certaines sont revenues avec des graines. Un an plus tard, le jardin produit des tomates, des herbes et des fleurs, et il est devenu le lieu de rencontre préféré du quartier.",
+    "transferPrompt": "Raconte un projet collectif auquel tu as participé ou que tu aimerais lancer."
+  },
+  {
+    "id": "story_012",
+    "title": "Le rendez-vous médical",
+    "category": "sante",
+    "text": "Depuis plusieurs semaines, Hugo dormait mal et se sentait fatigué toute la journée. Il pensait que c'était le stress du travail et repoussait sans cesse le rendez-vous chez le médecin. Un matin, il s'est endormi dans le bus et a raté son arrêt. Cette fois, il a pris rendez-vous. Le médecin lui a posé beaucoup de questions sur ses habitudes : les écrans le soir, le café l'après-midi, les horaires irréguliers. Il ne lui a donné aucun médicament, seulement quelques conseils simples. Trois semaines plus tard, Hugo dormait beaucoup mieux, et il regrettait de ne pas y être allé plus tôt.",
+    "transferPrompt": "Raconte une habitude que tu as changée et ce que ça t'a apporté."
+  }
+]

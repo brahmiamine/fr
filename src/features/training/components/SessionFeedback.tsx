@@ -1,4 +1,5 @@
 import type { FormEvent } from 'react'
+import type { Chunk } from '../../../types/content'
 import { SpeakButton } from '../../../components/Speech/SpeakButton'
 import type { FluencyReminder, SessionFeedback } from '../types'
 import { isFeedbackValid } from '../sessionReducer'
@@ -11,6 +12,9 @@ export interface SessionFeedbackProps {
   fluencyReminders?: FluencyReminder[]
   usedReminderIds?: string[]
   onToggleReminder?: (reminderId: string) => void
+  chunksOfDay?: Chunk[]
+  usedChunkIds?: string[]
+  onToggleChunk?: (chunkId: string) => void
 }
 
 export function SessionFeedbackView({
@@ -21,6 +25,9 @@ export function SessionFeedbackView({
   fluencyReminders = [],
   usedReminderIds = [],
   onToggleReminder,
+  chunksOfDay = [],
+  usedChunkIds = [],
+  onToggleChunk,
 }: SessionFeedbackProps) {
   const valid = isFeedbackValid(feedback)
 
@@ -45,6 +52,37 @@ export function SessionFeedbackView({
             Réécoute environ une minute avant de remplir ce feedback.
           </p>
           <audio src={audioUrl} controls preload="metadata" />
+        </div>
+      ) : null}
+
+      {chunksOfDay.length > 0 && onToggleChunk ? (
+        <div className="exercise__rescue">
+          <h2>Chunks du jour placés en parlant</h2>
+          <p className="muted">
+            Coche seulement ceux que tu as vraiment utilisés pendant le 4 → 3 → 2
+            ou les questions.
+          </p>
+          <ul>
+            {chunksOfDay.map((chunk) => {
+              const used = usedChunkIds.includes(chunk.id)
+              return (
+                <li key={chunk.id} className="feedback-reminder">
+                  <p className="feedback-reminder__text">« {chunk.expression} »</p>
+                  <div className="feedback-reminder__actions">
+                    <button
+                      type="button"
+                      className={used ? 'button button--subtle' : 'button button--ghost'}
+                      aria-pressed={used}
+                      aria-label={`J'ai placé « ${chunk.expression} »`}
+                      onClick={() => onToggleChunk(chunk.id)}
+                    >
+                      {used ? 'Placé ✓' : "Je l'ai placé"}
+                    </button>
+                  </div>
+                </li>
+              )
+            })}
+          </ul>
         </div>
       ) : null}
 

@@ -1,6 +1,6 @@
 import questionStartersData from '../../data/question-starters.json'
 import rescueStructuresData from '../../data/rescue-structures.json'
-import type { Chunk, Question, Topic } from '../../types/content'
+import type { Chunk, Question, RetellingStory, Topic } from '../../types/content'
 import type { FluencyNoteKind } from '../../types/progress'
 
 export type StageKind = 'chunks' | 'fluency' | 'questions' | 'gaps' | 'feedback'
@@ -31,9 +31,16 @@ export interface SessionPlan {
   gapItems: GapItem[]
   focusWords: string[]
   fluencyReminders: FluencyReminder[]
+  /** Chunks the learner has never met: discovered rather than retrieved. */
+  newChunkIds: string[]
+  /** "Certains jours", the 4 → 3 → 2 retells a short story instead. */
+  retellingStory: RetellingStory | null
+  /** Recent prosody point to keep while speaking (convergence of both blocks). */
+  prosodyFocusGoal: string | null
 }
 
-export type RecallResult = 'easy' | 'difficult' | 'failed'
+/** `discovered`: first encounter, the chunk was learned rather than retrieved. */
+export type RecallResult = 'easy' | 'difficult' | 'failed' | 'discovered'
 export type BlockRating = 'none' | 'some' | 'much'
 
 export interface ChunkResult {
@@ -56,6 +63,15 @@ export interface FluencyFeedback {
   missingWordContext: string
   difficultPhrase: string
   importantError: string
+  /** A chunk the learner could have used, to place in the next rounds. */
+  missedChunk?: string
+  missedChunkIntent?: string
+}
+
+/** A generic word the learner wants to keep in their personal gap list. */
+export interface GapCapture {
+  target: string
+  context: string
 }
 
 export interface SessionFeedback {
@@ -69,7 +85,11 @@ export interface SessionFeedback {
   fluencyScore: number | null
 }
 
+/** Bump when the in-progress session shape changes: older ones restart. */
+export const TRAINING_SESSION_SCHEMA = 2
+
 export interface TrainingSessionState {
+  schema?: number
   sessionId: string
   startedAt: string
   level: 1 | 2 | 3
@@ -83,6 +103,8 @@ export interface TrainingSessionState {
   }
   chunkResults: ChunkResult[]
   chunksOfDayShown: boolean
+  /** Chunks of the day the learner confirms having placed while speaking. */
+  usedChunkIds: string[]
   usedFluencyReminderIds: string[]
 
   fluency: {
@@ -104,9 +126,10 @@ export interface TrainingSessionState {
 
   gaps: {
     index: number
-    step: 'recall' | 'paraphrase' | 'revealed'
+    step: 'recall' | 'verify' | 'paraphrase' | 'revealed'
   }
   gapResults: GapResult[]
+  gapCaptures: GapCapture[]
 
   feedback: SessionFeedback
 }
@@ -128,13 +151,34 @@ export const STAGE_META: Record<StageKind, { title: string; minutes: number }> =
 }
 
 export const FLUENCY_ROUND_SECONDS = [240, 180, 120, 60] as const
-export const CHUNKS_PER_SESSION = 3
+export const CHUNKS_PER_SESSION = 4
 export const QUESTIONS_PER_SESSION = 5
 export const GAPS_PER_SESSION = 5
 export const QUESTION_COUNTDOWN_SECONDS = 3
 export const QUESTION_SPEAKING_SECONDS = 60
 export const GAP_PARAPHRASE_SECONDS = 15
+/** "Essaie de retrouver le mot rapidement. S'il ne vient pas, tu n'attends pas." */
+export const GAP_RECALL_SECONDS = 5
+/** Indicative length of the mini-feedback between rounds 1 and 2. */
+export const MINI_FEEDBACK_SECONDS = 60
 
+/** Speaking time grows from 60 s to 90 s as the learner progresses. */
+export function speakingSecondsForLevel(level: 1 | 2 | 3): number {
+  if (level === 1) return 60
+  if (level === 2) return 75
+  return 90
+}
+
+export const QUESTION_TYPE_LABELS: Record<string, string> = {
+  personal: 'personnelle',
+  opinion: 'opinion',
+  argumentation: 'argumentation',
+  narrative: 'récit',
+  hypothetical: 'hypothèse',
+  comparison: 'comparaison',
+  'problem-solving': 'résolution de problème',
+  abstract: 'abstraite',
+}
 export function prepSecondsForLevel(level: 1 | 2 | 3): number {
   if (level === 1) return 10
   if (level === 2) return 5

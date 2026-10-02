@@ -5,7 +5,7 @@ import type {
   SessionPlan,
   TrainingSessionState,
 } from './types'
-import { STAGE_ORDER, prepSecondsForLevel } from './types'
+import { STAGE_ORDER, TRAINING_SESSION_SCHEMA, prepSecondsForLevel } from './types'
 import type { SessionFeedback } from './types'
 
 export type TrainingAction =
@@ -21,6 +21,8 @@ export type TrainingAction =
       missingWordContext: string
       difficultPhrase: string
       importantError: string
+      missedChunk?: string
+      missedChunkIntent?: string
     }
   | { type: 'QUESTION_COUNTDOWN_DONE' }
   | { type: 'QUESTION_PREP_DONE' }
@@ -30,10 +32,13 @@ export type TrainingAction =
   | { type: 'REVENGE_PREP_DONE' }
   | { type: 'REVENGE_DONE' }
   | { type: 'GAP_FOUND' }
+  | { type: 'GAP_VERIFY'; correct: boolean }
+  | { type: 'GAP_CAPTURE'; context: string }
   | { type: 'GAP_START_PARAPHRASE' }
   | { type: 'GAP_REVEAL' }
   | { type: 'GAP_NEXT' }
   | { type: 'FLUENCY_TOGGLE_REMINDER_USED'; reminderId: string }
+  | { type: 'CHUNK_TOGGLE_USED'; chunkId: string }
   | {
       type: 'FEEDBACK_SET'
       field: keyof SessionFeedback
@@ -56,6 +61,7 @@ export function createSessionState(
   now: Date = new Date(),
 ): TrainingSessionState {
   return {
+    schema: TRAINING_SESSION_SCHEMA,
     sessionId: createSessionId(now),
     startedAt: now.toISOString(),
     level,
@@ -65,6 +71,7 @@ export function createSessionState(
     chunks: { index: 0, step: 'retrieve' },
     chunkResults: [],
     chunksOfDayShown: false,
+    usedChunkIds: [],
     usedFluencyReminderIds: [],
     fluency: { roundIndex: 0, stage: 'prep', keywords: [] },
     fluencyFeedback: {
@@ -72,12 +79,15 @@ export function createSessionState(
       missingWordContext: '',
       difficultPhrase: '',
       importantError: '',
+      missedChunk: '',
+      missedChunkIntent: '',
     },
     questions: { index: 0, stage: 'countdown' },
     questionRatings: [],
     revenge: { questionId: null, stage: 'idle' },
     gaps: { index: 0, step: initialGapStep(plan.gapItems[0]) },
     gapResults: [],
+    gapCaptures: [],
     feedback: {
       blockedWord: '',
       blockedWordContext: '',
@@ -188,6 +198,8 @@ export function sessionReducer(
           missingWordContext: action.missingWordContext,
           difficultPhrase: action.difficultPhrase,
           importantError: action.importantError,
+          missedChunk: action.missedChunk ?? '',
+          missedChunkIntent: action.missedChunkIntent ?? '',
         },
         fluency: { ...state.fluency, roundIndex: 1, stage: 'running' },
       }
@@ -204,15 +216,11 @@ export function sessionReducer(
     case 'QUESTION_RATE': {
       const question = state.plan.questions[state.questions.index]
       if (!question) return state
-      const isFinalQuestion =
-        state.questions.index === state.plan.questions.length - 1
-      const ratedQuestion =
-        state.level === 3 && isFinalQuestion && state.plan.pivotQuestion
-          ? state.plan.pivotQuestion
-          : question
+      // The rating always belongs to the question that was asked, even when an
+      // advanced pivot followed it, so it can be chosen for the revenge.
       const questionRatings = [
         ...state.questionRatings,
-        { questionId: ratedQuestion.id, rating: action.rating },
+        { questionId: question.id, rating: action.rating },
       ]
 
       if (state.questions.index + 1 < state.plan.questions.length) {
@@ -223,9 +231,11 @@ export function sessionReducer(
         }
       }
 
+      // "Reprends celle où tu as le plus bloqué": the revenge always happens,
+      // on the worst-rated question (the first one on a tie).
       const rank: Record<BlockRating, number> = { none: 0, some: 1, much: 2 }
       let worstId: string | null = null
-      let worstRank = 0
+      let worstRank = -1
       for (const entry of questionRatings) {
         if (rank[entry.rating] > worstRank) {
           worstRank = rank[entry.rating]
@@ -255,13 +265,35 @@ export function sessionReducer(
         revenge: { ...state.revenge, stage: 'done' },
       })
 
-    case 'GAP_FOUND': {
+    case 'GAP_FOUND':
+      // The learner has an answer: show it, then let them say whether it was
+      // right. Nothing is recorded before that check.
+      if (!state.plan.gapItems[state.gaps.index]) return state
+      return { ...state, gaps: { ...state.gaps, step: 'verify' } }
+
+    case 'GAP_VERIFY': {
       const item = state.plan.gapItems[state.gaps.index]
-      if (!item) return state
+      if (!item || state.gaps.step !== 'verify') return state
       return {
         ...state,
-        gapResults: [...state.gapResults, { itemKey: item.key, found: true }],
+        gapResults: [
+          ...state.gapResults.filter((result) => result.itemKey !== item.key),
+          { itemKey: item.key, found: action.correct },
+        ],
         gaps: { ...state.gaps, step: 'revealed' },
+      }
+    }
+
+    case 'GAP_CAPTURE': {
+      const item = state.plan.gapItems[state.gaps.index]
+      if (!item || item.isPersonal) return state
+      const others = (state.gapCaptures ?? []).filter(
+        (capture) => capture.target !== item.target,
+      )
+      const context = action.context.trim()
+      return {
+        ...state,
+        gapCaptures: context ? [...others, { target: item.target, context }] : others,
       }
     }
 
@@ -297,6 +329,16 @@ export function sessionReducer(
         usedFluencyReminderIds: alreadyUsed
           ? current.filter((id) => id !== action.reminderId)
           : [...current, action.reminderId],
+      }
+    }
+
+    case 'CHUNK_TOGGLE_USED': {
+      const current = state.usedChunkIds ?? []
+      return {
+        ...state,
+        usedChunkIds: current.includes(action.chunkId)
+          ? current.filter((id) => id !== action.chunkId)
+          : [...current, action.chunkId],
       }
     }
 

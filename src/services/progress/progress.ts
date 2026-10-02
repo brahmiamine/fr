@@ -46,6 +46,39 @@ export function trainingLevelForSessionCount(count: number): 1 | 2 | 3 {
   return 3
 }
 
+/** Share of surprise questions with a big block above which the level waits. */
+export const LEVEL_UP_MAX_MUCH_BLOCK_RATIO = 0.4
+
+/**
+ * Preparation time shrinks progressively (10 s → 5 s → 3 s), but only when
+ * the learner copes: if the last 3 sessions still had many big blocks on
+ * surprise questions, the level stays one step lower.
+ */
+export function trainingLevelForSessions(
+  sessions: readonly SessionRecord[],
+): 1 | 2 | 3 {
+  const byCount = trainingLevelForSessionCount(sessions.length)
+  if (byCount === 1) return 1
+  const recent = [...sessions]
+    .sort((a, b) => a.completedAt.localeCompare(b.completedAt))
+    .slice(-3)
+    .map((session) => session.summary?.questionBlocks)
+    .filter((blocks): blocks is NonNullable<typeof blocks> => Boolean(blocks))
+  if (recent.length === 0) return byCount
+  const totals = recent.reduce(
+    (sum, blocks) => ({
+      much: sum.much + blocks.much,
+      all: sum.all + blocks.none + blocks.some + blocks.much,
+    }),
+    { much: 0, all: 0 },
+  )
+  if (totals.all === 0) return byCount
+  if (totals.much / totals.all >= LEVEL_UP_MAX_MUCH_BLOCK_RATIO) {
+    return (byCount - 1) as 1 | 2
+  }
+  return byCount
+}
+
 function uniqueSortedDates(sessions: readonly SessionRecord[]): string[] {
   return [...new Set(sessions.map((session) => session.date))].sort()
 }
@@ -146,7 +179,7 @@ export function recordCompletedSession(
   return {
     ...state,
     sessions,
-    level: trainingLevelForSessionCount(sessions.length),
+    level: trainingLevelForSessions(sessions),
     recentTopicIds: pushRecent(state.recentTopicIds, [session.topicId], RECENT_WINDOWS.topics),
     recentQuestionIds: pushRecent(
       state.recentQuestionIds,
@@ -174,6 +207,29 @@ export function recordProsodySession(
   }
 }
 
+/**
+ * The prosody point the learner chose most often in their last 5 sessions
+ * (most recent wins a tie). Used to pick matching excerpts and to keep the
+ * same point in mind during fluency practice.
+ */
+export function recentProsodyFocus(
+  sessions: readonly ProsodySessionRecord[],
+): ProsodySessionRecord['focus'] {
+  const recent = [...sessions]
+    .sort((a, b) => b.completedAt.localeCompare(a.completedAt))
+    .slice(0, 5)
+    .map((session) => session.focus)
+    .filter((focus): focus is NonNullable<typeof focus> => Boolean(focus))
+  if (recent.length === 0) return null
+  const counts = new Map<string, number>()
+  for (const focus of recent) counts.set(focus, (counts.get(focus) ?? 0) + 1)
+  let best = recent[0]
+  for (const focus of recent) {
+    if ((counts.get(focus) ?? 0) > (counts.get(best) ?? 0)) best = focus
+  }
+  return best
+}
+
 export function calculateProsodyMinutes(
   sessions: readonly ProsodySessionRecord[],
 ): number {
@@ -181,6 +237,35 @@ export function calculateProsodyMinutes(
     (total, session) => total + (session.durationMinutes || 0),
     0,
   )
+}
+
+function dayDistance(a: string, b: string): number {
+  return Math.round(
+    (parseLocalDate(a).getTime() - parseLocalDate(b).getTime()) / 86400000,
+  )
+}
+
+/**
+ * "Toi cette semaine ↔ toi il y a quatre semaines": the test closest to four
+ * weeks before `weekKey`, accepted between three and six weeks back so one
+ * missed week does not hide the comparison.
+ */
+export function findComparisonTest(
+  tests: readonly WeeklyTestRecord[],
+  weekKey: string,
+): WeeklyTestRecord | null {
+  let best: WeeklyTestRecord | null = null
+  let bestGap = Infinity
+  for (const test of tests) {
+    const daysBack = dayDistance(weekKey, test.weekKey)
+    if (daysBack < 21 || daysBack > 42) continue
+    const gap = Math.abs(daysBack - 28)
+    if (gap < bestGap) {
+      best = test
+      bestGap = gap
+    }
+  }
+  return best
 }
 
 export function recordWeeklyTest(state: AppState, test: WeeklyTestRecord): AppState {
@@ -215,26 +300,34 @@ export function setInProgressSession(
   return { ...state, inProgressSession: session }
 }
 
+/**
+ * Spaced retrieval of a chunk: today → J+1 → J+3 → J+7 → mastered.
+ *
+ * - `discovered` (first encounter) and every success move one step forward.
+ * - A failure resets the path: the chunk comes back tomorrow and must again be
+ *   retrieved at J+1, J+3 and J+7.
+ * - A difficult recall cannot complete the path: mastery needs an easy one.
+ */
 export function upsertChunkReview(
   state: AppState,
   chunkId: string,
-  result: 'easy' | 'difficult' | 'failed',
+  result: 'easy' | 'difficult' | 'failed' | 'discovered',
   now: Date = new Date(),
 ): AppState {
   const existing = state.chunkReviews.find((review) => review.chunkId === chunkId)
-  const recalled = result === 'failed' ? 0 : 1
-  const nextTimesRecalled = (existing?.timesRecalled ?? 0) + recalled
+  const recalled = result === 'easy' || result === 'difficult' ? 1 : 0
+  const previousStreak = existing?.streak ?? existing?.timesRecalled ?? 0
+
+  let streak = result === 'failed' ? 0 : previousStreak + 1
+  if (result === 'difficult' && streak >= 4) streak = 3
 
   let interval = 1
   let mastered = false
-  if (result !== 'failed') {
-    if (nextTimesRecalled === 1) interval = 1
-    else if (nextTimesRecalled === 2) interval = 2
-    else if (nextTimesRecalled === 3) interval = 4
-    else {
-      interval = 30
-      mastered = true
-    }
+  if (streak === 2) interval = 2
+  else if (streak === 3) interval = 4
+  else if (streak >= 4) {
+    interval = 30
+    mastered = true
   }
 
   const next: ChunkReview = {
@@ -242,7 +335,8 @@ export function upsertChunkReview(
     nextReview: nextReviewAfter(interval, now),
     interval,
     timesSeen: (existing?.timesSeen ?? 0) + 1,
-    timesRecalled: nextTimesRecalled,
+    timesRecalled: (existing?.timesRecalled ?? 0) + recalled,
+    streak,
     lastResult: result,
     mastered,
   }

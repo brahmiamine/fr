@@ -10,13 +10,16 @@ import {
   calculateWeeklyProgress,
   captureWordGap,
   createWordGap,
+  findComparisonTest,
   formatDuration,
   getWeekKey,
   markFluencyNoteUsed,
   masteredGapCount,
   recordCompletedSession,
+  recentProsodyFocus,
   recordProsodySession,
   trainingLevelForSessionCount,
+  trainingLevelForSessions,
   upsertChunkReview,
   upsertFluencyNote,
   upsertPersonalChunk,
@@ -85,6 +88,52 @@ describe('adaptive preparation', () => {
     expect(trainingLevelForSessionCount(0)).toBe(1)
     expect(trainingLevelForSessionCount(5)).toBe(2)
     expect(trainingLevelForSessionCount(15)).toBe(3)
+  })
+
+  it('keeps a longer preparation while surprise questions still block a lot', () => {
+    const days = Array.from({ length: 15 }, (_, index) =>
+      `2026-09-${String(index + 1).padStart(2, '0')}`,
+    )
+    const easy = { none: 4, some: 1, much: 0 }
+    const hard = { none: 1, some: 1, much: 3 }
+    const withBlocks = (blocks: typeof easy) =>
+      days.map((day) =>
+        session(day, {
+          summary: {
+            chunksWorked: 4,
+            gapsPracticed: 5,
+            questionsAsked: 5,
+            fluencyDone: true,
+            questionBlocks: blocks,
+          },
+        }),
+      )
+    expect(trainingLevelForSessions(withBlocks(easy))).toBe(3)
+    expect(trainingLevelForSessions(withBlocks(hard))).toBe(2)
+    expect(trainingLevelForSessions(withBlocks(hard).slice(0, 6))).toBe(1)
+    // Older sessions without question data fall back to the session count.
+    expect(trainingLevelForSessions(days.map((day) => session(day)))).toBe(3)
+  })
+
+  it('finds the prosody point the learner works on most often', () => {
+    const record = (id: string, focus: 'pause' | 'intonation' | null) => ({
+      id,
+      exerciseId: 'prosody_001',
+      date: '2026-10-01',
+      completedAt: `2026-10-01T0${id}:00:00.000Z`,
+      durationMinutes: 12,
+      focus,
+      retellingSeconds: 40,
+    })
+    expect(recentProsodyFocus([])).toBeNull()
+    expect(
+      recentProsodyFocus([
+        record('1', 'pause'),
+        record('2', 'intonation'),
+        record('3', 'pause'),
+        record('4', null),
+      ]),
+    ).toBe('pause')
   })
 
   it('updates the stored level after completing sessions', () => {
@@ -163,6 +212,41 @@ describe('spaced retrieval state', () => {
     expect(state.chunkReviews[0].mastered).toBe(true)
   })
 
+  it('restarts the whole J+1 → J+3 → J+7 path after a failed recall', () => {
+    let state = createInitialState()
+    const days = [2, 3, 5]
+    for (const day of days) {
+      state = upsertChunkReview(state, 'chunk_001', 'easy', new Date(2026, 9, day))
+    }
+    state = upsertChunkReview(state, 'chunk_001', 'failed', new Date(2026, 9, 9))
+    expect(state.chunkReviews[0].nextReview).toBe('2026-10-10')
+    expect(state.chunkReviews[0].streak).toBe(0)
+
+    state = upsertChunkReview(state, 'chunk_001', 'easy', new Date(2026, 9, 10))
+    expect(state.chunkReviews[0].mastered).toBe(false)
+    expect(state.chunkReviews[0].nextReview).toBe('2026-10-11')
+  })
+
+  it('requires an easy recall to master a chunk and treats discovery as day 0', () => {
+    let state = upsertChunkReview(
+      createInitialState(),
+      'chunk_001',
+      'discovered',
+      new Date(2026, 9, 2),
+    )
+    expect(state.chunkReviews[0].nextReview).toBe('2026-10-03')
+    expect(state.chunkReviews[0].timesRecalled).toBe(0)
+
+    state = upsertChunkReview(state, 'chunk_001', 'easy', new Date(2026, 9, 3))
+    state = upsertChunkReview(state, 'chunk_001', 'easy', new Date(2026, 9, 5))
+    state = upsertChunkReview(state, 'chunk_001', 'difficult', new Date(2026, 9, 9))
+    expect(state.chunkReviews[0].mastered).toBe(false)
+    expect(state.chunkReviews[0].nextReview).toBe('2026-10-13')
+
+    state = upsertChunkReview(state, 'chunk_001', 'easy', new Date(2026, 9, 13))
+    expect(state.chunkReviews[0].mastered).toBe(true)
+  })
+
   it('reviews word gaps on J+1, J+3 and J+7 before mastery', () => {
     let state: AppState = {
       ...createInitialState(),
@@ -222,4 +306,28 @@ describe('spaced retrieval state', () => {
     expect(next.recentProsodyIds).toEqual(['prosody_001'])
   })
 
+})
+
+describe('weekly test comparison', () => {
+  const test = (weekKey: string) => ({
+    id: `wt-${weekKey}`,
+    weekKey,
+    date: weekKey,
+    topicId: 't001',
+    durationMinutes: 3,
+    startDelaySeconds: 2,
+    longPauses: 3,
+    majorFillers: 1,
+    successfulParaphrases: 1,
+    abandonedSentences: 1,
+    longestFluentSegmentSeconds: 20,
+    score: 3,
+  })
+
+  it('compares with the test closest to four weeks back, even if that week was skipped', () => {
+    const tests = [test('2026-09-07'), test('2026-09-14'), test('2026-09-28')]
+    expect(findComparisonTest(tests, '2026-10-12')?.weekKey).toBe('2026-09-14')
+    expect(findComparisonTest([test('2026-09-07')], '2026-10-12')?.weekKey).toBe('2026-09-07')
+    expect(findComparisonTest([test('2026-10-05')], '2026-10-12')).toBeNull()
+  })
 })

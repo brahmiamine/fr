@@ -25,7 +25,7 @@ function renderTraining(initialState?: AppState) {
 describe('TrainingPage', () => {
   it('creates a new session on the chunks stage', async () => {
     renderTraining()
-    expect(screen.getByText('Chunk 1/3')).toBeInTheDocument()
+    expect(screen.getByText(/Chunk 1\/4/)).toBeInTheDocument()
     await waitFor(() => {
       expect(window.localStorage.getItem(STORAGE_KEY)).toBeTruthy()
     })
