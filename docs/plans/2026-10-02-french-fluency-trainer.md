@@ -1,4 +1,4 @@
-# French Fluency Trainer Implementation Plan
+# Parle+ Implementation Plan
 
 > **For agentic workers:** Use the host's available task-by-task implementation workflow. Steps use checkbox syntax for tracking.
 
@@ -24,7 +24,7 @@
 - Paraphrase: 5 words, 60 seconds each.
 - Surprise questions: 3-second reveal countdown and 60-second speaking timer.
 - 4→3→2: 240, 180, 120 seconds plus a 60-second transfer round.
-- localStorage root key: fr-fluency-trainer.
+- localStorage root key: parle-plus.
 - Storage schema is versioned.
 - If localStorage is unavailable, training continues in memory and a non-blocking warning is shown.
 
@@ -121,7 +121,7 @@
 
 - [ ] Step 1: Add failing tests for missing storage, valid V1 state, malformed JSON fallback, setItem failure, streaks, weekly progress, and total minutes.
 - [ ] Step 2: Run focused storage/progress tests and confirm failure.
-- [ ] Step 3: Implement the root key exactly as fr-fluency-trainer and local calendar date strings for streak calculations.
+- [ ] Step 3: Implement the root key exactly as parle-plus and local calendar date strings for streak calculations.
 - [ ] Step 4: Make failures return usable in-memory state plus a warning instead of throwing.
 - [ ] Step 5: Run focused tests, then the complete test suite.
 - [ ] Step 6: Commit with message feat: persist training progress.
