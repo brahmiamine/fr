@@ -12,6 +12,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Install audio tooling
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+      - name: Build licensed prosody audio bank
+        run: bash scripts/import-prosody-recordings.sh
+      - name: Upload generated prosody recordings
+        uses: actions/upload-artifact@v4
+        with:
+          name: prosody-recordings
+          path: |
+            public/audio/prosody/prosody_real_*.ogg
+            docs/prosody-audio-analysis.txt
       - uses: actions/setup-node@v4
         with:
           node-version: 20
