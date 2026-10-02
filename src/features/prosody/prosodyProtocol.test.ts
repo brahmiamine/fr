@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import type { ProsodyExercise } from './types'
 import {
   isProsodyExerciseReady,
+  pickReadyProsodyExercise,
   readyProsodyExercises,
   validateProsodyExercise,
 } from '../../services/content/prosodyRepository'
@@ -45,6 +46,11 @@ describe('prosody content protocol', () => {
     expect(validateProsodyExercise({ ...fake, timing: undefined })).toContain(
       'tts-timing-not-estimated',
     )
+  })
+
+  it('prefers a fresh human recording over synthetic models', () => {
+    const picked = pickReadyProsodyExercise([], () => 0)
+    expect(picked?.modelKind).toBe('recording')
   })
 
   it('never exposes an invalid exercise as production-ready', () => {
