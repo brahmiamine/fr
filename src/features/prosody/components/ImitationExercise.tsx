@@ -6,7 +6,7 @@ import {
   REQUIRED_SHADOW_PLAYS,
 } from '../types'
 import type { ProsodyRecorder } from '../hooks/useProsodyRecorder'
-import { AudioClip } from './AudioClip'
+import { AudioClip } from '../../../components/AudioClip/AudioClip'
 import { MelodyWarmup } from './MelodyWarmup'
 import { RecorderControls } from './RecorderControls'
 
@@ -53,7 +53,6 @@ export function ImitationExercise({
           start={exercise.imitation.start}
           end={exercise.imitation.end}
           label="Écouter le segment"
-          variant="block"
           onComplete={onModelPlayed}
         />
         <p className="muted">
@@ -142,7 +141,6 @@ export function ImitationExercise({
         start={exercise.imitation.start}
         end={exercise.imitation.end}
         label="Démarrer le shadowing"
-        variant="block"
         onComplete={onShadowPlayed}
       />
       <p className="muted">Shadowing complet : {Math.min(shadowPlays, 1)}/1</p>

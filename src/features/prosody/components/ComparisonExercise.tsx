@@ -3,7 +3,7 @@ import type { ProsodyExercise, ProsodyFocus } from '../types'
 import { FOCUS_OPTIONS, focusGoal, imitationTranscript, speechRateFor } from '../types'
 import type { ProsodyRecorder } from '../hooks/useProsodyRecorder'
 import { AbaPlayer } from './AbaPlayer'
-import { AudioClip } from './AudioClip'
+import { AudioClip } from '../../../components/AudioClip/AudioClip'
 import { RecorderControls } from './RecorderControls'
 
 export interface ComparisonExerciseProps {
@@ -153,11 +153,11 @@ export function ComparisonExercise({
       <div className="stack">
         <div className="audio__row">
           <span className="muted">V1</span>
-          <audio src={recorder.attempt1?.url ?? undefined} controls preload="metadata" />
+          <AudioClip src={recorder.attempt1?.url ?? undefined} label="Écouter ma version 1" />
         </div>
         <div className="audio__row">
           <span className="muted">V2</span>
-          <audio src={recorder.attempt2?.url ?? undefined} controls preload="metadata" />
+          <AudioClip src={recorder.attempt2?.url ?? undefined} label="Écouter ma version 2" />
         </div>
       </div>
       <button type="button" className="button button--block" onClick={onCompareDone}>

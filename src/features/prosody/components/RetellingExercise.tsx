@@ -1,3 +1,4 @@
+import { AudioClip } from '../../../components/AudioClip/AudioClip'
 import type { ProsodyExercise } from '../types'
 import { MIN_RETELL_SECONDS, TARGET_RETELL_SECONDS } from '../types'
 import type { ProsodyRecorder } from '../hooks/useProsodyRecorder'
@@ -88,7 +89,7 @@ export function RetellingExercise({
       </p>
       {recorder.current?.url ? (
         <div className="audio__row">
-          <audio src={recorder.current.url} controls preload="metadata" />
+          <AudioClip src={recorder.current.url} label="Écouter mon retelling" />
           <span className="pill">{durationSeconds} s</span>
         </div>
       ) : (

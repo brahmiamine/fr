@@ -1,3 +1,4 @@
+import { AudioClip } from '../../../../components/AudioClip/AudioClip'
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { SpeakButton } from '../../../../components/Speech/SpeakButton'
@@ -59,7 +60,7 @@ export function FluencyMiniFeedback({
             Écoute ton tour avant de corriger. Cherche seulement un mot, une
             phrase difficile et une erreur importante.
           </p>
-          <audio src={recorder.blobUrl} controls preload="metadata" />
+          <AudioClip src={recorder.blobUrl} label="Écouter mon tour" />
         </Callout>
       ) : (
         <p className="muted">

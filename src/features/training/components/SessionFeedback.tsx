@@ -1,3 +1,4 @@
+import { AudioClip } from '../../../components/AudioClip/AudioClip'
 import type { FormEvent } from 'react'
 import type { Chunk } from '../../../types/content'
 import { SpeakButton } from '../../../components/Speech/SpeakButton'
@@ -51,7 +52,7 @@ export function SessionFeedbackView({
           <p className="muted">
             Réécoute environ une minute avant de remplir ce feedback.
           </p>
-          <audio src={audioUrl} controls preload="metadata" />
+          <AudioClip src={audioUrl} label="Écouter mon enregistrement" />
         </div>
       ) : null}
 

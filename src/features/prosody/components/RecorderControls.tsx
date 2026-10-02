@@ -1,3 +1,4 @@
+import { AudioClip } from '../../../components/AudioClip/AudioClip'
 import type { ProsodyRecorder } from '../hooks/useProsodyRecorder'
 
 export interface RecorderControlsProps {
@@ -59,7 +60,7 @@ export function RecorderControls({
       {recorder.status === 'stopped' && recorder.current?.url ? (
         <div className="stack">
           <div className="audio__row">
-            <audio src={recorder.current.url} controls preload="metadata" />
+            <AudioClip src={recorder.current.url} label="Écouter mon enregistrement" />
             <span className="muted">
               Durée : {formatSeconds(recorder.current.durationSeconds)}
             </span>

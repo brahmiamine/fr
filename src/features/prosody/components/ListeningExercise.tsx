@@ -11,7 +11,7 @@ import {
   REQUIRED_MEANING_LISTENS,
   REQUIRED_PROSODY_LISTENS,
 } from '../types'
-import { AudioClip } from './AudioClip'
+import { AudioClip } from '../../../components/AudioClip/AudioClip'
 
 export interface ListeningExerciseProps {
   exercise: ProsodyExercise
@@ -263,7 +263,6 @@ export function ListeningExercise({
           speechLocale={exercise.voiceLocale}
           speechRate={speechRateFor(exercise)}
           label="Écouter l'extrait complet"
-          variant="player"
           caption={`Écoute complète : ${Math.min(meaningPlays, 1)}/1 · ne lis rien, comprends seulement le sens`}
           onComplete={onAudioComplete}
         />
@@ -298,7 +297,6 @@ export function ListeningExercise({
           speechLocale={exercise.voiceLocale}
           speechRate={speechRateFor(exercise)}
           label="Écouter à nouveau"
-          variant="block"
           onComplete={onAudioComplete}
         />
         <p className="muted">Écoute prosodique : {Math.min(prosodyPlays, 1)}/1</p>
@@ -364,7 +362,6 @@ export function ListeningExercise({
         speechLocale={exercise.voiceLocale}
         speechRate={speechRateFor(exercise)}
         label="Réécouter avec le découpage visible"
-        variant="block"
       />
       <button type="button" className="button button--block" onClick={onNext}>
         Continuer vers l'imitation

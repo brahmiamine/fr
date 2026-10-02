@@ -1,3 +1,4 @@
+import { AudioClip } from '../../../components/AudioClip/AudioClip'
 import { useEffect, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 import type { CustomExtractInput } from '../customExtract'
@@ -17,7 +18,7 @@ function roundSeconds(value: number): number {
  * audio stays in memory: nothing is uploaded or stored.
  */
 export function CustomExtractForm({ onSubmit, onCancel }: CustomExtractFormProps) {
-  const audioRef = useRef<HTMLAudioElement | null>(null)
+  const playheadRef = useRef(0)
   const [audioUrl, setAudioUrl] = useState('')
   const [duration, setDuration] = useState(0)
   const [transcript, setTranscript] = useState('')
@@ -46,7 +47,7 @@ export function CustomExtractForm({ onSubmit, onCancel }: CustomExtractFormProps
   }
 
   const markCurrent = (setter: (value: string) => void) => {
-    const current = audioRef.current?.currentTime ?? 0
+    const current = playheadRef.current
     setter(String(roundSeconds(current)))
   }
 
@@ -77,17 +78,15 @@ export function CustomExtractForm({ onSubmit, onCancel }: CustomExtractFormProps
         </div>
         {audioUrl ? (
           <div className="field">
-            <audio
-              ref={audioRef}
+            <AudioClip
               src={audioUrl}
-              controls
-              preload="metadata"
-              onLoadedMetadata={(event) => {
-                const value = event.currentTarget.duration
-                if (Number.isFinite(value)) {
-                  setDuration(roundSeconds(value))
-                  setEnd(String(roundSeconds(Math.min(value, 8))))
-                }
+              label="Écouter l'extrait"
+              onTimeChange={(seconds) => {
+                playheadRef.current = seconds
+              }}
+              onDuration={(value) => {
+                setDuration(roundSeconds(value))
+                setEnd(String(roundSeconds(Math.min(value, 8))))
               }}
             />
             {duration > 0 ? <span className="muted">Durée : {duration} s</span> : null}

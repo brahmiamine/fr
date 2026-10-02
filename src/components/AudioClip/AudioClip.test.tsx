@@ -96,7 +96,7 @@ describe('AudioClip', () => {
 
   it('fills the waveform as the audio advances and seeks on click', () => {
     const { container } = render(
-      <AudioClip src="/model.wav" variant="player" label="Écouter" />,
+      <AudioClip src="/model.wav" label="Écouter" />,
     )
     const audio = container.querySelector('audio') as HTMLAudioElement
     Object.defineProperty(audio, 'duration', { value: 10, configurable: true })

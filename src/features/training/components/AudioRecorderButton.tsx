@@ -1,3 +1,4 @@
+import { AudioClip } from '../../../components/AudioClip/AudioClip'
 import type { AudioRecorder } from '../../../hooks/useAudioRecorder'
 import '../training.css'
 
@@ -29,7 +30,7 @@ export function AudioRecorderButton({ recorder }: { recorder: AudioRecorder }) {
       ) : null}
       {recorder.status === 'stopped' && recorder.blobUrl ? (
         <div className="audio__row">
-          <audio src={recorder.blobUrl} controls preload="metadata" />
+          <AudioClip src={recorder.blobUrl} label="Écouter mon enregistrement" />
           <button
             type="button"
             className="button button--ghost audio__button"

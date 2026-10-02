@@ -1,7 +1,7 @@
 import { useAudioRecorder } from '../../../hooks/useAudioRecorder'
 import type { ProsodyExercise } from '../types'
 import { imitationTranscript, speechRateFor } from '../types'
-import { AudioClip } from './AudioClip'
+import { AudioClip } from '../../../components/AudioClip/AudioClip'
 
 export interface MelodyWarmupProps {
   exercise: ProsodyExercise
@@ -50,7 +50,7 @@ export function MelodyWarmup({ exercise, audioSrc }: MelodyWarmupProps) {
             </button>
           )}
           {recorder.blobUrl ? (
-            <audio src={recorder.blobUrl} controls preload="metadata" />
+            <AudioClip src={recorder.blobUrl} label="Écouter mon essai" />
           ) : null}
         </div>
       ) : (

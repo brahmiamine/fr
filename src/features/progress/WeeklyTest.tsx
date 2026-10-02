@@ -1,3 +1,4 @@
+import { AudioClip } from '../../components/AudioClip/AudioClip'
 import { InfoButton } from '../../components/ui'
 import { useEffect, useMemo, useState } from 'react'
 import type { FormEvent } from 'react'
@@ -189,7 +190,7 @@ export default function WeeklyTest() {
                 Réécoute-toi pour compter : distingue les pauses au milieu d'une
                 phrase (difficulté de formulation) des pauses entre deux idées.
               </p>
-              <audio src={recorder.blobUrl} controls preload="metadata" />
+              <AudioClip src={recorder.blobUrl} label="Écouter mon enregistrement" />
             </div>
           ) : null}
           {activity ? (
