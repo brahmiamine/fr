@@ -37,6 +37,14 @@ function sessionDurationMinutes(session: TrainingSessionState): number {
   return Math.max(1, Math.ceil(elapsed / 60000))
 }
 
+function practisedQuestionIds(session: TrainingSessionState): string[] {
+  const ids = session.plan.questions.map((question) => question.id)
+  if (session.level === 3 && session.plan.pivotQuestion) {
+    ids.push(session.plan.pivotQuestion.id)
+  }
+  return ids
+}
+
 function CompletedScreen({ session }: { session: TrainingSessionState }) {
   const plan = session.plan
   return (
@@ -47,7 +55,7 @@ function CompletedScreen({ session }: { session: TrainingSessionState }) {
       <ul className="summary-list">
         <li>{plan.chunks.length} chunks travaillés</li>
         <li>{plan.gapItems.length} mots travaillés</li>
-        <li>{plan.questions.length} questions spontanées</li>
+        <li>{practisedQuestionIds(session).length} questions spontanées</li>
         <li>4 → 3 → 2 terminé</li>
       </ul>
       <div className="stack">
@@ -102,6 +110,8 @@ export default function TrainingPage() {
       .filter((item) => !item.isPersonal && item.sourceId)
       .map((item) => item.sourceId as string)
 
+    const questionIds = practisedQuestionIds(session)
+
     const record: SessionRecord = {
       id: session.sessionId,
       date: toLocalDateString(now),
@@ -112,13 +122,13 @@ export default function TrainingPage() {
       blockedWord: session.feedback.blockedWord,
       expressionToReuse: session.feedback.expressionToReuse,
       topicId: plan.topic.id,
-      questionIds: plan.questions.map((question) => question.id),
+      questionIds,
       chunkIds: plan.chunks.map((chunk) => chunk.id),
       genericWordIds,
       summary: {
         chunksWorked: plan.chunks.length,
         gapsPracticed: plan.gapItems.length,
-        questionsAsked: plan.questions.length,
+        questionsAsked: questionIds.length,
         fluencyDone: true,
       },
     }
@@ -182,8 +192,8 @@ export default function TrainingPage() {
         now,
       )
 
-      for (const reminder of plan.fluencyReminders) {
-        next = markFluencyNoteUsed(next, reminder.id, now)
+      for (const reminderId of session.usedFluencyReminderIds ?? []) {
+        next = markFluencyNoteUsed(next, reminderId, now)
       }
 
       return next
@@ -279,6 +289,11 @@ export default function TrainingPage() {
         <SessionFeedbackView
           feedback={session.feedback}
           audioUrl={sessionRecorder.blobUrl}
+          fluencyReminders={session.plan.fluencyReminders}
+          usedReminderIds={session.usedFluencyReminderIds ?? []}
+          onToggleReminder={(reminderId) =>
+            dispatch({ type: 'FLUENCY_TOGGLE_REMINDER_USED', reminderId })
+          }
           onChange={(field, value) =>
             dispatch({ type: 'FEEDBACK_SET', field, value })
           }
@@ -303,9 +318,13 @@ function QuestionsRenderer({
     session.revenge.stage === 'prep' ||
     session.revenge.stage === 'speaking'
   ) {
-    const revengeQuestion = plan.questions.find(
-      (question) => question.id === session.revenge.questionId,
-    )
+    const revengeQuestion =
+      plan.questions.find(
+        (question) => question.id === session.revenge.questionId,
+      ) ??
+      (plan.pivotQuestion?.id === session.revenge.questionId
+        ? plan.pivotQuestion
+        : undefined)
     if (!revengeQuestion) {
       return (
         <section className="card exercise exercise--center">
