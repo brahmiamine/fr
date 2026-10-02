@@ -6,6 +6,19 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   base: '/fr/',
   plugins: [react()],
+  build: {
+    rollupOptions: {
+      output: {
+        // Content JSON and React change at different rhythms than the UI:
+        // separate chunks keep them cached across releases.
+        manualChunks(id) {
+          if (id.includes('/src/data/')) return 'content'
+          if (id.includes('node_modules')) return 'vendor'
+          return undefined
+        },
+      },
+    },
+  },
   test: {
     globals: true,
     environment: 'jsdom',

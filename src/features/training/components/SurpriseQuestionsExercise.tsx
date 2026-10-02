@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { Chunk, Question } from '../../../types/content'
 import { Timer } from '../../../components/Timer/Timer'
+import { Button, Callout, Card, ChoiceButton, ChoiceGrid, DotList, InfoLine, Pill } from '../../../components/ui'
 import {
   QUESTION_COUNTDOWN_SECONDS,
   QUESTION_SPEAKING_SECONDS,
@@ -54,8 +55,8 @@ export function SurpriseQuestionsExercise({
 
   if (stage === 'countdown') {
     return (
-      <section className="card exercise exercise--center" aria-live="polite">
-        <p className="pill">{counterLabel}</p>
+      <Card center aria-live="polite">
+        <Pill tone={revenge ? 'contrast' : 'muted'} pop>{counterLabel}</Pill>
         <h2>{revenge ? 'Revanche :' : 'Question suivante dans…'}</h2>
         {revenge ? (
           <p className="muted">
@@ -68,19 +69,20 @@ export function SurpriseQuestionsExercise({
           hideControls
           compact
           secondsOnly
+          variant="bubble"
           onComplete={onCountdownDone}
         />
-      </section>
+      </Card>
     )
   }
 
   if (stage === 'prep') {
     return (
-      <section className="card exercise exercise--center" aria-live="polite">
-        <p className="pill">{counterLabel}</p>
+      <Card center aria-live="polite">
+        <Pill tone={revenge ? 'contrast' : 'muted'}>{counterLabel}</Pill>
         <h1 className="exercise__prompt">{question.text}</h1>
         {question.type ? (
-          <p className="pill">
+          <p className="pill pill--warm">
             Type : {QUESTION_TYPE_LABELS[question.type] ?? question.type}
           </p>
         ) : null}
@@ -92,36 +94,29 @@ export function SurpriseQuestionsExercise({
           compact
           secondsOnly
           label="Préparation"
+          variant="bubble"
           onComplete={onPrepDone}
         />
-      </section>
+      </Card>
     )
   }
 
   if (stage === 'rate') {
     return (
-      <section className="card exercise exercise--center">
+      <Card center>
         <h2>As-tu bloqué ?</h2>
-        <div className="stack exercise__ratings">
-          <button type="button" className="button" onClick={() => onRate('none')}>
+        <ChoiceGrid min={150}>
+          <ChoiceButton tone="success" onClick={() => onRate('none')}>
             Non
-          </button>
-          <button
-            type="button"
-            className="button button--subtle"
-            onClick={() => onRate('some')}
-          >
+          </ChoiceButton>
+          <ChoiceButton tone="warning" delay={0.06} onClick={() => onRate('some')}>
             Un peu
-          </button>
-          <button
-            type="button"
-            className="button button--ghost"
-            onClick={() => onRate('much')}
-          >
+          </ChoiceButton>
+          <ChoiceButton tone="danger" delay={0.12} onClick={() => onRate('much')}>
             Beaucoup
-          </button>
-        </div>
-      </section>
+          </ChoiceButton>
+        </ChoiceGrid>
+      </Card>
     )
   }
 
@@ -144,8 +139,8 @@ export function SurpriseQuestionsExercise({
   }
 
   return (
-    <section className="card exercise" aria-labelledby="question-title">
-      <p className="pill">
+    <Card aria-labelledby="question-title">
+      <p className={`pill${pivotActive ? ' pill--warm' : ''}`}>
         {pivotActive ? 'Pivot — change de sujet maintenant' : counterLabel}
       </p>
       <h2 id="question-title" className="exercise__prompt">
@@ -158,41 +153,29 @@ export function SurpriseQuestionsExercise({
         autoStart
         hideControls
         label={pivotActive ? 'Continue immédiatement' : 'Parle'}
+        wave
         onComplete={completeSpeakingPhase}
       />
 
       {chunksOfDay.length > 0 ? (
-        <p className="exercise__chunks">
-          <span className="muted">Essaie de placer :</span>{' '}
+        <InfoLine label="Essaie de placer :">
           {chunksOfDay.map((chunk) => chunk.expression).join(' · ')}
-        </p>
+        </InfoLine>
       ) : null}
 
       {focusWords.length > 0 ? (
-        <p className="exercise__chunks">
-          <span className="muted">Mots à réutiliser :</span>{' '}
-          {focusWords.join(' · ')}
-        </p>
+        <InfoLine label="Mots à réutiliser :">{focusWords.join(' · ')}</InfoLine>
       ) : null}
 
       {!showStarters ? (
-        <button
-          type="button"
-          className="button button--ghost button--block"
-          onClick={() => setShowStarters(true)}
-        >
+        <Button variant="dashed" block onClick={() => setShowStarters(true)}>
           Besoin d'une amorce ?
-        </button>
+        </Button>
       ) : (
-        <div className="exercise__rescue">
-          <h3>Amorces possibles</h3>
-          <ul>
-            {QUESTION_STARTERS.map((starter) => (
-              <li key={starter}>{starter}</li>
-            ))}
-          </ul>
-        </div>
+        <Callout title="Amorces possibles">
+          <DotList items={QUESTION_STARTERS} />
+        </Callout>
       )}
-    </section>
+    </Card>
   )
 }

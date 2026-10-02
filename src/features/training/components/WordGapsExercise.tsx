@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { SpeakButton } from '../../../components/Speech/SpeakButton'
 import { Timer } from '../../../components/Timer/Timer'
+import { Button, Callout, DotList, Pill } from '../../../components/ui'
 import type { GapItem } from '../types'
 import {
   GAP_PARAPHRASE_SECONDS,
@@ -42,8 +43,8 @@ export function WordGapsExercise({
 
   if (step === 'recall') {
     return (
-      <section className="card exercise exercise--center" aria-live="polite">
-        <p className="pill">Mot {index + 1}/{total}</p>
+      <section className="card card--slide exercise-card exercise--center" aria-live="polite">
+        <div className="exercise-topline"><span className="exercise-topline__label">Mot {index + 1}/{total}</span><Pill tone="fresh">{item.isPersonal ? 'Mes trous de mots' : 'Vocabulaire'}</Pill></div>
         <p className="exercise__context">
           Tu voulais exprimer :<br />
           <em>
@@ -60,6 +61,7 @@ export function WordGapsExercise({
           hideControls
           compact
           secondsOnly
+          variant="bubble"
           label="Rappel"
           onComplete={onStartParaphrase}
         />
@@ -82,9 +84,9 @@ export function WordGapsExercise({
 
   if (step === 'verify') {
     return (
-      <section className="card exercise exercise--center">
-        <p className="pill">Mot {index + 1}/{total}</p>
-        <h1 className="exercise__expression">
+      <section className="card card--slide exercise-card exercise--center">
+        <div className="exercise-topline"><span className="exercise-topline__label">Mot {index + 1}/{total}</span><Pill tone="fresh">{item.isPersonal ? 'Mes trous de mots' : 'Vocabulaire'}</Pill></div>
+        <h1 className="gap-answer">
           Réponse : <strong>{item.target}</strong>
         </h1>
         <p className="muted">Était-ce exactement le mot que tu as dit ?</p>
@@ -106,8 +108,8 @@ export function WordGapsExercise({
 
   if (step === 'paraphrase') {
     return (
-      <section className="card exercise" aria-live="polite">
-        <p className="pill">Mot {index + 1}/{total}</p>
+      <section className="card card--slide exercise-card" aria-live="polite">
+        <div className="exercise-topline"><span className="exercise-topline__label">Mot {index + 1}/{total}</span><Pill tone="fresh">{item.isPersonal ? 'Mes trous de mots' : 'Vocabulaire'}</Pill></div>
         {item.kind === 'retrieve' ? (
           <h1 className="exercise__intent">Explique l'idée sans le mot.</h1>
         ) : (
@@ -120,24 +122,18 @@ export function WordGapsExercise({
         )}
 
         {(item.rescueAngles?.length ?? 0) > 0 ? (
-          <div className="exercise__rescue">
-            <h3>Angles pour continuer à parler</h3>
-            <ul>
-              {item.rescueAngles?.map((angle) => (
-                <li key={angle}>{angle}</li>
-              ))}
-            </ul>
-          </div>
+          <Callout title="Angles pour continuer à parler">
+            <DotList items={item.rescueAngles ?? []} />
+          </Callout>
         ) : null}
 
-        <div className="exercise__rescue">
-          <h3>Structures de secours</h3>
-          <ul>
+        <Callout title="Structures de secours">
+          <div className="chip-row">
             {RESCUE_STRUCTURES.map((structure) => (
-              <li key={structure}>{structure}</li>
+              <span key={structure} className="rescue-chip">{structure}</span>
             ))}
-          </ul>
-        </div>
+          </div>
+        </Callout>
 
         <Timer
           durationSeconds={GAP_PARAPHRASE_SECONDS}
@@ -153,9 +149,9 @@ export function WordGapsExercise({
   }
 
   return (
-    <section className="card exercise exercise--center">
-      <p className="pill">Mot {index + 1}/{total}</p>
-      <h1 className="exercise__expression">
+    <section className="card card--slide exercise-card exercise--center">
+      <div className="exercise-topline"><span className="exercise-topline__label">Mot {index + 1}/{total}</span><Pill tone="fresh">{item.isPersonal ? 'Mes trous de mots' : 'Vocabulaire'}</Pill></div>
+      <h1 className="gap-answer">
         Réponse : <strong>{item.target}</strong>
       </h1>
       <SpeakButton
@@ -190,20 +186,16 @@ export function WordGapsExercise({
               </p>
             </div>
           ) : (
-            <button
-              type="button"
-              className="button button--ghost button--block"
-              onClick={() => setCaptureOpen(true)}
-            >
+            <Button variant="accent-outline" block onClick={() => setCaptureOpen(true)}>
               Ajouter à mes trous de mots
-            </button>
+            </Button>
           )}
         </div>
       ) : null}
 
-      <button type="button" className="button button--block" onClick={onNext}>
+      <Button block trailing="→" onClick={onNext}>
         {isLast ? 'Terminer l’exercice' : 'Mot suivant'}
-      </button>
+      </Button>
     </section>
   )
 }

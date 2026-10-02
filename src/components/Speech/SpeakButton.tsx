@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { canSpeak, cancelSpeech, speakText } from '../../services/speech'
+import { WaveBars } from '../ui'
 import './speech.css'
 
 let releaseActiveButton: (() => void) | null = null
@@ -71,14 +72,12 @@ export function SpeakButton({
   return (
     <button
       type="button"
-      className={`button button--ghost speech-button${compact ? ' speech-button--compact' : ''}`}
+      className={`speech-button${compact ? ' speech-button--compact' : ''}${speaking ? ' is-speaking' : ''}`}
       aria-label={speaking ? `Arrêter — ${accessibleLabel}` : accessibleLabel}
       aria-pressed={speaking}
       onClick={toggle}
     >
-      <span className="speech-button__icon" aria-hidden="true">
-        {speaking ? '⏹' : '🔊'}
-      </span>
+      <WaveBars count={5} height={compact ? 14 : 16} playing={speaking} tone="accent" speed={0.9} />
       <span>{speaking ? 'Arrêter' : label}</span>
     </button>
   )

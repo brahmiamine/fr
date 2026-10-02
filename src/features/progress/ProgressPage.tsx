@@ -1,6 +1,14 @@
 import { useAppState } from '../../app/AppStateProvider'
-import { StatIcon } from '../../components/icons/StatIcon'
-import type { StatIconName } from '../../components/icons/StatIcon'
+import { useMemo } from 'react'
+import { Eyebrow, StatGrid } from '../../components/ui'
+import type { StatItem } from '../../components/ui'
+import {
+  activityHeatmap,
+  minutesByWeekDay,
+} from '../../services/progress/activity'
+import { ActivityHeatmap } from './components/ActivityHeatmap'
+import { HistoryCard } from './components/HistoryList'
+import { WeeklyMinutesChart } from './components/WeeklyMinutesChart'
 import {
   activeChunkCount,
   calculateCurrentStreak,
@@ -54,41 +62,40 @@ export default function ProgressPage() {
 
   const hasSessions = state.sessions.length > 0
 
-  return (
-    <div className="progress">
-      <h1>Progression</h1>
+  const charts = useMemo(() => {
+    const records = [...state.sessions, ...state.prosodySessions]
+    return { week: minutesByWeekDay(records), heatmap: activityHeatmap(records) }
+  }, [state.sessions, state.prosodySessions])
 
-      <section className="progress__stats" aria-label="Résumé">
-        {(
-          [
-            { icon: 'streak', value: String(currentStreak), label: 'Série actuelle' },
-            { icon: 'streak', value: String(longestStreak), label: 'Meilleure série' },
-            { icon: 'time', value: formatDuration(totalMinutes), label: 'Temps total' },
-            { icon: 'week', value: String(state.sessions.length), label: 'Sessions' },
-            { icon: 'words', value: String(masteredGapCount(state)), label: 'Mots débloqués' },
-            { icon: 'chunks', value: String(activeChunkCount(state)), label: 'Chunks actifs' },
-          ] as { icon: StatIconName; value: string; label: string }[]
-        ).map((stat, index) => (
-          <div
-            key={stat.label}
-            className="stat"
-            style={{ animationDelay: `${index * 0.05}s` }}
-          >
-            <span className={`stat__icon stat__icon--${stat.icon}`}>
-              <StatIcon name={stat.icon} />
-            </span>
-            <span className="stat__value">{stat.value}</span>
-            <span className="stat__label">{stat.label}</span>
-          </div>
-        ))}
-      </section>
+  const stats: StatItem[] = [
+    { icon: 'streak', tone: 'streak', value: String(currentStreak), label: 'Série actuelle' },
+    { icon: 'streak', tone: 'best', value: String(longestStreak), label: 'Meilleure série' },
+    { icon: 'time', tone: 'time', value: formatDuration(totalMinutes), label: 'Temps total' },
+    { icon: 'week', tone: 'week', value: String(state.sessions.length), label: 'Sessions' },
+    { icon: 'words', tone: 'words', value: String(masteredGapCount(state)), label: 'Mots débloqués' },
+    { icon: 'cube', tone: 'cube', value: String(activeChunkCount(state)), label: 'Chunks actifs' },
+  ]
+
+  return (
+    <div className="page progress">
+      <header className="page-title">
+        <Eyebrow gradient>Tout reste sur ton appareil</Eyebrow>
+        <h1>Progression</h1>
+      </header>
+
+      <StatGrid stats={stats} label="Résumé" minWidth={140} />
 
       <WeeklyTest />
       <ConversationPrep />
       <WeeklyConversation />
 
+      <section className="progress__charts">
+        <WeeklyMinutesChart minutes={charts.week} />
+        <ActivityHeatmap days={charts.heatmap} />
+      </section>
+
       {currentTest && comparisonTest ? (
-        <section className="card" aria-labelledby="weekly-compare">
+        <section className="card card--md" aria-labelledby="weekly-compare">
           <h2 id="weekly-compare">
             Cette semaine vs semaine du {formatDate(comparisonTest.weekKey)}
           </h2>
@@ -142,7 +149,7 @@ export default function ProgressPage() {
       ) : null}
 
       {testHistory.length > 1 ? (
-        <section className="card" aria-labelledby="weekly-history">
+        <section className="card card--md" aria-labelledby="weekly-history">
           <h2 id="weekly-history">Évolution des tests hebdomadaires</h2>
           <table className="progress__table">
             <thead>
@@ -169,78 +176,57 @@ export default function ProgressPage() {
         </section>
       ) : null}
 
-      <section className="card" aria-labelledby="prosody-history-title">
-        <h2 id="prosody-history-title">Sonner plus naturel</h2>
-        {state.prosodySessions.length > 0 ? (
-          <>
+      <HistoryCard
+        id="prosody-history-title"
+        title="Sonner plus naturel"
+        summary={
+          state.prosodySessions.length > 0 ? (
             <p className="muted">
               {state.prosodySessions.length} séance
               {state.prosodySessions.length > 1 ? 's' : ''} · {formatDuration(prosodyMinutes)}
             </p>
-            <ul className="history">
-              {recentProsodySessions.slice(0, 8).map((session) => (
-                <li key={session.id} className="history__item">
-                  <div>
-                    <p className="history__date">{formatDate(session.date)}</p>
-                    <p className="muted history__note">
-                      Extrait : {session.exerciseId}
-                    </p>
-                  </div>
-                  <div className="history__meta">
-                    <span className="pill">{session.durationMinutes} min</span>
-                    <span className="pill">Retelling {session.retellingSeconds} s</span>
-                    {session.focus ? (
-                      <span className="pill">Focus : {session.focus}</span>
-                    ) : null}
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </>
-        ) : (
-          <p className="muted">
-            Aucune séance de prosodie terminée pour le moment.
-          </p>
-        )}
-      </section>
+          ) : null
+        }
+        entries={recentProsodySessions.slice(0, 8).map((session) => ({
+          key: session.id,
+          title: formatDate(session.date),
+          notes: [`Extrait : ${session.exerciseId}`],
+          tags: [
+            `${session.durationMinutes} min`,
+            `Retelling ${session.retellingSeconds} s`,
+            ...(session.focus ? [`Focus : ${session.focus}`] : []),
+          ],
+        }))}
+        empty="Aucune séance de prosodie terminée pour le moment."
+      />
 
-      <section className="card" aria-labelledby="history-title">
-        <h2 id="history-title">Historique des sessions</h2>
-        {hasSessions ? (
-          <ul className="history">
-            {recentSessions.map((session) => (
-              <li key={session.id} className="history__item">
-                <div>
-                  <p className="history__date">{formatDate(session.date)}</p>
-                  {session.blockedWord ? (
-                    <p className="muted history__note">
-                      Mot bloquant : {session.blockedWord}
-                    </p>
-                  ) : null}
-                  {session.expressionToReuse ? (
-                    <p className="muted history__note">
-                      Chunk personnel : {session.expressionToReuse}
-                    </p>
-                  ) : null}
-                </div>
-                <div className="history__meta">
-                  <span className="pill">{session.durationMinutes} min</span>
-                  <span className="pill">{session.blockCount} blocages</span>
-                  <span className="pill">Fluidité {session.fluencyScore}/5</span>
-                </div>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p className="muted">
-            Aucune session terminée pour le moment. Lance ta première session
-            depuis l'accueil.
-          </p>
-        )}
-      </section>
+      <HistoryCard
+        id="history-title"
+        title="Historique des sessions"
+        entries={
+          hasSessions
+            ? recentSessions.map((session) => ({
+                key: session.id,
+                title: formatDate(session.date),
+                notes: [
+                  ...(session.blockedWord ? [`Mot bloquant : ${session.blockedWord}`] : []),
+                  ...(session.expressionToReuse
+                    ? [`Chunk personnel : ${session.expressionToReuse}`]
+                    : []),
+                ],
+                tags: [
+                  `${session.durationMinutes} min`,
+                  `${session.blockCount} blocages`,
+                  `Fluidité ${session.fluencyScore}/5`,
+                ],
+              }))
+            : []
+        }
+        empty="Aucune session terminée pour le moment. Lance ta première session depuis l'accueil."
+      />
 
       {state.wordGaps.length > 0 ? (
-        <section className="card" aria-labelledby="gaps-title">
+        <section className="card card--md" aria-labelledby="gaps-title">
           <h2 id="gaps-title">Mes trous de mots</h2>
           <ul className="history">
             {state.wordGaps.map((gap) => (
@@ -269,7 +255,7 @@ export default function ProgressPage() {
       ) : null}
 
       {state.fluencyNotes.length > 0 ? (
-        <section className="card" aria-labelledby="notes-title">
+        <section className="card card--md" aria-labelledby="notes-title">
           <h2 id="notes-title">Corrections à réutiliser</h2>
           <ul className="history">
             {state.fluencyNotes.map((note) => (

@@ -1,0 +1,39 @@
+.hero-illustration {
+  width: 100%;
+  max-width: 280px;
+  height: auto;
+}
+
+.hero-wave path {
+  animation: pulseSoft 2.2s ease-in-out infinite;
+}
+
+.hero-wave--d1 {
+  animation-delay: 0.3s !important;
+}
+
+.hero-wave--d2 {
+  animation-delay: 0.6s !important;
+}
+
+.hero-avatar {
+  animation: float 5s ease-in-out infinite;
+}
+
+.hero-spark path {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: sparkle 2.6s ease-in-out infinite;
+}
+
+.hero-spark--d1 {
+  animation-delay: 0.6s !important;
+}
+
+.hero-spark--d2 {
+  animation-delay: 1.2s !important;
+}
+
+.hero-chip {
+  animation: float 6s ease-in-out infinite;
+}

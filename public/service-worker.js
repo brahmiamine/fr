@@ -1,4 +1,4 @@
-const CACHE_NAME = 'parle-plus-v2'
+const CACHE_NAME = 'parle-plus-v3'
 const APP_SHELL = [
   './',
   './manifest.webmanifest',

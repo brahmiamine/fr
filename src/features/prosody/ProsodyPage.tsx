@@ -28,6 +28,7 @@ import { ListeningExercise } from './components/ListeningExercise'
 import { ImitationExercise } from './components/ImitationExercise'
 import { ComparisonExercise } from './components/ComparisonExercise'
 import { RetellingExercise } from './components/RetellingExercise'
+import { IconTile, SegmentedProgress } from '../../components/ui'
 import './prosody.css'
 
 export interface ProsodyPageProps {
@@ -218,7 +219,7 @@ function ProsodySession({
       <ProsodyHeader position={position} title={STAGE_LABELS[session.stage]} />
 
       {recentFocusGoal && session.stage === 'listening' && session.listening.step === 'meaning' ? (
-        <p className="pill">Ton point de travail récent : {recentFocusGoal}</p>
+        <p className="pill pill--soft">Ton point de travail récent : {recentFocusGoal}</p>
       ) : null}
 
       {session.stage === 'listening' ? (
@@ -293,7 +294,7 @@ function ProsodyHeader({ position, title }: { position: number; title: string })
     <header className="session-header">
       <div className="session-header__top">
         <div className="session-header__stage">
-          <span className="session-header__icon" aria-hidden="true">🎵</span>
+          <IconTile icon="music" size={40} iconSize={20} />
           <div className="session-header__titles">
             <span className="session-header__label">
               {safePosition}/{STAGE_ORDER.length}
@@ -303,18 +304,17 @@ function ProsodyHeader({ position, title }: { position: number; title: string })
         </div>
         <Link to="/" className="session-header__exit">Quitter</Link>
       </div>
-      <div
-        className="session-header__progress"
+      <SegmentedProgress
+        segments={STAGE_ORDER.map((_, index) =>
+          index < safePosition - 1 || safePosition === STAGE_ORDER.length ? 1 : index === safePosition - 1 ? 0.5 : 0,
+        )}
+        labels={STAGE_ORDER.map((stage) => STAGE_LABELS[stage])}
+        activeIndex={safePosition - 1}
         role="progressbar"
         aria-valuenow={safePosition}
         aria-valuemin={0}
         aria-valuemax={STAGE_ORDER.length}
-      >
-        <span
-          className="session-header__progress-fill"
-          style={{ width: `${(safePosition / STAGE_ORDER.length) * 100}%` }}
-        />
-      </div>
+      />
     </header>
   )
 }

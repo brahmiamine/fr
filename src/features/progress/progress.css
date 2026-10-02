@@ -4,7 +4,7 @@
   gap: 1rem;
 }
 
-.progress__stats {
+.progress__stats-legacy {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 0.7rem;
@@ -40,7 +40,7 @@
 .progress__table th,
 .progress__table td {
   padding: 0.45rem 0.3rem;
-  border-bottom: 1px solid var(--border);
+  border-bottom: var(--border-width) solid var(--border);
   text-align: right;
 }
 
@@ -67,7 +67,7 @@
   flex-direction: column;
   gap: 0.4rem;
   padding: 0.7rem 0;
-  border-bottom: 1px solid var(--border);
+  border-bottom: var(--border-width) solid var(--border);
 }
 
 .history__item:last-child {
@@ -102,3 +102,79 @@
     justify-content: space-between;
   }
 }
+
+.progress__charts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 14px;
+}
+
+.chart-total {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.bar-chart {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  align-items: end;
+  height: 170px;
+}
+
+.bar-chart__col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  height: 100%;
+}
+
+.bar-chart__value {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--muted);
+}
+
+.bar-chart__bar {
+  width: 100%;
+  max-width: 34px;
+  border-radius: 10px 10px 4px 4px;
+  background: var(--surface-2);
+  transform-origin: bottom;
+  animation: growUp 0.8s var(--ease) both;
+}
+
+.bar-chart__bar.is-filled {
+  background: var(--gradient);
+}
+
+.bar-chart__label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.heatmap {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(7, 1fr);
+  grid-auto-flow: column;
+  gap: 5px;
+}
+
+.heatmap__cell {
+  aspect-ratio: 1;
+  border-radius: 5px;
+  background: var(--surface-2);
+  animation: pop 0.4s var(--ease) both;
+}
+
+.heatmap__cell--1 { background: color-mix(in srgb, var(--accent) 35%, var(--surface-2)); }
+.heatmap__cell--2 { background: color-mix(in srgb, var(--accent) 65%, var(--surface-2)); }
+.heatmap__cell--3 { background: var(--accent); }
+.heatmap__cell--future { opacity: 0.35; }

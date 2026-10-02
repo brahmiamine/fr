@@ -1,3 +1,5 @@
+import './decor.css'
+
 export function AnimatedBackground() {
   return (
     <div className="bg-decor" aria-hidden="true">
@@ -61,59 +63,24 @@ export function HeroIllustration() {
       </g>
 
       {/* floating chips */}
-      <g className="hero-chip" fontFamily="system-ui" fontSize="12" fontWeight="600">
-        <rect x="168" y="150" width="86" height="26" rx="13" fill="#ffffff" opacity="0.9" />
-        <text x="211" y="167" textAnchor="middle" fill="#5b5bd6">
+      <g className="hero-chip" fontFamily="Plus Jakarta Sans, system-ui" fontSize="12" fontWeight="700">
+        <rect x="164" y="150" width="90" height="26" rx="13" fill="#ffffff" />
+        <text x="209" y="167" textAnchor="middle" fill="#5b5bd6">
           « Du coup… »
         </text>
         <rect
           className="hero-chip--d1"
-          x="20"
+          x="16"
           y="150"
-          width="96"
+          width="100"
           height="26"
           rx="13"
           fill="#ffffff"
-          opacity="0.9"
         />
-        <text className="hero-chip--d1" x="68" y="167" textAnchor="middle" fill="#ff6b9d">
+        <text className="hero-chip--d1" x="66" y="167" textAnchor="middle" fill="#ff6b9d">
           « Ça dépend… »
         </text>
       </g>
     </svg>
-  )
-}
-
-const CONFETTI_COLORS = ['#5b5bd6', '#8b5cf6', '#ff6b9d', '#0bbf9a', '#ffd166']
-
-export function Confetti({ count = 36 }: { count?: number }) {
-  const pieces = Array.from({ length: count }, (_, i) => ({
-    left: (i * 37) % 100,
-    delay: ((i * 53) % 100) / 100,
-    duration: 2.4 + ((i * 29) % 10) / 10,
-    color: CONFETTI_COLORS[i % CONFETTI_COLORS.length],
-    size: 6 + (i % 3) * 3,
-    rotate: (i * 71) % 360,
-    round: i % 3 === 0,
-  }))
-
-  return (
-    <div className="confetti" aria-hidden="true">
-      {pieces.map((piece, i) => (
-        <span
-          key={i}
-          className={`confetti__piece ${piece.round ? 'confetti__piece--round' : ''}`}
-          style={{
-            left: `${piece.left}%`,
-            width: piece.size,
-            height: piece.size * (piece.round ? 1 : 0.6),
-            backgroundColor: piece.color,
-            animationDelay: `${piece.delay}s`,
-            animationDuration: `${piece.duration}s`,
-            transform: `rotate(${piece.rotate}deg)`,
-          }}
-        />
-      ))}
-    </div>
   )
 }

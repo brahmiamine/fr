@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useReducer, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useAppState } from '../../app/AppStateProvider'
-import { Confetti } from '../../components/Decor/Decor'
+import { Confetti, IconTile, MiniStat } from '../../components/ui'
 import { useAudioRecorder } from '../../hooks/useAudioRecorder'
 import { buildSessionPlan } from '../../services/review/selectPlan'
 import {
@@ -49,10 +49,16 @@ function practisedQuestionIds(session: TrainingSessionState): string[] {
 function CompletedScreen({ session }: { session: TrainingSessionState }) {
   const plan = session.plan
   return (
-    <section className="card exercise exercise--center">
+    <section className="card card--pop card--center celebration">
       <Confetti />
+      <IconTile icon="feedback" size={64} iconSize={32} />
       <h1>Séance terminée</h1>
-      <p className="exercise__expression">{sessionDurationMinutes(session)} min</p>
+      <p className="muted">Tes blocages sont enregistrés : ils reviendront au bon moment.</p>
+      <div className="mini-stats">
+        <MiniStat value={`${sessionDurationMinutes(session)} min`} label="pratiqués" />
+        <MiniStat value={`${(session.usedChunkIds ?? []).length}/${plan.chunksOfDay.length}`} label="chunks placés" />
+        <MiniStat value={String(practisedQuestionIds(session).length)} label="questions" />
+      </div>
       <ul className="summary-list">
         <li>{plan.chunks.length} chunks travaillés</li>
         <li>{plan.gapItems.length} mots travaillés</li>
@@ -61,16 +67,27 @@ function CompletedScreen({ session }: { session: TrainingSessionState }) {
           4 → 3 → 2 terminé{plan.retellingStory ? ' (variante retelling)' : ''}
         </li>
       </ul>
-      <div className="stack">
+      <div className="button-row">
         <Link className="button button--block" to="/progress">
           Voir ma progression
         </Link>
-        <Link className="button button--ghost button--block" to="/">
+        <Link className="button button--subtle button--block" to="/">
           Retour à l'accueil
         </Link>
       </div>
     </section>
   )
+}
+
+/** Share of the current stage already done, for the header bar. */
+function stageProgress(session: TrainingSessionState): number {
+  const stage = getCurrentStage(session)
+  const plan = session.plan
+  if (stage === 'chunks') return session.chunks.index / Math.max(1, plan.chunks.length)
+  if (stage === 'fluency') return session.fluency.roundIndex / 4
+  if (stage === 'questions') return session.questions.index / Math.max(1, plan.questions.length)
+  if (stage === 'gaps') return session.gaps.index / Math.max(1, plan.gapItems.length)
+  return 0.5
 }
 
 export default function TrainingPage() {
@@ -222,7 +239,7 @@ export default function TrainingPage() {
     return (
       <div className="stack">
         <SessionHeader stage={null} phase="active" stageIndex={0} />
-        <section className="card exercise">
+        <section className="card">
           <h1>Contenu indisponible</h1>
           <p className="muted">
             Les fichiers de contenu n'ont pas pu être chargés. Vérifie les
@@ -244,6 +261,7 @@ export default function TrainingPage() {
         stage={session.phase === 'active' ? stage : null}
         phase={session.phase}
         stageIndex={session.stageIndex}
+        stageProgress={stageProgress(session)}
       />
 
       {session.phase === 'complete' ? <CompletedScreen session={session} /> : null}
@@ -361,7 +379,7 @@ function QuestionsRenderer({
         : undefined)
     if (!revengeQuestion) {
       return (
-        <section className="card exercise exercise--center">
+        <section className="card card--center">
           <h2>Revanche</h2>
           <button
             type="button"

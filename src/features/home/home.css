@@ -1,138 +1,269 @@
-.home {
-  display: flex;
-  flex-direction: column;
-  gap: 1.1rem;
-}
-
 /* ---------- Hero ---------- */
-.home__hero {
+.home-hero {
   display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding: 0.5rem 0 0.25rem;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+  animation: fadeUp 0.6s var(--ease) both;
 }
 
-.home__hero-copy {
+.home-hero__copy {
+  flex: 1.3 1 300px;
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  gap: 8px;
 }
 
-.home__kicker {
-  margin: 0;
-  font-size: 0.78rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
+.home-hero h1 {
+  font-size: clamp(34px, 5vw, 48px);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+}
+
+.home-hero__accent {
   background: var(--gradient);
+  background-size: 200% 200%;
+  animation: gradientShift 6s ease infinite;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
-.home__hero h1 {
-  font-size: 2.2rem;
-  background: var(--gradient);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+.home-hero__lead {
+  max-width: 46ch;
+  color: var(--muted);
+  font-size: 16px;
 }
 
-.home__cta {
-  margin-top: 0.5rem;
-  font-size: 1.05rem;
-}
-
-.home__hero-art {
+.home-hero__art {
+  flex: 1 1 220px;
   display: flex;
   justify-content: center;
 }
 
-.hero-illustration {
-  width: 100%;
-  max-width: 300px;
-  height: auto;
+/* ---------- Today's session ---------- */
+.today {
+  animation-delay: 0.08s;
 }
 
-.hero-wave path {
-  animation: pulseSoft 2.2s ease-in-out infinite;
-  transform-box: fill-box;
-  transform-origin: left center;
-}
-.hero-wave--d1 {
-  animation-delay: 0.3s;
-}
-.hero-wave--d2 {
-  animation-delay: 0.6s;
+.today__head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
 }
 
-.hero-avatar {
-  animation: float 5s ease-in-out infinite;
+.today__head h2 {
+  font-size: 21px;
 }
 
-.hero-spark path {
-  animation: sparkle 2.6s ease-in-out infinite;
-  transform-box: fill-box;
-  transform-origin: center;
-}
-.hero-spark--d1 {
-  animation-delay: 0.6s;
-}
-.hero-spark--d2 {
-  animation-delay: 1.2s;
+.today__meta {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
 }
 
-.hero-chip {
-  animation: float 6s ease-in-out infinite;
-}
-.hero-chip--d1 {
-  animation-delay: -2s;
-}
-
-/* ---------- Stats ---------- */
-.home__stats {
+.today__stages {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.7rem;
+  grid-template-columns: repeat(auto-fit, minmax(128px, 1fr));
+  gap: 10px;
 }
 
-/* ---------- Weekly test ---------- */
-.home__weekly-test,
-.home__prosody {
+.today__stage {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  animation: fadeUp 0.5s var(--ease) both;
+  transition: transform 0.25s var(--ease);
+}
+
+.today__stage:hover {
+  transform: translateY(-4px);
+}
+
+.today__stage-title {
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.25;
+}
+
+.today__stage-min {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+/* ---------- Week ---------- */
+.home__row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+}
+
+.week-goal {
+  flex-direction: row;
+  align-items: center;
+  gap: 18px;
+  animation-delay: 0.14s;
+}
+
+.week-goal__count {
+  font-size: 22px;
+  line-height: 1;
+}
+
+.week-goal__text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.week-goal__title {
+  font-weight: 800;
+  font-size: 16px;
+}
+
+.streak-week {
+  animation-delay: 0.2s;
+}
+
+.streak-week__head {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 0.75rem;
+  gap: 10px;
+  font-size: 13px;
 }
 
-.home__weekly-test h2,
-.home__prosody h2 {
+.streak-week__flame {
+  animation: flame 1.6s ease-in-out infinite;
+}
+
+.streak-week__value {
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.streak-week__days {
+  list-style: none;
   margin: 0;
-  font-size: 1.05rem;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
 }
 
-.home__weekly-test p,
-.home__prosody p {
-  margin: 0;
+.streak-week__day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
 }
 
-.home__prosody {
-  background: var(--gradient-soft);
-  border-color: transparent;
+.streak-week__dot {
+  width: 100%;
+  max-width: 30px;
+  aspect-ratio: 1;
+  border-radius: 9px;
+  background: var(--surface-2);
+  animation: pop 0.45s var(--ease) both;
 }
 
-@media (min-width: 560px) {
-  .home__hero {
-    flex-direction: row;
-    align-items: center;
-  }
-  .home__hero-copy {
-    flex: 1.2;
-  }
-  .home__hero-art {
-    flex: 1;
-  }
-  .home__stats {
-    grid-template-columns: repeat(3, 1fr);
-  }
+.streak-week__dot.is-done {
+  background: var(--tile-streak);
+}
+
+.streak-week__dot.is-today {
+  background: transparent;
+  border: 2px dashed var(--accent-2);
+}
+
+.streak-week__initial {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+/* ---------- Challenges ---------- */
+.home__challenges {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
+}
+
+.challenge h3 {
+  font-size: 18px;
+  line-height: 1.25;
+}
+
+.challenge p {
+  font-size: 14px;
+}
+
+.challenge__cta {
+  align-self: flex-start;
+  min-height: 44px;
+  margin-top: auto;
+  font-weight: 700;
+}
+
+.prosody-promo {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px;
+  border-radius: var(--radius);
+  background: var(--gradient);
+  background-size: 200% 200%;
+  color: #fff;
+  text-decoration: none;
+  box-shadow: var(--btn-shadow);
+  animation: gradientShift 8s ease infinite, fadeUp 0.6s 0.42s var(--ease) both;
+  transition: transform 0.25s var(--ease);
+}
+
+.prosody-promo:hover {
+  transform: translateY(-4px);
+}
+
+.prosody-promo .wave {
+  justify-content: flex-start;
+  align-items: flex-end;
+}
+
+.prosody-promo .wave__bar {
+  width: 5px;
+  transform-origin: bottom;
+}
+
+.prosody-promo h3 {
+  font-size: 18px;
+}
+
+.prosody-promo p {
+  font-size: 14px;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.prosody-promo__count {
+  font-weight: 700;
+}
+
+.prosody-promo__cta {
+  margin-top: auto;
+  font-weight: 800;
+}
+
+.prosody-promo--disabled {
+  opacity: 0.85;
 }

@@ -38,7 +38,7 @@ export function SessionFeedbackView({
   }
 
   return (
-    <section className="card exercise" aria-labelledby="feedback-title">
+    <section className="card card--slide" aria-labelledby="feedback-title">
       <h1 id="feedback-title">Feedback de fin de séance</h1>
       <p className="muted">
         Garde seulement les difficultés utiles, mais note la formulation
@@ -46,7 +46,7 @@ export function SessionFeedbackView({
       </p>
 
       {audioUrl ? (
-        <div className="exercise__rescue">
+        <div className="callout">
           <h2>Réécoute finale</h2>
           <p className="muted">
             Réécoute environ une minute avant de remplir ce feedback.
@@ -56,7 +56,7 @@ export function SessionFeedbackView({
       ) : null}
 
       {chunksOfDay.length > 0 && onToggleChunk ? (
-        <div className="exercise__rescue">
+        <div className="callout">
           <h2>Chunks du jour placés en parlant</h2>
           <p className="muted">
             Coche seulement ceux que tu as vraiment utilisés pendant le 4 → 3 → 2
@@ -71,7 +71,7 @@ export function SessionFeedbackView({
                   <div className="feedback-reminder__actions">
                     <button
                       type="button"
-                      className={used ? 'button button--subtle' : 'button button--ghost'}
+                      className={`chip${used ? ' is-active' : ''}`}
                       aria-pressed={used}
                       aria-label={`J'ai placé « ${chunk.expression} »`}
                       onClick={() => onToggleChunk(chunk.id)}
@@ -87,7 +87,7 @@ export function SessionFeedbackView({
       ) : null}
 
       {fluencyReminders.length > 0 ? (
-        <div className="exercise__rescue">
+        <div className="callout">
           <h2>Corrections travaillées aujourd'hui</h2>
           <p className="muted">
             Confirme seulement celles que tu as réellement produites à voix haute.
@@ -107,7 +107,7 @@ export function SessionFeedbackView({
                     />
                     <button
                       type="button"
-                      className={used ? 'button button--subtle' : 'button button--ghost'}
+                      className={`chip${used ? ' is-active' : ''}`}
                       aria-pressed={used}
                       onClick={() => onToggleReminder?.(reminder.id)}
                     >
@@ -121,7 +121,7 @@ export function SessionFeedbackView({
         </div>
       ) : null}
 
-      <form onSubmit={handleSubmit}>
+      <form className="form-stack" onSubmit={handleSubmit}>
         <div className="field">
           <label htmlFor="blocked-word">
             Quel mot t'a le plus bloqué aujourd'hui ? (facultatif)
@@ -260,7 +260,7 @@ export function SessionFeedbackView({
           </div>
         </fieldset>
 
-        <button type="submit" className="button button--block" disabled={!valid}>
+        <button type="submit" className="button button--gradient button--lg button--block" disabled={!valid}>
           Terminer la séance
         </button>
         {!valid ? (
