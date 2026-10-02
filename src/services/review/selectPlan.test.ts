@@ -38,6 +38,7 @@ describe('buildSessionPlan', () => {
     expect(plan.chunks).toHaveLength(3)
     expect(plan.gapItems).toHaveLength(5)
     expect(new Set(plan.questions.map((q) => q.id)).size).toBe(5)
+    expect(new Set(plan.questions.map((q) => q.category)).size).toBe(5)
   })
 
   it('prioritises due personal word gaps over generic words', () => {
