@@ -134,13 +134,6 @@ export default function WeeklyTest() {
             label="Parle librement"
             onComplete={() => setStage('form')}
           />
-          <button
-            type="button"
-            className="button button--ghost button--block"
-            onClick={() => setStage('form')}
-          >
-            J'ai terminé
-          </button>
         </>
       ) : null}
 
