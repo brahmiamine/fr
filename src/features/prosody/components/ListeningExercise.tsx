@@ -48,7 +48,22 @@ function ModelSourceNote({
   if (exercise.custom) {
     return <p className="pill">Ton extrait · vraie voix</p>
   }
-  if (exercise.modelKind !== 'tts') return null
+  if (exercise.modelKind === 'recording') {
+    return (
+      <div className="exercise__rescue">
+        <p className="muted">
+          Modèle : vraie voix enregistrée
+          {exercise.license ? <> · {exercise.license}</> : null}.
+          {exercise.attribution ? <> {exercise.attribution}</> : null}
+        </p>
+        {exercise.sourceUrl ? (
+          <a href={exercise.sourceUrl} target="_blank" rel="noreferrer">
+            Source et licence
+          </a>
+        ) : null}
+      </div>
+    )
+  }
   return (
     <div className="exercise__rescue">
       <p className="muted">
