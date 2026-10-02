@@ -17,7 +17,8 @@ afterEach(() => {
 })
 
 describe('WeeklyTest', () => {
-  it('does not allow the 3-minute benchmark to finish early', () => {
+  it('starts the benchmark immediately when the unknown topic appears', () => {
+    vi.useFakeTimers()
     renderWeeklyTest()
 
     fireEvent.click(
@@ -25,9 +26,8 @@ describe('WeeklyTest', () => {
     )
 
     expect(screen.getByRole('timer')).toBeInTheDocument()
-    expect(
-      screen.queryByRole('button', { name: "J'ai terminé" }),
-    ).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Démarrer' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Pause' })).not.toBeInTheDocument()
     expect(screen.queryByRole('heading', { name: 'Mesures' })).not.toBeInTheDocument()
   })
 
@@ -39,7 +39,6 @@ describe('WeeklyTest', () => {
     fireEvent.click(
       screen.getByRole('button', { name: 'Lancer le test de 3 minutes' }),
     )
-    fireEvent.click(screen.getByRole('button', { name: 'Démarrer' }))
 
     await act(async () => {
       vi.advanceTimersByTime(180_000)

@@ -126,6 +126,49 @@ describe('question revenge selection', () => {
     expect(state.revenge.questionId).toBeNull()
     expect(getCurrentStage(state)).toBe('gaps')
   })
+
+  it('attributes the advanced final rating to the pivot question', () => {
+    const base = createSessionState(plan, 3, new Date('2026-10-02T10:00:00.000Z'))
+    let state: TrainingSessionState = {
+      ...base,
+      stageIndex: 2,
+      questions: {
+        index: plan.questions.length - 1,
+        stage: 'rate',
+      },
+      questionRatings: plan.questions.slice(0, -1).map((question) => ({
+        questionId: question.id,
+        rating: 'none' as const,
+      })),
+    }
+
+    state = sessionReducer(state, { type: 'QUESTION_RATE', rating: 'much' })
+
+    expect(state.questionRatings[state.questionRatings.length - 1]?.questionId).toBe(plan.pivotQuestion?.id)
+    expect(state.revenge.questionId).toBe(plan.pivotQuestion?.id)
+  })
+})
+
+describe('active reuse confirmation', () => {
+  it('tracks only reminders the learner confirms having used', () => {
+    let state = newSession() as TrainingSessionState & {
+      usedFluencyReminderIds?: string[]
+    }
+
+    state = sessionReducer(
+      state,
+      { type: 'FLUENCY_TOGGLE_REMINDER_USED', reminderId: 'note-1' } as any,
+    ) as typeof state
+
+    expect(state.usedFluencyReminderIds).toEqual(['note-1'])
+
+    state = sessionReducer(
+      state,
+      { type: 'FLUENCY_TOGGLE_REMINDER_USED', reminderId: 'note-1' } as any,
+    ) as typeof state
+
+    expect(state.usedFluencyReminderIds).toEqual([])
+  })
 })
 
 describe('feedback validation', () => {

@@ -1,5 +1,5 @@
 import type { FormEvent } from 'react'
-import type { SessionFeedback } from '../types'
+import type { FluencyReminder, SessionFeedback } from '../types'
 import { isFeedbackValid } from '../sessionReducer'
 
 export interface SessionFeedbackProps {
@@ -7,6 +7,9 @@ export interface SessionFeedbackProps {
   onChange: (field: keyof SessionFeedback, value: string | number | null) => void
   onSubmit: () => void
   audioUrl?: string | null
+  fluencyReminders?: FluencyReminder[]
+  usedReminderIds?: string[]
+  onToggleReminder?: (reminderId: string) => void
 }
 
 export function SessionFeedbackView({
@@ -14,6 +17,9 @@ export function SessionFeedbackView({
   onChange,
   onSubmit,
   audioUrl = null,
+  fluencyReminders = [],
+  usedReminderIds = [],
+  onToggleReminder,
 }: SessionFeedbackProps) {
   const valid = isFeedbackValid(feedback)
 
@@ -38,6 +44,33 @@ export function SessionFeedbackView({
             Réécoute environ une minute avant de remplir ce feedback.
           </p>
           <audio src={audioUrl} controls preload="metadata" />
+        </div>
+      ) : null}
+
+      {fluencyReminders.length > 0 ? (
+        <div className="exercise__rescue">
+          <h2>Corrections travaillées aujourd'hui</h2>
+          <p className="muted">
+            Confirme seulement celles que tu as réellement produites à voix haute.
+          </p>
+          <ul>
+            {fluencyReminders.map((reminder) => {
+              const used = usedReminderIds.includes(reminder.id)
+              return (
+                <li key={reminder.id}>
+                  <p>{reminder.text}</p>
+                  <button
+                    type="button"
+                    className={used ? 'button button--subtle' : 'button button--ghost'}
+                    aria-pressed={used}
+                    onClick={() => onToggleReminder?.(reminder.id)}
+                  >
+                    {used ? 'Utilisée ✓' : "Je l'ai réellement utilisée"}
+                  </button>
+                </li>
+              )
+            })}
+          </ul>
         </div>
       ) : null}
 

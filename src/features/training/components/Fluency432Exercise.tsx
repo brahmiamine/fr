@@ -5,7 +5,6 @@ import { Timer } from '../../../components/Timer/Timer'
 import type { AudioRecorder } from '../../../hooks/useAudioRecorder'
 import { FLUENCY_ROUND_SECONDS } from '../types'
 import type { FluencyFeedback, FluencyReminder } from '../types'
-import { AudioRecorderButton } from './AudioRecorderButton'
 
 export interface Fluency432ExerciseProps {
   topic: Topic
@@ -67,6 +66,7 @@ export function Fluency432Exercise({
   const [difficultPhrase, setDifficultPhrase] = useState(feedback.difficultPhrase)
   const [importantError, setImportantError] = useState(feedback.importantError)
   const [showPrompts, setShowPrompts] = useState(false)
+  const [recordFirstRound, setRecordFirstRound] = useState(true)
 
   const isTransfer = roundIndex === FLUENCY_ROUND_SECONDS.length - 1
   const seconds = FLUENCY_ROUND_SECONDS[roundIndex] ?? 60
@@ -127,7 +127,29 @@ export function Fluency432Exercise({
           />
         </div>
 
-        <button type="button" className="button button--block" onClick={onStartRound}>
+        {roundIndex === 0 && recorder?.supported ? (
+          <label className="field">
+            <span>Enregistrer le tour 1 pour le feedback</span>
+            <input
+              type="checkbox"
+              checked={recordFirstRound}
+              onChange={(event) => setRecordFirstRound(event.target.checked)}
+            />
+          </label>
+        ) : null}
+
+        <button
+          type="button"
+          className="button button--block"
+          onClick={() => {
+            void (async () => {
+              if (roundIndex === 0 && recordFirstRound && recorder?.supported) {
+                await recorder.start()
+              }
+              onStartRound()
+            })()
+          }}
+        >
           Commencer le tour 1
         </button>
       </section>
@@ -227,14 +249,20 @@ export function Fluency432Exercise({
 
   const prompt = isTransfer ? topic.transferPrompt : topic.title
   const finishRound = () => {
-    recorder?.stop()
+    if (roundIndex === 0) recorder?.stop()
     onRoundComplete()
   }
 
   return (
     <section className="card exercise exercise--speak" aria-live="polite">
       <p className="pill">{ROUND_LABELS[roundIndex] ?? 'Tour'}</p>
-      <Timer durationSeconds={seconds} onComplete={finishRound} label={prompt} />
+      <Timer
+        durationSeconds={seconds}
+        autoStart
+        hideControls
+        onComplete={finishRound}
+        label={prompt}
+      />
       <p className="exercise__hint">{RUNNING_HINTS[roundIndex]}</p>
 
       {keywords.length > 0 ? (
@@ -266,9 +294,6 @@ export function Fluency432Exercise({
         </p>
       ) : null}
 
-      {roundIndex === 0 && recorder ? (
-        <AudioRecorderButton recorder={recorder} />
-      ) : null}
     </section>
   )
 }

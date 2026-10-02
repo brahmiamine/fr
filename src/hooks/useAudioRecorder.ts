@@ -12,7 +12,7 @@ export interface AudioRecorder {
   status: RecorderStatus
   supported: boolean
   blobUrl: string | null
-  start: () => void
+  start: () => Promise<void>
   stop: () => void
   reset: () => void
 }

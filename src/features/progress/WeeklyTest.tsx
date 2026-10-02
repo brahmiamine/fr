@@ -131,6 +131,8 @@ export default function WeeklyTest() {
           </p>
           <Timer
             durationSeconds={TEST_SECONDS}
+            autoStart
+            hideControls
             label="Parle librement"
             onComplete={() => setStage('form')}
           />
