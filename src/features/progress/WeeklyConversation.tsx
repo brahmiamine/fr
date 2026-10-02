@@ -37,7 +37,10 @@ export default function WeeklyConversation() {
     )
   }
 
+  const durationMinutes = Number(duration)
   const valid =
+    Number.isFinite(durationMinutes) &&
+    durationMinutes >= 20 &&
     (!missingWord.trim() || Boolean(missingWordContext.trim())) &&
     (!expressionToReuse.trim() || Boolean(expressionIntent.trim()))
 
@@ -49,7 +52,7 @@ export default function WeeklyConversation() {
       id: `conversation-${weekKey}`,
       weekKey,
       date: toLocalDateString(now),
-      durationMinutes: Math.max(1, Number(duration) || 20),
+      durationMinutes,
       missingWord: missingWord.trim(),
       missingWordContext: missingWordContext.trim(),
       blockingMoment: blockingMoment.trim(),
@@ -86,7 +89,7 @@ export default function WeeklyConversation() {
           <input
             id="conversation-duration"
             type="number"
-            min={1}
+            min={20}
             value={duration}
             onChange={(event) => setDuration(event.target.value)}
           />
@@ -119,7 +122,7 @@ export default function WeeklyConversation() {
 
         <div className="field">
           <label htmlFor="conversation-block">
-            Un moment où tu as bloqué ou abandonné une phrase ?
+            Quelle formulation corrigée veux-tu réutiliser après un blocage ?
           </label>
           <input
             id="conversation-block"
