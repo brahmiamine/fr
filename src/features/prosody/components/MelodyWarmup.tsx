@@ -18,7 +18,7 @@ export function MelodyWarmup({ exercise, audioSrc }: MelodyWarmupProps) {
 
   return (
     <details className="exercise__rescue melody-warmup">
-      <summary>Échauffement mélodique « la-la-la » (optionnel, 1–2 min)</summary>
+      <summary>Échauffement mélodique « la-la-la » <span className="muted">(optionnel, 1–2 min)</span></summary>
       <p className="muted">
         Reproduis seulement la musique du segment avec des « la » : même
         nombre de syllabes, mêmes durées, mêmes montées et descentes. Sans les
@@ -37,16 +37,16 @@ export function MelodyWarmup({ exercise, audioSrc }: MelodyWarmupProps) {
       {recorder.supported ? (
         <div className="stack">
           {recording ? (
-            <button type="button" className="button" onClick={recorder.stop}>
-              ⏹ Arrêter
+            <button type="button" className="button button--block" onClick={recorder.stop}>
+              ⏹ Arrêter l'enregistrement
             </button>
           ) : (
             <button
               type="button"
-              className="button button--ghost"
+              className="button button--ghost button--block"
               onClick={() => void recorder.start()}
             >
-              🎤 Enregistrer mon « la-la-la »
+              🎤 {recorder.blobUrl ? 'Refaire mon « la-la-la »' : 'Enregistrer mon « la-la-la »'}
             </button>
           )}
           {recorder.blobUrl ? (

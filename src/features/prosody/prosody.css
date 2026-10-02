@@ -103,8 +103,36 @@
 }
 
 .melody-warmup summary {
+  display: block;
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 800;
+  list-style: none;
+}
+
+.melody-warmup summary::-webkit-details-marker {
+  display: none;
+}
+
+.melody-warmup summary::before {
+  content: '▸';
+  display: inline-block;
+  margin-right: 0.5rem;
+  color: var(--accent);
+  transition: transform 0.2s var(--ease);
+}
+
+.melody-warmup[open] summary::before {
+  transform: rotate(90deg);
+}
+
+.melody-warmup[open] {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.melody-warmup > p {
+  margin: 0;
 }
 
 .prosody-groups {
