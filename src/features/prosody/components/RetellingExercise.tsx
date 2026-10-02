@@ -8,6 +8,8 @@ export interface RetellingExerciseProps {
   step: 'prompt' | 'record' | 'review'
   recorder: ProsodyRecorder
   durationSeconds: number
+  minSeconds?: number
+  targetSeconds?: number
   onStart: () => void
   onRecorded: (durationSeconds: number) => void
   onDone: () => void
@@ -18,6 +20,8 @@ export function RetellingExercise({
   step,
   recorder,
   durationSeconds,
+  minSeconds = MIN_RETELL_SECONDS,
+  targetSeconds = TARGET_RETELL_SECONDS,
   onStart,
   onRecorded,
   onDone,
@@ -34,7 +38,7 @@ export function RetellingExercise({
           mélodie similaire.
         </p>
         <p className="pill">
-          Objectif : {MIN_RETELL_SECONDS}–{TARGET_RETELL_SECONDS} s
+          Objectif : {minSeconds}–{targetSeconds} s
         </p>
         <button type="button" className="button button--block" onClick={onStart}>
           Enregistrer ma version
@@ -45,7 +49,7 @@ export function RetellingExercise({
 
   if (step === 'record') {
     const recordedSeconds = recorder.current?.durationSeconds ?? 0
-    const longEnough = recordedSeconds >= MIN_RETELL_SECONDS
+    const longEnough = recordedSeconds >= minSeconds
     return (
       <section className="card exercise" aria-labelledby="retelling-record">
         <p className="pill">Retelling · Enregistrement</p>
@@ -54,13 +58,13 @@ export function RetellingExercise({
           Ne récite pas. Crée ton contenu et conserve la façon de porter les mots.
         </p>
         <p className="pill">
-          Minimum {MIN_RETELL_SECONDS} s · cible {TARGET_RETELL_SECONDS} s
+          Minimum {minSeconds} s · cible {targetSeconds} s
         </p>
         <RecorderControls recorder={recorder} recordLabel="Enregistrer ma version" />
         {recorder.current && !longEnough ? (
           <p className="warning-banner" role="status">
             Continue : ton retelling dure {recordedSeconds} s. Il faut au moins{' '}
-            {MIN_RETELL_SECONDS} s.
+            {minSeconds} s.
           </p>
         ) : null}
         <button

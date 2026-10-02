@@ -33,6 +33,20 @@ describe('prosody content protocol', () => {
     expect(isProsodyExerciseReady({ ...valid, ready: false })).toBe(false)
   })
 
+  it('rejects synthetic models whose timings are not plausible estimates', () => {
+    const fake: ProsodyExercise = {
+      ...valid,
+      modelKind: 'tts',
+      audio: undefined,
+      timing: 'estimated',
+      // "Un extrait" = 3 syllables cannot last 4 s.
+    }
+    expect(validateProsodyExercise(fake)).toContain('implausible-timing')
+    expect(validateProsodyExercise({ ...fake, timing: undefined })).toContain(
+      'tts-timing-not-estimated',
+    )
+  })
+
   it('never exposes an invalid exercise as production-ready', () => {
     for (const exercise of readyProsodyExercises) {
       expect(validateProsodyExercise(exercise)).toEqual([])

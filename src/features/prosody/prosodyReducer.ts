@@ -1,7 +1,14 @@
-import type { ProsodyExercise, ProsodyFocus, ProsodySessionState } from './types'
+import type { LearnerMarking } from './marking'
+import type {
+  ProsodyExercise,
+  ProsodyFocus,
+  ProsodySessionState,
+  RetellingGoal,
+} from './types'
 import {
   MIN_RETELL_SECONDS,
   REQUIRED_IMITATION_LISTENS,
+  TARGET_RETELL_SECONDS,
   REQUIRED_MEANING_LISTENS,
   REQUIRED_PROSODY_LISTENS,
   REQUIRED_SHADOW_PLAYS,
@@ -10,6 +17,7 @@ import {
 export type ProsodyAction =
   | { type: 'LISTEN_PLAYED' }
   | { type: 'LISTEN_NEXT' }
+  | { type: 'LISTEN_MARKED'; marking: LearnerMarking }
   | { type: 'IMITATION_MODEL_PLAYED' }
   | { type: 'IMITATION_LISTENED' }
   | { type: 'IMITATION_RECORDED' }
@@ -27,6 +35,10 @@ export type ProsodyAction =
 export function createProsodySession(
   exercise: ProsodyExercise,
   now: Date = new Date(),
+  retellingGoal: RetellingGoal = {
+    minSeconds: MIN_RETELL_SECONDS,
+    targetSeconds: TARGET_RETELL_SECONDS,
+  },
 ): ProsodySessionState {
   return {
     id: `p-${now.getTime()}-${Math.random().toString(36).slice(2, 8)}`,
@@ -34,10 +46,15 @@ export function createProsodySession(
     startedAt: now.toISOString(),
     stage: 'listening',
     completed: false,
-    listening: { step: 'meaning', meaningPlays: 0, prosodyPlays: 0 },
+    listening: { step: 'meaning', meaningPlays: 0, prosodyPlays: 0, marking: null },
     imitation: { step: 'listen', modelPlays: 0, shadowPlays: 0 },
     comparison: { step: 'aba', focus: null, abaCompleted: false },
-    retelling: { step: 'prompt', durationSeconds: 0 },
+    retelling: {
+      step: 'prompt',
+      durationSeconds: 0,
+      minSeconds: retellingGoal.minSeconds,
+      targetSeconds: retellingGoal.targetSeconds,
+    },
   }
 }
 
@@ -82,13 +99,21 @@ export function prosodyReducer(
         step === 'prosody' &&
         state.listening.prosodyPlays >= REQUIRED_PROSODY_LISTENS
       ) {
-        return { ...state, listening: { ...state.listening, step: 'reveal' } }
+        // Active perception: the learner marks / ↑ ↓ before seeing the model.
+        return { ...state, listening: { ...state.listening, step: 'mark' } }
       }
       if (step === 'reveal') {
         return { ...state, stage: 'imitation', imitation: { ...state.imitation, step: 'listen' } }
       }
       return state
     }
+
+    case 'LISTEN_MARKED':
+      if (state.stage !== 'listening' || state.listening.step !== 'mark') return state
+      return {
+        ...state,
+        listening: { ...state.listening, step: 'reveal', marking: action.marking },
+      }
 
     case 'IMITATION_MODEL_PLAYED':
       if (state.stage !== 'imitation' || state.imitation.step !== 'listen') return state
@@ -178,7 +203,11 @@ export function prosodyReducer(
       if (state.stage !== 'comparison' || state.comparison.step !== 'compare-attempts') {
         return state
       }
-      return { ...state, stage: 'retelling', retelling: { step: 'prompt', durationSeconds: 0 } }
+      return {
+        ...state,
+        stage: 'retelling',
+        retelling: { ...state.retelling, step: 'prompt', durationSeconds: 0 },
+      }
 
     case 'RETELL_START':
       if (state.stage !== 'retelling' || state.retelling.step !== 'prompt') return state
@@ -188,13 +217,14 @@ export function prosodyReducer(
       if (
         state.stage !== 'retelling' ||
         state.retelling.step !== 'record' ||
-        action.durationSeconds < MIN_RETELL_SECONDS
+        action.durationSeconds < (state.retelling.minSeconds ?? MIN_RETELL_SECONDS)
       ) {
         return state
       }
       return {
         ...state,
         retelling: {
+          ...state.retelling,
           step: 'review',
           durationSeconds: action.durationSeconds,
         },

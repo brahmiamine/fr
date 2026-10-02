@@ -1,5 +1,14 @@
 import prosodyData from '../../data/prosody.json'
-import type { ProsodyExercise } from '../../features/prosody/types'
+import type { ProsodyExercise, ProsodyFocus } from '../../features/prosody/types'
+import { secondsPerSyllable } from './prosodyTiming'
+
+/**
+ * A synthetic model has no measured timestamps: its estimated timings must
+ * stay within a plausible speaking rate (≈ 2.5–8 syllables per second), so a
+ * one-word group can never pretend to last several seconds.
+ */
+const MIN_SECONDS_PER_SYLLABLE = 0.12
+const MAX_SECONDS_PER_SYLLABLE = 0.4
 import {
   MAX_FULL_AUDIO_SECONDS,
   MAX_IMITATION_SECONDS,
@@ -41,6 +50,15 @@ export function validateProsodyExercise(exercise: ProsodyExercise): string[] {
     errors.push('imitation-bounds')
   }
 
+  if (modelKind === 'tts') {
+    if (exercise.timing !== 'estimated') errors.push('tts-timing-not-estimated')
+    const implausible = exercise.groups.some((group) => {
+      const value = secondsPerSyllable(group)
+      return value < MIN_SECONDS_PER_SYLLABLE || value > MAX_SECONDS_PER_SYLLABLE
+    })
+    if (implausible) errors.push('implausible-timing')
+  }
+
   for (let index = 0; index < exercise.groups.length; index += 1) {
     const group = exercise.groups[index]
     const previous = exercise.groups[index - 1]
@@ -57,12 +75,21 @@ export function isProsodyExerciseReady(exercise: ProsodyExercise): boolean {
 
 export const readyProsodyExercises = prosodyRepository.filter(isProsodyExerciseReady)
 
+/**
+ * Pick a fresh excerpt. When the learner keeps working on the same difficulty
+ * (their recent focus), excerpts that train that point are preferred.
+ */
 export function pickReadyProsodyExercise(
   recentIds: readonly string[],
   random: () => number = Math.random,
+  preferredFocus: ProsodyFocus | null = null,
 ): ProsodyExercise | null {
   if (readyProsodyExercises.length === 0) return null
   const fresh = readyProsodyExercises.filter((exercise) => !recentIds.includes(exercise.id))
-  const pool = fresh.length > 0 ? fresh : readyProsodyExercises
+  const base = fresh.length > 0 ? fresh : readyProsodyExercises
+  const focused = preferredFocus
+    ? base.filter((exercise) => exercise.focus?.includes(preferredFocus))
+    : []
+  const pool = focused.length > 0 ? focused : base
   return pool[Math.floor(random() * pool.length)] ?? null
 }

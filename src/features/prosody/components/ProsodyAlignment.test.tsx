@@ -103,7 +103,7 @@ describe('prosody listening alignment', () => {
       />,
     )
     expect(container.querySelector('.prosody-groups')).not.toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /Voir le découpage/ })).toBeDisabled()
+    expect(screen.getByRole('button', { name: /Marquer le découpage/ })).toBeDisabled()
   })
 
   it('shows / ↑ ↓ — and offers a replay with the visible grouping', () => {
@@ -125,6 +125,51 @@ describe('prosody listening alignment', () => {
     expect(
       screen.getByRole('button', { name: /Réécouter avec le découpage visible/ }),
     ).toBeInTheDocument()
+  })
+})
+
+describe('prosody active marking', () => {
+  it('lets the learner place / and ↑ ↓ before comparing with the model', () => {
+    const onMarked = vi.fn()
+    render(
+      <ListeningExercise
+        exercise={exercise}
+        step="mark"
+        audioSrc={audioSrc}
+        meaningPlays={1}
+        prosodyPlays={1}
+        onAudioComplete={() => undefined}
+        onNext={() => undefined}
+        onMarked={onMarked}
+      />,
+    )
+    expect(document.querySelector('.prosody-groups')).not.toBeInTheDocument()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Frontière après « Franchement »' }))
+    fireEvent.click(screen.getByRole('button', { name: /Intonation de « je pense/ }))
+    fireEvent.click(screen.getByRole('button', { name: 'Comparer avec le modèle' }))
+
+    expect(onMarked).toHaveBeenCalledWith({
+      boundaries: [0],
+      intonations: ['level', 'rise'],
+    })
+  })
+
+  it('scores the learner marking against the model on reveal', () => {
+    render(
+      <ListeningExercise
+        exercise={exercise}
+        step="reveal"
+        audioSrc={audioSrc}
+        meaningPlays={1}
+        prosodyPlays={1}
+        marking={{ boundaries: [0, 7], intonations: ['level', 'rise', 'fall'] }}
+        onAudioComplete={() => undefined}
+        onNext={() => undefined}
+      />,
+    )
+    expect(screen.getByText(/Frontières trouvées : 2\/2/)).toBeInTheDocument()
+    expect(screen.getByText(/intonation juste sur 3\/3/)).toBeInTheDocument()
   })
 })
 

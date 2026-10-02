@@ -26,6 +26,10 @@ function reach(stage: ProsodySessionState['stage']): ProsodySessionState {
   state = prosodyReducer(state, { type: 'LISTEN_NEXT' })
   state = prosodyReducer(state, { type: 'LISTEN_PLAYED' })
   state = prosodyReducer(state, { type: 'LISTEN_NEXT' })
+  state = prosodyReducer(state, {
+    type: 'LISTEN_MARKED',
+    marking: { boundaries: [0], intonations: ['level', 'fall'] },
+  })
   state = prosodyReducer(state, { type: 'LISTEN_NEXT' })
 
   if (stage === 'imitation') return state
@@ -49,6 +53,33 @@ function reach(stage: ProsodySessionState['stage']): ProsodySessionState {
 }
 
 describe('prosodyReducer protocol gates', () => {
+  it('makes the learner mark the grouping before revealing the model', () => {
+    let state = createProsodySession(exercise)
+    state = prosodyReducer(state, { type: 'LISTEN_PLAYED' })
+    state = prosodyReducer(state, { type: 'LISTEN_NEXT' })
+    state = prosodyReducer(state, { type: 'LISTEN_PLAYED' })
+    state = prosodyReducer(state, { type: 'LISTEN_NEXT' })
+    expect(state.listening.step).toBe('mark')
+
+    state = prosodyReducer(state, { type: 'LISTEN_NEXT' })
+    expect(state.listening.step).toBe('mark')
+
+    const marking = { boundaries: [0, 7], intonations: ['level', 'rise', 'fall'] as const }
+    state = prosodyReducer(state, {
+      type: 'LISTEN_MARKED',
+      marking: { boundaries: [...marking.boundaries], intonations: [...marking.intonations] },
+    })
+    expect(state.listening.step).toBe('reveal')
+    expect(state.listening.marking?.boundaries).toEqual([0, 7])
+  })
+
+  it('uses the progressive retelling goal chosen at creation', () => {
+    let state = createProsodySession(exercise, new Date(), { minSeconds: 60, targetSeconds: 120 })
+    state = { ...state, stage: 'retelling', retelling: { ...state.retelling, step: 'record' } }
+    expect(prosodyReducer(state, { type: 'RETELL_RECORDED', durationSeconds: 45 }).retelling.step).toBe('record')
+    expect(prosodyReducer(state, { type: 'RETELL_RECORDED', durationSeconds: 61 }).retelling.step).toBe('review')
+  })
+
   it('cannot leave either listening step before the required full listen', () => {
     let state = createProsodySession(exercise)
     state = prosodyReducer(state, { type: 'LISTEN_NEXT' })
