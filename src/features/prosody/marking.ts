@@ -28,6 +28,40 @@ export function exerciseWords(exercise: Pick<ProsodyExercise, 'groups'>): string
   return exercise.groups.flatMap(groupWords)
 }
 
+/**
+ * Estimated start/end (seconds) of each word, in the order of `exerciseWords`.
+ * A group's duration is shared between its words by length, which is close enough
+ * to follow the voice word by word.
+ */
+export function wordTimeline(
+  exercise: Pick<ProsodyExercise, 'groups'>,
+): { start: number; end: number }[] {
+  return exercise.groups.flatMap((group) => {
+    const words = groupWords(group)
+    const weights = words.map((word) => word.length + 1)
+    const total = weights.reduce((sum, weight) => sum + weight, 0)
+    let cursor = group.start
+    return words.map((_, index) => {
+      const start = cursor
+      cursor += ((group.end - group.start) * weights[index]) / total
+      return { start, end: cursor }
+    })
+  })
+}
+
+/** Index of the word being spoken at `time`, or -1 before the first word. */
+export function activeWordIndex(
+  exercise: Pick<ProsodyExercise, 'groups'>,
+  time: number,
+): number {
+  const timeline = wordTimeline(exercise)
+  let active = -1
+  timeline.forEach((word, index) => {
+    if (word.start <= time) active = index
+  })
+  return active
+}
+
 /** Word indexes after which the model starts a new rhythmic group. */
 export function referenceBoundaries(exercise: Pick<ProsodyExercise, 'groups'>): number[] {
   const boundaries: number[] = []

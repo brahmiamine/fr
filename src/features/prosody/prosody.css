@@ -126,3 +126,17 @@
   border-color: transparent;
   color: #fff;
 }
+
+/* ---------- Word currently spoken by the model ---------- */
+.marking__word,
+.prosody-groups__token {
+  border-radius: 8px;
+  transition: background-color 0.12s ease, color 0.12s ease;
+}
+
+.marking__word.is-speaking,
+.prosody-groups__token.is-speaking {
+  background: var(--gradient);
+  color: #fff;
+  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.18);
+}

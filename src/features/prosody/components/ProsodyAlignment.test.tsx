@@ -154,6 +154,33 @@ describe('prosody listening alignment', () => {
       screen.getByRole('button', { name: /Réécouter avec le découpage visible/ }),
     ).toBeInTheDocument()
   })
+
+  it('highlights the word being spoken while the model plays', () => {
+    const { container } = render(
+      <ListeningExercise
+        exercise={{ ...exercise, modelKind: 'recording' }}
+        step="reveal"
+        audioSrc={audioSrc}
+        meaningPlays={1}
+        prosodyPlays={1}
+        onAudioComplete={() => undefined}
+        onNext={() => undefined}
+      />,
+    )
+    const audio = container.querySelector('audio') as HTMLAudioElement
+    Object.defineProperty(audio, 'duration', { value: 10, configurable: true })
+    expect(container.querySelector('.is-speaking')).not.toBeInTheDocument()
+
+    const first = exercise.groups[0]
+    audio.currentTime = (first.start + first.end) / 2
+    fireEvent.timeUpdate(audio)
+    const speaking = container.querySelectorAll('.prosody-groups__token.is-speaking')
+    expect(speaking).toHaveLength(1)
+    expect(first.text).toContain((speaking[0].textContent ?? '').trim())
+
+    fireEvent.ended(audio)
+    expect(container.querySelector('.is-speaking')).not.toBeInTheDocument()
+  })
 })
 
 describe('prosody active marking', () => {

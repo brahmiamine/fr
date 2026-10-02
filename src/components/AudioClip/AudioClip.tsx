@@ -28,6 +28,11 @@ export interface AudioClipProps {
   onPlaybackChange?: (playing: boolean) => void
   /** Reports the playhead position (seconds) as the audio advances or is seeked. */
   onTimeChange?: (seconds: number) => void
+  /**
+   * Reports progress through the clip: `fraction` (0–1) and, for recorded audio, the
+   * absolute `seconds` of the playhead (0 for synthesised speech, which has no position).
+   */
+  onProgress?: (fraction: number, seconds: number) => void
   /** Reports the full length (seconds) once the browser knows it. */
   onDuration?: (seconds: number) => void
   onComplete?: () => void
@@ -45,6 +50,7 @@ export function AudioClip({
   disabled = false,
   onPlaybackChange,
   onTimeChange,
+  onProgress,
   onDuration,
   onComplete,
 }: AudioClipProps) {
@@ -52,6 +58,8 @@ export function AudioClip({
   const completedRef = useRef(false)
   const [playing, setPlaying] = useState(false)
   const [progress, setProgress] = useState(0)
+  const onProgressRef = useRef(onProgress)
+  onProgressRef.current = onProgress
   const [clock, setClock] = useState({ current: 0, total: 0 })
 
   useEffect(() => () => cancelSpeech(), [])
@@ -62,7 +70,9 @@ export function AudioClip({
     const total = estimateSpeechSeconds(speechText, speechRate) * 1000
     const startedAt = Date.now()
     const id = window.setInterval(() => {
-      setProgress(Math.min(0.97, (Date.now() - startedAt) / total))
+      const next = Math.min(0.97, (Date.now() - startedAt) / total)
+      setProgress(next)
+      onProgressRef.current?.(next, 0)
     }, 100)
     return () => window.clearInterval(id)
   }, [speechText, speechRate, playing])
@@ -76,6 +86,7 @@ export function AudioClip({
     if (completedRef.current) return
     completedRef.current = true
     setProgress(1)
+    onProgress?.(1, 0)
     setPlayback(false)
     onComplete?.()
   }
@@ -91,6 +102,7 @@ export function AudioClip({
       }
       completedRef.current = false
       setProgress(0)
+      onProgress?.(0, 0)
       const started = speakText(speechText, {
         lang: speechLocale,
         rate: speechRate,
@@ -130,7 +142,9 @@ export function AudioClip({
     onTimeChange?.(audio.currentTime)
     const [from, to] = audioRange(audio)
     if (to > from) {
-      setProgress(Math.min(1, Math.max(0, (audio.currentTime - from) / (to - from))))
+      const fraction = Math.min(1, Math.max(0, (audio.currentTime - from) / (to - from)))
+      setProgress(fraction)
+      onProgress?.(fraction, audio.currentTime)
       setClock({
         current: Math.min(to - from, Math.max(0, audio.currentTime - from)),
         total: to - from,
@@ -164,6 +178,7 @@ export function AudioClip({
     const next = Math.min(1, Math.max(0, fraction))
     audio.currentTime = from + next * (to - from)
     setProgress(next)
+    onProgress?.(next, from + next * (to - from))
     setClock({ current: next * (to - from), total: to - from })
   }
 

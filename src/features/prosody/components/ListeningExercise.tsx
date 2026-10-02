@@ -3,6 +3,7 @@ import type { Intonation, LearnerMarking } from '../marking'
 import {
   compareMarking,
   exerciseWords,
+  groupWords,
   spansFromBoundaries,
 } from '../marking'
 import type { ProsodyExercise } from '../types'
@@ -11,6 +12,7 @@ import {
   REQUIRED_MEANING_LISTENS,
   REQUIRED_PROSODY_LISTENS,
 } from '../types'
+import { useWordHighlight } from '../hooks/useWordHighlight'
 import { AudioClip } from '../../../components/AudioClip/AudioClip'
 
 export interface ListeningExerciseProps {
@@ -94,6 +96,7 @@ function MarkingBoard({
   onMarked: (marking: LearnerMarking) => void
 }) {
   const words = exerciseWords(exercise)
+  const { activeIndex, onProgress } = useWordHighlight(exercise)
   const [boundaries, setBoundaries] = useState<number[]>([])
   const [intonations, setIntonations] = useState<Intonation[]>([])
   const spans = spansFromBoundaries(words.length, boundaries)
@@ -131,11 +134,14 @@ function MarkingBoard({
         speechLocale={exercise.voiceLocale}
         speechRate={speechRateFor(exercise)}
         label="Réécouter"
+        onProgress={onProgress}
       />
       <p className="marking" lang="fr">
         {words.map((word, index) => (
           <span key={`${word}-${index}`} className="marking__item">
-            <span className="marking__word">{word}</span>
+            <span className={`marking__word${index === activeIndex ? ' is-speaking' : ''}`}>
+              {word}
+            </span>
             {index < words.length - 1 ? (
               <button
                 type="button"
@@ -249,6 +255,7 @@ export function ListeningExercise({
   onMarked,
   onUseOwnExtract,
 }: ListeningExerciseProps) {
+  const reveal = useWordHighlight(exercise)
   if (step === 'meaning') {
     const done = meaningPlays >= REQUIRED_MEANING_LISTENS
     return (
@@ -332,20 +339,37 @@ export function ListeningExercise({
       {exercise.custom ? null : (
       <>
       <p className="prosody-groups" lang="fr">
-        {exercise.groups.map((group, index) => (
-          <span key={`${group.start}-${group.text}`}>
-            <span className="prosody-groups__word">{group.text}</span>
-            {group.finalLengthening ? (
-              <span className="prosody-groups__mark">—</span>
-            ) : null}
-            <span className="prosody-groups__mark">{intonationMark(group)}</span>
-            {group.liaisonAfter ? <span className="prosody-groups__mark"> ‿liaison</span> : null}
-            {group.enchainementAfter ? <span className="prosody-groups__mark"> ‿enchaînement</span> : null}
-            {index < exercise.groups.length - 1 ? (
-              <span className="prosody-groups__sep"> / </span>
-            ) : null}
-          </span>
-        ))}
+        {exercise.groups.map((group, index) => {
+          const offset = exercise.groups
+            .slice(0, index)
+            .reduce((sum, previous) => sum + groupWords(previous).length, 0)
+          return (
+            <span key={`${group.start}-${group.text}`}>
+              <span className="prosody-groups__word">
+                {groupWords(group).map((word, wordIndex) => (
+                  <span
+                    key={`${word}-${wordIndex}`}
+                    className={`prosody-groups__token${
+                      offset + wordIndex === reveal.activeIndex ? ' is-speaking' : ''
+                    }`}
+                  >
+                    {word}
+                    {wordIndex < groupWords(group).length - 1 ? ' ' : ''}
+                  </span>
+                ))}
+              </span>
+              {group.finalLengthening ? (
+                <span className="prosody-groups__mark">—</span>
+              ) : null}
+              <span className="prosody-groups__mark">{intonationMark(group)}</span>
+              {group.liaisonAfter ? <span className="prosody-groups__mark"> ‿liaison</span> : null}
+              {group.enchainementAfter ? <span className="prosody-groups__mark"> ‿enchaînement</span> : null}
+              {index < exercise.groups.length - 1 ? (
+                <span className="prosody-groups__sep"> / </span>
+              ) : null}
+            </span>
+          )
+        })}
       </p>
       <p className="muted">
         <span className="prosody-groups__mark">/</span> frontière ·{' '}
@@ -362,6 +386,7 @@ export function ListeningExercise({
         speechLocale={exercise.voiceLocale}
         speechRate={speechRateFor(exercise)}
         label="Réécouter avec le découpage visible"
+        onProgress={reveal.onProgress}
       />
       <button type="button" className="button button--block" onClick={onNext}>
         Continuer vers l'imitation

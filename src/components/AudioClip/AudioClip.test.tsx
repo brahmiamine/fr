@@ -120,4 +120,20 @@ describe('AudioClip', () => {
     fireEvent.ended(audio)
     expect(slider).toHaveAttribute('aria-valuenow', '100')
   })
+
+  it('reports the playhead so text can follow the voice', () => {
+    const onProgress = vi.fn()
+    const { container } = render(
+      <AudioClip src="/model.wav" label="Écouter" onProgress={onProgress} />,
+    )
+    const audio = container.querySelector('audio') as HTMLAudioElement
+    Object.defineProperty(audio, 'duration', { value: 10, configurable: true })
+
+    audio.currentTime = 2.5
+    fireEvent.timeUpdate(audio)
+    expect(onProgress).toHaveBeenLastCalledWith(0.25, 2.5)
+
+    fireEvent.ended(audio)
+    expect(onProgress).toHaveBeenLastCalledWith(1, 0)
+  })
 })
