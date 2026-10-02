@@ -11,7 +11,7 @@ import type {
   WeeklyTestRecord,
   WordGap,
 } from '../../types/progress'
-import { chunkSchedule, gapSchedule, nextReviewAfter } from '../review/scheduler'
+import { gapSchedule, nextReviewAfter } from '../review/scheduler'
 import { contentRepository } from '../content/contentRepository'
 
 export function toLocalDateString(date: Date = new Date()): string {
@@ -196,27 +196,31 @@ export function upsertChunkReview(
   result: 'easy' | 'difficult' | 'failed',
   now: Date = new Date(),
 ): AppState {
-  const schedule = chunkSchedule(result, now)
   const existing = state.chunkReviews.find((review) => review.chunkId === chunkId)
-  const next: ChunkReview = existing
-    ? {
-        ...existing,
-        nextReview: schedule.nextReview,
-        interval: schedule.interval,
-        timesSeen: existing.timesSeen + 1,
-        timesRecalled: existing.timesRecalled + (result === 'failed' ? 0 : 1),
-        lastResult: result,
-        mastered: result === 'easy' && existing.timesRecalled + 1 >= 2,
-      }
-    : {
-        chunkId,
-        nextReview: schedule.nextReview,
-        interval: schedule.interval,
-        timesSeen: 1,
-        timesRecalled: result === 'failed' ? 0 : 1,
-        lastResult: result,
-        mastered: false,
-      }
+  const recalled = result === 'failed' ? 0 : 1
+  const nextTimesRecalled = (existing?.timesRecalled ?? 0) + recalled
+
+  let interval = 1
+  let mastered = false
+  if (result !== 'failed') {
+    if (nextTimesRecalled === 1) interval = 1
+    else if (nextTimesRecalled === 2) interval = 2
+    else if (nextTimesRecalled === 3) interval = 4
+    else {
+      interval = 30
+      mastered = true
+    }
+  }
+
+  const next: ChunkReview = {
+    chunkId,
+    nextReview: nextReviewAfter(interval, now),
+    interval,
+    timesSeen: (existing?.timesSeen ?? 0) + 1,
+    timesRecalled: nextTimesRecalled,
+    lastResult: result,
+    mastered,
+  }
   return {
     ...state,
     chunkReviews: [
