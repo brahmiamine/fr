@@ -1,4 +1,4 @@
-import { InfoButton } from '../../components/ui'
+import { InfoButton, SkipButton } from '../../components/ui'
 import { useEffect, useState } from 'react'
 import { Timer } from '../../components/Timer/Timer'
 import { contentRepository } from '../../services/content/contentRepository'
@@ -74,6 +74,7 @@ export default function ConversationPrep() {
             label="Parle, et réagis aux interruptions"
             onComplete={finish}
           />
+          <SkipButton onClick={finish}>Passer la répétition</SkipButton>
           <ul className="exercise__rescue" aria-live="assertive">
             {scenario.events.slice(0, revealed).map((event) => (
               <li key={event}>

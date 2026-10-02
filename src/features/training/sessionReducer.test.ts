@@ -265,3 +265,29 @@ describe('skipping questions', () => {
     expect(getCurrentStage(state)).not.toBe('questions')
   })
 })
+
+describe('skipping other exercises', () => {
+  it('skips a chunk without rating it, then reaches the chunks of the day', () => {
+    let state = newSession()
+    for (let i = 0; i < plan.chunks.length; i += 1) {
+      state = sessionReducer(state, { type: 'CHUNK_SKIP' })
+    }
+    expect(state.chunkResults).toHaveLength(0)
+    expect(state.chunks.step).toBe('day')
+  })
+
+  it('skips the fluency exercise and a gap word', () => {
+    let state = { ...newSession(), stageIndex: 1 }
+    state = sessionReducer(state, { type: 'FLUENCY_SKIP' })
+    expect(getCurrentStage(state)).toBe('questions')
+
+    state = { ...state, stageIndex: 3 }
+    state = sessionReducer(state, { type: 'GAP_NEXT' })
+    expect(state.gapResults).toHaveLength(0)
+  })
+
+  it('completes the session when the feedback is skipped', () => {
+    const state = sessionReducer({ ...newSession(), stageIndex: 4 }, { type: 'FEEDBACK_SKIP' })
+    expect(state.phase).toBe('complete')
+  })
+})

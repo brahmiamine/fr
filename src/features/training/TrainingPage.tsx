@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { useAppState } from '../../app/AppStateProvider'
 import { TimerPersistenceContext } from '../../components/Timer/TimerPersistence'
 import type { TimerPersistence } from '../../components/Timer/TimerPersistence'
-import { Confetti, IconTile, MiniStat } from '../../components/ui'
+import { Confetti, IconTile, MiniStat, SkipButton } from '../../components/ui'
 import { useAudioRecorder } from '../../hooks/useAudioRecorder'
 import { buildSessionPlan } from '../../services/review/selectPlan'
 import {
@@ -90,6 +90,33 @@ function stageProgress(session: TrainingSessionState): number {
   if (stage === 'questions') return session.questions.index / Math.max(1, plan.questions.length)
   if (stage === 'gaps') return session.gaps.index / Math.max(1, plan.gapItems.length)
   return 0.5
+}
+
+/** The "Passer" action of the current exercise, or null when there is nothing to skip. */
+function skipFor(
+  session: TrainingSessionState,
+  stage: ReturnType<typeof getCurrentStage>,
+  dispatch: (action: Parameters<typeof sessionReducer>[1]) => void,
+): { label: string; run: () => void } | null {
+  if (session.phase !== 'active') return null
+  switch (stage) {
+    case 'chunks':
+      if (session.chunks.step === 'day') return null
+      return { label: 'Passer ce chunk', run: () => dispatch({ type: 'CHUNK_SKIP' }) }
+    case 'fluency':
+      return { label: 'Passer cet exercice', run: () => dispatch({ type: 'FLUENCY_SKIP' }) }
+    case 'questions':
+      if (session.revenge.stage !== 'idle' && session.revenge.stage !== 'done') {
+        return { label: 'Passer la revanche', run: () => dispatch({ type: 'REVENGE_DONE' }) }
+      }
+      return { label: 'Passer cette question', run: () => dispatch({ type: 'QUESTION_SKIP' }) }
+    case 'gaps':
+      return { label: 'Passer ce mot', run: () => dispatch({ type: 'GAP_NEXT' }) }
+    case 'feedback':
+      return { label: 'Passer le feedback', run: () => dispatch({ type: 'FEEDBACK_SKIP' }) }
+    default:
+      return null
+  }
 }
 
 export default function TrainingPage() {
@@ -270,6 +297,7 @@ export default function TrainingPage() {
   }
 
   const stage = getCurrentStage(session)
+  const skip = skipFor(session, stage, dispatch)
 
   return (
     <TimerPersistenceContext.Provider value={timerPersistence}>
@@ -369,6 +397,8 @@ export default function TrainingPage() {
           onSubmit={() => dispatch({ type: 'FEEDBACK_SUBMIT' })}
         />
       ) : null}
+
+      {skip ? <SkipButton onClick={skip.run}>{skip.label}</SkipButton> : null}
     </div>
     </TimerPersistenceContext.Provider>
   )
@@ -426,7 +456,6 @@ function QuestionsRenderer({
         onPrepDone={() => onSession({ type: 'REVENGE_PREP_DONE' })}
         onSpeakingDone={() => onSession({ type: 'REVENGE_DONE' })}
         onRate={() => undefined}
-        onSkip={() => onSession({ type: 'REVENGE_DONE' })}
         onDone={() => onSession({ type: 'REVENGE_DONE' })}
       />
     )
@@ -454,7 +483,6 @@ function QuestionsRenderer({
       onPrepDone={() => onSession({ type: 'QUESTION_PREP_DONE' })}
       onSpeakingDone={() => onSession({ type: 'QUESTION_SPEAKING_DONE' })}
       onRate={(rating) => onSession({ type: 'QUESTION_RATE', rating })}
-      onSkip={() => onSession({ type: 'QUESTION_SKIP' })}
       onDone={() => undefined}
     />
   )

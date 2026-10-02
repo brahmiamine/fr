@@ -1,5 +1,5 @@
 import { AudioClip } from '../../components/AudioClip/AudioClip'
-import { InfoButton } from '../../components/ui'
+import { InfoButton, SkipButton } from '../../components/ui'
 import { useEffect, useMemo, useState } from 'react'
 import type { FormEvent } from 'react'
 import { useAppState } from '../../app/AppStateProvider'
@@ -178,6 +178,14 @@ export default function WeeklyTest() {
               setStage('form')
             }}
           />
+          <SkipButton
+            onClick={() => {
+              recorder.stop()
+              setStage('form')
+            }}
+          >
+            Passer au formulaire
+          </SkipButton>
         </>
       ) : null}
 
@@ -256,6 +264,7 @@ export default function WeeklyTest() {
           <button type="submit" className="button button--block">
             Enregistrer le test
           </button>
+          <SkipButton onClick={() => setStage('intro')}>Passer, sans enregistrer</SkipButton>
         </form>
       ) : null}
     </section>

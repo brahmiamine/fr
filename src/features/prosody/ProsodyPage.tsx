@@ -28,7 +28,7 @@ import { ListeningExercise } from './components/ListeningExercise'
 import { ImitationExercise } from './components/ImitationExercise'
 import { ComparisonExercise } from './components/ComparisonExercise'
 import { RetellingExercise } from './components/RetellingExercise'
-import { IconTile, InfoButton, SegmentedProgress } from '../../components/ui'
+import { IconTile, InfoButton, SegmentedProgress, SkipButton } from '../../components/ui'
 import './prosody.css'
 
 export interface ProsodyPageProps {
@@ -288,6 +288,10 @@ function ProsodySession({
           onDone={() => dispatch({ type: 'RETELL_DONE' })}
         />
       ) : null}
+
+      <SkipButton onClick={() => dispatch({ type: 'SKIP_STAGE' })}>
+        {session.stage === 'retelling' ? 'Passer et terminer' : 'Passer cet exercice'}
+      </SkipButton>
     </div>
   )
 }

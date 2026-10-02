@@ -41,17 +41,17 @@ export default function SettingsPage() {
       <Card>
         <div className="settings__row">
           <div>
-            <h2 className="settings__title">Passer une question</h2>
+            <h2 className="settings__title">Bouton « Passer »</h2>
             <p className="muted">
-              Affiche un bouton « Passer » pour sauter à la question suivante pendant les
-              questions surprises.
+              Affiche un bouton « Passer » sous chaque exercice et défi (séance guidée,
+              prosodie, test hebdomadaire, situation à jouer) pour passer à la suite.
             </p>
           </div>
           <button
             type="button"
             role="switch"
             aria-checked={settings.allowSkip}
-            aria-label="Autoriser à passer les questions"
+            aria-label="Afficher le bouton Passer"
             className={`settings__switch${settings.allowSkip ? ' is-on' : ''}`}
             onClick={() => updateSettings({ allowSkip: !settings.allowSkip })}
           >

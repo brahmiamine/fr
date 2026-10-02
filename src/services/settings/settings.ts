@@ -4,7 +4,7 @@ export type ThemeMode = 'system' | 'light' | 'dark'
 
 export interface AppSettings {
   theme: ThemeMode
-  /** Shows the "Passer" button on the surprise questions. */
+  /** Shows the "Passer" button under every exercise and challenge. */
   allowSkip: boolean
 }
 

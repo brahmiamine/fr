@@ -12,10 +12,12 @@ import type { TimerSnapshot } from '../../hooks/useCountdownTimer'
 export type TrainingAction =
   | { type: 'CHUNK_REVEAL' }
   | { type: 'CHUNK_RATE'; result: RecallResult }
+  | { type: 'CHUNK_SKIP' }
   | { type: 'CHUNKS_OF_DAY_CONTINUE' }
   | { type: 'FLUENCY_SET_KEYWORDS'; keywords: string[] }
   | { type: 'FLUENCY_START' }
   | { type: 'FLUENCY_ROUND_COMPLETE' }
+  | { type: 'FLUENCY_SKIP' }
   | {
       type: 'FLUENCY_SUBMIT_FEEDBACK'
       missingWord: string
@@ -47,6 +49,7 @@ export type TrainingAction =
       value: string | number | null
     }
   | { type: 'FEEDBACK_SUBMIT' }
+  | { type: 'FEEDBACK_SKIP' }
   | { type: 'TIMER_SAVE'; key: string; snapshot: TimerSnapshot | null }
 
 export function createSessionId(now: Date = new Date()): string {
@@ -155,13 +158,15 @@ export function sessionReducer(
     case 'CHUNK_REVEAL':
       return { ...state, chunks: { ...state.chunks, step: 'revealed' } }
 
+    case 'CHUNK_SKIP':
     case 'CHUNK_RATE': {
       const chunk = state.plan.chunks[state.chunks.index]
       if (!chunk) return state
-      const chunkResults = [
-        ...state.chunkResults,
-        { chunkId: chunk.id, result: action.result },
-      ]
+      // A skipped chunk is not rated: its review schedule stays untouched.
+      const chunkResults =
+        action.type === 'CHUNK_RATE'
+          ? [...state.chunkResults, { chunkId: chunk.id, result: action.result }]
+          : state.chunkResults
       if (state.chunks.index + 1 < state.plan.chunks.length) {
         return {
           ...state,
@@ -201,6 +206,9 @@ export function sessionReducer(
       }
       return advanceStage(state)
     }
+
+    case 'FLUENCY_SKIP':
+      return advanceStage(state)
 
     case 'FLUENCY_SUBMIT_FEEDBACK':
       return {
@@ -361,6 +369,9 @@ export function sessionReducer(
         ...state,
         feedback: { ...state.feedback, [action.field]: action.value },
       }
+
+    case 'FEEDBACK_SKIP':
+      return { ...state, phase: 'complete' }
 
     case 'FEEDBACK_SUBMIT':
       if (!isFeedbackValid(state.feedback)) return state

@@ -31,6 +31,7 @@ export type ProsodyAction =
   | { type: 'RETELL_START' }
   | { type: 'RETELL_RECORDED'; durationSeconds: number }
   | { type: 'RETELL_DONE' }
+  | { type: 'SKIP_STAGE' }
 
 export function createProsodySession(
   exercise: ProsodyExercise,
@@ -208,6 +209,27 @@ export function prosodyReducer(
         stage: 'retelling',
         retelling: { ...state.retelling, step: 'prompt', durationSeconds: 0 },
       }
+
+    case 'SKIP_STAGE': {
+      if (state.stage === 'listening') {
+        return { ...state, stage: 'imitation', imitation: { ...state.imitation, step: 'listen' } }
+      }
+      if (state.stage === 'imitation') {
+        return {
+          ...state,
+          stage: 'comparison',
+          comparison: { step: 'aba', focus: null, abaCompleted: false },
+        }
+      }
+      if (state.stage === 'comparison') {
+        return {
+          ...state,
+          stage: 'retelling',
+          retelling: { ...state.retelling, step: 'prompt', durationSeconds: 0 },
+        }
+      }
+      return { ...state, completed: true }
+    }
 
     case 'RETELL_START':
       if (state.stage !== 'retelling' || state.retelling.step !== 'prompt') return state
