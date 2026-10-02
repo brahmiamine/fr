@@ -1,10 +1,10 @@
 import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 
-// Configured with the GitHub Pages repository path so built asset URLs are
-// rooted at /fr/.
+// Served from the root of https://fr.testcivique.workers.dev/ (Cloudflare
+// Workers static assets), so built asset URLs are rooted at /.
 export default defineConfig({
-  base: '/fr/',
+  base: '/',
   plugins: [react()],
   build: {
     rollupOptions: {

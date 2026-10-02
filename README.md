@@ -4,9 +4,9 @@ Un **coach de français parlé** sous forme de site web, mobile-first. Chaque
 séance est une boucle d'apprentissage fermée : l'application donne du contenu →
 tu essaies de le récupérer → tu parles → tu bloques → l'application mémorise le
 blocage et te le représente plus tard. Aucun compte, aucun serveur : tout
-fonctionne sur GitHub Pages.
+fonctionne en statique sur Cloudflare Workers.
 
-Application déployée : https://brahmiamine.github.io/fr/
+Application déployée : https://fr.testcivique.workers.dev/
 
 ## Le principe
 
@@ -212,11 +212,18 @@ La suite Vitest + React Testing Library couvre notamment :
 
 ## Déploiement
 
-Le workflow `.github/workflows/deploy-pages.yml` exécute les tests, construit
-l'application et la publie sur GitHub Pages à chaque push sur `main`.
+L'application est un site statique hébergé sur **Cloudflare Workers**
+(assets statiques) : https://fr.testcivique.workers.dev/
 
-Vite est configuré avec `base: '/fr/'` pour respecter le chemin du dépôt.
-Dans les paramètres GitHub du dépôt, la source Pages doit être **GitHub Actions**.
+`wrangler.jsonc` publie le dossier `dist/` sous le nom de Worker `fr`.
+Dans Cloudflare (Workers & Pages → `fr` → Settings → Build), utiliser :
+
+- commande de build : `npm run build` ;
+- commande de déploiement : `npx wrangler deploy`.
+
+Vite est configuré avec `base: '/'` : l'application est servie à la racine du
+domaine. Le routage par hash (`#/training`, …) évite toute règle de
+redirection côté serveur.
 
 ## Interface web et PWA
 
@@ -227,7 +234,7 @@ Parle+ est un **site web mobile-first installable comme application** :
 - affichage `standalone` lorsqu'il est ajouté à l'écran d'accueil ;
 - icône standard + variante maskable dans `public/icons/` ;
 - métadonnées mobile et couleur de thème alignées sur la palette indigo → violet → rose ;
-- le déploiement GitHub Pages reste compatible grâce au `base: '/fr/'` de Vite et au routage par hash.
+- le déploiement Cloudflare Workers fonctionne grâce au `base: '/'` de Vite et au routage par hash.
 
 L'interface reste responsive avec en-tête de marque, navigation, colonne centrée et mode focalisé pendant les exercices. Les champs utilisent `font-size: 16px` pour éviter le zoom automatique sur iOS et les cibles tactiles restent adaptées au mobile.
 

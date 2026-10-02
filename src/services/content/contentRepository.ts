@@ -15,7 +15,7 @@ import type {
 } from '../../types/content'
 
 // JSON is imported statically so the content ships with the bundle and works on
-// GitHub Pages without any backend. New content only requires editing the JSON.
+// a static host without any backend. New content only requires editing the JSON.
 export const contentRepository: ContentRepository = {
   topics: topicsData as unknown as Topic[],
   questions: questionsData as unknown as Question[],
