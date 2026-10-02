@@ -93,4 +93,31 @@ describe('AudioClip', () => {
     fireEvent.click(screen.getByRole('button', { name: /Écouter/i }))
     expect(play).not.toHaveBeenCalled()
   })
+
+  it('fills the waveform as the audio advances and seeks on click', () => {
+    const { container } = render(
+      <AudioClip src="/model.wav" variant="player" label="Écouter" />,
+    )
+    const audio = container.querySelector('audio') as HTMLAudioElement
+    Object.defineProperty(audio, 'duration', { value: 10, configurable: true })
+    const slider = screen.getByRole('slider')
+    const played = () => container.querySelectorAll('.audio-player__bar.is-played').length
+
+    expect(played()).toBe(0)
+
+    audio.currentTime = 5
+    fireEvent.timeUpdate(audio)
+    expect(slider).toHaveAttribute('aria-valuenow', '50')
+    expect(played()).toBeGreaterThan(20)
+    expect(played()).toBeLessThan(36)
+
+    slider.getBoundingClientRect = () =>
+      ({ left: 0, width: 200, top: 0, height: 40, right: 200, bottom: 40 }) as DOMRect
+    fireEvent.click(slider, { clientX: 150 })
+    expect(audio.currentTime).toBeCloseTo(7.5)
+    expect(slider).toHaveAttribute('aria-valuenow', '75')
+
+    fireEvent.ended(audio)
+    expect(slider).toHaveAttribute('aria-valuenow', '100')
+  })
 })

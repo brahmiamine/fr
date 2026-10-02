@@ -187,11 +187,29 @@
 }
 
 .audio-player__wave {
-  justify-content: flex-start;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  width: 100%;
+  height: 48px;
+  cursor: pointer;
+  border-radius: 8px;
 }
 
-.audio-player__wave:not(.is-playing) .wave__bar {
-  opacity: 0.15;
+.audio-player__wave[aria-disabled='true'] {
+  cursor: default;
+}
+
+.audio-player__bar {
+  flex: 1;
+  min-width: 2px;
+  border-radius: 3px;
+  background: rgba(91, 91, 214, 0.18);
+  transition: background-color 0.15s ease;
+}
+
+.audio-player__bar.is-played {
+  background: var(--accent);
 }
 
 .audio-player__caption {

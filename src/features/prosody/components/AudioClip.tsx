@@ -1,6 +1,17 @@
 import { useEffect, useRef, useState } from 'react'
-import { WaveBars } from '../../../components/ui'
 import { cancelSpeech, speakText } from '../speech'
+
+const PLAYER_BARS = 56
+
+/** Deterministic pseudo-random heights (percent) so the waveform stays stable. */
+const BAR_HEIGHTS = Array.from({ length: PLAYER_BARS }, (_, index) =>
+  Math.round(25 + 75 * Math.abs(Math.sin(index * 1.7 + 0.6) * Math.cos(index * 0.37))),
+)
+
+/** Rough spoken duration of a text, to animate progress while speech synthesis plays. */
+function estimateSpeechSeconds(text: string, rate = 1): number {
+  return Math.max(1.5, text.length / (14 * Math.max(0.5, rate)))
+}
 
 export interface AudioClipProps {
   src?: string
@@ -35,8 +46,20 @@ export function AudioClip({
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const completedRef = useRef(false)
   const [playing, setPlaying] = useState(false)
+  const [progress, setProgress] = useState(0)
 
   useEffect(() => () => cancelSpeech(), [])
+
+  // Synthesised speech reports no position: animate against an estimated length.
+  useEffect(() => {
+    if (!speechText || !playing) return
+    const total = estimateSpeechSeconds(speechText, speechRate) * 1000
+    const startedAt = Date.now()
+    const id = window.setInterval(() => {
+      setProgress(Math.min(0.97, (Date.now() - startedAt) / total))
+    }, 100)
+    return () => window.clearInterval(id)
+  }, [speechText, speechRate, playing])
 
   const setPlayback = (value: boolean) => {
     setPlaying(value)
@@ -46,6 +69,7 @@ export function AudioClip({
   const completePlayback = () => {
     if (completedRef.current) return
     completedRef.current = true
+    setProgress(1)
     setPlayback(false)
     onComplete?.()
   }
@@ -60,6 +84,7 @@ export function AudioClip({
         return
       }
       completedRef.current = false
+      setProgress(0)
       const started = speakText(speechText, {
         lang: speechLocale,
         rate: speechRate,
@@ -89,8 +114,20 @@ export function AudioClip({
     void audio.play().then(() => setPlayback(true)).catch(() => setPlayback(false))
   }
 
+  const audioRange = (audio: HTMLAudioElement): [number, number] => {
+    const from = start ?? 0
+    const to = end ?? (Number.isFinite(audio.duration) ? audio.duration : from)
+    return [from, to]
+  }
+
   const handleTimeUpdate = () => {
     const audio = audioRef.current
+    if (audio) {
+      const [from, to] = audioRange(audio)
+      if (to > from) {
+        setProgress(Math.min(1, Math.max(0, (audio.currentTime - from) / (to - from))))
+      }
+    }
     if (audio && end !== undefined && audio.currentTime >= end) {
       audio.pause()
       completePlayback()
@@ -111,6 +148,16 @@ export function AudioClip({
       />
     ) : null
 
+  const seekTo = (fraction: number) => {
+    const audio = audioRef.current
+    if (!audio || speechText) return
+    const [from, to] = audioRange(audio)
+    if (to <= from) return
+    const next = Math.min(1, Math.max(0, fraction))
+    audio.currentTime = from + next * (to - from)
+    setProgress(next)
+  }
+
   if (variant === 'player') {
     return (
       <div className="audio-clip audio-clip--player">
@@ -125,13 +172,34 @@ export function AudioClip({
           <span aria-hidden="true">{playing ? '❚❚' : '▶'}</span>
         </button>
         <div className="audio-player__body">
-          <WaveBars
-            count={32}
-            height={44}
-            playing={playing}
-            tone={playing ? 'gradient' : 'accent'}
-            className={`audio-player__wave${playing ? ' is-playing' : ''}`}
-          />
+          <div
+            className="audio-player__wave"
+            role="slider"
+            tabIndex={speechText ? -1 : 0}
+            aria-label="Position dans l'extrait"
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-valuenow={Math.round(progress * 100)}
+            aria-disabled={Boolean(speechText)}
+            onClick={(event) => {
+              const rect = event.currentTarget.getBoundingClientRect()
+              if (rect.width > 0) seekTo((event.clientX - rect.left) / rect.width)
+            }}
+            onKeyDown={(event) => {
+              if (event.key === 'ArrowRight') seekTo(progress + 0.05)
+              if (event.key === 'ArrowLeft') seekTo(progress - 0.05)
+            }}
+          >
+            {BAR_HEIGHTS.map((height, index) => (
+              <span
+                key={index}
+                className={`audio-player__bar${
+                  (index + 0.5) / PLAYER_BARS <= progress ? ' is-played' : ''
+                }`}
+                style={{ height: `${height}%` }}
+              />
+            ))}
+          </div>
           {caption ? <p className="audio-player__caption">{caption}</p> : null}
         </div>
         {audioElement}
