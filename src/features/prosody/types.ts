@@ -83,8 +83,8 @@ export const FOCUS_OPTIONS: FocusOption[] = [
   },
   {
     value: 'intonation',
-    label: 'Ma voix reste trop plate',
-    goal: 'Fais bouger la voix : monte puis descends.',
+    label: "Mon intonation est différente du modèle",
+    goal: 'Reproduis le mouvement de voix du modèle.',
   },
   {
     value: 'finalLengthening',
@@ -98,6 +98,22 @@ export const FOCUS_OPTIONS: FocusOption[] = [
   },
 ]
 
-export function focusGoal(focus: ProsodyFocus | null): string {
+function intonationMark(value: ProsodyGroup['intonation']): string {
+  if (value === 'rise') return '↑'
+  if (value === 'fall') return '↓'
+  return '→'
+}
+
+export function intonationPattern(exercise: ProsodyExercise): string {
+  return exercise.groups.map((group) => intonationMark(group.intonation)).join(' ')
+}
+
+export function focusGoal(
+  focus: ProsodyFocus | null,
+  exercise?: ProsodyExercise,
+): string {
+  if (focus === 'intonation' && exercise) {
+    return `Reproduis le mouvement de voix du modèle : ${intonationPattern(exercise)}.`
+  }
   return FOCUS_OPTIONS.find((option) => option.value === focus)?.goal ?? ''
 }

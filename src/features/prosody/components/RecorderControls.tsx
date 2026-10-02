@@ -14,9 +14,14 @@ export function RecorderControls({ recorder, recordLabel }: RecorderControlsProp
     )
   }
 
+  const canStart =
+    recorder.status === 'idle' ||
+    recorder.status === 'denied' ||
+    (recorder.status === 'stopped' && !recorder.current)
+
   return (
     <div className="audio">
-      {recorder.status === 'idle' || recorder.status === 'denied' ? (
+      {canStart ? (
         <button
           type="button"
           className="button button--gradient"
@@ -34,8 +39,17 @@ export function RecorderControls({ recorder, recordLabel }: RecorderControlsProp
         </button>
       ) : null}
       {recorder.status === 'stopped' && recorder.current?.url ? (
-        <div className="audio__row">
-          <audio src={recorder.current.url} controls preload="metadata" />
+        <div className="stack">
+          <div className="audio__row">
+            <audio src={recorder.current.url} controls preload="metadata" />
+          </div>
+          <button
+            type="button"
+            className="button button--ghost"
+            onClick={() => void recorder.start()}
+          >
+            ↻ Refaire l'enregistrement
+          </button>
         </div>
       ) : null}
     </div>

@@ -5,6 +5,7 @@ import type { ProsodyRecorder } from '../hooks/useProsodyRecorder'
 import { ListeningExercise } from './ListeningExercise'
 import { ComparisonExercise } from './ComparisonExercise'
 import { RetellingExercise } from './RetellingExercise'
+import { RecorderControls } from './RecorderControls'
 
 const exercise: ProsodyExercise = {
   id: 'prosody_test',
@@ -169,6 +170,40 @@ describe('prosody A/B/A alignment', () => {
     expect(
       screen.getByRole('button', { name: /J'ai refait \(V2\)/ }),
     ).toBeEnabled()
+  })
+
+  it('uses the model contour for the intonation correction goal', () => {
+    render(
+      <ComparisonExercise
+        exercise={exercise}
+        step="retry"
+        focus="intonation"
+        audioSrc={audioSrc}
+        recorder={mockRecorder()}
+        onAbaDone={() => undefined}
+        onChooseFocus={() => undefined}
+        onRetryDone={() => undefined}
+        onCompareDone={() => undefined}
+      />,
+    )
+    expect(screen.getByText(/→ ↑ ↓/)).toBeInTheDocument()
+  })
+
+  it('offers a retake after a stopped recording', () => {
+    const start = vi.fn(async () => undefined)
+    render(
+      <RecorderControls
+        recorder={mockRecorder({
+          status: 'stopped',
+          current: { blob: new Blob(), url: 'blob:current' },
+          start,
+        })}
+      />,
+    )
+    fireEvent.click(
+      screen.getByRole('button', { name: /Refaire l'enregistrement/i }),
+    )
+    expect(start).toHaveBeenCalledTimes(1)
   })
 
   it('reveals the correction after selecting a focus', () => {

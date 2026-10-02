@@ -23,12 +23,29 @@ export function AudioClip({
   const audioRef = useRef<HTMLAudioElement | null>(null)
   const [playing, setPlaying] = useState(false)
 
-  const play = () => {
+  const togglePlayback = () => {
     const audio = audioRef.current
     if (!audio) return
-    if (start !== undefined) audio.currentTime = start
-    void audio.play()
-    setPlaying(true)
+
+    if (playing) {
+      audio.pause()
+      setPlaying(false)
+      return
+    }
+
+    if (audio.ended) {
+      audio.currentTime = start ?? 0
+    } else if (
+      start !== undefined &&
+      (audio.currentTime < start || (end !== undefined && audio.currentTime >= end))
+    ) {
+      audio.currentTime = start
+    }
+
+    void audio
+      .play()
+      .then(() => setPlaying(true))
+      .catch(() => setPlaying(false))
   }
 
   const handleTimeUpdate = () => {
@@ -44,7 +61,8 @@ export function AudioClip({
       <button
         type="button"
         className={`button ${variant === 'block' ? 'button--block' : 'button--ghost'}`}
-        onClick={play}
+        onClick={togglePlayback}
+        aria-pressed={playing}
       >
         <span aria-hidden="true">{playing ? '⏸' : '▶'}</span>
         {label}
@@ -55,6 +73,7 @@ export function AudioClip({
         preload="metadata"
         onTimeUpdate={handleTimeUpdate}
         onEnded={() => setPlaying(false)}
+        onPause={() => setPlaying(false)}
       />
     </span>
   )

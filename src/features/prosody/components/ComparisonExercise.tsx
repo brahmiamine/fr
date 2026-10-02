@@ -112,8 +112,14 @@ export function ComparisonExercise({
       <section className="card exercise exercise--center" aria-labelledby="comparison-retry">
         <p className="pill">Correction</p>
         <h2 id="comparison-retry">Ton seul objectif maintenant</h2>
-        <p className="exercise__expression">« {focusGoal(focus)} »</p>
+        <p className="exercise__expression">« {focusGoal(focus, exercise)} »</p>
         <p className="muted">Refais uniquement ce point. Ne corrige rien d'autre.</p>
+        <AudioClip
+          src={audioSrc}
+          start={exercise.imitation.start}
+          end={exercise.imitation.end}
+          label="Réécouter le modèle"
+        />
         <RecorderControls recorder={recorder} recordLabel="Enregistrer ma version 2" />
         <button
           type="button"

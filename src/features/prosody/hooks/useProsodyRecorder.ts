@@ -61,11 +61,23 @@ export function useProsodyRecorder(): ProsodyRecorder {
       setStatus('unsupported')
       return
     }
+
+    const activeRecorder = recorderRef.current
+    if (activeRecorder && activeRecorder.state !== 'inactive') return
+
+    let stream: MediaStream | null = null
     try {
       setStatus('requesting')
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
-      streamRef.current = stream
+      stream = await navigator.mediaDevices.getUserMedia({ audio: true })
 
+      // A new take replaces only the uncommitted current take. V1/V2 already
+      // kept as attempts remain available for comparison.
+      setCurrent((latest) => {
+        if (latest) revoke(latest.url)
+        return null
+      })
+
+      streamRef.current = stream
       const recorder = new MediaRecorder(stream)
       chunksRef.current = []
 
@@ -80,8 +92,9 @@ export function useProsodyRecorder(): ProsodyRecorder {
         const url = URL.createObjectURL(blob)
         urlsRef.current.add(url)
         setCurrent({ blob, url })
-        stream.getTracks().forEach((track) => track.stop())
+        stream?.getTracks().forEach((track) => track.stop())
         streamRef.current = null
+        recorderRef.current = null
         setStatus('stopped')
       }
 
@@ -89,47 +102,48 @@ export function useProsodyRecorder(): ProsodyRecorder {
       recorderRef.current = recorder
       setStatus('recording')
     } catch {
+      stream?.getTracks().forEach((track) => track.stop())
+      streamRef.current = null
+      recorderRef.current = null
       setStatus('denied')
     }
-  }, [supported])
+  }, [supported, revoke])
 
   const keepAsAttempt1 = useCallback(() => {
-    setCurrent((latest) => {
-      if (!latest) return latest
-      setAttempt1((previous) => {
-        if (previous) revoke(previous.url)
-        return latest
-      })
-      return null
-    })
-  }, [revoke])
+    if (!current) return
+    if (attempt1) revoke(attempt1.url)
+    setAttempt1(current)
+    setCurrent(null)
+    // The next stage must be able to start V2 immediately.
+    setStatus('idle')
+  }, [current, attempt1, revoke])
 
   const keepAsAttempt2 = useCallback(() => {
-    setCurrent((latest) => {
-      if (!latest) return latest
-      setAttempt2((previous) => {
-        if (previous) revoke(previous.url)
-        return latest
-      })
-      return null
-    })
-  }, [revoke])
+    if (!current) return
+    if (attempt2) revoke(attempt2.url)
+    setAttempt2(current)
+    setCurrent(null)
+    // Retelling uses the same recorder, so make it ready for a fresh take.
+    setStatus('idle')
+  }, [current, attempt2, revoke])
 
   const reset = useCallback(() => {
-    setCurrent((latest) => {
-      if (latest) revoke(latest.url)
-      return null
-    })
-    setAttempt1((previous) => {
-      if (previous) revoke(previous.url)
-      return null
-    })
-    setAttempt2((previous) => {
-      if (previous) revoke(previous.url)
-      return null
-    })
-    setStatus('idle')
-  }, [revoke])
+    const recorder = recorderRef.current
+    if (recorder && recorder.state !== 'inactive') {
+      recorder.onstop = null
+      recorder.stop()
+    }
+    streamRef.current?.getTracks().forEach((track) => track.stop())
+    recorderRef.current = null
+    streamRef.current = null
+    chunksRef.current = []
+
+    for (const url of [...urlsRef.current]) revoke(url)
+    setCurrent(null)
+    setAttempt1(null)
+    setAttempt2(null)
+    setStatus(supported ? 'idle' : 'unsupported')
+  }, [revoke, supported])
 
   // Revoke every remaining URL and release the microphone on unmount.
   useEffect(() => {
