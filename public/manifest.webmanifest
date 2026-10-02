@@ -1,0 +1,43 @@
+{
+  "id": "./",
+  "name": "Parle+",
+  "short_name": "Parle+",
+  "description": "Coach mobile pour parler français avec plus de fluidité et une prosodie plus naturelle.",
+  "lang": "fr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "orientation": "portrait-primary",
+  "background_color": "#f5f4fb",
+  "theme_color": "#5b5bd6",
+  "categories": ["education", "productivity"],
+  "icons": [
+    {
+      "src": "icons/parle-plus.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/parle-plus-maskable.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Commencer une séance",
+      "short_name": "Séance",
+      "url": "./#/training",
+      "icons": [{ "src": "icons/parle-plus.svg", "sizes": "any", "type": "image/svg+xml" }]
+    },
+    {
+      "name": "Prosodie",
+      "short_name": "Prosodie",
+      "url": "./#/prosody",
+      "icons": [{ "src": "icons/parle-plus.svg", "sizes": "any", "type": "image/svg+xml" }]
+    }
+  ]
+}
