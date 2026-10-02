@@ -2,8 +2,10 @@ import topicsData from '../../data/topics.json'
 import questionsData from '../../data/questions.json'
 import paraphraseWordsData from '../../data/paraphrase-words.json'
 import chunksData from '../../data/native-expressions.json'
+import conversationScenariosData from '../../data/conversation-scenarios.json'
 import type {
   Chunk,
+  ConversationScenario,
   ContentRepository,
   ParaphraseWord,
   Question,
@@ -17,4 +19,5 @@ export const contentRepository: ContentRepository = {
   questions: questionsData as unknown as Question[],
   paraphraseWords: paraphraseWordsData as unknown as ParaphraseWord[],
   chunks: chunksData as unknown as Chunk[],
+  conversationScenarios: conversationScenariosData as unknown as ConversationScenario[],
 }
