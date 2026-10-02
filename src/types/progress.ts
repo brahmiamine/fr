@@ -1,6 +1,6 @@
 import type { TrainingSessionState } from '../features/training/types'
 
-export const APP_STATE_VERSION = 2 as const
+export const APP_STATE_VERSION = 3 as const
 export const STORAGE_KEY = 'fr-fluency-trainer'
 export const WEEKLY_GOAL = 5
 
@@ -13,9 +13,7 @@ export interface SessionSummary {
 
 export interface SessionRecord {
   id: string
-  /** Local calendar date, YYYY-MM-DD. */
   date: string
-  /** ISO timestamp of completion. */
   completedAt: string
   durationMinutes: number
   blockCount: number
@@ -31,21 +29,22 @@ export interface SessionRecord {
 
 export interface WeeklyTestRecord {
   id: string
-  /** Local calendar date of the week's Monday, YYYY-MM-DD. */
   weekKey: string
   date: string
   topicId: string
   durationMinutes: number
   startDelaySeconds: number
   longPauses: number
+  midSentencePauses?: number
+  betweenIdeaPauses?: number
   majorFillers: number
   successfulParaphrases: number
   abandonedSentences: number
   longestFluentSegmentSeconds: number
+  wordsSpoken?: number
   score: number
 }
 
-/** A word the learner personally got stuck on. */
 export interface WordGap {
   id: string
   target: string
@@ -72,13 +71,52 @@ export interface PersonalExample {
   updatedAt: string
 }
 
+export interface PersonalChunk {
+  id: string
+  intent: string
+  expression: string
+  createdAt: string
+  nextReview: string
+}
+
+export type FluencyNoteKind =
+  | 'difficultPhrase'
+  | 'importantError'
+  | 'abandonedSentence'
+  | 'awkwardPhrase'
+  | 'conversationBlock'
+
+export interface FluencyNote {
+  id: string
+  kind: FluencyNoteKind
+  text: string
+  createdAt: string
+  nextReview: string
+  timesSeen: number
+}
+
+export interface ConversationPractice {
+  id: string
+  weekKey: string
+  date: string
+  durationMinutes: number
+  missingWord: string
+  missingWordContext: string
+  blockingMoment: string
+  expressionToReuse: string
+  expressionIntent: string
+}
+
 export interface AppState {
   version: typeof APP_STATE_VERSION
   sessions: SessionRecord[]
   weeklyTests: WeeklyTestRecord[]
+  conversationPractices: ConversationPractice[]
   wordGaps: WordGap[]
   chunkReviews: ChunkReview[]
   personalExamples: PersonalExample[]
+  personalChunks: PersonalChunk[]
+  fluencyNotes: FluencyNote[]
   recentTopicIds: string[]
   recentQuestionIds: string[]
   recentWordIds: string[]
@@ -116,14 +154,17 @@ export function createInitialState(): AppState {
     version: APP_STATE_VERSION,
     sessions: [],
     weeklyTests: [],
+    conversationPractices: [],
     wordGaps: [],
     chunkReviews: [],
     personalExamples: [],
+    personalChunks: [],
+    fluencyNotes: [],
     recentTopicIds: [],
     recentQuestionIds: [],
     recentWordIds: [],
     recentChunkIds: [],
-    level: 2,
+    level: 1,
     inProgressSession: null,
   }
 }
