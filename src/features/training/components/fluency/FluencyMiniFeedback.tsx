@@ -42,6 +42,7 @@ export function FluencyMiniFeedback({
       <div className="card-head">
         <h2 id="feedback-title">Petit retour (30–60 s)</h2>
         <Timer
+          persistKey="fluency-mini-feedback"
           durationSeconds={MINI_FEEDBACK_SECONDS}
           autoStart
           hideControls

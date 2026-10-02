@@ -56,6 +56,7 @@ export function WordGapsExercise({
           S'il ne vient pas, tu n'attends pas : tu passes à l'explication.
         </p>
         <Timer
+          persistKey={`gap-recall-${item.key}`}
           durationSeconds={GAP_RECALL_SECONDS}
           autoStart
           hideControls
@@ -136,6 +137,7 @@ export function WordGapsExercise({
         </Callout>
 
         <Timer
+          persistKey={`gap-paraphrase-${item.key}`}
           durationSeconds={GAP_PARAPHRASE_SECONDS}
           autoStart
           label="Explique à voix haute"

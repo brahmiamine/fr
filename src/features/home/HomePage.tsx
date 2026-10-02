@@ -11,7 +11,7 @@ import {
   formatDuration,
   getWeekKey,
   masteredGapCount,
-  trainingLevelForSessionCount,
+  trainingLevelForSessions,
 } from '../../services/progress/progress'
 import { readyProsodyExercises } from '../../services/content/prosodyRepository'
 import { STAGE_META, STAGE_ORDER, prepSecondsForLevel } from '../training/types'
@@ -43,7 +43,7 @@ export default function HomePage() {
       streak: calculateCurrentStreak(sessions),
       weekly: calculateWeeklyProgress(sessions),
       practicedDays: practicedWeekDays(sessions),
-      level: trainingLevelForSessionCount(sessions.length),
+      level: trainingLevelForSessions(sessions),
       weeklyTestAvailable: !state.weeklyTests.some((test) => test.weekKey === weekKey),
       conversationAvailable: !state.conversationPractices.some(
         (practice) => practice.weekKey === weekKey,

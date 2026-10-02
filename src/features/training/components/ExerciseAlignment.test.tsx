@@ -129,7 +129,22 @@ describe('4→3→2: feedback between rounds', () => {
         })}
       />,
     )
-    expect(screen.getByText(/À placer dans ce tour/)).toBeInTheDocument()
+    expect(screen.getByText(/À réutiliser dans ce tour/)).toBeInTheDocument()
+    expect(screen.getByText("D'un autre côté")).toBeInTheDocument()
+  })
+
+  it('makes the correction of round 1 the target of rounds 2 and 3 only', () => {
+    const feedback = { ...emptyFeedback, importantError: 'je suis allé', difficultPhrase: 'au bout du compte' }
+    const { rerender } = render(
+      <Fluency432Exercise {...fluencyProps({ stage: 'running', roundIndex: 2, feedback })} />,
+    )
+    expect(screen.getByText('je suis allé')).toBeInTheDocument()
+    expect(screen.getByText('au bout du compte')).toBeInTheDocument()
+
+    rerender(
+      <Fluency432Exercise {...fluencyProps({ stage: 'running', roundIndex: 0, feedback })} />,
+    )
+    expect(screen.queryByText('je suis allé')).not.toBeInTheDocument()
   })
 
   it('offers the story to listen to on retelling days, with the text hidden', () => {

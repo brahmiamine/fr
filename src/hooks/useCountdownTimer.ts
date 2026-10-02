@@ -94,7 +94,8 @@ export function useCountdownTimer({
 
   const onCompleteRef = useRef(onComplete)
   onCompleteRef.current = onComplete
-  const completedRef = useRef(initial.status === 'finished')
+  // A snapshot that expired while the page was closed still owes its completion.
+  const completedRef = useRef(snapshot?.status === 'finished')
 
   const statusRef = useRef(status)
   const remainingRef = useRef(remainingMs)

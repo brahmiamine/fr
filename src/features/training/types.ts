@@ -1,3 +1,4 @@
+import type { TimerSnapshot } from '../../hooks/useCountdownTimer'
 import questionStartersData from '../../data/question-starters.json'
 import rescueStructuresData from '../../data/rescue-structures.json'
 import type { Chunk, Question, RetellingStory, Topic } from '../../types/content'
@@ -132,6 +133,9 @@ export interface TrainingSessionState {
   gapCaptures: GapCapture[]
 
   feedback: SessionFeedback
+
+  /** Running/paused timers by key, so a reload resumes them instead of restarting. */
+  timers?: Record<string, TimerSnapshot>
 }
 
 export const STAGE_ORDER: StageKind[] = [

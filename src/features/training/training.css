@@ -246,3 +246,11 @@
 .celebration {
   overflow: hidden;
 }
+
+.fluency-run__targets {
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 4px;
+}

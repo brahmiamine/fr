@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useReducer, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useAppState } from '../../app/AppStateProvider'
+import { TimerPersistenceContext } from '../../components/Timer/TimerPersistence'
+import type { TimerPersistence } from '../../components/Timer/TimerPersistence'
 import { Confetti, IconTile, MiniStat } from '../../components/ui'
 import { useAudioRecorder } from '../../hooks/useAudioRecorder'
 import { buildSessionPlan } from '../../services/review/selectPlan'
@@ -118,6 +120,20 @@ export default function TrainingPage() {
     if (!session || session.phase === 'complete') return
     updateWith((prev) => setInProgressSession(prev, session))
   }, [session, updateWith])
+
+  const sessionRef = useRef(session)
+  sessionRef.current = session
+  const timerPersistence = useMemo<TimerPersistence>(
+    () => ({
+      get: (key) => sessionRef.current?.timers?.[key] ?? null,
+      save: (key, snapshot) => {
+        const hasEntry = Boolean(sessionRef.current?.timers?.[key])
+        if (!snapshot && !hasEntry) return
+        dispatch({ type: 'TIMER_SAVE', key, snapshot })
+      },
+    }),
+    [],
+  )
 
   const finalizedRef = useRef(false)
   useEffect(() => {
@@ -256,6 +272,7 @@ export default function TrainingPage() {
   const stage = getCurrentStage(session)
 
   return (
+    <TimerPersistenceContext.Provider value={timerPersistence}>
     <div className="training">
       <SessionHeader
         stage={session.phase === 'active' ? stage : null}
@@ -353,6 +370,7 @@ export default function TrainingPage() {
         />
       ) : null}
     </div>
+    </TimerPersistenceContext.Provider>
   )
 }
 

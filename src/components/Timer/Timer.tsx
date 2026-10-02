@@ -1,15 +1,18 @@
-import { useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import type {
   CountdownTimer,
   TimerSnapshot,
 } from '../../hooks/useCountdownTimer'
 import { useCountdownTimer } from '../../hooks/useCountdownTimer'
 import { Button, ProgressRing, WaveBars } from '../ui'
+import { TimerPersistenceContext } from './TimerPersistence'
 import './Timer.css'
 
 export interface TimerProps {
   durationSeconds: number
   snapshot?: TimerSnapshot | null
+  /** Keeps this timer's progress across reloads (needs a TimerPersistence provider). */
+  persistKey?: string
   onComplete?: () => void
   autoStart?: boolean
   compact?: boolean
@@ -76,6 +79,7 @@ function TimerControls({
 export function Timer({
   durationSeconds,
   snapshot,
+  persistKey,
   onComplete,
   autoStart = false,
   compact = false,
@@ -87,13 +91,28 @@ export function Timer({
   variant = 'ring',
   wave = false,
 }: TimerProps) {
+  const persistence = useContext(TimerPersistenceContext)
+  const saved = persistKey ? persistence?.get(persistKey) : null
   const internalTimer = useCountdownTimer({
     durationSeconds,
-    snapshot,
+    snapshot: snapshot ?? (saved?.durationSeconds === durationSeconds ? saved : null),
     onComplete,
     autoStart,
   })
   const timer = externalTimer ?? internalTimer
+
+  const { status, snapshot: current } = timer
+  const { endAt, remainingWhenPaused } = current
+  const save = persistence?.save
+  useEffect(() => {
+    if (!persistKey || !save) return
+    save(
+      persistKey,
+      status === 'running' || status === 'paused'
+        ? { status, durationSeconds, endAt, remainingWhenPaused }
+        : null,
+    )
+  }, [persistKey, save, status, durationSeconds, endAt, remainingWhenPaused])
 
   const { reset } = timer
   useEffect(() => {

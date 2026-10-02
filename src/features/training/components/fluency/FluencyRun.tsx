@@ -51,6 +51,15 @@ export function FluencyRun({
   const prompt = isTransfer ? topic.transferPrompt : topic.title
   const recording = roundIndex === 0 && recorder?.status === 'recording'
 
+  const retryTargets =
+    roundIndex === 1 || roundIndex === 2
+      ? [
+          { label: 'Correction', text: feedback.importantError },
+          { label: 'Formulation', text: feedback.difficultPhrase },
+          { label: 'Chunk à placer', text: feedback.missedChunk ?? '' },
+        ].filter((target) => target.text.trim())
+      : []
+
   const finishRound = () => {
     if (roundIndex === 0) recorder?.stop()
     onRoundComplete()
@@ -65,18 +74,29 @@ export function FluencyRun({
         </span>
       ) : null}
       <h2 className="fluency-run__prompt">{prompt}</h2>
-      <Timer durationSeconds={seconds} autoStart hideControls wave onComplete={finishRound} />
+      <Timer
+        persistKey={`fluency-run-${roundIndex}`}
+        durationSeconds={seconds}
+        autoStart
+        hideControls
+        wave
+        onComplete={finishRound}
+      />
       <p className="fluency-run__hint">
         {(retellingStory && !isTransfer ? STORY_HINTS : RUNNING_HINTS)[roundIndex]}
       </p>
 
       <div className="fluency-run__reminders">
-        {feedback.missedChunk?.trim() && (roundIndex === 1 || roundIndex === 2) ? (
+        {retryTargets.length > 0 ? (
           <Callout tone="dashed" className="fluency-run__missed">
-            <p>
-              <span className="muted">À placer dans ce tour :</span>{' '}
-              <strong>{feedback.missedChunk}</strong>
-            </p>
+            <p className="muted">À réutiliser dans ce tour :</p>
+            <ul className="fluency-run__targets">
+              {retryTargets.map((target) => (
+                <li key={target.label}>
+                  <span className="muted">{target.label} :</span> <strong>{target.text}</strong>
+                </li>
+              ))}
+            </ul>
           </Callout>
         ) : null}
 

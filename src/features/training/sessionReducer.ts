@@ -7,6 +7,7 @@ import type {
 } from './types'
 import { STAGE_ORDER, TRAINING_SESSION_SCHEMA, prepSecondsForLevel } from './types'
 import type { SessionFeedback } from './types'
+import type { TimerSnapshot } from '../../hooks/useCountdownTimer'
 
 export type TrainingAction =
   | { type: 'CHUNK_REVEAL' }
@@ -45,6 +46,7 @@ export type TrainingAction =
       value: string | number | null
     }
   | { type: 'FEEDBACK_SUBMIT' }
+  | { type: 'TIMER_SAVE'; key: string; snapshot: TimerSnapshot | null }
 
 export function createSessionId(now: Date = new Date()): string {
   return `s-${now.getTime()}-${Math.random().toString(36).slice(2, 8)}`
@@ -140,6 +142,15 @@ export function sessionReducer(
   action: TrainingAction,
 ): TrainingSessionState {
   switch (action.type) {
+    case 'TIMER_SAVE': {
+      const { [action.key]: _previous, ...others } = state.timers ?? {}
+      void _previous
+      return {
+        ...state,
+        timers: action.snapshot ? { ...others, [action.key]: action.snapshot } : others,
+      }
+    }
+
     case 'CHUNK_REVEAL':
       return { ...state, chunks: { ...state.chunks, step: 'revealed' } }
 

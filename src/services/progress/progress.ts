@@ -6,7 +6,6 @@ import type {
   FluencyNote,
   FluencyNoteKind,
   PersonalChunk,
-  PersonalExample,
   ProsodySessionRecord,
   SessionRecord,
   WeeklyTestRecord,
@@ -281,16 +280,6 @@ export function recordConversationPractice(
     (existing) => existing.weekKey !== practice.weekKey,
   )
   return { ...state, conversationPractices: [...remaining, practice] }
-}
-
-export function upsertPersonalExample(
-  state: AppState,
-  example: PersonalExample,
-): AppState {
-  const others = state.personalExamples.filter(
-    (existing) => existing.chunkId !== example.chunkId,
-  )
-  return { ...state, personalExamples: [...others, example] }
 }
 
 export function setInProgressSession(

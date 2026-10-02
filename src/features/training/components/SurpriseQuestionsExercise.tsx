@@ -51,6 +51,8 @@ export function SurpriseQuestionsExercise({
   const [showStarters, setShowStarters] = useState(false)
   const [pivotActive, setPivotActive] = useState(false)
 
+  const timerKey = revenge ? 'revenge' : `question-${index}`
+
   const counterLabel = revenge ? 'Revanche' : `Question ${index + 1}/${total}`
 
   if (stage === 'countdown') {
@@ -64,6 +66,7 @@ export function SurpriseQuestionsExercise({
           </p>
         ) : null}
         <Timer
+          persistKey={`${timerKey}-countdown`}
           durationSeconds={QUESTION_COUNTDOWN_SECONDS}
           autoStart
           hideControls
@@ -88,6 +91,7 @@ export function SurpriseQuestionsExercise({
         ) : null}
         <p className="exercise__prep-plan">Idée → raison → exemple</p>
         <Timer
+          persistKey={`${timerKey}-prep`}
           durationSeconds={prepSeconds}
           autoStart
           hideControls
@@ -149,6 +153,7 @@ export function SurpriseQuestionsExercise({
 
       <Timer
         key={pivotActive ? 'pivot' : 'main'}
+        persistKey={`${timerKey}-speaking-${pivotActive ? 'pivot' : 'main'}`}
         durationSeconds={speakingSeconds}
         autoStart
         hideControls
