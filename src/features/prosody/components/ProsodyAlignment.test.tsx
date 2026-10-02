@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from 'vitest'
 import type { ProsodyExercise } from '../types'
 import type { ProsodyRecorder } from '../hooks/useProsodyRecorder'
 import { ListeningExercise } from './ListeningExercise'
+import { ImitationExercise } from './ImitationExercise'
 import { ComparisonExercise } from './ComparisonExercise'
 import { RetellingExercise } from './RetellingExercise'
 import { RecorderControls } from './RecorderControls'
@@ -14,26 +15,32 @@ const exercise: ProsodyExercise = {
   audio: 'audio/prosody/prosody_test.wav',
   transcript: "Franchement, je pense que c'est une bonne idée, mais ça dépend.",
   groups: [
-    { text: 'Franchement', start: 0, end: 0.7, intonation: 'level' },
+    { text: 'Franchement', start: 0, end: 2, intonation: 'level' },
     {
       text: "je pense que c'est une bonne idée",
-      start: 0.7,
-      end: 3.1,
+      start: 2,
+      end: 7,
       intonation: 'rise',
       finalLengthening: true,
     },
     {
       text: 'mais ça dépend',
-      start: 3.1,
-      end: 5.4,
+      start: 7,
+      end: 12,
       intonation: 'fall',
     },
   ],
-  imitation: { start: 0.7, end: 5.4 },
+  imitation: { start: 2, end: 9 },
   retelling: { idea: 'Donner une opinion positive puis la nuancer.' },
+  ready: true,
+  source: 'test',
 }
 
 const audioSrc = '/audio/prosody/prosody_test.wav'
+
+function recording(url: string, durationSeconds = 7) {
+  return { blob: new Blob(), url, durationSeconds }
+}
 
 function mockRecorder(overrides: Partial<ProsodyRecorder> = {}): ProsodyRecorder {
   return {
@@ -42,6 +49,7 @@ function mockRecorder(overrides: Partial<ProsodyRecorder> = {}): ProsodyRecorder
     current: null,
     attempt1: null,
     attempt2: null,
+    recordingSeconds: 0,
     start: vi.fn(async () => undefined),
     stop: vi.fn(),
     keepAsAttempt1: vi.fn(),
@@ -52,37 +60,61 @@ function mockRecorder(overrides: Partial<ProsodyRecorder> = {}): ProsodyRecorder
 }
 
 describe('prosody listening alignment', () => {
-  it('hides the transcript on the first listen', () => {
-    const { container } = render(
+  it('hides the transcript and blocks progression until the first full listen', () => {
+    const { container, rerender } = render(
       <ListeningExercise
         exercise={exercise}
         step="meaning"
         audioSrc={audioSrc}
+        meaningPlays={0}
+        prosodyPlays={0}
+        onAudioComplete={() => undefined}
         onNext={() => undefined}
       />,
     )
     expect(container.querySelector('.prosody-groups')).not.toBeInTheDocument()
     expect(screen.queryByText(/bonne idée/)).not.toBeInTheDocument()
+    expect(screen.getByRole('button', { name: "J'ai écouté" })).toBeDisabled()
+
+    rerender(
+      <ListeningExercise
+        exercise={exercise}
+        step="meaning"
+        audioSrc={audioSrc}
+        meaningPlays={1}
+        prosodyPlays={0}
+        onAudioComplete={() => undefined}
+        onNext={() => undefined}
+      />,
+    )
+    expect(screen.getByRole('button', { name: "J'ai écouté" })).toBeEnabled()
   })
 
-  it('does not reveal the annotations before the reveal step', () => {
+  it('does not reveal annotations before the prosody listen is completed', () => {
     const { container } = render(
       <ListeningExercise
         exercise={exercise}
         step="prosody"
         audioSrc={audioSrc}
+        meaningPlays={1}
+        prosodyPlays={0}
+        onAudioComplete={() => undefined}
         onNext={() => undefined}
       />,
     )
     expect(container.querySelector('.prosody-groups')).not.toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Voir le découpage/ })).toBeDisabled()
   })
 
-  it('shows the grouped transcript with / ↑ ↓ marks after reveal', () => {
+  it('shows / ↑ ↓ — and offers a replay with the visible grouping', () => {
     const { container } = render(
       <ListeningExercise
         exercise={exercise}
         step="reveal"
         audioSrc={audioSrc}
+        meaningPlays={1}
+        prosodyPlays={1}
+        onAudioComplete={() => undefined}
         onNext={() => undefined}
       />,
     )
@@ -90,18 +122,86 @@ describe('prosody listening alignment', () => {
     expect(container.textContent).toContain('↑')
     expect(container.textContent).toContain('↓')
     expect(container.textContent).toContain('—')
+    expect(
+      screen.getByRole('button', { name: /Réécouter avec le découpage visible/ }),
+    ).toBeInTheDocument()
   })
 })
 
-describe('prosody A/B/A alignment', () => {
-  it('keeps the comparison inaccessible without a recorded attempt', () => {
+describe('prosody imitation alignment', () => {
+  it('requires two complete model listens before V1', () => {
+    render(
+      <ImitationExercise
+        exercise={exercise}
+        step="listen"
+        modelPlays={1}
+        shadowPlays={0}
+        audioSrc={audioSrc}
+        recorder={mockRecorder()}
+        onModelPlayed={() => undefined}
+        onListened={() => undefined}
+        onRecorded={() => undefined}
+        onShadowPlayed={() => undefined}
+        onShadowDone={() => undefined}
+      />,
+    )
+    expect(
+      screen.getByRole('button', { name: /Enregistrer mon imitation/ }),
+    ).toBeDisabled()
+  })
+
+  it('requires one complete shadowing pass before comparison', () => {
+    render(
+      <ImitationExercise
+        exercise={exercise}
+        step="shadow"
+        modelPlays={2}
+        shadowPlays={0}
+        audioSrc={audioSrc}
+        recorder={mockRecorder()}
+        onModelPlayed={() => undefined}
+        onListened={() => undefined}
+        onRecorded={() => undefined}
+        onShadowPlayed={() => undefined}
+        onShadowDone={() => undefined}
+      />,
+    )
+    expect(
+      screen.getByRole('button', { name: /Continuer vers la comparaison/ }),
+    ).toBeDisabled()
+  })
+
+  it('does not allow the model to play while the microphone is recording', () => {
+    render(
+      <ImitationExercise
+        exercise={exercise}
+        step="record"
+        modelPlays={2}
+        shadowPlays={0}
+        audioSrc={audioSrc}
+        recorder={mockRecorder({ status: 'recording' })}
+        onModelPlayed={() => undefined}
+        onListened={() => undefined}
+        onRecorded={() => undefined}
+        onShadowPlayed={() => undefined}
+        onShadowDone={() => undefined}
+      />,
+    )
+    expect(screen.getByRole('button', { name: /Réécouter le segment/ })).toBeDisabled()
+  })
+})
+
+describe('prosody comparison alignment', () => {
+  it('keeps A/B/A inaccessible without V1', () => {
     render(
       <ComparisonExercise
         exercise={exercise}
         step="aba"
         focus={null}
+        abaCompleted={false}
         audioSrc={audioSrc}
-        recorder={mockRecorder({ attempt1: null })}
+        recorder={mockRecorder()}
+        onAbaComplete={() => undefined}
         onAbaDone={() => undefined}
         onChooseFocus={() => undefined}
         onRetryDone={() => undefined}
@@ -109,38 +209,54 @@ describe('prosody A/B/A alignment', () => {
       />,
     )
     expect(screen.getByText(/Enregistre d'abord ton imitation/)).toBeInTheDocument()
-    expect(
-      screen.queryByRole('button', { name: /J'ai comparé/ }),
-    ).not.toBeInTheDocument()
   })
 
-  it('makes the comparison available once V1 is recorded', () => {
-    render(
+  it('requires the automatic A/B/A sequence before continuing', () => {
+    const { rerender } = render(
       <ComparisonExercise
         exercise={exercise}
         step="aba"
         focus={null}
+        abaCompleted={false}
         audioSrc={audioSrc}
-        recorder={mockRecorder({ attempt1: { blob: new Blob(), url: 'blob:v1' } })}
+        recorder={mockRecorder({ attempt1: recording('blob:v1') })}
+        onAbaComplete={() => undefined}
         onAbaDone={() => undefined}
         onChooseFocus={() => undefined}
         onRetryDone={() => undefined}
         onCompareDone={() => undefined}
       />,
     )
-    expect(
-      screen.getByRole('button', { name: /J'ai comparé/ }),
-    ).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /J'ai comparé/ })).toBeDisabled()
+
+    rerender(
+      <ComparisonExercise
+        exercise={exercise}
+        step="aba"
+        focus={null}
+        abaCompleted
+        audioSrc={audioSrc}
+        recorder={mockRecorder({ attempt1: recording('blob:v1') })}
+        onAbaComplete={() => undefined}
+        onAbaDone={() => undefined}
+        onChooseFocus={() => undefined}
+        onRetryDone={() => undefined}
+        onCompareDone={() => undefined}
+      />,
+    )
+    expect(screen.getByRole('button', { name: /J'ai comparé/ })).toBeEnabled()
   })
 
-  it('keeps the retry step disabled until a focus is chosen', () => {
+  it('keeps correction disabled until a single focus is chosen', () => {
     render(
       <ComparisonExercise
         exercise={exercise}
         step="choose-focus"
         focus={null}
+        abaCompleted
         audioSrc={audioSrc}
         recorder={mockRecorder()}
+        onAbaComplete={() => undefined}
         onAbaDone={() => undefined}
         onChooseFocus={() => undefined}
         onRetryDone={() => undefined}
@@ -148,38 +264,20 @@ describe('prosody A/B/A alignment', () => {
       />,
     )
     expect(screen.getByRole('button', { name: 'Continuer' })).toBeDisabled()
+    fireEvent.click(screen.getByLabelText(/Je coupe au mauvais endroit/))
+    expect(screen.getByRole('button', { name: 'Continuer' })).toBeEnabled()
   })
 
-  it('shows a single positive correction goal and allows V2 after choosing a focus', () => {
-    render(
-      <ComparisonExercise
-        exercise={exercise}
-        step="retry"
-        focus="pause"
-        audioSrc={audioSrc}
-        recorder={mockRecorder({ current: { blob: new Blob(), url: 'blob:v2' } })}
-        onAbaDone={() => undefined}
-        onChooseFocus={() => undefined}
-        onRetryDone={() => undefined}
-        onCompareDone={() => undefined}
-      />,
-    )
-    expect(
-      screen.getByText(/Ne coupe pas le groupe au mauvais endroit/),
-    ).toBeInTheDocument()
-    expect(
-      screen.getByRole('button', { name: /J'ai refait \(V2\)/ }),
-    ).toBeEnabled()
-  })
-
-  it('uses the model contour for the intonation correction goal', () => {
+  it('uses the model contour for an intonation correction', () => {
     render(
       <ComparisonExercise
         exercise={exercise}
         step="retry"
         focus="intonation"
+        abaCompleted
         audioSrc={audioSrc}
         recorder={mockRecorder()}
+        onAbaComplete={() => undefined}
         onAbaDone={() => undefined}
         onChooseFocus={() => undefined}
         onRetryDone={() => undefined}
@@ -195,43 +293,24 @@ describe('prosody A/B/A alignment', () => {
       <RecorderControls
         recorder={mockRecorder({
           status: 'stopped',
-          current: { blob: new Blob(), url: 'blob:current' },
+          current: recording('blob:current'),
           start,
         })}
       />,
     )
-    fireEvent.click(
-      screen.getByRole('button', { name: /Refaire l'enregistrement/i }),
-    )
+    fireEvent.click(screen.getByRole('button', { name: /Refaire l'enregistrement/i }))
     expect(start).toHaveBeenCalledTimes(1)
-  })
-
-  it('reveals the correction after selecting a focus', () => {
-    render(
-      <ComparisonExercise
-        exercise={exercise}
-        step="choose-focus"
-        focus={null}
-        audioSrc={audioSrc}
-        recorder={mockRecorder()}
-        onAbaDone={() => undefined}
-        onChooseFocus={() => undefined}
-        onRetryDone={() => undefined}
-        onCompareDone={() => undefined}
-      />,
-    )
-    fireEvent.click(screen.getByLabelText(/Je coupe au mauvais endroit/))
-    expect(screen.getByRole('button', { name: 'Continuer' })).toBeEnabled()
   })
 })
 
 describe('prosody retelling alignment', () => {
-  it('hides the model audio and transcript during the retelling prompt', () => {
+  it('hides model audio and transcript during the prompt', () => {
     const { container } = render(
       <RetellingExercise
         exercise={exercise}
         step="prompt"
         recorder={mockRecorder()}
+        durationSeconds={0}
         onStart={() => undefined}
         onRecorded={() => undefined}
         onDone={() => undefined}
@@ -242,5 +321,39 @@ describe('prosody retelling alignment', () => {
     expect(
       screen.getByText('Donner une opinion positive puis la nuancer.'),
     ).toBeInTheDocument()
+  })
+
+  it('requires at least 30 seconds before accepting the retelling', () => {
+    const { rerender } = render(
+      <RetellingExercise
+        exercise={exercise}
+        step="record"
+        recorder={mockRecorder({
+          status: 'stopped',
+          current: recording('blob:retell', 29),
+        })}
+        durationSeconds={0}
+        onStart={() => undefined}
+        onRecorded={() => undefined}
+        onDone={() => undefined}
+      />,
+    )
+    expect(screen.getByRole('button', { name: "J'ai terminé" })).toBeDisabled()
+
+    rerender(
+      <RetellingExercise
+        exercise={exercise}
+        step="record"
+        recorder={mockRecorder({
+          status: 'stopped',
+          current: recording('blob:retell', 30),
+        })}
+        durationSeconds={0}
+        onStart={() => undefined}
+        onRecorded={() => undefined}
+        onDone={() => undefined}
+      />,
+    )
+    expect(screen.getByRole('button', { name: "J'ai terminé" })).toBeEnabled()
   })
 })

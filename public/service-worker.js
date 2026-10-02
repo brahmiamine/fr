@@ -1,4 +1,4 @@
-const CACHE_NAME = 'parle-plus-v1'
+const CACHE_NAME = 'parle-plus-v2'
 const APP_SHELL = [
   './',
   './manifest.webmanifest',
@@ -52,6 +52,23 @@ self.addEventListener('fetch', (event) => {
             Response.error()
           )
         }),
+    )
+    return
+  }
+
+  // Prosody models can be replaced while keeping the same filename. Always
+  // prefer the network so a previously cached silent placeholder never wins.
+  if (url.pathname.includes('/audio/prosody/')) {
+    event.respondWith(
+      fetch(request)
+        .then((response) => {
+          if (response && response.status === 200) {
+            const copy = response.clone()
+            void caches.open(CACHE_NAME).then((cache) => cache.put(request, copy))
+          }
+          return response
+        })
+        .catch(async () => (await caches.match(request)) || Response.error()),
     )
     return
   }

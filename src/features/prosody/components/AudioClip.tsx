@@ -2,57 +2,71 @@ import { useRef, useState } from 'react'
 
 export interface AudioClipProps {
   src: string
-  /** Optional segment window (seconds). When set, playback is restricted to it. */
   start?: number
   end?: number
   label?: string
   variant?: 'button' | 'block'
+  disabled?: boolean
+  onPlaybackChange?: (playing: boolean) => void
+  onComplete?: () => void
 }
 
-/**
- * Plays a model audio file, optionally restricted to a [start, end) segment.
- * Used for full-sentence listening and for the imitation segment.
- */
 export function AudioClip({
   src,
   start,
   end,
   label = 'Écouter',
   variant = 'button',
+  disabled = false,
+  onPlaybackChange,
+  onComplete,
 }: AudioClipProps) {
   const audioRef = useRef<HTMLAudioElement | null>(null)
+  const completedRef = useRef(false)
   const [playing, setPlaying] = useState(false)
+
+  const setPlayback = (value: boolean) => {
+    setPlaying(value)
+    onPlaybackChange?.(value)
+  }
+
+  const completePlayback = () => {
+    if (completedRef.current) return
+    completedRef.current = true
+    setPlayback(false)
+    onComplete?.()
+  }
 
   const togglePlayback = () => {
     const audio = audioRef.current
-    if (!audio) return
+    if (!audio || disabled) return
 
     if (playing) {
       audio.pause()
-      setPlaying(false)
+      setPlayback(false)
       return
     }
 
-    if (audio.ended) {
-      audio.currentTime = start ?? 0
-    } else if (
-      start !== undefined &&
-      (audio.currentTime < start || (end !== undefined && audio.currentTime >= end))
+    if (
+      audio.ended ||
+      (start !== undefined &&
+        (audio.currentTime < start || (end !== undefined && audio.currentTime >= end)))
     ) {
-      audio.currentTime = start
+      audio.currentTime = start ?? 0
     }
 
+    completedRef.current = false
     void audio
       .play()
-      .then(() => setPlaying(true))
-      .catch(() => setPlaying(false))
+      .then(() => setPlayback(true))
+      .catch(() => setPlayback(false))
   }
 
   const handleTimeUpdate = () => {
     const audio = audioRef.current
     if (audio && end !== undefined && audio.currentTime >= end) {
       audio.pause()
-      setPlaying(false)
+      completePlayback()
     }
   }
 
@@ -63,6 +77,7 @@ export function AudioClip({
         className={`button ${variant === 'block' ? 'button--block' : 'button--ghost'}`}
         onClick={togglePlayback}
         aria-pressed={playing}
+        disabled={disabled}
       >
         <span aria-hidden="true">{playing ? '⏸' : '▶'}</span>
         {label}
@@ -72,8 +87,10 @@ export function AudioClip({
         src={src}
         preload="metadata"
         onTimeUpdate={handleTimeUpdate}
-        onEnded={() => setPlaying(false)}
-        onPause={() => setPlaying(false)}
+        onEnded={completePlayback}
+        onPause={() => {
+          if (!completedRef.current) setPlayback(false)
+        }}
       />
     </span>
   )

@@ -15,6 +15,7 @@ import {
   markFluencyNoteUsed,
   masteredGapCount,
   recordCompletedSession,
+  recordProsodySession,
   trainingLevelForSessionCount,
   upsertChunkReview,
   upsertFluencyNote,
@@ -204,4 +205,21 @@ describe('spaced retrieval state', () => {
     }
     expect(state.recentWordIds.length).toBeLessThanOrEqual(RECENT_WINDOWS.words)
   })
+
+  it('records prosody sessions and avoids immediate repetition', () => {
+    const state = createInitialState()
+    const next = recordProsodySession(state, {
+      id: 'p1',
+      exerciseId: 'prosody_001',
+      date: '2026-10-02',
+      completedAt: '2026-10-02T11:00:00.000Z',
+      durationMinutes: 12,
+      focus: 'rhythm',
+      retellingSeconds: 45,
+    })
+
+    expect(next.prosodySessions).toHaveLength(1)
+    expect(next.recentProsodyIds).toEqual(['prosody_001'])
+  })
+
 })

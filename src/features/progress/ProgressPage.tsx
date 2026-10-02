@@ -5,6 +5,7 @@ import {
   activeChunkCount,
   calculateCurrentStreak,
   calculateLongestStreak,
+  calculateProsodyMinutes,
   calculateTotalPracticeMinutes,
   formatDuration,
   getWeekKey,
@@ -41,6 +42,10 @@ export default function ProgressPage() {
   const currentStreak = calculateCurrentStreak(state.sessions)
   const longestStreak = calculateLongestStreak(state.sessions)
   const totalMinutes = calculateTotalPracticeMinutes(state.sessions)
+  const prosodyMinutes = calculateProsodyMinutes(state.prosodySessions)
+  const recentProsodySessions = [...state.prosodySessions].sort((a, b) =>
+    b.completedAt.localeCompare(a.completedAt),
+  )
 
   const recentSessions = [...state.sessions].sort((a, b) =>
     b.completedAt.localeCompare(a.completedAt),
@@ -138,6 +143,41 @@ export default function ProgressPage() {
           </table>
         </section>
       ) : null}
+
+      <section className="card" aria-labelledby="prosody-history-title">
+        <h2 id="prosody-history-title">Sonner plus naturel</h2>
+        {state.prosodySessions.length > 0 ? (
+          <>
+            <p className="muted">
+              {state.prosodySessions.length} séance
+              {state.prosodySessions.length > 1 ? 's' : ''} · {formatDuration(prosodyMinutes)}
+            </p>
+            <ul className="history">
+              {recentProsodySessions.slice(0, 8).map((session) => (
+                <li key={session.id} className="history__item">
+                  <div>
+                    <p className="history__date">{formatDate(session.date)}</p>
+                    <p className="muted history__note">
+                      Extrait : {session.exerciseId}
+                    </p>
+                  </div>
+                  <div className="history__meta">
+                    <span className="pill">{session.durationMinutes} min</span>
+                    <span className="pill">Retelling {session.retellingSeconds} s</span>
+                    {session.focus ? (
+                      <span className="pill">Focus : {session.focus}</span>
+                    ) : null}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </>
+        ) : (
+          <p className="muted">
+            Aucune séance de prosodie terminée pour le moment.
+          </p>
+        )}
+      </section>
 
       <section className="card" aria-labelledby="history-title">
         <h2 id="history-title">Historique des sessions</h2>

@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { createInitialState, LEGACY_STORAGE_KEY, RECENT_WINDOWS, STORAGE_KEY } from '../../types/progress'
+import {
+  createInitialState,
+  LEGACY_STORAGE_KEY,
+  RECENT_WINDOWS,
+  STORAGE_KEY,
+} from '../../types/progress'
 import type { AppState, StorageLike } from '../../types/progress'
 import { loadAppState, saveAppState } from './storage'
 
@@ -57,16 +62,31 @@ describe('storage', () => {
     expect(result.state).toEqual(createInitialState())
   })
 
-  it('round-trips a valid V3 state', () => {
+  it('round-trips a valid V4 state including prosody progress', () => {
     const storage = memoryStorage()
-    const state = stateWithSession()
+    const state: AppState = {
+      ...stateWithSession(),
+      prosodySessions: [
+        {
+          id: 'p1',
+          exerciseId: 'prosody_001',
+          date: '2026-10-02',
+          completedAt: '2026-10-02T11:00:00.000Z',
+          durationMinutes: 12,
+          focus: 'pause',
+          retellingSeconds: 45,
+        },
+      ],
+      recentProsodyIds: ['prosody_001'],
+    }
     expect(saveAppState(state, storage).ok).toBe(true)
 
     const loaded = loadAppState(storage)
     expect(loaded.available).toBe(true)
-    expect(loaded.state.version).toBe(3)
+    expect(loaded.state.version).toBe(4)
     expect(loaded.state.sessions).toHaveLength(1)
-    expect(loaded.state.recentTopicIds).toEqual(['t001'])
+    expect(loaded.state.prosodySessions).toHaveLength(1)
+    expect(loaded.state.recentProsodyIds).toEqual(['prosody_001'])
   })
 
   it('migrates the legacy Fluidité storage key to Parle+ without losing progress', () => {
@@ -81,6 +101,24 @@ describe('storage', () => {
     expect(loaded.state.sessions).toHaveLength(1)
     expect(storage.data.has(LEGACY_STORAGE_KEY)).toBe(false)
     expect(storage.data.get(STORAGE_KEY)).toBeTruthy()
+  })
+
+  it('migrates V3 to V4 without losing fluency progress', () => {
+    const state = stateWithSession()
+    const storage = memoryStorage({
+      [STORAGE_KEY]: JSON.stringify({
+        ...state,
+        version: 3,
+        prosodySessions: undefined,
+        recentProsodyIds: undefined,
+      }),
+    })
+
+    const loaded = loadAppState(storage)
+    expect(loaded.state.version).toBe(4)
+    expect(loaded.state.sessions).toHaveLength(1)
+    expect(loaded.state.prosodySessions).toEqual([])
+    expect(loaded.state.recentProsodyIds).toEqual([])
   })
 
   it('migrates V2 data and restarts only the incompatible in-progress session', () => {
@@ -101,7 +139,7 @@ describe('storage', () => {
       }),
     })
     const loaded = loadAppState(storage)
-    expect(loaded.state.version).toBe(3)
+    expect(loaded.state.version).toBe(4)
     expect(loaded.state.sessions).toHaveLength(1)
     expect(loaded.state.personalChunks).toEqual([])
     expect(loaded.state.fluencyNotes).toEqual([])
@@ -118,11 +156,11 @@ describe('storage', () => {
       [STORAGE_KEY]: JSON.stringify({ version: 99, sessions: [{ id: 'x' }] }),
     })
     const loaded = loadAppState(storage)
-    expect(loaded.state.version).toBe(3)
+    expect(loaded.state.version).toBe(4)
     expect(loaded.state.sessions).toEqual([])
   })
 
-  it('migrates a V1 payload into the V3 shape', () => {
+  it('migrates a V1 payload into the V4 shape', () => {
     const storage = memoryStorage({
       [STORAGE_KEY]: JSON.stringify({
         version: 1,
@@ -137,10 +175,11 @@ describe('storage', () => {
       }),
     })
     const loaded = loadAppState(storage)
-    expect(loaded.state.version).toBe(3)
+    expect(loaded.state.version).toBe(4)
     expect(loaded.state.recentChunkIds).toEqual(['e001'])
     expect(loaded.state.wordGaps).toEqual([])
     expect(loaded.state.chunkReviews).toEqual([])
+    expect(loaded.state.prosodySessions).toEqual([])
     expect(loaded.state.inProgressSession).toBeNull()
   })
 
@@ -162,5 +201,6 @@ describe('storage', () => {
     expect(RECENT_WINDOWS.questions).toBe(15)
     expect(RECENT_WINDOWS.words).toBe(15)
     expect(RECENT_WINDOWS.chunks).toBe(9)
+    expect(RECENT_WINDOWS.prosody).toBe(3)
   })
 })

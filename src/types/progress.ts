@@ -1,6 +1,7 @@
 import type { TrainingSessionState } from '../features/training/types'
+import type { ProsodyFocus } from '../features/prosody/types'
 
-export const APP_STATE_VERSION = 3 as const
+export const APP_STATE_VERSION = 4 as const
 export const STORAGE_KEY = 'parle-plus'
 export const LEGACY_STORAGE_KEY = 'fr-fluency-trainer'
 export const WEEKLY_GOAL = 5
@@ -26,6 +27,16 @@ export interface SessionRecord {
   chunkIds: string[]
   genericWordIds: string[]
   summary: SessionSummary
+}
+
+export interface ProsodySessionRecord {
+  id: string
+  exerciseId: string
+  date: string
+  completedAt: string
+  durationMinutes: number
+  focus: ProsodyFocus | null
+  retellingSeconds: number
 }
 
 export interface WeeklyTestRecord {
@@ -111,6 +122,7 @@ export interface ConversationPractice {
 export interface AppState {
   version: typeof APP_STATE_VERSION
   sessions: SessionRecord[]
+  prosodySessions: ProsodySessionRecord[]
   weeklyTests: WeeklyTestRecord[]
   conversationPractices: ConversationPractice[]
   wordGaps: WordGap[]
@@ -122,6 +134,7 @@ export interface AppState {
   recentQuestionIds: string[]
   recentWordIds: string[]
   recentChunkIds: string[]
+  recentProsodyIds: string[]
   level: 1 | 2 | 3
   inProgressSession: TrainingSessionState | null
 }
@@ -148,12 +161,14 @@ export const RECENT_WINDOWS = {
   questions: 15,
   words: 15,
   chunks: 9,
+  prosody: 3,
 } as const
 
 export function createInitialState(): AppState {
   return {
     version: APP_STATE_VERSION,
     sessions: [],
+    prosodySessions: [],
     weeklyTests: [],
     conversationPractices: [],
     wordGaps: [],
@@ -165,6 +180,7 @@ export function createInitialState(): AppState {
     recentQuestionIds: [],
     recentWordIds: [],
     recentChunkIds: [],
+    recentProsodyIds: [],
     level: 1,
     inProgressSession: null,
   }

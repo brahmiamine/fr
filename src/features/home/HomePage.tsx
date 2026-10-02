@@ -13,6 +13,7 @@ import {
   masteredGapCount,
   trainingLevelForSessionCount,
 } from '../../services/progress/progress'
+import { readyProsodyExercises } from '../../services/content/prosodyRepository'
 import { STAGE_META, STAGE_ORDER, prepSecondsForLevel } from '../training/types'
 import './home.css'
 
@@ -43,6 +44,7 @@ export default function HomePage() {
   const conversationAvailable = !state.conversationPractices.some(
     (practice) => practice.weekKey === weekKey,
   )
+  const prosodyReady = readyProsodyExercises.length > 0
 
   const stats: Stat[] = [
     { icon: 'streak', value: `${streak} j`, label: 'Série actuelle' },
@@ -117,12 +119,25 @@ export default function HomePage() {
           <h2>🎵 Sonner plus naturel</h2>
           <p className="muted">
             Entraîne le rythme et l'intonation : écoute, imite, compare et
-            reformule. Environ 12–15 min.
+            reformule. Objectif : une boucle approfondie de 12–15 min.
           </p>
+          {state.prosodySessions.length > 0 ? (
+            <p className="muted">
+              {state.prosodySessions.length} séance
+              {state.prosodySessions.length > 1 ? 's' : ''} terminée
+              {state.prosodySessions.length > 1 ? 's' : ''}.
+            </p>
+          ) : null}
         </div>
-        <Link className="button button--gradient" to="/prosody">
-          Commencer
-        </Link>
+        {prosodyReady ? (
+          <Link className="button button--gradient" to="/prosody">
+            Commencer
+          </Link>
+        ) : (
+          <button type="button" className="button" disabled>
+            Audio naturel à ajouter
+          </button>
+        )}
       </section>
 
       <Link className="button button--ghost button--block" to="/progress">

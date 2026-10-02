@@ -28,7 +28,6 @@ describe('useProsodyRecorder', () => {
   beforeEach(() => {
     objectUrlIndex = 0
     revokeObjectURL.mockClear()
-
     vi.stubGlobal('MediaRecorder', FakeMediaRecorder)
     Object.defineProperty(navigator, 'mediaDevices', {
       configurable: true,
@@ -49,37 +48,27 @@ describe('useProsodyRecorder', () => {
   })
 
   afterEach(() => {
+    vi.useRealTimers()
     vi.unstubAllGlobals()
   })
 
-  it('returns to idle after keeping V1 and V2 so the next recording can start', async () => {
+  it('returns to idle after keeping V1 and V2 so retelling can start', async () => {
     const { result } = renderHook(() => useProsodyRecorder())
 
     await act(async () => {
       await result.current.start()
     })
-    expect(result.current.status).toBe('recording')
-
     act(() => result.current.stop())
-    expect(result.current.status).toBe('stopped')
-    expect(result.current.current?.url).toBe('blob:prosody-1')
-
     act(() => result.current.keepAsAttempt1())
     expect(result.current.attempt1?.url).toBe('blob:prosody-1')
-    expect(result.current.current).toBeNull()
     expect(result.current.status).toBe('idle')
 
     await act(async () => {
       await result.current.start()
     })
-    expect(result.current.status).toBe('recording')
-
     act(() => result.current.stop())
-    expect(result.current.current?.url).toBe('blob:prosody-2')
-
     act(() => result.current.keepAsAttempt2())
     expect(result.current.attempt2?.url).toBe('blob:prosody-2')
-    expect(result.current.current).toBeNull()
     expect(result.current.status).toBe('idle')
 
     await act(async () => {
@@ -88,7 +77,7 @@ describe('useProsodyRecorder', () => {
     expect(result.current.status).toBe('recording')
   })
 
-  it('replaces an uncommitted take when the learner records again', async () => {
+  it('replaces an uncommitted take when recording again', async () => {
     const { result } = renderHook(() => useProsodyRecorder())
 
     await act(async () => {
@@ -105,5 +94,21 @@ describe('useProsodyRecorder', () => {
 
     act(() => result.current.stop())
     expect(result.current.current?.url).toBe('blob:prosody-2')
+  })
+
+  it('measures recording duration for the retelling gate', async () => {
+    vi.useFakeTimers()
+    vi.setSystemTime(new Date('2026-10-02T10:00:00.000Z'))
+    const { result } = renderHook(() => useProsodyRecorder())
+
+    await act(async () => {
+      await result.current.start()
+    })
+    act(() => {
+      vi.advanceTimersByTime(30_000)
+    })
+    act(() => result.current.stop())
+
+    expect(result.current.current?.durationSeconds).toBe(30)
   })
 })

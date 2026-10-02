@@ -7,6 +7,7 @@ import type {
   FluencyNoteKind,
   PersonalChunk,
   PersonalExample,
+  ProsodySessionRecord,
   SessionRecord,
   WeeklyTestRecord,
   WordGap,
@@ -156,6 +157,30 @@ export function recordCompletedSession(
     recentChunkIds: pushRecent(state.recentChunkIds, session.chunkIds, RECENT_WINDOWS.chunks),
     inProgressSession: null,
   }
+}
+
+export function recordProsodySession(
+  state: AppState,
+  session: ProsodySessionRecord,
+): AppState {
+  return {
+    ...state,
+    prosodySessions: [...state.prosodySessions, session],
+    recentProsodyIds: pushRecent(
+      state.recentProsodyIds,
+      [session.exerciseId],
+      RECENT_WINDOWS.prosody,
+    ),
+  }
+}
+
+export function calculateProsodyMinutes(
+  sessions: readonly ProsodySessionRecord[],
+): number {
+  return sessions.reduce(
+    (total, session) => total + (session.durationMinutes || 0),
+    0,
+  )
 }
 
 export function recordWeeklyTest(state: AppState, test: WeeklyTestRecord): AppState {

@@ -23,7 +23,9 @@
       }
     ],
     "imitation": { "start": 0.7, "end": 5.4 },
-    "retelling": { "idea": "Donner une opinion positive puis la nuancer." }
+    "retelling": { "idea": "Donner une opinion positive puis la nuancer." },
+    "ready": false,
+    "source": "placeholder-silencieux"
   },
   {
     "id": "prosody_002",
@@ -49,7 +51,9 @@
       }
     ],
     "imitation": { "start": 0.6, "end": 6.0 },
-    "retelling": { "idea": "Donner un avis positif sur le télétravail puis une réserve." }
+    "retelling": { "idea": "Donner un avis positif sur le télétravail puis une réserve." },
+    "ready": false,
+    "source": "placeholder-silencieux"
   },
   {
     "id": "prosody_003",
@@ -74,6 +78,8 @@
       }
     ],
     "imitation": { "start": 0.5, "end": 5.2 },
-    "retelling": { "idea": "Exprimer une opinion nuancée sans réponse tranchée." }
+    "retelling": { "idea": "Exprimer une opinion nuancée sans réponse tranchée." },
+    "ready": false,
+    "source": "placeholder-silencieux"
   }
 ]

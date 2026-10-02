@@ -3,9 +3,20 @@ import type { ProsodyRecorder } from '../hooks/useProsodyRecorder'
 export interface RecorderControlsProps {
   recorder: ProsodyRecorder
   recordLabel?: string
+  disabled?: boolean
 }
 
-export function RecorderControls({ recorder, recordLabel }: RecorderControlsProps) {
+function formatSeconds(value: number): string {
+  const minutes = Math.floor(value / 60)
+  const seconds = value % 60
+  return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
+}
+
+export function RecorderControls({
+  recorder,
+  recordLabel,
+  disabled = false,
+}: RecorderControlsProps) {
   if (!recorder.supported) {
     return (
       <p className="muted">
@@ -15,12 +26,16 @@ export function RecorderControls({ recorder, recordLabel }: RecorderControlsProp
   }
 
   const canStart =
-    recorder.status === 'idle' ||
-    recorder.status === 'denied' ||
-    (recorder.status === 'stopped' && !recorder.current)
+    !disabled &&
+    (recorder.status === 'idle' ||
+      recorder.status === 'denied' ||
+      (recorder.status === 'stopped' && !recorder.current))
 
   return (
     <div className="audio">
+      {disabled ? (
+        <p className="muted audio__hint">Termine d'abord l'écoute du modèle.</p>
+      ) : null}
       {canStart ? (
         <button
           type="button"
@@ -34,19 +49,26 @@ export function RecorderControls({ recorder, recordLabel }: RecorderControlsProp
         <span className="muted audio__hint">Autorise le microphone…</span>
       ) : null}
       {recorder.status === 'recording' ? (
-        <button type="button" className="button" onClick={recorder.stop}>
-          ⏹ Arrêter l'enregistrement
-        </button>
+        <>
+          <span className="pill">⏱ {formatSeconds(recorder.recordingSeconds)}</span>
+          <button type="button" className="button" onClick={recorder.stop}>
+            ⏹ Arrêter l'enregistrement
+          </button>
+        </>
       ) : null}
       {recorder.status === 'stopped' && recorder.current?.url ? (
         <div className="stack">
           <div className="audio__row">
             <audio src={recorder.current.url} controls preload="metadata" />
+            <span className="muted">
+              Durée : {formatSeconds(recorder.current.durationSeconds)}
+            </span>
           </div>
           <button
             type="button"
             className="button button--ghost"
             onClick={() => void recorder.start()}
+            disabled={disabled}
           >
             ↻ Refaire l'enregistrement
           </button>

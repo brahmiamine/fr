@@ -27,4 +27,24 @@ describe('AudioClip', () => {
     expect(button).toHaveAttribute('aria-pressed', 'false')
     expect(play).toHaveBeenCalledTimes(1)
   })
+
+  it('reports a complete full playback only on ended', () => {
+    const onComplete = vi.fn()
+    const { container } = render(
+      <AudioClip src="/model.wav" label="Écouter" onComplete={onComplete} />,
+    )
+    const audio = container.querySelector('audio')
+    expect(audio).toBeTruthy()
+    fireEvent.ended(audio as HTMLAudioElement)
+    expect(onComplete).toHaveBeenCalledTimes(1)
+  })
+
+  it('does not start while disabled', () => {
+    const play = vi
+      .spyOn(HTMLMediaElement.prototype, 'play')
+      .mockResolvedValue(undefined)
+    render(<AudioClip src="/model.wav" label="Écouter" disabled />)
+    fireEvent.click(screen.getByRole('button', { name: /Écouter/i }))
+    expect(play).not.toHaveBeenCalled()
+  })
 })

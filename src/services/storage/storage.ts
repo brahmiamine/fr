@@ -1,4 +1,8 @@
-import { LEGACY_STORAGE_KEY, STORAGE_KEY, createInitialState } from '../../types/progress'
+import {
+  LEGACY_STORAGE_KEY,
+  STORAGE_KEY,
+  createInitialState,
+} from '../../types/progress'
 import type {
   AppState,
   LoadAppStateResult,
@@ -33,11 +37,14 @@ function asNumberLevel(value: unknown): 1 | 2 | 3 {
   return 1
 }
 
-function normalizeV3(raw: Record<string, unknown>): AppState {
+function normalizeV4(raw: Record<string, unknown>): AppState {
   const base = createInitialState()
   return {
     ...base,
     sessions: Array.isArray(raw.sessions) ? (raw.sessions as AppState['sessions']) : [],
+    prosodySessions: Array.isArray(raw.prosodySessions)
+      ? (raw.prosodySessions as AppState['prosodySessions'])
+      : [],
     weeklyTests: Array.isArray(raw.weeklyTests)
       ? (raw.weeklyTests as AppState['weeklyTests'])
       : [],
@@ -61,11 +68,21 @@ function normalizeV3(raw: Record<string, unknown>): AppState {
     recentQuestionIds: asStringArray(raw.recentQuestionIds),
     recentWordIds: asStringArray(raw.recentWordIds),
     recentChunkIds: asStringArray(raw.recentChunkIds),
+    recentProsodyIds: asStringArray(raw.recentProsodyIds),
     level: asNumberLevel(raw.level),
     inProgressSession: isRecord(raw.inProgressSession)
       ? (raw.inProgressSession as unknown as AppState['inProgressSession'])
       : null,
   }
+}
+
+function migrateV3(raw: Record<string, unknown>): AppState {
+  return normalizeV4({
+    ...raw,
+    version: 4,
+    prosodySessions: [],
+    recentProsodyIds: [],
+  })
 }
 
 /**
@@ -121,7 +138,8 @@ function parseStoredState(raw: string | null): AppState {
   try {
     const parsed: unknown = JSON.parse(raw)
     if (!isRecord(parsed)) return createInitialState()
-    if (parsed.version === 3) return normalizeV3(parsed)
+    if (parsed.version === 4) return normalizeV4(parsed)
+    if (parsed.version === 3) return migrateV3(parsed)
     if (parsed.version === 2) return migrateV2(parsed)
     if (parsed.version === 1) return migrateV1(parsed)
     return createInitialState()

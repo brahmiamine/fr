@@ -7,6 +7,8 @@ export type ProsodyFocus =
   | 'intonation'
   | 'finalLengthening'
   | 'continuity'
+  | 'tempo'
+  | 'energy'
 
 export interface ProsodyGroup {
   text: string
@@ -25,7 +27,21 @@ export interface ProsodyExercise {
   groups: ProsodyGroup[]
   imitation: { start: number; end: number }
   retelling: { idea: string }
+  /** True only when the file contains a real, licensed/natively recorded model. */
+  ready: boolean
+  source?: string
 }
+
+export const REQUIRED_MEANING_LISTENS = 1
+export const REQUIRED_PROSODY_LISTENS = 1
+export const REQUIRED_IMITATION_LISTENS = 2
+export const REQUIRED_SHADOW_PLAYS = 1
+export const MIN_FULL_AUDIO_SECONDS = 10
+export const MAX_FULL_AUDIO_SECONDS = 30
+export const MIN_IMITATION_SECONDS = 5
+export const MAX_IMITATION_SECONDS = 15
+export const MIN_RETELL_SECONDS = 30
+export const TARGET_RETELL_SECONDS = 60
 
 export interface ProsodySessionState {
   id: string
@@ -34,13 +50,25 @@ export interface ProsodySessionState {
   stage: ProsodyStage
   completed: boolean
 
-  listening: { step: 'meaning' | 'prosody' | 'reveal' }
-  imitation: { step: 'listen' | 'record' | 'shadow' }
+  listening: {
+    step: 'meaning' | 'prosody' | 'reveal'
+    meaningPlays: number
+    prosodyPlays: number
+  }
+  imitation: {
+    step: 'listen' | 'record' | 'shadow'
+    modelPlays: number
+    shadowPlays: number
+  }
   comparison: {
     step: 'aba' | 'choose-focus' | 'retry' | 'compare-attempts'
     focus: ProsodyFocus | null
+    abaCompleted: boolean
   }
-  retelling: { step: 'prompt' | 'record' | 'review' }
+  retelling: {
+    step: 'prompt' | 'record' | 'review'
+    durationSeconds: number
+  }
 }
 
 export const STAGE_ORDER: ProsodyStage[] = [
@@ -59,9 +87,7 @@ export const STAGE_LABELS: Record<ProsodyStage, string> = {
 
 export interface FocusOption {
   value: ProsodyFocus
-  /** What the learner hears as the difference. */
   label: string
-  /** The single positive correction goal to reuse (not the raw error). */
   goal: string
 }
 
@@ -95,6 +121,16 @@ export const FOCUS_OPTIONS: FocusOption[] = [
     value: 'continuity',
     label: "Je n'enchaîne pas assez",
     goal: "Enchaîne d'un groupe à l'autre sans t'arrêter.",
+  },
+  {
+    value: 'tempo',
+    label: 'Je parle trop vite ou trop lentement',
+    goal: 'Rapproche ta durée et ta vitesse de celles du modèle.',
+  },
+  {
+    value: 'energy',
+    label: "Mon énergie est différente",
+    goal: "Copie aussi l'énergie et l'intensité du locuteur.",
   },
 ]
 

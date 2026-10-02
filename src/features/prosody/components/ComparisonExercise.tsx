@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { ProsodyExercise, ProsodyFocus } from '../types'
 import { FOCUS_OPTIONS, focusGoal } from '../types'
 import type { ProsodyRecorder } from '../hooks/useProsodyRecorder'
+import { AbaPlayer } from './AbaPlayer'
 import { AudioClip } from './AudioClip'
 import { RecorderControls } from './RecorderControls'
 
@@ -9,8 +10,10 @@ export interface ComparisonExerciseProps {
   exercise: ProsodyExercise
   step: 'aba' | 'choose-focus' | 'retry' | 'compare-attempts'
   focus: ProsodyFocus | null
+  abaCompleted: boolean
   audioSrc: string
   recorder: ProsodyRecorder
+  onAbaComplete: () => void
   onAbaDone: () => void
   onChooseFocus: (focus: ProsodyFocus) => void
   onRetryDone: () => void
@@ -21,14 +24,17 @@ export function ComparisonExercise({
   exercise,
   step,
   focus,
+  abaCompleted,
   audioSrc,
   recorder,
+  onAbaComplete,
   onAbaDone,
   onChooseFocus,
   onRetryDone,
   onCompareDone,
 }: ComparisonExerciseProps) {
   const [selected, setSelected] = useState<ProsodyFocus | null>(focus)
+  const [modelPlaying, setModelPlaying] = useState(false)
 
   if (step === 'aba') {
     const hasAttempt = Boolean(recorder.attempt1?.url)
@@ -36,39 +42,29 @@ export function ComparisonExercise({
       <section className="card exercise" aria-labelledby="comparison-aba">
         <p className="pill">Comparaison A/B/A</p>
         <h2 id="comparison-aba">Natif → moi → natif</h2>
-        {hasAttempt ? (
+        {hasAttempt && recorder.attempt1 ? (
           <>
-            <div className="stack">
-              <AudioClip
-                src={audioSrc}
-                start={exercise.imitation.start}
-                end={exercise.imitation.end}
-                label="A — Modèle"
-              />
-              <div className="audio__row">
-                <span className="muted">B — Toi</span>
-                <audio src={recorder.attempt1?.url ?? undefined} controls preload="metadata" />
-              </div>
-              <AudioClip
-                src={audioSrc}
-                start={exercise.imitation.start}
-                end={exercise.imitation.end}
-                label="A — Modèle"
-              />
-            </div>
+            <AbaPlayer
+              modelSrc={audioSrc}
+              learnerSrc={recorder.attempt1.url}
+              start={exercise.imitation.start}
+              end={exercise.imitation.end}
+              onComplete={onAbaComplete}
+            />
             <p className="muted">
-              Cette alternance rend les différences plus faciles à entendre.
+              L'ordre est automatique pour garder les trois écoutes rapprochées.
             </p>
-            <button type="button" className="button button--block" onClick={onAbaDone}>
+            <button
+              type="button"
+              className="button button--block"
+              onClick={onAbaDone}
+              disabled={!abaCompleted}
+            >
               J'ai comparé
             </button>
           </>
         ) : (
-          <>
-            <p className="muted">
-              Enregistre d'abord ton imitation pour pouvoir comparer.
-            </p>
-          </>
+          <p className="muted">Enregistre d'abord ton imitation pour pouvoir comparer.</p>
         )}
       </section>
     )
@@ -108,6 +104,8 @@ export function ComparisonExercise({
   }
 
   if (step === 'retry') {
+    const recorderBusy =
+      recorder.status === 'recording' || recorder.status === 'requesting'
     return (
       <section className="card exercise exercise--center" aria-labelledby="comparison-retry">
         <p className="pill">Correction</p>
@@ -119,8 +117,14 @@ export function ComparisonExercise({
           start={exercise.imitation.start}
           end={exercise.imitation.end}
           label="Réécouter le modèle"
+          disabled={recorderBusy}
+          onPlaybackChange={setModelPlaying}
         />
-        <RecorderControls recorder={recorder} recordLabel="Enregistrer ma version 2" />
+        <RecorderControls
+          recorder={recorder}
+          recordLabel="Enregistrer ma version 2"
+          disabled={modelPlaying}
+        />
         <button
           type="button"
           className="button button--block"
@@ -130,7 +134,7 @@ export function ComparisonExercise({
             onRetryDone()
           }}
         >
-          J'ai refait (V2)
+          Garder cette version (V2)
         </button>
       </section>
     )

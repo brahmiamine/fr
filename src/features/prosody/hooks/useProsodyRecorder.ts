@@ -4,17 +4,16 @@ import type { RecorderStatus } from '../../../hooks/useAudioRecorder'
 export interface ProsodyRecording {
   blob: Blob
   url: string
+  durationSeconds: number
 }
 
 export interface ProsodyRecorder {
   status: RecorderStatus
   supported: boolean
-  /** Latest recording, not yet kept as an attempt. */
   current: ProsodyRecording | null
-  /** First imitation (V1). */
   attempt1: ProsodyRecording | null
-  /** Second imitation after correction (V2). */
   attempt2: ProsodyRecording | null
+  recordingSeconds: number
   start: () => Promise<void>
   stop: () => void
   keepAsAttempt1: () => void
@@ -22,12 +21,6 @@ export interface ProsodyRecorder {
   reset: () => void
 }
 
-/**
- * Specialized recorder for the prosody loop. Unlike the fluency recorder, it
- * keeps two attempts (V1 and V2) in memory so the learner can compare them.
- * All object URLs are revoked when the component unmounts; nothing is written
- * to localStorage.
- */
 export function useProsodyRecorder(): ProsodyRecorder {
   const supported =
     typeof window !== 'undefined' &&
@@ -40,11 +33,21 @@ export function useProsodyRecorder(): ProsodyRecorder {
   const [current, setCurrent] = useState<ProsodyRecording | null>(null)
   const [attempt1, setAttempt1] = useState<ProsodyRecording | null>(null)
   const [attempt2, setAttempt2] = useState<ProsodyRecording | null>(null)
+  const [recordingSeconds, setRecordingSeconds] = useState(0)
 
   const recorderRef = useRef<MediaRecorder | null>(null)
   const streamRef = useRef<MediaStream | null>(null)
   const chunksRef = useRef<Blob[]>([])
   const urlsRef = useRef<Set<string>>(new Set())
+  const startedAtRef = useRef(0)
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+
+  const clearTimer = useCallback(() => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current)
+      timerRef.current = null
+    }
+  }, [])
 
   const revoke = useCallback((url: string) => {
     URL.revokeObjectURL(url)
@@ -70,8 +73,6 @@ export function useProsodyRecorder(): ProsodyRecorder {
       setStatus('requesting')
       stream = await navigator.mediaDevices.getUserMedia({ audio: true })
 
-      // A new take replaces only the uncommitted current take. V1/V2 already
-      // kept as attempts remain available for comparison.
       setCurrent((latest) => {
         if (latest) revoke(latest.url)
         return null
@@ -80,18 +81,27 @@ export function useProsodyRecorder(): ProsodyRecorder {
       streamRef.current = stream
       const recorder = new MediaRecorder(stream)
       chunksRef.current = []
+      startedAtRef.current = Date.now()
+      setRecordingSeconds(0)
+      clearTimer()
 
       recorder.ondataavailable = (event) => {
         if (event.data.size > 0) chunksRef.current.push(event.data)
       }
 
       recorder.onstop = () => {
+        clearTimer()
+        const durationSeconds = Math.max(
+          0,
+          Math.floor((Date.now() - startedAtRef.current) / 1000),
+        )
         const blob = new Blob(chunksRef.current, {
           type: recorder.mimeType || 'audio/webm',
         })
         const url = URL.createObjectURL(blob)
         urlsRef.current.add(url)
-        setCurrent({ blob, url })
+        setCurrent({ blob, url, durationSeconds })
+        setRecordingSeconds(durationSeconds)
         stream?.getTracks().forEach((track) => track.stop())
         streamRef.current = null
         recorderRef.current = null
@@ -101,20 +111,26 @@ export function useProsodyRecorder(): ProsodyRecorder {
       recorder.start()
       recorderRef.current = recorder
       setStatus('recording')
+      timerRef.current = setInterval(() => {
+        setRecordingSeconds(
+          Math.max(0, Math.floor((Date.now() - startedAtRef.current) / 1000)),
+        )
+      }, 250)
     } catch {
+      clearTimer()
       stream?.getTracks().forEach((track) => track.stop())
       streamRef.current = null
       recorderRef.current = null
       setStatus('denied')
     }
-  }, [supported, revoke])
+  }, [supported, revoke, clearTimer])
 
   const keepAsAttempt1 = useCallback(() => {
     if (!current) return
     if (attempt1) revoke(attempt1.url)
     setAttempt1(current)
     setCurrent(null)
-    // The next stage must be able to start V2 immediately.
+    setRecordingSeconds(0)
     setStatus('idle')
   }, [current, attempt1, revoke])
 
@@ -123,11 +139,12 @@ export function useProsodyRecorder(): ProsodyRecorder {
     if (attempt2) revoke(attempt2.url)
     setAttempt2(current)
     setCurrent(null)
-    // Retelling uses the same recorder, so make it ready for a fresh take.
+    setRecordingSeconds(0)
     setStatus('idle')
   }, [current, attempt2, revoke])
 
   const reset = useCallback(() => {
+    clearTimer()
     const recorder = recorderRef.current
     if (recorder && recorder.state !== 'inactive') {
       recorder.onstop = null
@@ -142,12 +159,13 @@ export function useProsodyRecorder(): ProsodyRecorder {
     setCurrent(null)
     setAttempt1(null)
     setAttempt2(null)
+    setRecordingSeconds(0)
     setStatus(supported ? 'idle' : 'unsupported')
-  }, [revoke, supported])
+  }, [revoke, supported, clearTimer])
 
-  // Revoke every remaining URL and release the microphone on unmount.
   useEffect(() => {
     return () => {
+      clearTimer()
       const recorder = recorderRef.current
       if (recorder && recorder.state !== 'inactive') {
         recorder.onstop = null
@@ -157,7 +175,7 @@ export function useProsodyRecorder(): ProsodyRecorder {
       for (const url of urlsRef.current) URL.revokeObjectURL(url)
       urlsRef.current.clear()
     }
-  }, [])
+  }, [clearTimer])
 
   return {
     status,
@@ -165,6 +183,7 @@ export function useProsodyRecorder(): ProsodyRecorder {
     current,
     attempt1,
     attempt2,
+    recordingSeconds,
     start,
     stop,
     keepAsAttempt1,

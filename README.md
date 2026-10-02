@@ -48,20 +48,32 @@ Le contenu n'est **jamais tiré au hasard** : il suit les priorités
 ## Sonner plus naturel (prosodie)
 
 La route `/prosody` travaille une **deuxième compétence**, séparée de la fluidité :
-le rythme et l'intonation. Une boucle d'environ 12–15 minutes :
+le rythme et l'intonation. La boucle suit strictement :
 
-> entendre → découper → imiter (V1) → shadowing → comparer A/B/A → choisir **une**
-> différence → refaire (V2) → comparer V1/V2 → retelling (reformuler sans le modèle).
+> entendre → découper → imiter (V1) → shadowing → comparer **A → B → A** →
+> choisir **une** différence → refaire (V2) → comparer V1/V2 → retelling sans
+> modèle.
 
-Le contenu vit dans `src/data/prosody.json` (transcription, groupes rythmiques
-avec `/`, `↑`, `↓`, `—`, segment d'imitation, idée de retelling). L'audio du
-modèle est dans `public/audio/prosody/`.
+Le protocole impose maintenant :
+- une première écoute complète pour comprendre le sens ;
+- une deuxième écoute complète centrée sur les groupes, pauses et mouvements de voix ;
+- au moins 2 écoutes du segment d'imitation avant V1 ;
+- une vraie passe complète de shadowing ;
+- une comparaison A → B → A automatique et ordonnée ;
+- un seul focus de correction avant V2 ;
+- aucune lecture du modèle pendant l'enregistrement V1/V2 ;
+- un retelling d'au moins 30 s, avec une cible initiale de 30–60 s.
 
-> Les fichiers `.wav` livrés sont des **silences de durée correcte** générés par
-> `node scripts/generate-prosody-audio.mjs` : remplace-les par de vrais
-> enregistrements (n'importe quel format lu par le navigateur) en gardant les
-> mêmes noms. Aucun enregistrement personnel n'est conservé : les prises V1/V2
-> restent en mémoire et sont révoquées à la sortie de la page.
+Un extrait marqué `ready: true` doit durer **10–30 s** et son segment d'imitation
+**5–15 s**. Les fichiers silencieux fournis restent uniquement des placeholders de
+développement et sont refusés en production tant qu'ils restent `ready: false`.
+Pour activer un extrait, remplace le fichier par une vraie voix française
+naturelle dont tu as le droit d'usage, ajuste tous les timestamps puis passe
+`ready` à `true`.
+
+Les enregistrements personnels V1/V2/retelling restent uniquement en mémoire.
+Seules les métadonnées de progression (extrait, focus, durée, retelling) sont
+conservées dans `localStorage`.
 
 ## Démarrage local
 
@@ -125,10 +137,10 @@ d'anciennes données peuvent être considérées comme déjà vues.
 ## Stockage local et confidentialité
 
 - Aucune donnée ne quitte l'appareil.
-- Tout est stocké dans `localStorage` sous la clé `parle-plus`, dans un schéma versionné (`version: 3`, avec migration depuis les v1/v2 et depuis l'ancienne clé `fr-fluency-trainer`).
+- Tout est stocké dans `localStorage` sous la clé `parle-plus`, dans un schéma versionné (`version: 4`, avec migration depuis les v1/v2/v3 et depuis l'ancienne clé `fr-fluency-trainer`).
 - Données conservées : sessions terminées, tests hebdomadaires, **trous de
   mots** (`wordGaps`), **révisions de chunks** (`chunkReviews`), exemples
-  personnels, contenus récents et session en cours.
+  personnels, contenus récents, progression prosodique (sans audio) et session de fluidité en cours.
 - Si `localStorage` est indisponible, l'entraînement continue en mémoire et un
   avertissement non bloquant s'affiche.
 
@@ -138,7 +150,7 @@ La suite Vitest + React Testing Library couvre notamment :
 
 - sélection de contenu par priorité, sans doublon et avec anti-répétition ;
 - ordonnanceur de révision espacée (chunks et trous de mots) ;
-- persistance et migration du schéma local (v1/v2 → v3) ;
+- persistance et migration du schéma local (v1/v2/v3 → v4) ;
 - précision, pause/reprise et récupération après rafraîchissement des minuteurs ;
 - calcul des séries, de la progression hebdomadaire et des minutes totales ;
 - machine à états de la session complète (chunks, 4→3→2, questions + revanche,
