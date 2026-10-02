@@ -3,104 +3,1950 @@
     "id": "t001",
     "title": "Télétravail ou bureau ?",
     "category": "travail",
-    "difficulty": "medium",
+    "difficulty": "easy",
     "prompts": [
-      "Quel est ton choix personnel ?",
-      "Quels sont les avantages ?",
-      "Quels sont les inconvénients ?",
-      "Donne un exemple personnel."
+      "Quelle est ta position spontanée ?",
+      "Quelle est ta raison principale ?",
+      "Quel contre-argument faut-il prendre au sérieux ?",
+      "Donne un exemple concret ou personnel."
     ],
-    "transferPrompt": "Une semaine de quatre jours serait-elle meilleure ?"
+    "transferPrompt": "La semaine de quatre jours est-elle une bonne idée ?"
   },
   {
     "id": "t002",
-    "title": "Vivre en ville ou à la campagne",
-    "category": "quotidien",
+    "title": "La semaine de quatre jours est-elle une bonne idée ?",
+    "category": "travail",
     "difficulty": "easy",
     "prompts": [
-      "Où préfères-tu vivre et pourquoi ?",
-      "Qu'est-ce qui change dans la vie de tous les jours ?",
-      "Quel serait le compromis idéal ?",
-      "Raconte une expérience personnelle."
+      "Pourquoi ce sujet divise-t-il les gens ?",
+      "Quelle nuance ajouterais-tu ?",
+      "Qu'est-ce qui compte le plus dans la décision ?",
+      "Donne un exemple de la vie réelle."
     ],
-    "transferPrompt": "Et si tu pouvais travailler n'importe où, que choisirais-tu ?"
+    "transferPrompt": "Télétravail ou bureau ?"
   },
   {
     "id": "t003",
-    "title": "L'intelligence artificielle au quotidien",
-    "category": "technologie",
-    "difficulty": "hard",
+    "title": "Faut-il aimer son travail pour être heureux ?",
+    "category": "travail",
+    "difficulty": "medium",
     "prompts": [
-      "Comment utilises-tu la technologie chaque jour ?",
-      "Selon toi, est-ce une bonne évolution ?",
-      "Quels sont les risques ?",
-      "Quelle limite faut-il poser ?"
+      "Quel choix ferais-tu personnellement ?",
+      "Qu'est-ce qui pourrait te faire changer d'avis ?",
+      "Quels sont les avantages et les inconvénients ?",
+      "Raconte une situation qui illustre ton choix."
     ],
-    "transferPrompt": "Faudrait-il interdire certains usages ? Pourquoi ?"
+    "transferPrompt": "Changer souvent d'entreprise est-il une bonne stratégie ?"
   },
   {
     "id": "t004",
-    "title": "Les réseaux sociaux et l'amitié",
-    "category": "societe",
+    "title": "Changer souvent d'entreprise est-il une bonne stratégie ?",
+    "category": "travail",
     "difficulty": "medium",
     "prompts": [
-      "Les réseaux sociaux rapprochent-ils vraiment les gens ?",
-      "Quels effets sur les relations réelles ?",
-      "Comment garder un usage sain ?",
-      "Donne ton propre exemple."
+      "Comment vois-tu ce sujet aujourd'hui ?",
+      "Quel problème principal faut-il résoudre ?",
+      "Quelle solution serait réaliste ?",
+      "Qu'est-ce qui pourrait mal fonctionner ?"
     ],
-    "transferPrompt": "Et si tu devais supprimer une application, laquelle et pourquoi ?"
+    "transferPrompt": "Faut-il aimer son travail pour être heureux ?"
   },
   {
     "id": "t005",
-    "title": "Voyager seul ou accompagné",
-    "category": "voyage",
-    "difficulty": "easy",
+    "title": "Les réunions sont-elles trop nombreuses ?",
+    "category": "travail",
+    "difficulty": "medium",
     "prompts": [
-      "Quel type de voyage préfères-tu ?",
-      "Qu'est-ce qu'on apprend en voyageant ?",
-      "Quelles difficultés peut-on rencontrer ?",
-      "Raconte un souvenir marquant."
+      "Pourquoi ce sujet divise-t-il les gens ?",
+      "Quelle nuance ajouterais-tu ?",
+      "Qu'est-ce qui compte le plus dans la décision ?",
+      "Donne un exemple de la vie réelle."
     ],
-    "transferPrompt": "Un voyage sans téléphone serait-il une bonne idée ?"
+    "transferPrompt": "Les messages peuvent-ils remplacer beaucoup de réunions ?"
   },
   {
     "id": "t006",
-    "title": "L'argent et le bonheur",
-    "category": "societe",
-    "difficulty": "hard",
+    "title": "Les messages peuvent-ils remplacer beaucoup de réunions ?",
+    "category": "travail",
+    "difficulty": "medium",
     "prompts": [
-      "L'argent fait-il le bonheur ?",
-      "Qu'est-ce qui compte le plus selon toi ?",
-      "Comment trouver un équilibre ?",
-      "Quel exemple t'a marqué ?"
+      "Qu'est-ce qui te semble le plus important ?",
+      "Comment la situation pourrait-elle évoluer ?",
+      "Quel compromis serait acceptable ?",
+      "Relie le sujet à une expérience personnelle."
     ],
-    "transferPrompt": "Si tu gagnais beaucoup plus, qu'est-ce que tu changerais ?"
+    "transferPrompt": "Les réunions sont-elles trop nombreuses ?"
   },
   {
     "id": "t007",
-    "title": "L'école de demain",
-    "category": "education",
-    "difficulty": "medium",
+    "title": "Faut-il séparer complètement travail et vie privée ?",
+    "category": "travail",
+    "difficulty": "hard",
     "prompts": [
-      "Que garderais-tu de l'école actuelle ?",
-      "Que faudrait-il changer en priorité ?",
-      "Comment mieux motiver les élèves ?",
-      "Quel souvenir d'école te revient ?"
+      "Comment vois-tu ce sujet aujourd'hui ?",
+      "Quel problème principal faut-il résoudre ?",
+      "Quelle solution serait réaliste ?",
+      "Qu'est-ce qui pourrait mal fonctionner ?"
     ],
-    "transferPrompt": "Les cours devraient-ils être plus pratiques que théoriques ?"
+    "transferPrompt": "Les horaires flexibles améliorent-ils vraiment la vie ?"
   },
   {
     "id": "t008",
-    "title": "Le sport et la discipline",
+    "title": "Les horaires flexibles améliorent-ils vraiment la vie ?",
+    "category": "travail",
+    "difficulty": "hard",
+    "prompts": [
+      "Quelle est ta position spontanée ?",
+      "Quelle est ta raison principale ?",
+      "Quel contre-argument faut-il prendre au sérieux ?",
+      "Donne un exemple concret ou personnel."
+    ],
+    "transferPrompt": "Faut-il séparer complètement travail et vie privée ?"
+  },
+  {
+    "id": "t009",
+    "title": "Un bon salaire suffit-il pour garder un employé ?",
+    "category": "travail",
+    "difficulty": "medium",
+    "prompts": [
+      "Qu'est-ce qui te semble le plus important ?",
+      "Comment la situation pourrait-elle évoluer ?",
+      "Quel compromis serait acceptable ?",
+      "Relie le sujet à une expérience personnelle."
+    ],
+    "transferPrompt": "L'ambiance au travail compte-t-elle plus que le salaire ?"
+  },
+  {
+    "id": "t010",
+    "title": "L'ambiance au travail compte-t-elle plus que le salaire ?",
+    "category": "travail",
+    "difficulty": "medium",
+    "prompts": [
+      "Quel choix ferais-tu personnellement ?",
+      "Qu'est-ce qui pourrait te faire changer d'avis ?",
+      "Quels sont les avantages et les inconvénients ?",
+      "Raconte une situation qui illustre ton choix."
+    ],
+    "transferPrompt": "Un bon salaire suffit-il pour garder un employé ?"
+  },
+  {
+    "id": "t011",
+    "title": "Faut-il tout planifier dans sa journée ?",
+    "category": "quotidien",
+    "difficulty": "easy",
+    "prompts": [
+      "Quelle est ta position spontanée ?",
+      "Quelle est ta raison principale ?",
+      "Quel contre-argument faut-il prendre au sérieux ?",
+      "Donne un exemple concret ou personnel."
+    ],
+    "transferPrompt": "Être spontané rend-il la vie plus agréable ?"
+  },
+  {
+    "id": "t012",
+    "title": "Être spontané rend-il la vie plus agréable ?",
+    "category": "quotidien",
+    "difficulty": "easy",
+    "prompts": [
+      "Pourquoi ce sujet divise-t-il les gens ?",
+      "Quelle nuance ajouterais-tu ?",
+      "Qu'est-ce qui compte le plus dans la décision ?",
+      "Donne un exemple de la vie réelle."
+    ],
+    "transferPrompt": "Faut-il tout planifier dans sa journée ?"
+  },
+  {
+    "id": "t013",
+    "title": "Cuisiner chez soi ou commander ?",
+    "category": "quotidien",
+    "difficulty": "hard",
+    "prompts": [
+      "Quel choix ferais-tu personnellement ?",
+      "Qu'est-ce qui pourrait te faire changer d'avis ?",
+      "Quels sont les avantages et les inconvénients ?",
+      "Raconte une situation qui illustre ton choix."
+    ],
+    "transferPrompt": "Faire ses courses en magasin ou en ligne ?"
+  },
+  {
+    "id": "t014",
+    "title": "Faire ses courses en magasin ou en ligne ?",
+    "category": "quotidien",
+    "difficulty": "hard",
+    "prompts": [
+      "Comment vois-tu ce sujet aujourd'hui ?",
+      "Quel problème principal faut-il résoudre ?",
+      "Quelle solution serait réaliste ?",
+      "Qu'est-ce qui pourrait mal fonctionner ?"
+    ],
+    "transferPrompt": "Cuisiner chez soi ou commander ?"
+  },
+  {
+    "id": "t015",
+    "title": "Se lever tôt ou se coucher tard ?",
+    "category": "quotidien",
+    "difficulty": "medium",
+    "prompts": [
+      "Pourquoi ce sujet divise-t-il les gens ?",
+      "Quelle nuance ajouterais-tu ?",
+      "Qu'est-ce qui compte le plus dans la décision ?",
+      "Donne un exemple de la vie réelle."
+    ],
+    "transferPrompt": "Une routine du matin est-elle vraiment utile ?"
+  },
+  {
+    "id": "t016",
+    "title": "Une routine du matin est-elle vraiment utile ?",
+    "category": "quotidien",
+    "difficulty": "medium",
+    "prompts": [
+      "Qu'est-ce qui te semble le plus important ?",
+      "Comment la situation pourrait-elle évoluer ?",
+      "Quel compromis serait acceptable ?",
+      "Relie le sujet à une expérience personnelle."
+    ],
+    "transferPrompt": "Se lever tôt ou se coucher tard ?"
+  },
+  {
+    "id": "t017",
+    "title": "Vivre seul ou avec d'autres personnes ?",
+    "category": "quotidien",
+    "difficulty": "medium",
+    "prompts": [
+      "Comment vois-tu ce sujet aujourd'hui ?",
+      "Quel problème principal faut-il résoudre ?",
+      "Quelle solution serait réaliste ?",
+      "Qu'est-ce qui pourrait mal fonctionner ?"
+    ],
+    "transferPrompt": "La colocation est-elle une bonne expérience ?"
+  },
+  {
+    "id": "t018",
+    "title": "La colocation est-elle une bonne expérience ?",
+    "category": "quotidien",
+    "difficulty": "medium",
+    "prompts": [
+      "Quelle est ta position spontanée ?",
+      "Quelle est ta raison principale ?",
+      "Quel contre-argument faut-il prendre au sérieux ?",
+      "Donne un exemple concret ou personnel."
+    ],
+    "transferPrompt": "Vivre seul ou avec d'autres personnes ?"
+  },
+  {
+    "id": "t019",
+    "title": "Faut-il répondre immédiatement aux messages ?",
+    "category": "quotidien",
+    "difficulty": "hard",
+    "prompts": [
+      "Qu'est-ce qui te semble le plus important ?",
+      "Comment la situation pourrait-elle évoluer ?",
+      "Quel compromis serait acceptable ?",
+      "Relie le sujet à une expérience personnelle."
+    ],
+    "transferPrompt": "Peut-on vivre quelques heures par jour sans téléphone ?"
+  },
+  {
+    "id": "t020",
+    "title": "Peut-on vivre quelques heures par jour sans téléphone ?",
+    "category": "quotidien",
+    "difficulty": "hard",
+    "prompts": [
+      "Quel choix ferais-tu personnellement ?",
+      "Qu'est-ce qui pourrait te faire changer d'avis ?",
+      "Quels sont les avantages et les inconvénients ?",
+      "Raconte une situation qui illustre ton choix."
+    ],
+    "transferPrompt": "Faut-il répondre immédiatement aux messages ?"
+  },
+  {
+    "id": "t021",
+    "title": "Les réseaux sociaux rapprochent-ils vraiment les gens ?",
+    "category": "societe",
+    "difficulty": "easy",
+    "prompts": [
+      "Quelle est ta position spontanée ?",
+      "Quelle est ta raison principale ?",
+      "Quel contre-argument faut-il prendre au sérieux ?",
+      "Donne un exemple concret ou personnel."
+    ],
+    "transferPrompt": "Faut-il limiter son temps sur les réseaux sociaux ?"
+  },
+  {
+    "id": "t022",
+    "title": "Faut-il limiter son temps sur les réseaux sociaux ?",
+    "category": "societe",
+    "difficulty": "easy",
+    "prompts": [
+      "Pourquoi ce sujet divise-t-il les gens ?",
+      "Quelle nuance ajouterais-tu ?",
+      "Qu'est-ce qui compte le plus dans la décision ?",
+      "Donne un exemple de la vie réelle."
+    ],
+    "transferPrompt": "Les réseaux sociaux rapprochent-ils vraiment les gens ?"
+  },
+  {
+    "id": "t023",
+    "title": "La politesse est-elle en train de disparaître ?",
+    "category": "societe",
+    "difficulty": "medium",
+    "prompts": [
+      "Quel choix ferais-tu personnellement ?",
+      "Qu'est-ce qui pourrait te faire changer d'avis ?",
+      "Quels sont les avantages et les inconvénients ?",
+      "Raconte une situation qui illustre ton choix."
+    ],
+    "transferPrompt": "Les règles de savoir-vivre sont-elles trop strictes ?"
+  },
+  {
+    "id": "t024",
+    "title": "Les règles de savoir-vivre sont-elles trop strictes ?",
+    "category": "societe",
+    "difficulty": "medium",
+    "prompts": [
+      "Comment vois-tu ce sujet aujourd'hui ?",
+      "Quel problème principal faut-il résoudre ?",
+      "Quelle solution serait réaliste ?",
+      "Qu'est-ce qui pourrait mal fonctionner ?"
+    ],
+    "transferPrompt": "La politesse est-elle en train de disparaître ?"
+  },
+  {
+    "id": "t025",
+    "title": "Les générations se comprennent-elles suffisamment ?",
+    "category": "societe",
+    "difficulty": "hard",
+    "prompts": [
+      "Pourquoi ce sujet divise-t-il les gens ?",
+      "Quelle nuance ajouterais-tu ?",
+      "Qu'est-ce qui compte le plus dans la décision ?",
+      "Donne un exemple de la vie réelle."
+    ],
+    "transferPrompt": "Les jeunes et les plus âgés peuvent-ils apprendre davantage les uns des autres ?"
+  },
+  {
+    "id": "t026",
+    "title": "Les jeunes et les plus âgés peuvent-ils apprendre davantage les uns des autres ?",
+    "category": "societe",
+    "difficulty": "hard",
+    "prompts": [
+      "Qu'est-ce qui te semble le plus important ?",
+      "Comment la situation pourrait-elle évoluer ?",
+      "Quel compromis serait acceptable ?",
+      "Relie le sujet à une expérience personnelle."
+    ],
+    "transferPrompt": "Les générations se comprennent-elles suffisamment ?"
+  },
+  {
+    "id": "t027",
+    "title": "La publicité influence-t-elle trop nos choix ?",
+    "category": "societe",
+    "difficulty": "medium",
+    "prompts": [
+      "Comment vois-tu ce sujet aujourd'hui ?",
+      "Quel problème principal faut-il résoudre ?",
+      "Quelle solution serait réaliste ?",
+      "Qu'est-ce qui pourrait mal fonctionner ?"
+    ],
+    "transferPrompt": "Peut-on réellement acheter sans être influencé ?"
+  },
+  {
+    "id": "t028",
+    "title": "Peut-on réellement acheter sans être influencé ?",
+    "category": "societe",
+    "difficulty": "medium",
+    "prompts": [
+      "Quelle est ta position spontanée ?",
+      "Quelle est ta raison principale ?",
+      "Quel contre-argument faut-il prendre au sérieux ?",
+      "Donne un exemple concret ou personnel."
+    ],
+    "transferPrompt": "La publicité influence-t-elle trop nos choix ?"
+  },
+  {
+    "id": "t029",
+    "title": "Les voisins devraient-ils davantage s'entraider ?",
+    "category": "societe",
+    "difficulty": "medium",
+    "prompts": [
+      "Qu'est-ce qui te semble le plus important ?",
+      "Comment la situation pourrait-elle évoluer ?",
+      "Quel compromis serait acceptable ?",
+      "Relie le sujet à une expérience personnelle."
+    ],
+    "transferPrompt": "La vie en communauté est-elle devenue plus individualiste ?"
+  },
+  {
+    "id": "t030",
+    "title": "La vie en communauté est-elle devenue plus individualiste ?",
+    "category": "societe",
+    "difficulty": "medium",
+    "prompts": [
+      "Quel choix ferais-tu personnellement ?",
+      "Qu'est-ce qui pourrait te faire changer d'avis ?",
+      "Quels sont les avantages et les inconvénients ?",
+      "Raconte une situation qui illustre ton choix."
+    ],
+    "transferPrompt": "Les voisins devraient-ils davantage s'entraider ?"
+  },
+  {
+    "id": "t031",
+    "title": "L'intelligence artificielle améliore-t-elle le quotidien ?",
+    "category": "technologie",
+    "difficulty": "easy",
+    "prompts": [
+      "Quelle est ta position spontanée ?",
+      "Quelle est ta raison principale ?",
+      "Quel contre-argument faut-il prendre au sérieux ?",
+      "Donne un exemple concret ou personnel."
+    ],
+    "transferPrompt": "Faut-il limiter certains usages de l'intelligence artificielle ?"
+  },
+  {
+    "id": "t032",
+    "title": "Faut-il limiter certains usages de l'intelligence artificielle ?",
+    "category": "technologie",
+    "difficulty": "easy",
+    "prompts": [
+      "Pourquoi ce sujet divise-t-il les gens ?",
+      "Quelle nuance ajouterais-tu ?",
+      "Qu'est-ce qui compte le plus dans la décision ?",
+      "Donne un exemple de la vie réelle."
+    ],
+    "transferPrompt": "L'intelligence artificielle améliore-t-elle le quotidien ?"
+  },
+  {
+    "id": "t033",
+    "title": "Le smartphone nous fait-il gagner ou perdre du temps ?",
+    "category": "technologie",
+    "difficulty": "medium",
+    "prompts": [
+      "Quel choix ferais-tu personnellement ?",
+      "Qu'est-ce qui pourrait te faire changer d'avis ?",
+      "Quels sont les avantages et les inconvénients ?",
+      "Raconte une situation qui illustre ton choix."
+    ],
+    "transferPrompt": "Une journée sans smartphone serait-elle bénéfique ?"
+  },
+  {
+    "id": "t034",
+    "title": "Une journée sans smartphone serait-elle bénéfique ?",
+    "category": "technologie",
+    "difficulty": "medium",
+    "prompts": [
+      "Comment vois-tu ce sujet aujourd'hui ?",
+      "Quel problème principal faut-il résoudre ?",
+      "Quelle solution serait réaliste ?",
+      "Qu'est-ce qui pourrait mal fonctionner ?"
+    ],
+    "transferPrompt": "Le smartphone nous fait-il gagner ou perdre du temps ?"
+  },
+  {
+    "id": "t035",
+    "title": "Les objets connectés sont-ils vraiment utiles ?",
+    "category": "technologie",
+    "difficulty": "medium",
+    "prompts": [
+      "Pourquoi ce sujet divise-t-il les gens ?",
+      "Quelle nuance ajouterais-tu ?",
+      "Qu'est-ce qui compte le plus dans la décision ?",
+      "Donne un exemple de la vie réelle."
+    ],
+    "transferPrompt": "La maison intelligente simplifie-t-elle vraiment la vie ?"
+  },
+  {
+    "id": "t036",
+    "title": "La maison intelligente simplifie-t-elle vraiment la vie ?",
+    "category": "technologie",
+    "difficulty": "medium",
+    "prompts": [
+      "Qu'est-ce qui te semble le plus important ?",
+      "Comment la situation pourrait-elle évoluer ?",
+      "Quel compromis serait acceptable ?",
+      "Relie le sujet à une expérience personnelle."
+    ],
+    "transferPrompt": "Les objets connectés sont-ils vraiment utiles ?"
+  },
+  {
+    "id": "t037",
+    "title": "Faut-il tout sauvegarder dans le cloud ?",
+    "category": "technologie",
+    "difficulty": "hard",
+    "prompts": [
+      "Comment vois-tu ce sujet aujourd'hui ?",
+      "Quel problème principal faut-il résoudre ?",
+      "Quelle solution serait réaliste ?",
+      "Qu'est-ce qui pourrait mal fonctionner ?"
+    ],
+    "transferPrompt": "Sommes-nous suffisamment attentifs à notre vie privée numérique ?"
+  },
+  {
+    "id": "t038",
+    "title": "Sommes-nous suffisamment attentifs à notre vie privée numérique ?",
+    "category": "technologie",
+    "difficulty": "hard",
+    "prompts": [
+      "Quelle est ta position spontanée ?",
+      "Quelle est ta raison principale ?",
+      "Quel contre-argument faut-il prendre au sérieux ?",
+      "Donne un exemple concret ou personnel."
+    ],
+    "transferPrompt": "Faut-il tout sauvegarder dans le cloud ?"
+  },
+  {
+    "id": "t039",
+    "title": "L'automatisation va-t-elle rendre le travail plus intéressant ?",
+    "category": "technologie",
+    "difficulty": "medium",
+    "prompts": [
+      "Qu'est-ce qui te semble le plus important ?",
+      "Comment la situation pourrait-elle évoluer ?",
+      "Quel compromis serait acceptable ?",
+      "Relie le sujet à une expérience personnelle."
+    ],
+    "transferPrompt": "Quelles tâches ne devraient jamais être automatisées ?"
+  },
+  {
+    "id": "t040",
+    "title": "Quelles tâches ne devraient jamais être automatisées ?",
+    "category": "technologie",
+    "difficulty": "medium",
+    "prompts": [
+      "Quel choix ferais-tu personnellement ?",
+      "Qu'est-ce qui pourrait te faire changer d'avis ?",
+      "Quels sont les avantages et les inconvénients ?",
+      "Raconte une situation qui illustre ton choix."
+    ],
+    "transferPrompt": "L'automatisation va-t-elle rendre le travail plus intéressant ?"
+  },
+  {
+    "id": "t041",
+    "title": "Voyager seul ou accompagné ?",
+    "category": "voyage",
+    "difficulty": "easy",
+    "prompts": [
+      "Quelle est ta position spontanée ?",
+      "Quelle est ta raison principale ?",
+      "Quel contre-argument faut-il prendre au sérieux ?",
+      "Donne un exemple concret ou personnel."
+    ],
+    "transferPrompt": "Voyager en groupe organisé est-il une bonne idée ?"
+  },
+  {
+    "id": "t042",
+    "title": "Voyager en groupe organisé est-il une bonne idée ?",
+    "category": "voyage",
+    "difficulty": "easy",
+    "prompts": [
+      "Pourquoi ce sujet divise-t-il les gens ?",
+      "Quelle nuance ajouterais-tu ?",
+      "Qu'est-ce qui compte le plus dans la décision ?",
+      "Donne un exemple de la vie réelle."
+    ],
+    "transferPrompt": "Voyager seul ou accompagné ?"
+  },
+  {
+    "id": "t043",
+    "title": "Train ou avion pour voyager en Europe ?",
+    "category": "voyage",
+    "difficulty": "hard",
+    "prompts": [
+      "Quel choix ferais-tu personnellement ?",
+      "Qu'est-ce qui pourrait te faire changer d'avis ?",
+      "Quels sont les avantages et les inconvénients ?",
+      "Raconte une situation qui illustre ton choix."
+    ],
+    "transferPrompt": "Le temps de trajet compte-t-il plus que le prix ?"
+  },
+  {
+    "id": "t044",
+    "title": "Le temps de trajet compte-t-il plus que le prix ?",
+    "category": "voyage",
+    "difficulty": "hard",
+    "prompts": [
+      "Comment vois-tu ce sujet aujourd'hui ?",
+      "Quel problème principal faut-il résoudre ?",
+      "Quelle solution serait réaliste ?",
+      "Qu'est-ce qui pourrait mal fonctionner ?"
+    ],
+    "transferPrompt": "Train ou avion pour voyager en Europe ?"
+  },
+  {
+    "id": "t045",
+    "title": "Faut-il beaucoup préparer un voyage ?",
+    "category": "voyage",
+    "difficulty": "medium",
+    "prompts": [
+      "Pourquoi ce sujet divise-t-il les gens ?",
+      "Quelle nuance ajouterais-tu ?",
+      "Qu'est-ce qui compte le plus dans la décision ?",
+      "Donne un exemple de la vie réelle."
+    ],
+    "transferPrompt": "Les imprévus rendent-ils un voyage plus mémorable ?"
+  },
+  {
+    "id": "t046",
+    "title": "Les imprévus rendent-ils un voyage plus mémorable ?",
+    "category": "voyage",
+    "difficulty": "medium",
+    "prompts": [
+      "Qu'est-ce qui te semble le plus important ?",
+      "Comment la situation pourrait-elle évoluer ?",
+      "Quel compromis serait acceptable ?",
+      "Relie le sujet à une expérience personnelle."
+    ],
+    "transferPrompt": "Faut-il beaucoup préparer un voyage ?"
+  },
+  {
+    "id": "t047",
+    "title": "Vivre quelques années à l'étranger est-il une bonne expérience ?",
+    "category": "voyage",
+    "difficulty": "medium",
+    "prompts": [
+      "Comment vois-tu ce sujet aujourd'hui ?",
+      "Quel problème principal faut-il résoudre ?",
+      "Quelle solution serait réaliste ?",
+      "Qu'est-ce qui pourrait mal fonctionner ?"
+    ],
+    "transferPrompt": "Faut-il parler la langue du pays pour bien s'intégrer ?"
+  },
+  {
+    "id": "t048",
+    "title": "Faut-il parler la langue du pays pour bien s'intégrer ?",
+    "category": "voyage",
+    "difficulty": "medium",
+    "prompts": [
+      "Quelle est ta position spontanée ?",
+      "Quelle est ta raison principale ?",
+      "Quel contre-argument faut-il prendre au sérieux ?",
+      "Donne un exemple concret ou personnel."
+    ],
+    "transferPrompt": "Vivre quelques années à l'étranger est-il une bonne expérience ?"
+  },
+  {
+    "id": "t049",
+    "title": "Voyager léger ou tout prévoir ?",
+    "category": "voyage",
+    "difficulty": "hard",
+    "prompts": [
+      "Qu'est-ce qui te semble le plus important ?",
+      "Comment la situation pourrait-elle évoluer ?",
+      "Quel compromis serait acceptable ?",
+      "Relie le sujet à une expérience personnelle."
+    ],
+    "transferPrompt": "Peut-on profiter d'un voyage sans prendre beaucoup de photos ?"
+  },
+  {
+    "id": "t050",
+    "title": "Peut-on profiter d'un voyage sans prendre beaucoup de photos ?",
+    "category": "voyage",
+    "difficulty": "hard",
+    "prompts": [
+      "Quel choix ferais-tu personnellement ?",
+      "Qu'est-ce qui pourrait te faire changer d'avis ?",
+      "Quels sont les avantages et les inconvénients ?",
+      "Raconte une situation qui illustre ton choix."
+    ],
+    "transferPrompt": "Voyager léger ou tout prévoir ?"
+  },
+  {
+    "id": "t051",
+    "title": "Qu'est-ce qui fait durer une amitié ?",
+    "category": "relations",
+    "difficulty": "easy",
+    "prompts": [
+      "Quelle est ta position spontanée ?",
+      "Quelle est ta raison principale ?",
+      "Quel contre-argument faut-il prendre au sérieux ?",
+      "Donne un exemple concret ou personnel."
+    ],
+    "transferPrompt": "Peut-on rester proche sans se voir souvent ?"
+  },
+  {
+    "id": "t052",
+    "title": "Peut-on rester proche sans se voir souvent ?",
+    "category": "relations",
+    "difficulty": "easy",
+    "prompts": [
+      "Pourquoi ce sujet divise-t-il les gens ?",
+      "Quelle nuance ajouterais-tu ?",
+      "Qu'est-ce qui compte le plus dans la décision ?",
+      "Donne un exemple de la vie réelle."
+    ],
+    "transferPrompt": "Qu'est-ce qui fait durer une amitié ?"
+  },
+  {
+    "id": "t053",
+    "title": "Faut-il toujours dire ce qu'on pense à ses proches ?",
+    "category": "relations",
+    "difficulty": "medium",
+    "prompts": [
+      "Quel choix ferais-tu personnellement ?",
+      "Qu'est-ce qui pourrait te faire changer d'avis ?",
+      "Quels sont les avantages et les inconvénients ?",
+      "Raconte une situation qui illustre ton choix."
+    ],
+    "transferPrompt": "Peut-on éviter les conflits dans une relation ?"
+  },
+  {
+    "id": "t054",
+    "title": "Peut-on éviter les conflits dans une relation ?",
+    "category": "relations",
+    "difficulty": "medium",
+    "prompts": [
+      "Comment vois-tu ce sujet aujourd'hui ?",
+      "Quel problème principal faut-il résoudre ?",
+      "Quelle solution serait réaliste ?",
+      "Qu'est-ce qui pourrait mal fonctionner ?"
+    ],
+    "transferPrompt": "Faut-il toujours dire ce qu'on pense à ses proches ?"
+  },
+  {
+    "id": "t055",
+    "title": "La confiance se construit-elle lentement ?",
+    "category": "relations",
+    "difficulty": "hard",
+    "prompts": [
+      "Pourquoi ce sujet divise-t-il les gens ?",
+      "Quelle nuance ajouterais-tu ?",
+      "Qu'est-ce qui compte le plus dans la décision ?",
+      "Donne un exemple de la vie réelle."
+    ],
+    "transferPrompt": "Peut-on vraiment retrouver une confiance perdue ?"
+  },
+  {
+    "id": "t056",
+    "title": "Peut-on vraiment retrouver une confiance perdue ?",
+    "category": "relations",
+    "difficulty": "hard",
+    "prompts": [
+      "Qu'est-ce qui te semble le plus important ?",
+      "Comment la situation pourrait-elle évoluer ?",
+      "Quel compromis serait acceptable ?",
+      "Relie le sujet à une expérience personnelle."
+    ],
+    "transferPrompt": "La confiance se construit-elle lentement ?"
+  },
+  {
+    "id": "t057",
+    "title": "Faut-il avoir beaucoup d'amis ou quelques amis proches ?",
+    "category": "relations",
+    "difficulty": "medium",
+    "prompts": [
+      "Comment vois-tu ce sujet aujourd'hui ?",
+      "Quel problème principal faut-il résoudre ?",
+      "Quelle solution serait réaliste ?",
+      "Qu'est-ce qui pourrait mal fonctionner ?"
+    ],
+    "transferPrompt": "Les nouvelles rencontres deviennent-elles plus difficiles avec l'âge ?"
+  },
+  {
+    "id": "t058",
+    "title": "Les nouvelles rencontres deviennent-elles plus difficiles avec l'âge ?",
+    "category": "relations",
+    "difficulty": "medium",
+    "prompts": [
+      "Quelle est ta position spontanée ?",
+      "Quelle est ta raison principale ?",
+      "Quel contre-argument faut-il prendre au sérieux ?",
+      "Donne un exemple concret ou personnel."
+    ],
+    "transferPrompt": "Faut-il avoir beaucoup d'amis ou quelques amis proches ?"
+  },
+  {
+    "id": "t059",
+    "title": "Savoir écouter est-il plus important que savoir conseiller ?",
+    "category": "relations",
+    "difficulty": "medium",
+    "prompts": [
+      "Qu'est-ce qui te semble le plus important ?",
+      "Comment la situation pourrait-elle évoluer ?",
+      "Quel compromis serait acceptable ?",
+      "Relie le sujet à une expérience personnelle."
+    ],
+    "transferPrompt": "Donner des conseils non demandés est-il une bonne idée ?"
+  },
+  {
+    "id": "t060",
+    "title": "Donner des conseils non demandés est-il une bonne idée ?",
+    "category": "relations",
+    "difficulty": "medium",
+    "prompts": [
+      "Quel choix ferais-tu personnellement ?",
+      "Qu'est-ce qui pourrait te faire changer d'avis ?",
+      "Quels sont les avantages et les inconvénients ?",
+      "Raconte une situation qui illustre ton choix."
+    ],
+    "transferPrompt": "Savoir écouter est-il plus important que savoir conseiller ?"
+  },
+  {
+    "id": "t061",
+    "title": "Épargner ou profiter de son argent maintenant ?",
+    "category": "argent",
+    "difficulty": "easy",
+    "prompts": [
+      "Quelle est ta position spontanée ?",
+      "Quelle est ta raison principale ?",
+      "Quel contre-argument faut-il prendre au sérieux ?",
+      "Donne un exemple concret ou personnel."
+    ],
+    "transferPrompt": "Faut-il toujours avoir un budget précis ?"
+  },
+  {
+    "id": "t062",
+    "title": "Faut-il toujours avoir un budget précis ?",
+    "category": "argent",
+    "difficulty": "easy",
+    "prompts": [
+      "Pourquoi ce sujet divise-t-il les gens ?",
+      "Quelle nuance ajouterais-tu ?",
+      "Qu'est-ce qui compte le plus dans la décision ?",
+      "Donne un exemple de la vie réelle."
+    ],
+    "transferPrompt": "Épargner ou profiter de son argent maintenant ?"
+  },
+  {
+    "id": "t063",
+    "title": "Acheter ou louer son logement ?",
+    "category": "argent",
+    "difficulty": "medium",
+    "prompts": [
+      "Quel choix ferais-tu personnellement ?",
+      "Qu'est-ce qui pourrait te faire changer d'avis ?",
+      "Quels sont les avantages et les inconvénients ?",
+      "Raconte une situation qui illustre ton choix."
+    ],
+    "transferPrompt": "Posséder beaucoup de choses rend-il plus heureux ?"
+  },
+  {
+    "id": "t064",
+    "title": "Posséder beaucoup de choses rend-il plus heureux ?",
+    "category": "argent",
+    "difficulty": "medium",
+    "prompts": [
+      "Comment vois-tu ce sujet aujourd'hui ?",
+      "Quel problème principal faut-il résoudre ?",
+      "Quelle solution serait réaliste ?",
+      "Qu'est-ce qui pourrait mal fonctionner ?"
+    ],
+    "transferPrompt": "Acheter ou louer son logement ?"
+  },
+  {
+    "id": "t065",
+    "title": "Le paiement sans espèces simplifie-t-il trop les achats ?",
+    "category": "argent",
+    "difficulty": "medium",
+    "prompts": [
+      "Pourquoi ce sujet divise-t-il les gens ?",
+      "Quelle nuance ajouterais-tu ?",
+      "Qu'est-ce qui compte le plus dans la décision ?",
+      "Donne un exemple de la vie réelle."
+    ],
+    "transferPrompt": "Paye-t-on plus facilement quand on ne voit pas l'argent partir ?"
+  },
+  {
+    "id": "t066",
+    "title": "Paye-t-on plus facilement quand on ne voit pas l'argent partir ?",
+    "category": "argent",
+    "difficulty": "medium",
+    "prompts": [
+      "Qu'est-ce qui te semble le plus important ?",
+      "Comment la situation pourrait-elle évoluer ?",
+      "Quel compromis serait acceptable ?",
+      "Relie le sujet à une expérience personnelle."
+    ],
+    "transferPrompt": "Le paiement sans espèces simplifie-t-il trop les achats ?"
+  },
+  {
+    "id": "t067",
+    "title": "Faut-il partager toutes les dépenses dans un couple ?",
+    "category": "argent",
+    "difficulty": "hard",
+    "prompts": [
+      "Comment vois-tu ce sujet aujourd'hui ?",
+      "Quel problème principal faut-il résoudre ?",
+      "Quelle solution serait réaliste ?",
+      "Qu'est-ce qui pourrait mal fonctionner ?"
+    ],
+    "transferPrompt": "L'argent peut-il créer des tensions même quand on en a assez ?"
+  },
+  {
+    "id": "t068",
+    "title": "L'argent peut-il créer des tensions même quand on en a assez ?",
+    "category": "argent",
+    "difficulty": "hard",
+    "prompts": [
+      "Quelle est ta position spontanée ?",
+      "Quelle est ta raison principale ?",
+      "Quel contre-argument faut-il prendre au sérieux ?",
+      "Donne un exemple concret ou personnel."
+    ],
+    "transferPrompt": "Faut-il partager toutes les dépenses dans un couple ?"
+  },
+  {
+    "id": "t069",
+    "title": "Un cadeau cher est-il forcément un meilleur cadeau ?",
+    "category": "argent",
+    "difficulty": "medium",
+    "prompts": [
+      "Qu'est-ce qui te semble le plus important ?",
+      "Comment la situation pourrait-elle évoluer ?",
+      "Quel compromis serait acceptable ?",
+      "Relie le sujet à une expérience personnelle."
+    ],
+    "transferPrompt": "Vaut-il mieux offrir une expérience qu'un objet ?"
+  },
+  {
+    "id": "t070",
+    "title": "Vaut-il mieux offrir une expérience qu'un objet ?",
+    "category": "argent",
+    "difficulty": "medium",
+    "prompts": [
+      "Quel choix ferais-tu personnellement ?",
+      "Qu'est-ce qui pourrait te faire changer d'avis ?",
+      "Quels sont les avantages et les inconvénients ?",
+      "Raconte une situation qui illustre ton choix."
+    ],
+    "transferPrompt": "Un cadeau cher est-il forcément un meilleur cadeau ?"
+  },
+  {
+    "id": "t071",
+    "title": "Dormir suffisamment est-il la priorité numéro un ?",
     "category": "sante",
     "difficulty": "easy",
     "prompts": [
-      "Quelle place le sport a-t-il dans ta vie ?",
-      "Quels bénéfices apporte-t-il ?",
-      "Comment rester régulier ?",
-      "Raconte un progrès dont tu es fier."
+      "Quelle est ta position spontanée ?",
+      "Quelle est ta raison principale ?",
+      "Quel contre-argument faut-il prendre au sérieux ?",
+      "Donne un exemple concret ou personnel."
     ],
-    "transferPrompt": "Faut-il obliger les enfants à faire du sport ?"
+    "transferPrompt": "Faut-il garder les mêmes horaires de sommeil le week-end ?"
+  },
+  {
+    "id": "t072",
+    "title": "Faut-il garder les mêmes horaires de sommeil le week-end ?",
+    "category": "sante",
+    "difficulty": "easy",
+    "prompts": [
+      "Pourquoi ce sujet divise-t-il les gens ?",
+      "Quelle nuance ajouterais-tu ?",
+      "Qu'est-ce qui compte le plus dans la décision ?",
+      "Donne un exemple de la vie réelle."
+    ],
+    "transferPrompt": "Dormir suffisamment est-il la priorité numéro un ?"
+  },
+  {
+    "id": "t073",
+    "title": "Marcher tous les jours suffit-il pour rester actif ?",
+    "category": "sante",
+    "difficulty": "hard",
+    "prompts": [
+      "Quel choix ferais-tu personnellement ?",
+      "Qu'est-ce qui pourrait te faire changer d'avis ?",
+      "Quels sont les avantages et les inconvénients ?",
+      "Raconte une situation qui illustre ton choix."
+    ],
+    "transferPrompt": "Vaut-il mieux une petite activité régulière ou de grosses séances occasionnelles ?"
+  },
+  {
+    "id": "t074",
+    "title": "Vaut-il mieux une petite activité régulière ou de grosses séances occasionnelles ?",
+    "category": "sante",
+    "difficulty": "hard",
+    "prompts": [
+      "Comment vois-tu ce sujet aujourd'hui ?",
+      "Quel problème principal faut-il résoudre ?",
+      "Quelle solution serait réaliste ?",
+      "Qu'est-ce qui pourrait mal fonctionner ?"
+    ],
+    "transferPrompt": "Marcher tous les jours suffit-il pour rester actif ?"
+  },
+  {
+    "id": "t075",
+    "title": "Les écrans avant de dormir sont-ils un vrai problème ?",
+    "category": "sante",
+    "difficulty": "medium",
+    "prompts": [
+      "Pourquoi ce sujet divise-t-il les gens ?",
+      "Quelle nuance ajouterais-tu ?",
+      "Qu'est-ce qui compte le plus dans la décision ?",
+      "Donne un exemple de la vie réelle."
+    ],
+    "transferPrompt": "Faut-il imposer une heure sans écran chaque soir ?"
+  },
+  {
+    "id": "t076",
+    "title": "Faut-il imposer une heure sans écran chaque soir ?",
+    "category": "sante",
+    "difficulty": "medium",
+    "prompts": [
+      "Qu'est-ce qui te semble le plus important ?",
+      "Comment la situation pourrait-elle évoluer ?",
+      "Quel compromis serait acceptable ?",
+      "Relie le sujet à une expérience personnelle."
+    ],
+    "transferPrompt": "Les écrans avant de dormir sont-ils un vrai problème ?"
+  },
+  {
+    "id": "t077",
+    "title": "Prendre du repos est-il aussi important que faire du sport ?",
+    "category": "sante",
+    "difficulty": "medium",
+    "prompts": [
+      "Comment vois-tu ce sujet aujourd'hui ?",
+      "Quel problème principal faut-il résoudre ?",
+      "Quelle solution serait réaliste ?",
+      "Qu'est-ce qui pourrait mal fonctionner ?"
+    ],
+    "transferPrompt": "Pourquoi est-il parfois difficile de ne rien faire ?"
+  },
+  {
+    "id": "t078",
+    "title": "Pourquoi est-il parfois difficile de ne rien faire ?",
+    "category": "sante",
+    "difficulty": "medium",
+    "prompts": [
+      "Quelle est ta position spontanée ?",
+      "Quelle est ta raison principale ?",
+      "Quel contre-argument faut-il prendre au sérieux ?",
+      "Donne un exemple concret ou personnel."
+    ],
+    "transferPrompt": "Prendre du repos est-il aussi important que faire du sport ?"
+  },
+  {
+    "id": "t079",
+    "title": "Changer une habitude de santé demande-t-il surtout de la motivation ?",
+    "category": "sante",
+    "difficulty": "hard",
+    "prompts": [
+      "Qu'est-ce qui te semble le plus important ?",
+      "Comment la situation pourrait-elle évoluer ?",
+      "Quel compromis serait acceptable ?",
+      "Relie le sujet à une expérience personnelle."
+    ],
+    "transferPrompt": "L'environnement compte-t-il plus que la volonté pour changer ses habitudes ?"
+  },
+  {
+    "id": "t080",
+    "title": "L'environnement compte-t-il plus que la volonté pour changer ses habitudes ?",
+    "category": "sante",
+    "difficulty": "hard",
+    "prompts": [
+      "Quel choix ferais-tu personnellement ?",
+      "Qu'est-ce qui pourrait te faire changer d'avis ?",
+      "Quels sont les avantages et les inconvénients ?",
+      "Raconte une situation qui illustre ton choix."
+    ],
+    "transferPrompt": "Changer une habitude de santé demande-t-il surtout de la motivation ?"
+  },
+  {
+    "id": "t081",
+    "title": "Sport collectif ou sport individuel ?",
+    "category": "sport",
+    "difficulty": "easy",
+    "prompts": [
+      "Quelle est ta position spontanée ?",
+      "Quelle est ta raison principale ?",
+      "Quel contre-argument faut-il prendre au sérieux ?",
+      "Donne un exemple concret ou personnel."
+    ],
+    "transferPrompt": "La compétition aide-t-elle à progresser ?"
+  },
+  {
+    "id": "t082",
+    "title": "La compétition aide-t-elle à progresser ?",
+    "category": "sport",
+    "difficulty": "easy",
+    "prompts": [
+      "Pourquoi ce sujet divise-t-il les gens ?",
+      "Quelle nuance ajouterais-tu ?",
+      "Qu'est-ce qui compte le plus dans la décision ?",
+      "Donne un exemple de la vie réelle."
+    ],
+    "transferPrompt": "Sport collectif ou sport individuel ?"
+  },
+  {
+    "id": "t083",
+    "title": "Salle de sport ou activité en plein air ?",
+    "category": "sport",
+    "difficulty": "medium",
+    "prompts": [
+      "Quel choix ferais-tu personnellement ?",
+      "Qu'est-ce qui pourrait te faire changer d'avis ?",
+      "Quels sont les avantages et les inconvénients ?",
+      "Raconte une situation qui illustre ton choix."
+    ],
+    "transferPrompt": "Peut-on rester motivé sans objectif sportif précis ?"
+  },
+  {
+    "id": "t084",
+    "title": "Peut-on rester motivé sans objectif sportif précis ?",
+    "category": "sport",
+    "difficulty": "medium",
+    "prompts": [
+      "Comment vois-tu ce sujet aujourd'hui ?",
+      "Quel problème principal faut-il résoudre ?",
+      "Quelle solution serait réaliste ?",
+      "Qu'est-ce qui pourrait mal fonctionner ?"
+    ],
+    "transferPrompt": "Salle de sport ou activité en plein air ?"
+  },
+  {
+    "id": "t085",
+    "title": "Faut-il faire du sport même quand on manque de motivation ?",
+    "category": "sport",
+    "difficulty": "hard",
+    "prompts": [
+      "Pourquoi ce sujet divise-t-il les gens ?",
+      "Quelle nuance ajouterais-tu ?",
+      "Qu'est-ce qui compte le plus dans la décision ?",
+      "Donne un exemple de la vie réelle."
+    ],
+    "transferPrompt": "La régularité compte-t-elle plus que l'intensité ?"
+  },
+  {
+    "id": "t086",
+    "title": "La régularité compte-t-elle plus que l'intensité ?",
+    "category": "sport",
+    "difficulty": "hard",
+    "prompts": [
+      "Qu'est-ce qui te semble le plus important ?",
+      "Comment la situation pourrait-elle évoluer ?",
+      "Quel compromis serait acceptable ?",
+      "Relie le sujet à une expérience personnelle."
+    ],
+    "transferPrompt": "Faut-il faire du sport même quand on manque de motivation ?"
+  },
+  {
+    "id": "t087",
+    "title": "Regarder du sport peut-il donner envie d'en pratiquer ?",
+    "category": "sport",
+    "difficulty": "medium",
+    "prompts": [
+      "Comment vois-tu ce sujet aujourd'hui ?",
+      "Quel problème principal faut-il résoudre ?",
+      "Quelle solution serait réaliste ?",
+      "Qu'est-ce qui pourrait mal fonctionner ?"
+    ],
+    "transferPrompt": "Les sportifs professionnels sont-ils de bons modèles ?"
+  },
+  {
+    "id": "t088",
+    "title": "Les sportifs professionnels sont-ils de bons modèles ?",
+    "category": "sport",
+    "difficulty": "medium",
+    "prompts": [
+      "Quelle est ta position spontanée ?",
+      "Quelle est ta raison principale ?",
+      "Quel contre-argument faut-il prendre au sérieux ?",
+      "Donne un exemple concret ou personnel."
+    ],
+    "transferPrompt": "Regarder du sport peut-il donner envie d'en pratiquer ?"
+  },
+  {
+    "id": "t089",
+    "title": "Faut-il pousser les enfants à faire du sport ?",
+    "category": "sport",
+    "difficulty": "medium",
+    "prompts": [
+      "Qu'est-ce qui te semble le plus important ?",
+      "Comment la situation pourrait-elle évoluer ?",
+      "Quel compromis serait acceptable ?",
+      "Relie le sujet à une expérience personnelle."
+    ],
+    "transferPrompt": "Les enfants devraient-ils essayer plusieurs sports avant de se spécialiser ?"
+  },
+  {
+    "id": "t090",
+    "title": "Les enfants devraient-ils essayer plusieurs sports avant de se spécialiser ?",
+    "category": "sport",
+    "difficulty": "medium",
+    "prompts": [
+      "Quel choix ferais-tu personnellement ?",
+      "Qu'est-ce qui pourrait te faire changer d'avis ?",
+      "Quels sont les avantages et les inconvénients ?",
+      "Raconte une situation qui illustre ton choix."
+    ],
+    "transferPrompt": "Faut-il pousser les enfants à faire du sport ?"
+  },
+  {
+    "id": "t091",
+    "title": "Livre ou film ?",
+    "category": "culture",
+    "difficulty": "easy",
+    "prompts": [
+      "Quelle est ta position spontanée ?",
+      "Quelle est ta raison principale ?",
+      "Quel contre-argument faut-il prendre au sérieux ?",
+      "Donne un exemple concret ou personnel."
+    ],
+    "transferPrompt": "Une adaptation doit-elle rester fidèle au livre ?"
+  },
+  {
+    "id": "t092",
+    "title": "Une adaptation doit-elle rester fidèle au livre ?",
+    "category": "culture",
+    "difficulty": "easy",
+    "prompts": [
+      "Pourquoi ce sujet divise-t-il les gens ?",
+      "Quelle nuance ajouterais-tu ?",
+      "Qu'est-ce qui compte le plus dans la décision ?",
+      "Donne un exemple de la vie réelle."
+    ],
+    "transferPrompt": "Livre ou film ?"
+  },
+  {
+    "id": "t093",
+    "title": "Regarder une série d'un coup ou lentement ?",
+    "category": "culture",
+    "difficulty": "medium",
+    "prompts": [
+      "Quel choix ferais-tu personnellement ?",
+      "Qu'est-ce qui pourrait te faire changer d'avis ?",
+      "Quels sont les avantages et les inconvénients ?",
+      "Raconte une situation qui illustre ton choix."
+    ],
+    "transferPrompt": "Les plateformes de streaming offrent-elles trop de choix ?"
+  },
+  {
+    "id": "t094",
+    "title": "Les plateformes de streaming offrent-elles trop de choix ?",
+    "category": "culture",
+    "difficulty": "medium",
+    "prompts": [
+      "Comment vois-tu ce sujet aujourd'hui ?",
+      "Quel problème principal faut-il résoudre ?",
+      "Quelle solution serait réaliste ?",
+      "Qu'est-ce qui pourrait mal fonctionner ?"
+    ],
+    "transferPrompt": "Regarder une série d'un coup ou lentement ?"
+  },
+  {
+    "id": "t095",
+    "title": "La musique change-t-elle vraiment notre humeur ?",
+    "category": "culture",
+    "difficulty": "medium",
+    "prompts": [
+      "Pourquoi ce sujet divise-t-il les gens ?",
+      "Quelle nuance ajouterais-tu ?",
+      "Qu'est-ce qui compte le plus dans la décision ?",
+      "Donne un exemple de la vie réelle."
+    ],
+    "transferPrompt": "Écouter toujours les mêmes chansons est-il un problème ?"
+  },
+  {
+    "id": "t096",
+    "title": "Écouter toujours les mêmes chansons est-il un problème ?",
+    "category": "culture",
+    "difficulty": "medium",
+    "prompts": [
+      "Qu'est-ce qui te semble le plus important ?",
+      "Comment la situation pourrait-elle évoluer ?",
+      "Quel compromis serait acceptable ?",
+      "Relie le sujet à une expérience personnelle."
+    ],
+    "transferPrompt": "La musique change-t-elle vraiment notre humeur ?"
+  },
+  {
+    "id": "t097",
+    "title": "Les musées doivent-ils devenir plus interactifs ?",
+    "category": "culture",
+    "difficulty": "hard",
+    "prompts": [
+      "Comment vois-tu ce sujet aujourd'hui ?",
+      "Quel problème principal faut-il résoudre ?",
+      "Quelle solution serait réaliste ?",
+      "Qu'est-ce qui pourrait mal fonctionner ?"
+    ],
+    "transferPrompt": "La culture devrait-elle être plus accessible gratuitement ?"
+  },
+  {
+    "id": "t098",
+    "title": "La culture devrait-elle être plus accessible gratuitement ?",
+    "category": "culture",
+    "difficulty": "hard",
+    "prompts": [
+      "Quelle est ta position spontanée ?",
+      "Quelle est ta raison principale ?",
+      "Quel contre-argument faut-il prendre au sérieux ?",
+      "Donne un exemple concret ou personnel."
+    ],
+    "transferPrompt": "Les musées doivent-ils devenir plus interactifs ?"
+  },
+  {
+    "id": "t099",
+    "title": "Les podcasts peuvent-ils remplacer certains livres ou articles ?",
+    "category": "culture",
+    "difficulty": "medium",
+    "prompts": [
+      "Qu'est-ce qui te semble le plus important ?",
+      "Comment la situation pourrait-elle évoluer ?",
+      "Quel compromis serait acceptable ?",
+      "Relie le sujet à une expérience personnelle."
+    ],
+    "transferPrompt": "Apprend-on mieux en écoutant ou en lisant ?"
+  },
+  {
+    "id": "t100",
+    "title": "Apprend-on mieux en écoutant ou en lisant ?",
+    "category": "culture",
+    "difficulty": "medium",
+    "prompts": [
+      "Quel choix ferais-tu personnellement ?",
+      "Qu'est-ce qui pourrait te faire changer d'avis ?",
+      "Quels sont les avantages et les inconvénients ?",
+      "Raconte une situation qui illustre ton choix."
+    ],
+    "transferPrompt": "Les podcasts peuvent-ils remplacer certains livres ou articles ?"
+  },
+  {
+    "id": "t101",
+    "title": "Faut-il apprendre plusieurs langues dès l'enfance ?",
+    "category": "education",
+    "difficulty": "easy",
+    "prompts": [
+      "Quelle est ta position spontanée ?",
+      "Quelle est ta raison principale ?",
+      "Quel contre-argument faut-il prendre au sérieux ?",
+      "Donne un exemple concret ou personnel."
+    ],
+    "transferPrompt": "Peut-on vraiment apprendre une langue sans vivre dans le pays ?"
+  },
+  {
+    "id": "t102",
+    "title": "Peut-on vraiment apprendre une langue sans vivre dans le pays ?",
+    "category": "education",
+    "difficulty": "easy",
+    "prompts": [
+      "Pourquoi ce sujet divise-t-il les gens ?",
+      "Quelle nuance ajouterais-tu ?",
+      "Qu'est-ce qui compte le plus dans la décision ?",
+      "Donne un exemple de la vie réelle."
+    ],
+    "transferPrompt": "Faut-il apprendre plusieurs langues dès l'enfance ?"
+  },
+  {
+    "id": "t103",
+    "title": "Les notes motivent-elles les élèves ?",
+    "category": "education",
+    "difficulty": "hard",
+    "prompts": [
+      "Quel choix ferais-tu personnellement ?",
+      "Qu'est-ce qui pourrait te faire changer d'avis ?",
+      "Quels sont les avantages et les inconvénients ?",
+      "Raconte une situation qui illustre ton choix."
+    ],
+    "transferPrompt": "Faut-il évaluer autrement que par des notes ?"
+  },
+  {
+    "id": "t104",
+    "title": "Faut-il évaluer autrement que par des notes ?",
+    "category": "education",
+    "difficulty": "hard",
+    "prompts": [
+      "Comment vois-tu ce sujet aujourd'hui ?",
+      "Quel problème principal faut-il résoudre ?",
+      "Quelle solution serait réaliste ?",
+      "Qu'est-ce qui pourrait mal fonctionner ?"
+    ],
+    "transferPrompt": "Les notes motivent-elles les élèves ?"
+  },
+  {
+    "id": "t105",
+    "title": "Les cours devraient-ils être plus pratiques ?",
+    "category": "education",
+    "difficulty": "medium",
+    "prompts": [
+      "Pourquoi ce sujet divise-t-il les gens ?",
+      "Quelle nuance ajouterais-tu ?",
+      "Qu'est-ce qui compte le plus dans la décision ?",
+      "Donne un exemple de la vie réelle."
+    ],
+    "transferPrompt": "L'école prépare-t-elle suffisamment à la vie quotidienne ?"
+  },
+  {
+    "id": "t106",
+    "title": "L'école prépare-t-elle suffisamment à la vie quotidienne ?",
+    "category": "education",
+    "difficulty": "medium",
+    "prompts": [
+      "Qu'est-ce qui te semble le plus important ?",
+      "Comment la situation pourrait-elle évoluer ?",
+      "Quel compromis serait acceptable ?",
+      "Relie le sujet à une expérience personnelle."
+    ],
+    "transferPrompt": "Les cours devraient-ils être plus pratiques ?"
+  },
+  {
+    "id": "t107",
+    "title": "Les cours en ligne peuvent-ils remplacer certains cours en classe ?",
+    "category": "education",
+    "difficulty": "medium",
+    "prompts": [
+      "Comment vois-tu ce sujet aujourd'hui ?",
+      "Quel problème principal faut-il résoudre ?",
+      "Quelle solution serait réaliste ?",
+      "Qu'est-ce qui pourrait mal fonctionner ?"
+    ],
+    "transferPrompt": "Apprend-on mieux seul ou avec un professeur ?"
+  },
+  {
+    "id": "t108",
+    "title": "Apprend-on mieux seul ou avec un professeur ?",
+    "category": "education",
+    "difficulty": "medium",
+    "prompts": [
+      "Quelle est ta position spontanée ?",
+      "Quelle est ta raison principale ?",
+      "Quel contre-argument faut-il prendre au sérieux ?",
+      "Donne un exemple concret ou personnel."
+    ],
+    "transferPrompt": "Les cours en ligne peuvent-ils remplacer certains cours en classe ?"
+  },
+  {
+    "id": "t109",
+    "title": "L'intelligence artificielle a-t-elle sa place à l'école ?",
+    "category": "education",
+    "difficulty": "hard",
+    "prompts": [
+      "Qu'est-ce qui te semble le plus important ?",
+      "Comment la situation pourrait-elle évoluer ?",
+      "Quel compromis serait acceptable ?",
+      "Relie le sujet à une expérience personnelle."
+    ],
+    "transferPrompt": "Comment utiliser l'intelligence artificielle sans arrêter de réfléchir soi-même ?"
+  },
+  {
+    "id": "t110",
+    "title": "Comment utiliser l'intelligence artificielle sans arrêter de réfléchir soi-même ?",
+    "category": "education",
+    "difficulty": "hard",
+    "prompts": [
+      "Quel choix ferais-tu personnellement ?",
+      "Qu'est-ce qui pourrait te faire changer d'avis ?",
+      "Quels sont les avantages et les inconvénients ?",
+      "Raconte une situation qui illustre ton choix."
+    ],
+    "transferPrompt": "L'intelligence artificielle a-t-elle sa place à l'école ?"
+  },
+  {
+    "id": "t111",
+    "title": "Acheter local change-t-il vraiment quelque chose ?",
+    "category": "environnement",
+    "difficulty": "easy",
+    "prompts": [
+      "Quelle est ta position spontanée ?",
+      "Quelle est ta raison principale ?",
+      "Quel contre-argument faut-il prendre au sérieux ?",
+      "Donne un exemple concret ou personnel."
+    ],
+    "transferPrompt": "Faut-il accepter de payer plus cher pour consommer plus durablement ?"
+  },
+  {
+    "id": "t112",
+    "title": "Faut-il accepter de payer plus cher pour consommer plus durablement ?",
+    "category": "environnement",
+    "difficulty": "easy",
+    "prompts": [
+      "Pourquoi ce sujet divise-t-il les gens ?",
+      "Quelle nuance ajouterais-tu ?",
+      "Qu'est-ce qui compte le plus dans la décision ?",
+      "Donne un exemple de la vie réelle."
+    ],
+    "transferPrompt": "Acheter local change-t-il vraiment quelque chose ?"
+  },
+  {
+    "id": "t113",
+    "title": "Voiture ou transports en commun ?",
+    "category": "environnement",
+    "difficulty": "medium",
+    "prompts": [
+      "Quel choix ferais-tu personnellement ?",
+      "Qu'est-ce qui pourrait te faire changer d'avis ?",
+      "Quels sont les avantages et les inconvénients ?",
+      "Raconte une situation qui illustre ton choix."
+    ],
+    "transferPrompt": "Les villes devraient-elles réduire davantage la place de la voiture ?"
+  },
+  {
+    "id": "t114",
+    "title": "Les villes devraient-elles réduire davantage la place de la voiture ?",
+    "category": "environnement",
+    "difficulty": "medium",
+    "prompts": [
+      "Comment vois-tu ce sujet aujourd'hui ?",
+      "Quel problème principal faut-il résoudre ?",
+      "Quelle solution serait réaliste ?",
+      "Qu'est-ce qui pourrait mal fonctionner ?"
+    ],
+    "transferPrompt": "Voiture ou transports en commun ?"
+  },
+  {
+    "id": "t115",
+    "title": "Acheter d'occasion devrait-il devenir normal ?",
+    "category": "environnement",
+    "difficulty": "hard",
+    "prompts": [
+      "Pourquoi ce sujet divise-t-il les gens ?",
+      "Quelle nuance ajouterais-tu ?",
+      "Qu'est-ce qui compte le plus dans la décision ?",
+      "Donne un exemple de la vie réelle."
+    ],
+    "transferPrompt": "Réparer devrait-il être plus simple que remplacer ?"
+  },
+  {
+    "id": "t116",
+    "title": "Réparer devrait-il être plus simple que remplacer ?",
+    "category": "environnement",
+    "difficulty": "hard",
+    "prompts": [
+      "Qu'est-ce qui te semble le plus important ?",
+      "Comment la situation pourrait-elle évoluer ?",
+      "Quel compromis serait acceptable ?",
+      "Relie le sujet à une expérience personnelle."
+    ],
+    "transferPrompt": "Acheter d'occasion devrait-il devenir normal ?"
+  },
+  {
+    "id": "t117",
+    "title": "Le gaspillage alimentaire est-il surtout un problème individuel ?",
+    "category": "environnement",
+    "difficulty": "medium",
+    "prompts": [
+      "Comment vois-tu ce sujet aujourd'hui ?",
+      "Quel problème principal faut-il résoudre ?",
+      "Quelle solution serait réaliste ?",
+      "Qu'est-ce qui pourrait mal fonctionner ?"
+    ],
+    "transferPrompt": "Comment réduire le gaspillage sans compliquer le quotidien ?"
+  },
+  {
+    "id": "t118",
+    "title": "Comment réduire le gaspillage sans compliquer le quotidien ?",
+    "category": "environnement",
+    "difficulty": "medium",
+    "prompts": [
+      "Quelle est ta position spontanée ?",
+      "Quelle est ta raison principale ?",
+      "Quel contre-argument faut-il prendre au sérieux ?",
+      "Donne un exemple concret ou personnel."
+    ],
+    "transferPrompt": "Le gaspillage alimentaire est-il surtout un problème individuel ?"
+  },
+  {
+    "id": "t119",
+    "title": "Voyager moins est-il nécessaire pour l'environnement ?",
+    "category": "environnement",
+    "difficulty": "medium",
+    "prompts": [
+      "Qu'est-ce qui te semble le plus important ?",
+      "Comment la situation pourrait-elle évoluer ?",
+      "Quel compromis serait acceptable ?",
+      "Relie le sujet à une expérience personnelle."
+    ],
+    "transferPrompt": "Peut-on concilier envie de voyager et impact écologique ?"
+  },
+  {
+    "id": "t120",
+    "title": "Peut-on concilier envie de voyager et impact écologique ?",
+    "category": "environnement",
+    "difficulty": "medium",
+    "prompts": [
+      "Quel choix ferais-tu personnellement ?",
+      "Qu'est-ce qui pourrait te faire changer d'avis ?",
+      "Quels sont les avantages et les inconvénients ?",
+      "Raconte une situation qui illustre ton choix."
+    ],
+    "transferPrompt": "Voyager moins est-il nécessaire pour l'environnement ?"
+  },
+  {
+    "id": "t121",
+    "title": "Ville ou campagne ?",
+    "category": "logement",
+    "difficulty": "easy",
+    "prompts": [
+      "Quelle est ta position spontanée ?",
+      "Quelle est ta raison principale ?",
+      "Quel contre-argument faut-il prendre au sérieux ?",
+      "Donne un exemple concret ou personnel."
+    ],
+    "transferPrompt": "Banlieue ou centre-ville ?"
+  },
+  {
+    "id": "t122",
+    "title": "Banlieue ou centre-ville ?",
+    "category": "logement",
+    "difficulty": "easy",
+    "prompts": [
+      "Pourquoi ce sujet divise-t-il les gens ?",
+      "Quelle nuance ajouterais-tu ?",
+      "Qu'est-ce qui compte le plus dans la décision ?",
+      "Donne un exemple de la vie réelle."
+    ],
+    "transferPrompt": "Ville ou campagne ?"
+  },
+  {
+    "id": "t123",
+    "title": "Petit logement bien placé ou grand logement loin du centre ?",
+    "category": "logement",
+    "difficulty": "medium",
+    "prompts": [
+      "Quel choix ferais-tu personnellement ?",
+      "Qu'est-ce qui pourrait te faire changer d'avis ?",
+      "Quels sont les avantages et les inconvénients ?",
+      "Raconte une situation qui illustre ton choix."
+    ],
+    "transferPrompt": "La localisation est-elle plus importante que la taille du logement ?"
+  },
+  {
+    "id": "t124",
+    "title": "La localisation est-elle plus importante que la taille du logement ?",
+    "category": "logement",
+    "difficulty": "medium",
+    "prompts": [
+      "Comment vois-tu ce sujet aujourd'hui ?",
+      "Quel problème principal faut-il résoudre ?",
+      "Quelle solution serait réaliste ?",
+      "Qu'est-ce qui pourrait mal fonctionner ?"
+    ],
+    "transferPrompt": "Petit logement bien placé ou grand logement loin du centre ?"
+  },
+  {
+    "id": "t125",
+    "title": "Faut-il bien connaître ses voisins ?",
+    "category": "logement",
+    "difficulty": "medium",
+    "prompts": [
+      "Pourquoi ce sujet divise-t-il les gens ?",
+      "Quelle nuance ajouterais-tu ?",
+      "Qu'est-ce qui compte le plus dans la décision ?",
+      "Donne un exemple de la vie réelle."
+    ],
+    "transferPrompt": "Un bon voisinage peut-il changer la qualité de vie ?"
+  },
+  {
+    "id": "t126",
+    "title": "Un bon voisinage peut-il changer la qualité de vie ?",
+    "category": "logement",
+    "difficulty": "medium",
+    "prompts": [
+      "Qu'est-ce qui te semble le plus important ?",
+      "Comment la situation pourrait-elle évoluer ?",
+      "Quel compromis serait acceptable ?",
+      "Relie le sujet à une expérience personnelle."
+    ],
+    "transferPrompt": "Faut-il bien connaître ses voisins ?"
+  },
+  {
+    "id": "t127",
+    "title": "Déménager souvent est-il enrichissant ou fatigant ?",
+    "category": "logement",
+    "difficulty": "hard",
+    "prompts": [
+      "Comment vois-tu ce sujet aujourd'hui ?",
+      "Quel problème principal faut-il résoudre ?",
+      "Quelle solution serait réaliste ?",
+      "Qu'est-ce qui pourrait mal fonctionner ?"
+    ],
+    "transferPrompt": "À quel moment faut-il accepter de changer de quartier ou de ville ?"
+  },
+  {
+    "id": "t128",
+    "title": "À quel moment faut-il accepter de changer de quartier ou de ville ?",
+    "category": "logement",
+    "difficulty": "hard",
+    "prompts": [
+      "Quelle est ta position spontanée ?",
+      "Quelle est ta raison principale ?",
+      "Quel contre-argument faut-il prendre au sérieux ?",
+      "Donne un exemple concret ou personnel."
+    ],
+    "transferPrompt": "Déménager souvent est-il enrichissant ou fatigant ?"
+  },
+  {
+    "id": "t129",
+    "title": "La décoration influence-t-elle vraiment le bien-être ?",
+    "category": "logement",
+    "difficulty": "medium",
+    "prompts": [
+      "Qu'est-ce qui te semble le plus important ?",
+      "Comment la situation pourrait-elle évoluer ?",
+      "Quel compromis serait acceptable ?",
+      "Relie le sujet à une expérience personnelle."
+    ],
+    "transferPrompt": "Faut-il privilégier le confort ou l'esthétique chez soi ?"
+  },
+  {
+    "id": "t130",
+    "title": "Faut-il privilégier le confort ou l'esthétique chez soi ?",
+    "category": "logement",
+    "difficulty": "medium",
+    "prompts": [
+      "Quel choix ferais-tu personnellement ?",
+      "Qu'est-ce qui pourrait te faire changer d'avis ?",
+      "Quels sont les avantages et les inconvénients ?",
+      "Raconte une situation qui illustre ton choix."
+    ],
+    "transferPrompt": "La décoration influence-t-elle vraiment le bien-être ?"
+  },
+  {
+    "id": "t131",
+    "title": "Vélo ou transports en commun en ville ?",
+    "category": "mobilite",
+    "difficulty": "easy",
+    "prompts": [
+      "Quelle est ta position spontanée ?",
+      "Quelle est ta raison principale ?",
+      "Quel contre-argument faut-il prendre au sérieux ?",
+      "Donne un exemple concret ou personnel."
+    ],
+    "transferPrompt": "Marcher davantage peut-il remplacer certains trajets motorisés ?"
+  },
+  {
+    "id": "t132",
+    "title": "Marcher davantage peut-il remplacer certains trajets motorisés ?",
+    "category": "mobilite",
+    "difficulty": "easy",
+    "prompts": [
+      "Pourquoi ce sujet divise-t-il les gens ?",
+      "Quelle nuance ajouterais-tu ?",
+      "Qu'est-ce qui compte le plus dans la décision ?",
+      "Donne un exemple de la vie réelle."
+    ],
+    "transferPrompt": "Vélo ou transports en commun en ville ?"
+  },
+  {
+    "id": "t133",
+    "title": "Faut-il garder une voiture quand on vit près des transports ?",
+    "category": "mobilite",
+    "difficulty": "hard",
+    "prompts": [
+      "Quel choix ferais-tu personnellement ?",
+      "Qu'est-ce qui pourrait te faire changer d'avis ?",
+      "Quels sont les avantages et les inconvénients ?",
+      "Raconte une situation qui illustre ton choix."
+    ],
+    "transferPrompt": "L'autopartage peut-il remplacer la voiture personnelle ?"
+  },
+  {
+    "id": "t134",
+    "title": "L'autopartage peut-il remplacer la voiture personnelle ?",
+    "category": "mobilite",
+    "difficulty": "hard",
+    "prompts": [
+      "Comment vois-tu ce sujet aujourd'hui ?",
+      "Quel problème principal faut-il résoudre ?",
+      "Quelle solution serait réaliste ?",
+      "Qu'est-ce qui pourrait mal fonctionner ?"
+    ],
+    "transferPrompt": "Faut-il garder une voiture quand on vit près des transports ?"
+  },
+  {
+    "id": "t135",
+    "title": "Les longs trajets domicile-travail sont-ils acceptables ?",
+    "category": "mobilite",
+    "difficulty": "medium",
+    "prompts": [
+      "Pourquoi ce sujet divise-t-il les gens ?",
+      "Quelle nuance ajouterais-tu ?",
+      "Qu'est-ce qui compte le plus dans la décision ?",
+      "Donne un exemple de la vie réelle."
+    ],
+    "transferPrompt": "Combien de temps de trajet est-on prêt à accepter pour un meilleur emploi ?"
+  },
+  {
+    "id": "t136",
+    "title": "Combien de temps de trajet est-on prêt à accepter pour un meilleur emploi ?",
+    "category": "mobilite",
+    "difficulty": "medium",
+    "prompts": [
+      "Qu'est-ce qui te semble le plus important ?",
+      "Comment la situation pourrait-elle évoluer ?",
+      "Quel compromis serait acceptable ?",
+      "Relie le sujet à une expérience personnelle."
+    ],
+    "transferPrompt": "Les longs trajets domicile-travail sont-ils acceptables ?"
+  },
+  {
+    "id": "t137",
+    "title": "Train ou voiture pour les déplacements régionaux ?",
+    "category": "mobilite",
+    "difficulty": "medium",
+    "prompts": [
+      "Comment vois-tu ce sujet aujourd'hui ?",
+      "Quel problème principal faut-il résoudre ?",
+      "Quelle solution serait réaliste ?",
+      "Qu'est-ce qui pourrait mal fonctionner ?"
+    ],
+    "transferPrompt": "Le confort compte-t-il plus que la rapidité dans les transports ?"
+  },
+  {
+    "id": "t138",
+    "title": "Le confort compte-t-il plus que la rapidité dans les transports ?",
+    "category": "mobilite",
+    "difficulty": "medium",
+    "prompts": [
+      "Quelle est ta position spontanée ?",
+      "Quelle est ta raison principale ?",
+      "Quel contre-argument faut-il prendre au sérieux ?",
+      "Donne un exemple concret ou personnel."
+    ],
+    "transferPrompt": "Train ou voiture pour les déplacements régionaux ?"
+  },
+  {
+    "id": "t139",
+    "title": "Les applications de navigation nous rendent-elles moins autonomes ?",
+    "category": "mobilite",
+    "difficulty": "hard",
+    "prompts": [
+      "Qu'est-ce qui te semble le plus important ?",
+      "Comment la situation pourrait-elle évoluer ?",
+      "Quel compromis serait acceptable ?",
+      "Relie le sujet à une expérience personnelle."
+    ],
+    "transferPrompt": "Faut-il parfois se déplacer sans GPS ?"
+  },
+  {
+    "id": "t140",
+    "title": "Faut-il parfois se déplacer sans GPS ?",
+    "category": "mobilite",
+    "difficulty": "hard",
+    "prompts": [
+      "Quel choix ferais-tu personnellement ?",
+      "Qu'est-ce qui pourrait te faire changer d'avis ?",
+      "Quels sont les avantages et les inconvénients ?",
+      "Raconte une situation qui illustre ton choix."
+    ],
+    "transferPrompt": "Les applications de navigation nous rendent-elles moins autonomes ?"
+  },
+  {
+    "id": "t141",
+    "title": "Pourquoi procrastine-t-on ?",
+    "category": "habitudes",
+    "difficulty": "easy",
+    "prompts": [
+      "Quelle est ta position spontanée ?",
+      "Quelle est ta raison principale ?",
+      "Quel contre-argument faut-il prendre au sérieux ?",
+      "Donne un exemple concret ou personnel."
+    ],
+    "transferPrompt": "Faire immédiatement les petites tâches est-il une bonne méthode ?"
+  },
+  {
+    "id": "t142",
+    "title": "Faire immédiatement les petites tâches est-il une bonne méthode ?",
+    "category": "habitudes",
+    "difficulty": "easy",
+    "prompts": [
+      "Pourquoi ce sujet divise-t-il les gens ?",
+      "Quelle nuance ajouterais-tu ?",
+      "Qu'est-ce qui compte le plus dans la décision ?",
+      "Donne un exemple de la vie réelle."
+    ],
+    "transferPrompt": "Pourquoi procrastine-t-on ?"
+  },
+  {
+    "id": "t143",
+    "title": "Être ponctuel est-il toujours important ?",
+    "category": "habitudes",
+    "difficulty": "medium",
+    "prompts": [
+      "Quel choix ferais-tu personnellement ?",
+      "Qu'est-ce qui pourrait te faire changer d'avis ?",
+      "Quels sont les avantages et les inconvénients ?",
+      "Raconte une situation qui illustre ton choix."
+    ],
+    "transferPrompt": "Dix minutes de retard, est-ce vraiment grave ?"
+  },
+  {
+    "id": "t144",
+    "title": "Dix minutes de retard, est-ce vraiment grave ?",
+    "category": "habitudes",
+    "difficulty": "medium",
+    "prompts": [
+      "Comment vois-tu ce sujet aujourd'hui ?",
+      "Quel problème principal faut-il résoudre ?",
+      "Quelle solution serait réaliste ?",
+      "Qu'est-ce qui pourrait mal fonctionner ?"
+    ],
+    "transferPrompt": "Être ponctuel est-il toujours important ?"
+  },
+  {
+    "id": "t145",
+    "title": "Faire plusieurs choses à la fois est-il efficace ?",
+    "category": "habitudes",
+    "difficulty": "hard",
+    "prompts": [
+      "Pourquoi ce sujet divise-t-il les gens ?",
+      "Quelle nuance ajouterais-tu ?",
+      "Qu'est-ce qui compte le plus dans la décision ?",
+      "Donne un exemple de la vie réelle."
+    ],
+    "transferPrompt": "Faut-il couper toutes les notifications pour se concentrer ?"
+  },
+  {
+    "id": "t146",
+    "title": "Faut-il couper toutes les notifications pour se concentrer ?",
+    "category": "habitudes",
+    "difficulty": "hard",
+    "prompts": [
+      "Qu'est-ce qui te semble le plus important ?",
+      "Comment la situation pourrait-elle évoluer ?",
+      "Quel compromis serait acceptable ?",
+      "Relie le sujet à une expérience personnelle."
+    ],
+    "transferPrompt": "Faire plusieurs choses à la fois est-il efficace ?"
+  },
+  {
+    "id": "t147",
+    "title": "Les résolutions de début d'année servent-elles à quelque chose ?",
+    "category": "habitudes",
+    "difficulty": "medium",
+    "prompts": [
+      "Comment vois-tu ce sujet aujourd'hui ?",
+      "Quel problème principal faut-il résoudre ?",
+      "Quelle solution serait réaliste ?",
+      "Qu'est-ce qui pourrait mal fonctionner ?"
+    ],
+    "transferPrompt": "Vaut-il mieux changer une petite habitude à la fois ?"
+  },
+  {
+    "id": "t148",
+    "title": "Vaut-il mieux changer une petite habitude à la fois ?",
+    "category": "habitudes",
+    "difficulty": "medium",
+    "prompts": [
+      "Quelle est ta position spontanée ?",
+      "Quelle est ta raison principale ?",
+      "Quel contre-argument faut-il prendre au sérieux ?",
+      "Donne un exemple concret ou personnel."
+    ],
+    "transferPrompt": "Les résolutions de début d'année servent-elles à quelque chose ?"
+  },
+  {
+    "id": "t149",
+    "title": "Planifier sa semaine réduit-il le stress ?",
+    "category": "habitudes",
+    "difficulty": "medium",
+    "prompts": [
+      "Qu'est-ce qui te semble le plus important ?",
+      "Comment la situation pourrait-elle évoluer ?",
+      "Quel compromis serait acceptable ?",
+      "Relie le sujet à une expérience personnelle."
+    ],
+    "transferPrompt": "Peut-on trop organiser sa vie ?"
+  },
+  {
+    "id": "t150",
+    "title": "Peut-on trop organiser sa vie ?",
+    "category": "habitudes",
+    "difficulty": "medium",
+    "prompts": [
+      "Quel choix ferais-tu personnellement ?",
+      "Qu'est-ce qui pourrait te faire changer d'avis ?",
+      "Quels sont les avantages et les inconvénients ?",
+      "Raconte une situation qui illustre ton choix."
+    ],
+    "transferPrompt": "Planifier sa semaine réduit-il le stress ?"
   }
 ]
