@@ -1,7 +1,4 @@
-import {
-  STORAGE_KEY,
-  createInitialState,
-} from '../../types/progress'
+import { STORAGE_KEY, createInitialState } from '../../types/progress'
 import type {
   AppState,
   LoadAppStateResult,
@@ -12,7 +9,6 @@ import type {
 function getBrowserStorage(): StorageLike | null {
   try {
     if (typeof window === 'undefined' || !window.localStorage) return null
-    // Probe access because some browsers throw on read when storage is blocked.
     const probe = '__fr_fluency_probe__'
     window.localStorage.setItem(probe, '1')
     window.localStorage.removeItem(probe)
@@ -34,33 +30,33 @@ function asStringArray(value: unknown): string[] {
 
 function asNumberLevel(value: unknown): 1 | 2 | 3 {
   if (value === 1 || value === 2 || value === 3) return value
-  return 2
+  return 1
 }
 
-/**
- * Normalise untrusted stored data into a valid V2 state. Unknown or malformed
- * fields fall back to their empty defaults instead of throwing so a corrupted
- * entry never blocks training.
- */
-function normalizeV2(raw: Record<string, unknown>): AppState {
+function normalizeV3(raw: Record<string, unknown>): AppState {
   const base = createInitialState()
   return {
     ...base,
-    sessions: Array.isArray(raw.sessions)
-      ? (raw.sessions as AppState['sessions'])
-      : base.sessions,
+    sessions: Array.isArray(raw.sessions) ? (raw.sessions as AppState['sessions']) : [],
     weeklyTests: Array.isArray(raw.weeklyTests)
       ? (raw.weeklyTests as AppState['weeklyTests'])
-      : base.weeklyTests,
-    wordGaps: Array.isArray(raw.wordGaps)
-      ? (raw.wordGaps as AppState['wordGaps'])
-      : base.wordGaps,
+      : [],
+    conversationPractices: Array.isArray(raw.conversationPractices)
+      ? (raw.conversationPractices as AppState['conversationPractices'])
+      : [],
+    wordGaps: Array.isArray(raw.wordGaps) ? (raw.wordGaps as AppState['wordGaps']) : [],
     chunkReviews: Array.isArray(raw.chunkReviews)
       ? (raw.chunkReviews as AppState['chunkReviews'])
-      : base.chunkReviews,
+      : [],
     personalExamples: Array.isArray(raw.personalExamples)
       ? (raw.personalExamples as AppState['personalExamples'])
-      : base.personalExamples,
+      : [],
+    personalChunks: Array.isArray(raw.personalChunks)
+      ? (raw.personalChunks as AppState['personalChunks'])
+      : [],
+    fluencyNotes: Array.isArray(raw.fluencyNotes)
+      ? (raw.fluencyNotes as AppState['fluencyNotes'])
+      : [],
     recentTopicIds: asStringArray(raw.recentTopicIds),
     recentQuestionIds: asStringArray(raw.recentQuestionIds),
     recentWordIds: asStringArray(raw.recentWordIds),
@@ -72,25 +68,50 @@ function normalizeV2(raw: Record<string, unknown>): AppState {
   }
 }
 
-/** Migrate an old V1 payload (pre-spaced-retrieval) into the V2 shape. */
+/**
+ * V2 sessions remain valid, but its in-progress session did not contain the new
+ * context/reuse fields. Restart only that unfinished session to avoid runtime
+ * errors while preserving every completed learning record.
+ */
+function migrateV2(raw: Record<string, unknown>): AppState {
+  const base = createInitialState()
+  return {
+    ...base,
+    sessions: Array.isArray(raw.sessions) ? (raw.sessions as AppState['sessions']) : [],
+    weeklyTests: Array.isArray(raw.weeklyTests)
+      ? (raw.weeklyTests as AppState['weeklyTests'])
+      : [],
+    wordGaps: Array.isArray(raw.wordGaps) ? (raw.wordGaps as AppState['wordGaps']) : [],
+    chunkReviews: Array.isArray(raw.chunkReviews)
+      ? (raw.chunkReviews as AppState['chunkReviews'])
+      : [],
+    personalExamples: Array.isArray(raw.personalExamples)
+      ? (raw.personalExamples as AppState['personalExamples'])
+      : [],
+    recentTopicIds: asStringArray(raw.recentTopicIds),
+    recentQuestionIds: asStringArray(raw.recentQuestionIds),
+    recentWordIds: asStringArray(raw.recentWordIds),
+    recentChunkIds: asStringArray(raw.recentChunkIds),
+    level: asNumberLevel(raw.level),
+    inProgressSession: null,
+  }
+}
+
 function migrateV1(raw: Record<string, unknown>): AppState {
   const base = createInitialState()
   return {
     ...base,
-    sessions: Array.isArray(raw.sessions)
-      ? (raw.sessions as AppState['sessions'])
-      : base.sessions,
+    sessions: Array.isArray(raw.sessions) ? (raw.sessions as AppState['sessions']) : [],
     weeklyTests: Array.isArray(raw.weeklyTests)
       ? (raw.weeklyTests as AppState['weeklyTests'])
-      : base.weeklyTests,
+      : [],
     personalExamples: Array.isArray(raw.nativeExpressionExamples)
       ? (raw.nativeExpressionExamples as AppState['personalExamples'])
-      : base.personalExamples,
+      : [],
     recentTopicIds: asStringArray(raw.recentTopicIds),
     recentQuestionIds: asStringArray(raw.recentQuestionIds),
     recentWordIds: asStringArray(raw.recentWordIds),
     recentChunkIds: asStringArray(raw.recentExpressionIds),
-    // The V1 in-progress session shape is incompatible; restart it.
     inProgressSession: null,
   }
 }
@@ -100,8 +121,8 @@ function parseStoredState(raw: string | null): AppState {
   try {
     const parsed: unknown = JSON.parse(raw)
     if (!isRecord(parsed)) return createInitialState()
-
-    if (parsed.version === 2) return normalizeV2(parsed)
+    if (parsed.version === 3) return normalizeV3(parsed)
+    if (parsed.version === 2) return migrateV2(parsed)
     if (parsed.version === 1) return migrateV1(parsed)
     return createInitialState()
   } catch {
@@ -122,8 +143,7 @@ export function loadAppState(
   }
 
   try {
-    const raw = storage.getItem(STORAGE_KEY)
-    return { state: parseStoredState(raw), available: true }
+    return { state: parseStoredState(storage.getItem(STORAGE_KEY)), available: true }
   } catch {
     return {
       state: createInitialState(),
