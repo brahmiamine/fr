@@ -43,7 +43,7 @@ encode_clip "$TMP/formal.ogg" 0 15.418 "$OUT/prosody_real_001.ogg"
 encode_clip "$TMP/sophie.webm" 0 14.9 "$OUT/prosody_real_002.ogg"
 encode_clip "$TMP/sophie.webm" 15 14.9 "$OUT/prosody_real_003.ogg"
 encode_clip "$TMP/sophie.webm" 30 14.9 "$OUT/prosody_real_004.ogg"
-encode_clip "$TMP/principal.ogg" 0 29.8 "$OUT/prosody_real_005.ogg"
+encode_clip "$TMP/sophie.webm" 45 14.9 "$OUT/prosody_real_005.ogg"
 encode_clip "$TMP/hubert.ogg" 0 29.8 "$OUT/prosody_real_006.ogg"
 
 {
