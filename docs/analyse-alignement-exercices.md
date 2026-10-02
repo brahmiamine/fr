@@ -560,8 +560,8 @@ honnête** des réponses. Le reste relève de l'ajustement.
 
 ## 7. Corrections appliquées
 
-État après corrections : 160 tests passent (contre 124), `tsc -b` et
-`npm run build` sont OK, et le parcours a été vérifié dans un vrai navigateur
+État après corrections : la suite de tests et le build sont validés par la CI.
+Le parcours principal a également été vérifié dans un vrai navigateur
 (test hebdomadaire avec micro simulé).
 
 | # | Écart relevé | Correction | Fichiers principaux |
@@ -588,6 +588,7 @@ honnête** des réponses. Le reste relève de l'ajustement.
 | 2.8 / 4.4 | Scénarios de conversation inutilisés | Carte « Situation à jouer » + répétition solo de 2 min avec interruptions lues à voix haute | `ConversationPrep.tsx` |
 | 3.0 | Horodatages fictifs (4 s par groupe) | Extraits allongés à 2 phrases (10–14 s), durées **estimées par syllabes**, segment d'imitation de 5–7 s ; un test refuse toute durée invraisemblable | `prosody.json`, `prosodyTiming.ts`, `scripts/estimate-prosody-timings.mjs` |
 | 3.0 | Voix de synthèse présentée comme un modèle natif | Mention explicite « voix de synthèse » + **import de son propre extrait** (vraie voix, 10–60 s, segment choisi à l'écoute, audio gardé en mémoire) | `CustomExtractForm.tsx`, `customExtract.ts` |
+| 3.0 | Banque intégrée sans vraies voix | **6 enregistrements humains licenciés** ajoutés localement : dialogue, discours réel horodaté et interview ; licence/source/attribution conservées et affichées ; les enregistrements frais sont prioritaires sur le TTS | `public/audio/prosody/`, `prosody.json`, `prosodyRepository.ts`, `ListeningExercise.tsx` |
 | 3.1 | Découpage révélé, pas produit | Étape **Marquage** : l'apprenant place `/` et ↑ ↓ → puis reçoit un score (frontières, intonations) | `marking.ts`, `ListeningExercise.tsx` |
 | 3.4 | Retelling bloqué à 30 s | 30–60 s → 45–90 s → 60–120 s selon le nombre de séances de prosodie | `types.ts:retellingGoalFor` |
 | 3.5 | Pas de « la-la-la » | Échauffement mélodique optionnel avec enregistrement | `MelodyWarmup.tsx` |
@@ -598,10 +599,11 @@ proprement (champ `schema`), sans perte de l'historique.
 
 ### Ce qui reste volontairement hors du code
 
-- **De vrais enregistrements natifs dans la banque** : ça demande des fichiers
-  audio dont on a les droits. L'application les accepte (`modelKind:
-  "recording"`, `timing: "measured"`), et l'import personnel permet dès
-  maintenant de travailler sur une vraie voix.
+- **Diversifier encore les vraies voix** : la banque contient maintenant six
+  enregistrements humains avec droits vérifiés, dont une interview. Le prochain
+  gain de contenu serait d'ajouter davantage de conversations spontanées,
+  plusieurs locuteurs et plusieurs registres, sans revenir à des sources dont
+  les droits de redistribution sont incertains.
 - **Courbe de pitch hebdomadaire** (option « Praat » de la méthode) : non
   implémentée, la méthode la juge facultative.
 - **Exemples d'usage réels pour les 377 chunks** (`usageTip` reste générique) :
