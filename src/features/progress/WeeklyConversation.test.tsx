@@ -6,6 +6,22 @@ import { createInitialState, STORAGE_KEY } from '../../types/progress'
 import WeeklyConversation from './WeeklyConversation'
 
 describe('WeeklyConversation', () => {
+  it('requires at least 20 minutes of real interaction', async () => {
+    const user = userEvent.setup()
+    render(
+      <AppStateProvider initialState={createInitialState()}>
+        <WeeklyConversation />
+      </AppStateProvider>,
+    )
+
+    const duration = screen.getByLabelText(/Durée réelle/)
+    await user.clear(duration)
+    await user.type(duration, '10')
+    expect(
+      screen.getByRole('button', { name: 'Enregistrer la conversation' }),
+    ).toBeDisabled()
+  })
+
   it('records real interaction and turns its difficulties into future practice', async () => {
     const user = userEvent.setup()
     render(
