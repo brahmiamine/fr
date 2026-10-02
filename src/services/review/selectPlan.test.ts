@@ -3,7 +3,7 @@ import { buildSessionPlan } from './selectPlan'
 import { createInitialState } from '../../types/progress'
 import { toLocalDateString } from '../progress/progress'
 import type { AppState, WordGap } from '../../types/progress'
-import { chunkSchedule, gapSchedule } from './scheduler'
+import { gapSchedule } from './scheduler'
 
 function stateWithGaps(): AppState {
   const gaps: WordGap[] = [
@@ -36,6 +36,10 @@ describe('buildSessionPlan', () => {
     expect(plan.questions).toHaveLength(5)
     expect(plan.pivotQuestion).toBeDefined()
     expect(plan.chunks).toHaveLength(3)
+    expect(plan.chunksOfDay).toHaveLength(3)
+    expect(plan.chunksOfDay.map((chunk) => chunk.id).sort()).toEqual(
+      plan.chunks.map((chunk) => chunk.id).sort(),
+    )
     expect(plan.gapItems).toHaveLength(5)
     expect(new Set(plan.questions.map((q) => q.id)).size).toBe(5)
     expect(new Set(plan.questions.map((q) => q.category)).size).toBe(5)
@@ -96,23 +100,17 @@ describe('buildSessionPlan', () => {
 })
 
 describe('scheduler', () => {
-  it('schedules chunks with growing intervals', () => {
-    expect(chunkSchedule('easy').interval).toBe(7)
-    expect(chunkSchedule('difficult').interval).toBe(3)
-    expect(chunkSchedule('failed').interval).toBe(1)
-  })
-
-  it('performs J+1, J+3 and J+7 before word-gap mastery', () => {
+  it('uses +1, +2 and +4-day intervals to land on J+1, J+3 and J+7', () => {
     const miss = gapSchedule(0, false)
     expect(miss.interval).toBe(1)
     expect(miss.mastered).toBe(false)
 
     const firstHit = gapSchedule(0, true)
-    expect(firstHit.interval).toBe(3)
+    expect(firstHit.interval).toBe(2)
     expect(firstHit.mastered).toBe(false)
 
     const secondHit = gapSchedule(1, true)
-    expect(secondHit.interval).toBe(7)
+    expect(secondHit.interval).toBe(4)
     expect(secondHit.mastered).toBe(false)
 
     const thirdHit = gapSchedule(2, true)
