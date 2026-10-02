@@ -10,7 +10,7 @@ export function AudioRecorderButton({ recorder }: { recorder: AudioRecorder }) {
         <button
           type="button"
           className="button button--ghost audio__button"
-          onClick={recorder.start}
+          onClick={() => void recorder.start()}
         >
           🎤 Enregistrer ce tour
         </button>
