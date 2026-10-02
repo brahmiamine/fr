@@ -1,0 +1,41 @@
+.speech-button {
+  align-self: flex-start;
+  box-shadow: none;
+}
+
+.exercise--center .speech-button {
+  align-self: center;
+}
+
+.speech-button--compact {
+  min-height: 38px;
+  padding: 0.42rem 0.72rem;
+  border-radius: 999px;
+  font-size: 0.82rem;
+}
+
+.speech-button__icon {
+  display: inline-flex;
+  line-height: 1;
+}
+
+.speech-list li,
+.feedback-reminder {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.feedback-reminder__text {
+  margin: 0;
+  flex: 1 1 220px;
+}
+
+.feedback-reminder__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}

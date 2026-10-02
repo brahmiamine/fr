@@ -214,9 +214,15 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  width: 100%;
 }
 
 .chunks-of-day li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  flex-wrap: wrap;
   font-size: 1.2rem;
   font-weight: 600;
 }

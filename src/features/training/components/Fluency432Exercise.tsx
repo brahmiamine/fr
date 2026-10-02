@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import type { Chunk, Topic } from '../../../types/content'
+import { SpeakButton } from '../../../components/Speech/SpeakButton'
 import { Timer } from '../../../components/Timer/Timer'
 import type { AudioRecorder } from '../../../hooks/useAudioRecorder'
 import { FLUENCY_ROUND_SECONDS } from '../types'
@@ -78,6 +79,11 @@ export function Fluency432Exercise({
         <h1 id="fluency-title" className="exercise__prompt">
           {topic.title}
         </h1>
+        <SpeakButton
+          text={topic.title}
+          label="Écouter le sujet"
+          ariaLabel="Écouter le sujet"
+        />
 
         {showPrompts ? (
           <div className="exercise__rescue">
@@ -101,9 +107,17 @@ export function Fluency432Exercise({
         {fluencyReminders.length > 0 ? (
           <div className="exercise__rescue">
             <h3>Correction à réutiliser aujourd'hui</h3>
-            <ul>
+            <ul className="speech-list">
               {fluencyReminders.map((reminder) => (
-                <li key={reminder.id}>{reminder.text}</li>
+                <li key={reminder.id}>
+                  <span>{reminder.text}</span>
+                  <SpeakButton
+                    text={reminder.text}
+                    label="Écouter"
+                    ariaLabel={`Écouter la correction ${reminder.text}`}
+                    compact
+                  />
+                </li>
               ))}
             </ul>
           </div>
@@ -227,6 +241,14 @@ export function Fluency432Exercise({
               onChange={(event) => setDifficultPhrase(event.target.value)}
               autoComplete="off"
             />
+            {difficultPhrase.trim() ? (
+              <SpeakButton
+                text={difficultPhrase}
+                label="Écouter"
+                ariaLabel="Écouter la phrase reformulée"
+                compact
+              />
+            ) : null}
           </div>
           <div className="field">
             <label htmlFor="important-error">
@@ -238,6 +260,14 @@ export function Fluency432Exercise({
               onChange={(event) => setImportantError(event.target.value)}
               autoComplete="off"
             />
+            {importantError.trim() ? (
+              <SpeakButton
+                text={importantError}
+                label="Écouter"
+                ariaLabel="Écouter la correction à réutiliser"
+                compact
+              />
+            ) : null}
           </div>
           <button type="submit" className="button button--block">
             Continuer vers le tour 2

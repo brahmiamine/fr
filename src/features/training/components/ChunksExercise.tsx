@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { Chunk } from '../../../types/content'
+import { SpeakButton } from '../../../components/Speech/SpeakButton'
 import { Timer } from '../../../components/Timer/Timer'
 import type { RecallResult } from '../types'
 
@@ -32,7 +33,15 @@ export function ChunksExercise({
         <h2>Essaie d'utiliser aujourd'hui :</h2>
         <ul className="chunks-of-day">
           {chunksOfDay.map((item) => (
-            <li key={item.id}>« {item.expression} »</li>
+            <li key={item.id}>
+              <span>« {item.expression} »</span>
+              <SpeakButton
+                text={item.expression}
+                label="Écouter"
+                ariaLabel={`Écouter ${item.expression}`}
+                compact
+              />
+            </li>
           ))}
         </ul>
         <p className="muted">
@@ -84,6 +93,11 @@ export function ChunksExercise({
       </p>
       <h1 className="exercise__intent">{chunk.intent}</h1>
       <p className="exercise__expression">« {chunk.expression} »</p>
+      <SpeakButton
+        text={chunk.expression}
+        label="Écouter"
+        ariaLabel="Écouter l'expression"
+      />
       <p className="pill">Registre : {chunk.register ?? 'courant'}</p>
       {chunk.usageTip ? <p className="muted">{chunk.usageTip}</p> : null}
       <p className="muted">

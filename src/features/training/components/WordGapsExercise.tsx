@@ -1,3 +1,4 @@
+import { SpeakButton } from '../../../components/Speech/SpeakButton'
 import { Timer } from '../../../components/Timer/Timer'
 import type { GapItem } from '../types'
 import { GAP_PARAPHRASE_SECONDS, RESCUE_STRUCTURES } from '../types'
@@ -103,6 +104,11 @@ export function WordGapsExercise({
       <h1 className="exercise__expression">
         Réponse : <strong>{item.target}</strong>
       </h1>
+      <SpeakButton
+        text={item.target}
+        label="Écouter"
+        ariaLabel="Écouter le mot"
+      />
       <p className="muted">
         Fais maintenant 2 ou 3 phrases avec « {item.target} », à voix haute.
       </p>

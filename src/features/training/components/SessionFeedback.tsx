@@ -1,4 +1,5 @@
 import type { FormEvent } from 'react'
+import { SpeakButton } from '../../../components/Speech/SpeakButton'
 import type { FluencyReminder, SessionFeedback } from '../types'
 import { isFeedbackValid } from '../sessionReducer'
 
@@ -57,16 +58,24 @@ export function SessionFeedbackView({
             {fluencyReminders.map((reminder) => {
               const used = usedReminderIds.includes(reminder.id)
               return (
-                <li key={reminder.id}>
-                  <p>{reminder.text}</p>
-                  <button
-                    type="button"
-                    className={used ? 'button button--subtle' : 'button button--ghost'}
-                    aria-pressed={used}
-                    onClick={() => onToggleReminder?.(reminder.id)}
-                  >
-                    {used ? 'Utilisée ✓' : "Je l'ai réellement utilisée"}
-                  </button>
+                <li key={reminder.id} className="feedback-reminder">
+                  <p className="feedback-reminder__text">{reminder.text}</p>
+                  <div className="feedback-reminder__actions">
+                    <SpeakButton
+                      text={reminder.text}
+                      label="Écouter"
+                      ariaLabel={`Écouter la correction ${reminder.text}`}
+                      compact
+                    />
+                    <button
+                      type="button"
+                      className={used ? 'button button--subtle' : 'button button--ghost'}
+                      aria-pressed={used}
+                      onClick={() => onToggleReminder?.(reminder.id)}
+                    >
+                      {used ? 'Utilisée ✓' : "Je l'ai réellement utilisée"}
+                    </button>
+                  </div>
                 </li>
               )
             })}
@@ -112,6 +121,14 @@ export function SessionFeedbackView({
             onChange={(event) => onChange('abandonedSentence', event.target.value)}
             autoComplete="off"
           />
+          {feedback.abandonedSentence.trim() ? (
+            <SpeakButton
+              text={feedback.abandonedSentence}
+              label="Écouter"
+              ariaLabel="Écouter la phrase corrigée"
+              compact
+            />
+          ) : null}
         </div>
 
         <div className="field">
@@ -124,6 +141,14 @@ export function SessionFeedbackView({
             onChange={(event) => onChange('awkwardPhrase', event.target.value)}
             autoComplete="off"
           />
+          {feedback.awkwardPhrase.trim() ? (
+            <SpeakButton
+              text={feedback.awkwardPhrase}
+              label="Écouter"
+              ariaLabel="Écouter la formulation corrigée"
+              compact
+            />
+          ) : null}
         </div>
 
         <div className="field">
@@ -136,6 +161,14 @@ export function SessionFeedbackView({
             onChange={(event) => onChange('expressionToReuse', event.target.value)}
             autoComplete="off"
           />
+          {feedback.expressionToReuse.trim() ? (
+            <SpeakButton
+              text={feedback.expressionToReuse}
+              label="Écouter"
+              ariaLabel="Écouter l'expression à réutiliser"
+              compact
+            />
+          ) : null}
         </div>
 
         {feedback.expressionToReuse.trim() ? (
