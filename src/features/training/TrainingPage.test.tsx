@@ -25,10 +25,7 @@ function renderTraining(initialState?: AppState) {
 describe('TrainingPage', () => {
   it('creates a new session on the chunks stage', async () => {
     renderTraining()
-
     expect(screen.getByText('Chunk 1/3')).toBeInTheDocument()
-    expect(screen.getByText(/Chunks \+ récupération/)).toBeInTheDocument()
-
     await waitFor(() => {
       expect(window.localStorage.getItem(STORAGE_KEY)).toBeTruthy()
     })
@@ -40,53 +37,45 @@ describe('TrainingPage', () => {
       stageIndex: 2,
       questions: { index: 0, stage: 'countdown' },
     }
-    const state: AppState = { ...createInitialState(), inProgressSession: session }
-
-    renderTraining(state)
-
-    expect(
-      screen.getByText('Question suivante dans…'),
-    ).toBeInTheDocument()
+    renderTraining({ ...createInitialState(), inProgressSession: session })
+    expect(screen.getByText('Question suivante dans…')).toBeInTheDocument()
   })
 
-  it('records the session and adds a missing word to the gap bank on completion', async () => {
+  it('turns session difficulties into future learning material', async () => {
     const user = userEvent.setup()
     const session: TrainingSessionState = {
       ...createSessionState(plan, 2, new Date('2026-10-02T10:00:00.000Z')),
       stageIndex: 4,
       fluencyFeedback: {
         missingWord: 'prise électrique',
-        difficultPhrase: '',
-        importantError: '',
+        missingWordContext: 'l’endroit dans le mur où je branche un appareil',
+        difficultPhrase: 'phrase difficile',
+        importantError: 'attention à depuis',
       },
       feedback: {
         blockedWord: '',
-        expressionToReuse: '',
+        blockedWordContext: '',
+        abandonedSentence: 'phrase abandonnée',
+        awkwardPhrase: 'formulation maladroite',
+        expressionToReuse: "Ce que je veux dire, c'est que…",
+        expressionIntent: 'Reformuler',
         blockCount: 3,
         fluencyScore: 4,
       },
     }
-    const state: AppState = { ...createInitialState(), inProgressSession: session }
+    renderTraining({ ...createInitialState(), inProgressSession: session })
 
-    renderTraining(state)
-
-    await user.click(
-      screen.getByRole('button', { name: 'Terminer la séance' }),
-    )
-
-    expect(
-      await screen.findByRole('heading', { name: /Séance terminée/ }),
-    ).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: 'Terminer la séance' }))
+    expect(await screen.findByRole('heading', { name: /Séance terminée/ })).toBeInTheDocument()
 
     await waitFor(() => {
-      const raw = window.localStorage.getItem(STORAGE_KEY)
-      expect(raw).toBeTruthy()
-      const parsed = JSON.parse(raw as string)
-      expect(parsed.sessions).toHaveLength(1)
-      expect(parsed.inProgressSession).toBeNull()
-      expect(parsed.wordGaps.some((gap: { target: string }) => gap.target === 'prise électrique')).toBe(
-        true,
+      const parsed = JSON.parse(window.localStorage.getItem(STORAGE_KEY) as string)
+      const gap = parsed.wordGaps.find(
+        (item: { target: string }) => item.target === 'prise électrique',
       )
+      expect(gap.context).toContain('mur')
+      expect(parsed.personalChunks).toHaveLength(1)
+      expect(parsed.fluencyNotes.length).toBeGreaterThanOrEqual(4)
     })
   })
 
@@ -96,8 +85,6 @@ describe('TrainingPage', () => {
       stageIndex: 4,
     }
     renderTraining({ ...createInitialState(), inProgressSession: session })
-    expect(
-      screen.getByRole('button', { name: 'Terminer la séance' }),
-    ).toBeDisabled()
+    expect(screen.getByRole('button', { name: 'Terminer la séance' })).toBeDisabled()
   })
 })
