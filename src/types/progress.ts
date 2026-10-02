@@ -1,7 +1,8 @@
 import type { TrainingSessionState } from '../features/training/types'
 
 export const APP_STATE_VERSION = 3 as const
-export const STORAGE_KEY = 'fr-fluency-trainer'
+export const STORAGE_KEY = 'parle-plus'
+export const LEGACY_STORAGE_KEY = 'fr-fluency-trainer'
 export const WEEKLY_GOAL = 5
 
 export interface SessionSummary {
