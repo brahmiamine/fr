@@ -52,6 +52,26 @@ describe('pedagogical content quality', () => {
     expect(prosody.every((item) => item.modelKind === 'tts' || item.modelKind === 'recording')).toBe(true)
   })
 
+  it('ships at least six licensed human recordings for prosody practice', () => {
+    const recordings = prosody.filter((item) => item.modelKind === 'recording') as Array<{
+      audio?: string
+      timing?: string
+      source?: string
+      sourceUrl?: string
+      license?: string
+      attribution?: string
+    }>
+
+    expect(recordings.length).toBeGreaterThanOrEqual(6)
+    for (const item of recordings) {
+      expect(item.audio).toMatch(/^audio\/prosody\/.+\.ogg$/)
+      expect(item.timing).toBe('measured')
+      expect(item.sourceUrl).toMatch(/^https:\/\//)
+      expect(item.license).toMatch(/^(CC0-1\.0|CC-BY-SA-3\.0|CC-BY-SA-4\.0)$/)
+      expect(item.attribution?.trim().length).toBeGreaterThan(0)
+    }
+  })
+
   it('times synthetic prosody models from their syllables, not with fake 4-second groups', () => {
     for (const item of prosody.filter((entry) => entry.modelKind === 'tts')) {
       expect(item.timing).toBe('estimated')
