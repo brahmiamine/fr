@@ -59,8 +59,7 @@ npm run preview    # prévisualiser le build
 
 ## Contenu pédagogique
 
-Tout le contenu est statique et vit dans `src/data/`. Ajouter du contenu ne
-demande aucune modification du code applicatif.
+Tout le contenu pédagogique variable est statique et vit dans `src/data/`. Les grandes bases couvrent les sujets 4→3→2, questions surprises, mots de paraphrase, chunks, amorces de réponse et structures anti-blocage.
 
 | Fichier | Rôle |
 | --- | --- |
@@ -68,6 +67,8 @@ demande aucune modification du code applicatif.
 | `src/data/questions.json` | Questions surprise |
 | `src/data/paraphrase-words.json` | Mots génériques à paraphraser |
 | `src/data/native-expressions.json` | Chunks (expressions) à récupérer |
+| `src/data/question-starters.json` | Amorces naturelles pour démarrer une réponse |
+| `src/data/rescue-structures.json` | Structures de circumlocution quand un mot manque |
 
 ### Schémas
 
