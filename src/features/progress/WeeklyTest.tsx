@@ -14,9 +14,7 @@ import type { WeeklyTestRecord } from '../../types/progress'
 const TEST_SECONDS = 180
 
 function pickTopic(recent: readonly string[]): Topic {
-  const fresh = contentRepository.topics.filter(
-    (topic) => !recent.includes(topic.id),
-  )
+  const fresh = contentRepository.topics.filter((topic) => !recent.includes(topic.id))
   const pool = fresh.length > 0 ? fresh : [...contentRepository.topics]
   return pool[Math.floor(Math.random() * pool.length)]
 }
@@ -24,17 +22,23 @@ function pickTopic(recent: readonly string[]): Topic {
 function emptyMeasurement() {
   return {
     startDelaySeconds: '',
-    longPauses: '',
+    midSentencePauses: '',
+    betweenIdeaPauses: '',
     majorFillers: '',
     successfulParaphrases: '',
     abandonedSentences: '',
     longestFluentSegmentSeconds: '',
+    wordsSpoken: '',
     score: '',
   }
 }
 
 function toNumber(value: string): number {
   return value.trim() === '' ? 0 : Math.max(0, Number(value))
+}
+
+function wordsPerMinute(test: WeeklyTestRecord): number {
+  return Math.round((test.wordsSpoken ?? 0) / 3)
 }
 
 export default function WeeklyTest() {
@@ -58,10 +62,13 @@ export default function WeeklyTest() {
         <p className="muted">Déjà réalisé cette semaine. Reviens lundi.</p>
         <ul className="weekly-test__summary">
           <li>Démarrage : {existing.startDelaySeconds}s</li>
-          <li>Pauses longues : {existing.longPauses}</li>
+          <li>Pauses au milieu d'une phrase : {existing.midSentencePauses ?? existing.longPauses}</li>
+          <li>Pauses entre deux idées : {existing.betweenIdeaPauses ?? 0}</li>
+          <li>Hésitations importantes : {existing.majorFillers}</li>
           <li>Phrases abandonnées : {existing.abandonedSentences}</li>
           <li>Mots contournés : {existing.successfulParaphrases}</li>
           <li>Plus long segment fluide : {existing.longestFluentSegmentSeconds}s</li>
+          <li>Débit approximatif : {wordsPerMinute(existing)} mots/min</li>
           <li>Score ressenti : {existing.score}/5</li>
         </ul>
       </section>
@@ -76,6 +83,8 @@ export default function WeeklyTest() {
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault()
     const now = new Date()
+    const midSentencePauses = toNumber(measurement.midSentencePauses)
+    const betweenIdeaPauses = toNumber(measurement.betweenIdeaPauses)
     const record: WeeklyTestRecord = {
       id: `wt-${weekKey}`,
       weekKey,
@@ -83,13 +92,14 @@ export default function WeeklyTest() {
       topicId: topic?.id ?? '',
       durationMinutes: Math.round(TEST_SECONDS / 60),
       startDelaySeconds: toNumber(measurement.startDelaySeconds),
-      longPauses: toNumber(measurement.longPauses),
+      longPauses: midSentencePauses + betweenIdeaPauses,
+      midSentencePauses,
+      betweenIdeaPauses,
       majorFillers: toNumber(measurement.majorFillers),
       successfulParaphrases: toNumber(measurement.successfulParaphrases),
       abandonedSentences: toNumber(measurement.abandonedSentences),
-      longestFluentSegmentSeconds: toNumber(
-        measurement.longestFluentSegmentSeconds,
-      ),
+      longestFluentSegmentSeconds: toNumber(measurement.longestFluentSegmentSeconds),
+      wordsSpoken: toNumber(measurement.wordsSpoken),
       score: Math.min(5, Math.max(1, toNumber(measurement.score) || 3)),
     }
     updateWith((prev) => recordWeeklyTest(prev, record))
@@ -103,14 +113,10 @@ export default function WeeklyTest() {
       {stage === 'intro' || !topic ? (
         <>
           <p className="muted">
-            Un sujet jamais vu récemment, très peu de préparation, puis 3
-            minutes de parole spontanée.
+            Un sujet jamais vu récemment, aucune préparation, puis 3 minutes de
+            parole spontanée dans les mêmes conditions chaque semaine.
           </p>
-          <button
-            type="button"
-            className="button button--block"
-            onClick={handleStart}
-          >
+          <button type="button" className="button button--block" onClick={handleStart}>
             Lancer le test de 3 minutes
           </button>
         </>
@@ -120,7 +126,8 @@ export default function WeeklyTest() {
         <>
           <h3 className="weekly-test__topic">{topic.title}</h3>
           <p className="muted">
-            Parle sans préparation. Mesure ensuite ton démarrage et tes pauses.
+            Parle sans préparation. Compte ensuite tes pauses et estime le
+            nombre de mots prononcés.
           </p>
           <Timer
             durationSeconds={TEST_SECONDS}
@@ -143,10 +150,13 @@ export default function WeeklyTest() {
           {(
             [
               ['startDelaySeconds', "Temps avant de démarrer (s)"],
-              ['longPauses', 'Pauses longues'],
+              ['midSentencePauses', "Pauses > 1 s au milieu d'une phrase"],
+              ['betweenIdeaPauses', 'Pauses > 1 s entre deux idées'],
+              ['majorFillers', 'Hésitations importantes'],
               ['abandonedSentences', 'Phrases abandonnées'],
-              ['successfulParaphrases', 'Mots contournés'],
+              ['successfulParaphrases', 'Mots contournés avec succès'],
               ['longestFluentSegmentSeconds', 'Durée max sans blocage (s)'],
+              ['wordsSpoken', 'Nombre approximatif de mots en 3 min'],
             ] as const
           ).map(([field, label]) => (
             <div className="field" key={field}>
@@ -178,9 +188,7 @@ export default function WeeklyTest() {
             >
               <option value="">Choisir…</option>
               {[1, 2, 3, 4, 5].map((score) => (
-                <option key={score} value={score}>
-                  {score}
-                </option>
+                <option key={score} value={score}>{score}</option>
               ))}
             </select>
           </div>
