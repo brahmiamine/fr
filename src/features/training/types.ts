@@ -13,6 +13,7 @@ export interface GapItem {
   context: string
   isPersonal: boolean
   sourceId: string | null
+  rescueAngles: string[]
 }
 
 export interface FluencyReminder {
