@@ -270,9 +270,9 @@ export function ListeningExercise({
           speechLocale={exercise.voiceLocale}
           speechRate={speechRateFor(exercise)}
           label="Écouter l'extrait complet"
-          caption={`Écoute complète : ${Math.min(meaningPlays, 1)}/1 · ne lis rien, comprends seulement le sens`}
           onComplete={onAudioComplete}
         />
+        <p className="muted audio__hint">Écoute complète : {Math.min(meaningPlays, 1)}/1</p>
         <button
           type="button"
           className="button button--block"
