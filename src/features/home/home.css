@@ -97,20 +97,28 @@
 }
 
 /* ---------- Weekly test ---------- */
-.home__weekly-test {
+.home__weekly-test,
+.home__prosody {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
 }
 
-.home__weekly-test h2 {
+.home__weekly-test h2,
+.home__prosody h2 {
   margin: 0;
   font-size: 1.05rem;
 }
 
-.home__weekly-test p {
+.home__weekly-test p,
+.home__prosody p {
   margin: 0;
+}
+
+.home__prosody {
+  background: var(--gradient-soft);
+  border-color: transparent;
 }
 
 @media (min-width: 560px) {

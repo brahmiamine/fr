@@ -1,0 +1,152 @@
+import { useState } from 'react'
+import type { ProsodyExercise, ProsodyFocus } from '../types'
+import { FOCUS_OPTIONS, focusGoal } from '../types'
+import type { ProsodyRecorder } from '../hooks/useProsodyRecorder'
+import { AudioClip } from './AudioClip'
+import { RecorderControls } from './RecorderControls'
+
+export interface ComparisonExerciseProps {
+  exercise: ProsodyExercise
+  step: 'aba' | 'choose-focus' | 'retry' | 'compare-attempts'
+  focus: ProsodyFocus | null
+  audioSrc: string
+  recorder: ProsodyRecorder
+  onAbaDone: () => void
+  onChooseFocus: (focus: ProsodyFocus) => void
+  onRetryDone: () => void
+  onCompareDone: () => void
+}
+
+export function ComparisonExercise({
+  exercise,
+  step,
+  focus,
+  audioSrc,
+  recorder,
+  onAbaDone,
+  onChooseFocus,
+  onRetryDone,
+  onCompareDone,
+}: ComparisonExerciseProps) {
+  const [selected, setSelected] = useState<ProsodyFocus | null>(focus)
+
+  if (step === 'aba') {
+    const hasAttempt = Boolean(recorder.attempt1?.url)
+    return (
+      <section className="card exercise" aria-labelledby="comparison-aba">
+        <p className="pill">Comparaison A/B/A</p>
+        <h2 id="comparison-aba">Natif → moi → natif</h2>
+        {hasAttempt ? (
+          <>
+            <div className="stack">
+              <AudioClip
+                src={audioSrc}
+                start={exercise.imitation.start}
+                end={exercise.imitation.end}
+                label="A — Modèle"
+              />
+              <div className="audio__row">
+                <span className="muted">B — Toi</span>
+                <audio src={recorder.attempt1?.url ?? undefined} controls preload="metadata" />
+              </div>
+              <AudioClip
+                src={audioSrc}
+                start={exercise.imitation.start}
+                end={exercise.imitation.end}
+                label="A — Modèle"
+              />
+            </div>
+            <p className="muted">
+              Cette alternance rend les différences plus faciles à entendre.
+            </p>
+            <button type="button" className="button button--block" onClick={onAbaDone}>
+              J'ai comparé
+            </button>
+          </>
+        ) : (
+          <>
+            <p className="muted">
+              Enregistre d'abord ton imitation pour pouvoir comparer.
+            </p>
+          </>
+        )}
+      </section>
+    )
+  }
+
+  if (step === 'choose-focus') {
+    return (
+      <section className="card exercise" aria-labelledby="comparison-focus">
+        <p className="pill">Diagnostic</p>
+        <h2 id="comparison-focus">Quelle différence entends-tu surtout ?</h2>
+        <p className="muted">Choisis une seule chose à corriger.</p>
+        <fieldset className="field focus-options">
+          <legend className="sr-only">Différence principale</legend>
+          {FOCUS_OPTIONS.map((option) => (
+            <label key={option.value} className="focus-option">
+              <input
+                type="radio"
+                name="prosody-focus"
+                value={option.value}
+                checked={selected === option.value}
+                onChange={() => setSelected(option.value)}
+              />
+              <span>{option.label}</span>
+            </label>
+          ))}
+        </fieldset>
+        <button
+          type="button"
+          className="button button--block"
+          disabled={!selected}
+          onClick={() => selected && onChooseFocus(selected)}
+        >
+          Continuer
+        </button>
+      </section>
+    )
+  }
+
+  if (step === 'retry') {
+    return (
+      <section className="card exercise exercise--center" aria-labelledby="comparison-retry">
+        <p className="pill">Correction</p>
+        <h2 id="comparison-retry">Ton seul objectif maintenant</h2>
+        <p className="exercise__expression">« {focusGoal(focus)} »</p>
+        <p className="muted">Refais uniquement ce point. Ne corrige rien d'autre.</p>
+        <RecorderControls recorder={recorder} recordLabel="Enregistrer ma version 2" />
+        <button
+          type="button"
+          className="button button--block"
+          disabled={!recorder.current}
+          onClick={() => {
+            recorder.keepAsAttempt2()
+            onRetryDone()
+          }}
+        >
+          J'ai refait (V2)
+        </button>
+      </section>
+    )
+  }
+
+  return (
+    <section className="card exercise" aria-labelledby="comparison-attempts">
+      <p className="pill">V1 ↔ V2</p>
+      <h2 id="comparison-attempts">Compare tes deux versions.</h2>
+      <div className="stack">
+        <div className="audio__row">
+          <span className="muted">V1</span>
+          <audio src={recorder.attempt1?.url ?? undefined} controls preload="metadata" />
+        </div>
+        <div className="audio__row">
+          <span className="muted">V2</span>
+          <audio src={recorder.attempt2?.url ?? undefined} controls preload="metadata" />
+        </div>
+      </div>
+      <button type="button" className="button button--block" onClick={onCompareDone}>
+        Continuer vers le retelling
+      </button>
+    </section>
+  )
+}

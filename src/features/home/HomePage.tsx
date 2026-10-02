@@ -112,6 +112,19 @@ export default function HomePage() {
         </section>
       ) : null}
 
+      <section className="card home__prosody">
+        <div>
+          <h2>🎵 Sonner plus naturel</h2>
+          <p className="muted">
+            Entraîne le rythme et l'intonation : écoute, imite, compare et
+            reformule. Environ 12–15 min.
+          </p>
+        </div>
+        <Link className="button button--gradient" to="/prosody">
+          Commencer
+        </Link>
+      </section>
+
       <Link className="button button--ghost button--block" to="/progress">
         Voir ma progression
       </Link>

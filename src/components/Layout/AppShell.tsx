@@ -7,10 +7,12 @@ import './layout.css'
 export function AppShell() {
   const location = useLocation()
   const { warning } = useAppState()
-  const isTraining = location.pathname.startsWith('/training')
+  const isFocus =
+    location.pathname.startsWith('/training') ||
+    location.pathname.startsWith('/prosody')
 
   return (
-    <div className={`site ${isTraining ? 'site--focus' : ''}`}>
+    <div className={`site ${isFocus ? 'site--focus' : ''}`}>
       <AnimatedBackground />
 
       <header className="site__header">
@@ -23,7 +25,7 @@ export function AppShell() {
             </span>
           </Link>
 
-          {!isTraining ? (
+          {!isFocus ? (
             <nav className="site__nav" aria-label="Navigation principale">
               <NavLink
                 to="/"
@@ -31,6 +33,12 @@ export function AppShell() {
                 className={({ isActive }) => (isActive ? 'is-active' : undefined)}
               >
                 Accueil
+              </NavLink>
+              <NavLink
+                to="/prosody"
+                className={({ isActive }) => (isActive ? 'is-active' : undefined)}
+              >
+                Prosodie
               </NavLink>
               <NavLink
                 to="/progress"
@@ -52,7 +60,7 @@ export function AppShell() {
         <Outlet />
       </main>
 
-      {!isTraining ? (
+      {!isFocus ? (
         <footer className="site__footer">
           <div className="site__footer-inner">
             <p>

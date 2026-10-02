@@ -45,6 +45,24 @@ Le contenu n'est **jamais tiré au hasard** : il suit les priorités
 - **Transfert réel** : un défi hebdomadaire exige au moins 20 min de vraie conversation puis réinjecte les corrections et blocages observés dans l'entraînement.
 - **Mesure hebdomadaire** : le benchmark de fluidité dure réellement 3 minutes complètes avant d'ouvrir le formulaire de mesures, afin de garder des conditions comparables.
 
+## Sonner plus naturel (prosodie)
+
+La route `/prosody` travaille une **deuxième compétence**, séparée de la fluidité :
+le rythme et l'intonation. Une boucle d'environ 12–15 minutes :
+
+> entendre → découper → imiter (V1) → shadowing → comparer A/B/A → choisir **une**
+> différence → refaire (V2) → comparer V1/V2 → retelling (reformuler sans le modèle).
+
+Le contenu vit dans `src/data/prosody.json` (transcription, groupes rythmiques
+avec `/`, `↑`, `↓`, `—`, segment d'imitation, idée de retelling). L'audio du
+modèle est dans `public/audio/prosody/`.
+
+> Les fichiers `.wav` livrés sont des **silences de durée correcte** générés par
+> `node scripts/generate-prosody-audio.mjs` : remplace-les par de vrais
+> enregistrements (n'importe quel format lu par le navigateur) en gardant les
+> mêmes noms. Aucun enregistrement personnel n'est conservé : les prises V1/V2
+> restent en mémoire et sont révoquées à la sortie de la page.
+
 ## Démarrage local
 
 Prérequis : Node.js 20+ et npm.
@@ -69,6 +87,7 @@ Tout le contenu pédagogique variable est statique et vit dans `src/data/`. Les 
 | `src/data/native-expressions.json` | Chunks (expressions) à récupérer |
 | `src/data/question-starters.json` | Amorces naturelles pour démarrer une réponse |
 | `src/data/rescue-structures.json` | Structures de circumlocution quand un mot manque |
+| `src/data/prosody.json` | Extraits audio + groupes rythmiques pour la prosodie |
 
 ### Schémas
 

@@ -1,0 +1,79 @@
+[
+  {
+    "id": "prosody_001",
+    "level": "B1",
+    "category": "opinion",
+    "audio": "audio/prosody/prosody_001.wav",
+    "transcript": "Franchement, je pense que c'est une bonne idée, mais ça dépend de la situation.",
+    "groups": [
+      { "text": "Franchement", "start": 0.0, "end": 0.7, "intonation": "level" },
+      {
+        "text": "je pense que c'est une bonne idée",
+        "start": 0.7,
+        "end": 3.1,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "mais ça dépend de la situation",
+        "start": 3.1,
+        "end": 5.4,
+        "intonation": "fall",
+        "finalLengthening": true
+      }
+    ],
+    "imitation": { "start": 0.7, "end": 5.4 },
+    "retelling": { "idea": "Donner une opinion positive puis la nuancer." }
+  },
+  {
+    "id": "prosody_002",
+    "level": "B1",
+    "category": "travail",
+    "audio": "audio/prosody/prosody_002.wav",
+    "transcript": "Personnellement, je trouve que le télétravail a beaucoup d'avantages, mais on perd un peu le contact avec les collègues.",
+    "groups": [
+      { "text": "Personnellement", "start": 0.0, "end": 0.6, "intonation": "level" },
+      {
+        "text": "je trouve que le télétravail a beaucoup d'avantages",
+        "start": 0.6,
+        "end": 3.2,
+        "intonation": "rise",
+        "finalLengthening": true
+      },
+      {
+        "text": "mais on perd un peu le contact avec les collègues",
+        "start": 3.2,
+        "end": 6.0,
+        "intonation": "fall",
+        "finalLengthening": true
+      }
+    ],
+    "imitation": { "start": 0.6, "end": 6.0 },
+    "retelling": { "idea": "Donner un avis positif sur le télétravail puis une réserve." }
+  },
+  {
+    "id": "prosody_003",
+    "level": "B2",
+    "category": "nuance",
+    "audio": "audio/prosody/prosody_003.wav",
+    "transcript": "En fait, je pense que ça dépend vraiment de la situation, il n'y a pas de réponse simple.",
+    "groups": [
+      { "text": "En fait", "start": 0.0, "end": 0.5, "intonation": "level" },
+      {
+        "text": "je pense que ça dépend vraiment de la situation",
+        "start": 0.5,
+        "end": 3.4,
+        "intonation": "fall"
+      },
+      {
+        "text": "il n'y a pas de réponse simple",
+        "start": 3.4,
+        "end": 5.2,
+        "intonation": "fall",
+        "finalLengthening": true
+      }
+    ],
+    "imitation": { "start": 0.5, "end": 5.2 },
+    "retelling": { "idea": "Exprimer une opinion nuancée sans réponse tranchée." }
+  }
+]
