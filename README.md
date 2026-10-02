@@ -30,18 +30,20 @@ Le contenu n'est **jamais tiré au hasard** : il suit les priorités
 
 ### La boucle entre les journées
 
-- **Chunks** : tu retrouves une expression à partir de son intention, puis tu la
-  notes *Facile* (revoir J+7), *Difficile* (J+3) ou *Raté* (J+1). Les 2 chunks
-  travaillés deviennent tes « chunks du jour », rappelés pendant le 4→3→2 et les
-  questions.
+- **Chunks** : tu retrouves une expression à partir de son intention. Une
+  récupération réussie suit ensuite la progression complète
+  aujourd'hui → J+1 → J+3 → J+7 avant maîtrise ; un échec la fait revenir le
+  lendemain. Les 2 chunks travaillés deviennent tes « chunks du jour », rappelés
+  pendant le 4→3→2 et les questions.
 - **Trous de mots** : quand tu bloques sur un mot, il rejoint ta base
   personnelle et revient demain → dans 3 jours → dans 7 jours, jusqu'à être
   maîtrisé. Les mots génériques de `paraphrase-words.json` complètent la liste
   tant que ta base personnelle est vide (≈ 70 % perso / 30 % générique).
-- **Questions surprises** : préparation automatiquement progressive (10 s au début, 5 s après 5 séances, 3 s après 15), puis auto-évaluation du blocage. La question la plus difficile revient en « revanche » et le niveau avancé ajoute un pivot de sujet.
-- **Enregistrement audio** : optionnel, via `MediaRecorder`. Le premier tour reste disponible jusqu'au mini-feedback pour permettre l'écoute différée, puis l'audio est supprimé. Rien de volumineux n'est écrit dans le stockage local.
-- **Boucle personnalisée** : mots manquants + contexte, phrases difficiles, erreurs importantes et expressions utiles sont réinjectés dans de futures séances. Les expressions utiles deviennent des chunks personnels.
-- **Transfert réel** : un défi hebdomadaire invite à faire 20–30 min de vraie conversation puis réinjecte les blocages observés dans l'entraînement.
+- **Questions surprises** : préparation automatiquement progressive (10 s au début, 5 s après 5 séances, 3 s après 15), diversité de catégories privilégiée, puis auto-évaluation du blocage. La question la plus difficile revient en « revanche » ; au niveau avancé, la dernière réponse dure 60 s puis enchaîne sur un pivot surprise de 30 s.
+- **Enregistrement audio** : optionnel, via `MediaRecorder`. Le premier tour reste disponible au mini-feedback puis au feedback final pour permettre la réécoute différée ; l'audio reste uniquement en mémoire et est supprimé quand la page est quittée.
+- **Boucle personnalisée** : mots manquants + contexte, formulations corrigées et expressions utiles sont réinjectés dans de futures séances. L'application demande la correction à réutiliser plutôt que de mémoriser l'erreur brute ; les expressions utiles deviennent des chunks personnels.
+- **Transfert réel** : un défi hebdomadaire exige au moins 20 min de vraie conversation puis réinjecte les corrections et blocages observés dans l'entraînement.
+- **Mesure hebdomadaire** : le benchmark de fluidité dure réellement 3 minutes complètes avant d'ouvrir le formulaire de mesures, afin de garder des conditions comparables.
 
 ## Démarrage local
 
@@ -116,7 +118,7 @@ La suite Vitest + React Testing Library couvre notamment :
 
 - sélection de contenu par priorité, sans doublon et avec anti-répétition ;
 - ordonnanceur de révision espacée (chunks et trous de mots) ;
-- persistance et migration du schéma local (v1 → v2) ;
+- persistance et migration du schéma local (v1/v2 → v3) ;
 - précision, pause/reprise et récupération après rafraîchissement des minuteurs ;
 - calcul des séries, de la progression hebdomadaire et des minutes totales ;
 - machine à états de la session complète (chunks, 4→3→2, questions + revanche,
