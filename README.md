@@ -99,7 +99,8 @@ Tout le contenu pédagogique variable est statique et vit dans `src/data/`. Les 
 | `src/data/native-expressions.json` | Chunks (expressions) à récupérer |
 | `src/data/question-starters.json` | Amorces naturelles pour démarrer une réponse |
 | `src/data/rescue-structures.json` | Structures de circumlocution quand un mot manque |
-| `src/data/prosody.json` | Extraits audio + groupes rythmiques pour la prosodie |
+| `src/data/prosody.json` | 30 modèles prosodiques jouables + groupes rythmiques |
+| `src/data/conversation-scenarios.json` | Situations d'interaction avec interruptions et relances |
 
 ### Schémas
 
@@ -115,13 +116,34 @@ Tout le contenu pédagogique variable est statique et vit dans `src/data/`. Les 
 }
 
 // questions.json
-{ "id": "q001", "text": "…", "category": "societe", "difficulty": "medium" }
+{
+  "id": "q001",
+  "text": "…",
+  "category": "societe",
+  "difficulty": "medium",
+  "type": "abstract",
+  "pivots": ["q038", "q084", "q150"]
+}
 
 // paraphrase-words.json
-{ "id": "w001", "word": "embouteillage", "category": "quotidien", "difficulty": "easy" }
+{
+  "id": "w001",
+  "word": "embouteillage",
+  "category": "quotidien",
+  "difficulty": "easy",
+  "rescueAngles": ["À quoi ça sert ?", "Où est-ce qu'on le trouve ?", "À quoi ça ressemble ?"]
+}
 
 // native-expressions.json (chunks)
-{ "id": "chunk_001", "intent": "Nuancer une opinion", "expression": "D'un autre côté…", "category": "opinion", "level": "B2" }
+{
+  "id": "chunk_001",
+  "intent": "Nuancer une opinion",
+  "expression": "D'un autre côté…",
+  "category": "opinion",
+  "level": "B2",
+  "register": "courant",
+  "usageTip": "À réutiliser pour nuancer une opinion sans reconstruire la phrase mot par mot."
+}
 ```
 
 ### Ajouter du contenu
