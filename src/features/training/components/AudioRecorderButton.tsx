@@ -1,13 +1,7 @@
-import { useAudioRecorder } from '../../../hooks/useAudioRecorder'
+import type { AudioRecorder } from '../../../hooks/useAudioRecorder'
 import '../training.css'
 
-/**
- * Discreet optional recording control. Hidden when the browser does not
- * support MediaRecorder (e.g. in tests). The audio is session-only.
- */
-export function AudioRecorderButton() {
-  const recorder = useAudioRecorder()
-
+export function AudioRecorderButton({ recorder }: { recorder: AudioRecorder }) {
   if (!recorder.supported) return null
 
   return (
@@ -18,7 +12,7 @@ export function AudioRecorderButton() {
           className="button button--ghost audio__button"
           onClick={recorder.start}
         >
-          🎤 Autoriser le microphone
+          🎤 Enregistrer ce tour
         </button>
       ) : null}
       {recorder.status === 'requesting' ? (
