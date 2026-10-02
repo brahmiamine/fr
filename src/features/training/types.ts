@@ -1,3 +1,5 @@
+import questionStartersData from '../../data/question-starters.json'
+import rescueStructuresData from '../../data/rescue-structures.json'
 import type { Chunk, Question, Topic } from '../../types/content'
 import type { FluencyNoteKind } from '../../types/progress'
 
@@ -137,17 +139,6 @@ export function prepSecondsForLevel(level: 1 | 2 | 3): number {
   return 3
 }
 
-export const RESCUE_STRUCTURES = [
-  "C'est une sorte de…",
-  'Ça sert à…',
-  "C'est quelque chose qui…",
-  "C'est quand…",
-  'Je ne me souviens plus du mot exact, mais…',
-] as const
+export const RESCUE_STRUCTURES = rescueStructuresData as readonly string[]
 
-export const QUESTION_STARTERS = [
-  'Alors, je dirais que…',
-  'À mon avis…',
-  'Ça dépend surtout de…',
-  "Je pense qu'il y a plusieurs raisons…",
-] as const
+export const QUESTION_STARTERS = questionStartersData as readonly string[]
