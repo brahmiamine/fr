@@ -12,11 +12,13 @@ export type TrainingAction =
   | { type: 'CHUNK_REVEAL' }
   | { type: 'CHUNK_RATE'; result: RecallResult }
   | { type: 'CHUNKS_OF_DAY_CONTINUE' }
+  | { type: 'FLUENCY_SET_KEYWORDS'; keywords: string[] }
   | { type: 'FLUENCY_START' }
   | { type: 'FLUENCY_ROUND_COMPLETE' }
   | {
       type: 'FLUENCY_SUBMIT_FEEDBACK'
       missingWord: string
+      missingWordContext: string
       difficultPhrase: string
       importantError: string
     }
@@ -62,8 +64,13 @@ export function createSessionState(
     chunks: { index: 0, step: 'retrieve' },
     chunkResults: [],
     chunksOfDayShown: false,
-    fluency: { roundIndex: 0, stage: 'prep' },
-    fluencyFeedback: { missingWord: '', difficultPhrase: '', importantError: '' },
+    fluency: { roundIndex: 0, stage: 'prep', keywords: [] },
+    fluencyFeedback: {
+      missingWord: '',
+      missingWordContext: '',
+      difficultPhrase: '',
+      importantError: '',
+    },
     questions: { index: 0, stage: 'countdown' },
     questionRatings: [],
     revenge: { questionId: null, stage: 'idle' },
@@ -71,7 +78,11 @@ export function createSessionState(
     gapResults: [],
     feedback: {
       blockedWord: '',
+      blockedWordContext: '',
+      abandonedSentence: '',
+      awkwardPhrase: '',
       expressionToReuse: '',
+      expressionIntent: '',
       blockCount: null,
       fluencyScore: null,
     },
@@ -94,7 +105,11 @@ export function isFeedbackValid(feedback: SessionFeedback): boolean {
     Number.isInteger(feedback.fluencyScore) &&
     feedback.fluencyScore >= 1 &&
     feedback.fluencyScore <= 5
-  return blocksValid && scoreValid
+  const wordContextValid =
+    !feedback.blockedWord.trim() || Boolean(feedback.blockedWordContext.trim())
+  const expressionIntentValid =
+    !feedback.expressionToReuse.trim() || Boolean(feedback.expressionIntent.trim())
+  return blocksValid && scoreValid && wordContextValid && expressionIntentValid
 }
 
 export function prepSeconds(state: TrainingSessionState): number {
@@ -119,9 +134,10 @@ export function sessionReducer(
     case 'CHUNK_RATE': {
       const chunk = state.plan.chunks[state.chunks.index]
       if (!chunk) return state
-      const result = { chunkId: chunk.id, result: action.result }
-      const chunkResults = [...state.chunkResults, result]
-
+      const chunkResults = [
+        ...state.chunkResults,
+        { chunkId: chunk.id, result: action.result },
+      ]
       if (state.chunks.index + 1 < state.plan.chunks.length) {
         return {
           ...state,
@@ -135,6 +151,12 @@ export function sessionReducer(
     case 'CHUNKS_OF_DAY_CONTINUE':
       return advanceStage(state)
 
+    case 'FLUENCY_SET_KEYWORDS':
+      return {
+        ...state,
+        fluency: { ...state.fluency, keywords: action.keywords.slice(0, 3) },
+      }
+
     case 'FLUENCY_START':
       return { ...state, fluency: { ...state.fluency, stage: 'running' } }
 
@@ -147,6 +169,7 @@ export function sessionReducer(
         return {
           ...state,
           fluency: {
+            ...state.fluency,
             roundIndex: state.fluency.roundIndex + 1,
             stage: 'running',
           },
@@ -160,10 +183,11 @@ export function sessionReducer(
         ...state,
         fluencyFeedback: {
           missingWord: action.missingWord,
+          missingWordContext: action.missingWordContext,
           difficultPhrase: action.difficultPhrase,
           importantError: action.importantError,
         },
-        fluency: { roundIndex: 1, stage: 'running' },
+        fluency: { ...state.fluency, roundIndex: 1, stage: 'running' },
       }
 
     case 'QUESTION_COUNTDOWN_DONE':
@@ -208,7 +232,6 @@ export function sessionReducer(
           revenge: { questionId: worstId, stage: 'countdown' },
         }
       }
-
       return advanceStage({ ...state, questionRatings })
     }
 
@@ -219,7 +242,10 @@ export function sessionReducer(
       return { ...state, revenge: { ...state.revenge, stage: 'speaking' } }
 
     case 'REVENGE_DONE':
-      return advanceStage({ ...state, revenge: { ...state.revenge, stage: 'done' } })
+      return advanceStage({
+        ...state,
+        revenge: { ...state.revenge, stage: 'done' },
+      })
 
     case 'GAP_FOUND': {
       const item = state.plan.gapItems[state.gaps.index]
@@ -237,7 +263,7 @@ export function sessionReducer(
     case 'GAP_REVEAL': {
       const item = state.plan.gapItems[state.gaps.index]
       if (!item) return state
-      const gapResults = state.gapResults.some((r) => r.itemKey === item.key)
+      const gapResults = state.gapResults.some((result) => result.itemKey === item.key)
         ? state.gapResults
         : [...state.gapResults, { itemKey: item.key, found: false }]
       return { ...state, gapResults, gaps: { ...state.gaps, step: 'revealed' } }
@@ -245,9 +271,7 @@ export function sessionReducer(
 
     case 'GAP_NEXT': {
       const nextIndex = state.gaps.index + 1
-      if (nextIndex >= state.plan.gapItems.length) {
-        return advanceStage(state)
-      }
+      if (nextIndex >= state.plan.gapItems.length) return advanceStage(state)
       return {
         ...state,
         gaps: {
@@ -263,10 +287,9 @@ export function sessionReducer(
         feedback: { ...state.feedback, [action.field]: action.value },
       }
 
-    case 'FEEDBACK_SUBMIT': {
+    case 'FEEDBACK_SUBMIT':
       if (!isFeedbackValid(state.feedback)) return state
       return { ...state, phase: 'complete' }
-    }
 
     default:
       return state
