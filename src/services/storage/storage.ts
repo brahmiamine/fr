@@ -1,4 +1,4 @@
-import { STORAGE_KEY, createInitialState } from '../../types/progress'
+import { LEGACY_STORAGE_KEY, STORAGE_KEY, createInitialState } from '../../types/progress'
 import type {
   AppState,
   LoadAppStateResult,
@@ -143,7 +143,24 @@ export function loadAppState(
   }
 
   try {
-    return { state: parseStoredState(storage.getItem(STORAGE_KEY)), available: true }
+    const current = storage.getItem(STORAGE_KEY)
+    if (current) {
+      return { state: parseStoredState(current), available: true }
+    }
+
+    const legacy = storage.getItem(LEGACY_STORAGE_KEY)
+    if (legacy) {
+      const state = parseStoredState(legacy)
+      try {
+        storage.setItem(STORAGE_KEY, JSON.stringify(state))
+        storage.removeItem(LEGACY_STORAGE_KEY)
+      } catch {
+        // Migration persistence is best-effort; keep the recovered state usable.
+      }
+      return { state, available: true }
+    }
+
+    return { state: createInitialState(), available: true }
   } catch {
     return {
       state: createInitialState(),
