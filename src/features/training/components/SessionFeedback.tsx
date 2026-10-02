@@ -6,12 +6,14 @@ export interface SessionFeedbackProps {
   feedback: SessionFeedback
   onChange: (field: keyof SessionFeedback, value: string | number | null) => void
   onSubmit: () => void
+  audioUrl?: string | null
 }
 
 export function SessionFeedbackView({
   feedback,
   onChange,
   onSubmit,
+  audioUrl = null,
 }: SessionFeedbackProps) {
   const valid = isFeedbackValid(feedback)
 
@@ -25,9 +27,19 @@ export function SessionFeedbackView({
     <section className="card exercise" aria-labelledby="feedback-title">
       <h1 id="feedback-title">Feedback de fin de séance</h1>
       <p className="muted">
-        Garde seulement les difficultés utiles : elles reviendront dans tes
-        prochaines séances.
+        Garde seulement les difficultés utiles, mais note la formulation
+        corrigée que tu veux réutiliser — pas l'erreur brute.
       </p>
+
+      {audioUrl ? (
+        <div className="exercise__rescue">
+          <h2>Réécoute finale</h2>
+          <p className="muted">
+            Réécoute environ une minute avant de remplir ce feedback.
+          </p>
+          <audio src={audioUrl} controls preload="metadata" />
+        </div>
+      ) : null}
 
       <form onSubmit={handleSubmit}>
         <div className="field">
@@ -59,7 +71,7 @@ export function SessionFeedbackView({
 
         <div className="field">
           <label htmlFor="abandoned-sentence">
-            Une phrase que tu as abandonnée ? (facultatif)
+            Reformulation corrigée de la phrase abandonnée (facultatif)
           </label>
           <input
             id="abandoned-sentence"
@@ -71,7 +83,7 @@ export function SessionFeedbackView({
 
         <div className="field">
           <label htmlFor="awkward-phrase">
-            Une formulation maladroite à retravailler ? (facultatif)
+            Formulation corrigée à réutiliser (facultatif)
           </label>
           <input
             id="awkward-phrase"
