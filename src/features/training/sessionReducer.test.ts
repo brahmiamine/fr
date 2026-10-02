@@ -144,7 +144,7 @@ describe('question revenge selection', () => {
 
     state = sessionReducer(state, { type: 'QUESTION_RATE', rating: 'much' })
 
-    expect(state.questionRatings.at(-1)?.questionId).toBe(plan.pivotQuestion?.id)
+    expect(state.questionRatings[state.questionRatings.length - 1]?.questionId).toBe(plan.pivotQuestion?.id)
     expect(state.revenge.questionId).toBe(plan.pivotQuestion?.id)
   })
 })
