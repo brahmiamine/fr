@@ -1,13 +1,19 @@
-import { ButtonLink, Card, IconTile } from '../../../components/ui'
+import { useNavigate } from 'react-router-dom'
+import { Button, ButtonLink, Card, IconTile } from '../../../components/ui'
 import { STAGE_META, STAGE_ORDER } from '../../training/types'
 
 export function TodaySessionCard({
   minutes,
   ctaLabel,
+  onRestart,
 }: {
   minutes: number
   ctaLabel: string
+  /** Set when a session is in progress: discards it and starts a fresh one. */
+  onRestart?: () => void
 }) {
+  const navigate = useNavigate()
+
   return (
     <Card className="today" aria-labelledby="today-title">
       <div className="today__head">
@@ -32,6 +38,24 @@ export function TodaySessionCard({
       <ButtonLink to="/training" variant="animated" size="lg" block trailing="→">
         {ctaLabel}
       </ButtonLink>
+      {onRestart ? (
+        <Button
+          variant="subtle"
+          block
+          onClick={() => {
+            if (
+              window.confirm(
+                'Abandonner la séance en cours et en commencer une nouvelle ?',
+              )
+            ) {
+              onRestart()
+              navigate('/training')
+            }
+          }}
+        >
+          Commencer une nouvelle séance
+        </Button>
+      ) : null}
     </Card>
   )
 }

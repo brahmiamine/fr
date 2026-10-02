@@ -11,6 +11,7 @@ import {
   formatDuration,
   getWeekKey,
   masteredGapCount,
+  setInProgressSession,
   trainingLevelForSessions,
 } from '../../services/progress/progress'
 import { readyProsodyExercises } from '../../services/content/prosodyRepository'
@@ -34,7 +35,7 @@ function todayIndex(): number {
 }
 
 export default function HomePage() {
-  const { state } = useAppState()
+  const { state, updateWith } = useAppState()
   const { sessions } = state
 
   const summary = useMemo(() => {
@@ -70,7 +71,15 @@ export default function HomePage() {
     <div className="page home">
       <HomeHero minutes={SESSION_MINUTES} prepSeconds={prepSecondsForLevel(summary.level)} />
 
-      <TodaySessionCard minutes={SESSION_MINUTES} ctaLabel={ctaLabel} />
+      <TodaySessionCard
+        minutes={SESSION_MINUTES}
+        ctaLabel={ctaLabel}
+        onRestart={
+          state.inProgressSession
+            ? () => updateWith((prev) => setInProgressSession(prev, null))
+            : undefined
+        }
+      />
 
       <section className="home__row">
         <WeekGoalCard completed={summary.weekly.completed} goal={summary.weekly.goal} />
