@@ -1,5 +1,6 @@
 import { useSettings } from '../../app/SettingsProvider'
 import { Card, Eyebrow } from '../../components/ui'
+import { AiSettingsCard } from '../ai/AiSettingsCard'
 import type { ThemeMode } from '../../services/settings/settings'
 import './settings.css'
 
@@ -59,6 +60,8 @@ export default function SettingsPage() {
           </button>
         </div>
       </Card>
+
+      <AiSettingsCard />
     </div>
   )
 }

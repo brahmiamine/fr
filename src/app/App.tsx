@@ -6,6 +6,7 @@ import HomePage from '../features/home/HomePage'
 import ProgressPage from '../features/progress/ProgressPage'
 import TrainingPage from '../features/training/TrainingPage'
 import SettingsPage from '../features/settings/SettingsPage'
+import CoachPage from '../features/ai/CoachPage'
 import ProsodyPage from '../features/prosody/ProsodyPage'
 
 export default function App() {
@@ -18,6 +19,7 @@ export default function App() {
           <Route path="/training" element={<TrainingPage />} />
           <Route path="/progress" element={<ProgressPage />} />
           <Route path="/prosody" element={<ProsodyPage />} />
+          <Route path="/coach" element={<CoachPage />} />
           <Route path="/settings" element={<SettingsPage />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />

@@ -3,8 +3,8 @@
 Un **coach de français parlé** sous forme de site web, mobile-first. Chaque
 séance est une boucle d'apprentissage fermée : l'application donne du contenu →
 tu essaies de le récupérer → tu parles → tu bloques → l'application mémorise le
-blocage et te le représente plus tard. Aucun compte, aucun serveur : tout
-fonctionne en statique sur Cloudflare Workers.
+blocage et te le représente plus tard. Aucun compte : tout
+fonctionne en statique sur Cloudflare Workers, avec une IA facultative.
 
 Application déployée : https://fr.testcivique.workers.dev/
 
@@ -225,29 +225,57 @@ Vite est configuré avec `base: '/'` : l'application est servie à la racine du
 domaine. Le routage par hash (`#/training`, …) évite toute règle de
 redirection côté serveur.
 
-### Serveur IA (Worker)
+### Intelligence artificielle (facultative)
 
-`worker/index.ts` est le code serveur du Worker `fr`. Seules les requêtes
-`/api/*` l'exécutent ; tout le reste est servi directement depuis les fichiers
-statiques. Les clés se créent comme **secrets** dans Cloudflare
-(Workers → `fr` → Settings → Variables and Secrets) :
+Un interrupteur **Paramètres → Intelligence artificielle** (éteint par défaut)
+active ou désactive l'IA dans **toutes** les interfaces. Éteint, aucun écran
+n'affiche d'IA, rien n'est envoyé, et l'application fonctionne exactement
+comme avant. Il est relu à chaque appel : l'éteindre agit immédiatement.
+
+Où l'IA intervient (uniquement quand elle est activée) :
+
+| Écran | Rôle de l'IA |
+| --- | --- |
+| Petit retour du 4→3→2 et feedback final | Transcrit l'enregistrement et propose reformulations, expressions et mot manquant ; l'apprenant choisit ce qu'il copie dans le formulaire |
+| Trous de mots (vérification) | Avis facultatif sur le mot que l'apprenant dit avoir trouvé |
+| Test hebdomadaire | Transcrit l'enregistrement et remplit le nombre de mots et d'hésitations |
+| Coach IA (`/coach`) | Question surprise sur mesure avec analyse de la réponse, et jeu de rôle sur les situations de conversation |
+
+La prosodie n'utilise pas l'IA : les modèles gratuits jugent mal l'intonation.
+
+`worker/index.ts` est le serveur du Worker `fr`. Seules les requêtes `/api/*`
+l'exécutent ; tout le reste est servi directement depuis les fichiers statiques.
+Les prompts vivent côté serveur (`worker/tasks.ts`) : le site n'est pas un accès
+libre à un modèle. Les clés se créent comme **secrets** dans Cloudflare
+(Workers → `fr` → Settings → Variables and Secrets), jamais dans le dépôt :
 
 | Secret | Fournisseur |
 | --- | --- |
 | `GEMINI_API_KEY` | Google Gemini |
 | `GROQ_API_KEY` | Groq |
+| `MISTRAL_API_KEY` | Mistral |
+| `CEREBRAS_API_KEY` | Cerebras |
+| `CLOUDFLARE_ACCOUNT_ID` + `CLOUDFLARE_AI_API_TOKEN` | Workers AI en REST (sinon, le binding `AI` de `wrangler.jsonc` suffit) |
 | `OPENROUTER_API_KEY` | OpenRouter |
-| `HUGGINGFACE_API_KEY` | Hugging Face |
+| `NVIDIA_API_KEY` | NVIDIA |
+| `HF_TOKEN` | Hugging Face |
+| `COHERE_API_KEY` | Cohere |
+| `AI_GATEWAY_API_KEY` | Vercel AI Gateway |
 
-Cloudflare Workers AI n'a pas de clé : il passe par le binding `AI` de
-`wrangler.jsonc`. Variables optionnelles : `PROVIDER_ORDER` (ex.
-`gemini,groq,cloudflare`) et `<FOURNISSEUR>_MODEL` (ex. `GROQ_MODEL`).
+Variables optionnelles : `PROVIDER_ORDER` (ex. `gemini,groq,cloudflare`),
+`<FOURNISSEUR>_MODEL` (ex. `GROQ_MODEL`) et **`AI_ACCESS_CODE`** : si défini,
+chaque requête doit porter ce code (champ « Code d'accès » des paramètres), pour
+que personne d'autre n'use vos quotas gratuits.
 
 - `GET /api/status` : fournisseurs configurés (jamais les clés) ;
-- `POST /api/chat` : `{ messages, providers?, maxTokens?, temperature? }` ;
-  essaie les fournisseurs dans l'ordre et passe au suivant en cas d'échec.
+- `POST /api/task` : `analyze-speech`, `judge-word`, `question`, `roleplay` ;
+- `POST /api/transcribe` : transcription (Groq, Mistral, Gemini, Workers AI).
 
-Aucune interface n'appelle encore l'IA : l'application fonctionne comme avant.
+Chaque appel essaie les fournisseurs dans l'ordre et passe au suivant en cas
+d'échec, de quota épuisé ou de réponse inexploitable. Quand l'IA est utilisée,
+la voix ou le texte est envoyé au fournisseur ; l'audio n'est jamais conservé
+par l'application. `npm run dev` ne sert pas `/api` : l'IA y affiche une erreur
+de connexion sans gêner le reste.
 
 ## Interface web et PWA
 

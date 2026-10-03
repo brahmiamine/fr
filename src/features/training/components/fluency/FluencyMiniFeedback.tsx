@@ -5,6 +5,7 @@ import { SpeakButton } from '../../../../components/Speech/SpeakButton'
 import { Timer } from '../../../../components/Timer/Timer'
 import { Button, Callout, Card, TextField } from '../../../../components/ui'
 import type { AudioRecorder } from '../../../../hooks/useAudioRecorder'
+import { AiAnalysisPanel } from '../../../ai/AiAnalysisPanel'
 import { MINI_FEEDBACK_SECONDS } from '../../types'
 import type { FluencyFeedback } from '../../types'
 
@@ -30,6 +31,13 @@ export function FluencyMiniFeedback({
 
   const set = (field: keyof FluencyFeedback) => (value: string) =>
     setValues((prev) => ({ ...prev, [field]: value }))
+
+  const useCorrection = (better: string) =>
+    setValues((prev) =>
+      prev.difficultPhrase.trim()
+        ? { ...prev, importantError: better }
+        : { ...prev, difficultPhrase: better },
+    )
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault()
@@ -68,6 +76,17 @@ export function FluencyMiniFeedback({
           rend le feedback beaucoup plus fiable.
         </p>
       )}
+
+      <AiAnalysisPanel
+        audioUrl={recorder?.blobUrl}
+        onUseCorrection={useCorrection}
+        onUseExpression={({ expression, intent }) =>
+          setValues((prev) => ({ ...prev, missedChunk: expression, missedChunkIntent: intent }))
+        }
+        onUseWord={({ word, idea }) =>
+          setValues((prev) => ({ ...prev, missingWord: word, missingWordContext: idea }))
+        }
+      />
 
       <form className="form-stack" onSubmit={handleSubmit}>
         <div className="form-grid">

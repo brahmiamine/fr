@@ -1,0 +1,65 @@
+.ai-error {
+  color: var(--danger, #c0392b);
+  font-weight: 600;
+}
+
+.ai-result h4 {
+  margin: 0.75rem 0 0.25rem;
+  font-size: 0.95rem;
+}
+
+.ai-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.ai-list p {
+  margin: 0 0 0.25rem;
+}
+
+.ai-transcript {
+  margin-top: 0.75rem;
+}
+
+.ai-transcript summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.ai-chat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0.75rem 0;
+}
+
+.ai-chat__bubble {
+  max-width: 88%;
+  padding: 0.6rem 0.85rem;
+  border-radius: 16px;
+  background: var(--surface-2);
+}
+
+.ai-chat__bubble--me {
+  align-self: flex-end;
+  background: var(--gradient);
+  color: #fff;
+}
+
+.ai-coach__tabs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+  padding: 4px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+}
+
+.ai-coach__question {
+  font-size: 1.25rem;
+  font-weight: 700;
+}

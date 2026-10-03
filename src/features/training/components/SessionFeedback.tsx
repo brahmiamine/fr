@@ -4,6 +4,7 @@ import type { Chunk } from '../../../types/content'
 import { SpeakButton } from '../../../components/Speech/SpeakButton'
 import type { FluencyReminder, SessionFeedback } from '../types'
 import { isFeedbackValid } from '../sessionReducer'
+import { AiAnalysisPanel } from '../../ai/AiAnalysisPanel'
 
 export interface SessionFeedbackProps {
   feedback: SessionFeedback
@@ -55,6 +56,21 @@ export function SessionFeedbackView({
           <AudioClip src={audioUrl} label="Écouter mon enregistrement" />
         </div>
       ) : null}
+
+      <AiAnalysisPanel
+        audioUrl={audioUrl}
+        onUseCorrection={(better) =>
+          onChange(feedback.abandonedSentence.trim() ? 'awkwardPhrase' : 'abandonedSentence', better)
+        }
+        onUseExpression={({ expression, intent }) => {
+          onChange('expressionToReuse', expression)
+          onChange('expressionIntent', intent)
+        }}
+        onUseWord={({ word, idea }) => {
+          onChange('blockedWord', word)
+          onChange('blockedWordContext', idea)
+        }}
+      />
 
       {chunksOfDay.length > 0 && onToggleChunk ? (
         <div className="callout">

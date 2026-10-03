@@ -16,6 +16,7 @@ import {
 } from '../../services/progress/progress'
 import { readyProsodyExercises } from '../../services/content/prosodyRepository'
 import { STAGE_META, STAGE_ORDER, prepSecondsForLevel } from '../training/types'
+import { useAiEnabled } from '../ai/useAiEnabled'
 import { ChallengeCard } from './components/ChallengeCard'
 import { HomeHero } from './components/HomeHero'
 import { ProsodyPromo } from './components/ProsodyPromo'
@@ -37,6 +38,7 @@ function todayIndex(): number {
 export default function HomePage() {
   const { state, updateWith } = useAppState()
   const { sessions } = state
+  const aiEnabled = useAiEnabled()
 
   const summary = useMemo(() => {
     const weekKey = getWeekKey()
@@ -111,6 +113,16 @@ export default function HomePage() {
             to="/progress"
             cta="Voir le défi"
             delay={0.36}
+          />
+        ) : null}
+        {aiEnabled ? (
+          <ChallengeCard
+            badge="IA · libre"
+            title="Coach IA"
+            description="Une question surprise sur mesure ou un jeu de rôle, avec analyse de ta réponse."
+            to="/coach"
+            cta="Ouvrir le coach"
+            delay={0.42}
           />
         ) : null}
         <ProsodyPromo

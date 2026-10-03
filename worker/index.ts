@@ -4,12 +4,14 @@ import {
   isConfigured,
   modelFor,
   resolveOrder,
-  type ChatMessage,
   type Env,
 } from './providers'
-
-const MAX_MESSAGES = 20
-const MAX_CONTENT_CHARS = 8000
+import { TASK_NAMES, buildTask, extractJson, type TaskName } from './tasks'
+import {
+  MAX_AUDIO_BYTES,
+  TRANSCRIBE_PROVIDERS,
+  transcribeWithFallback,
+} from './transcribe'
 
 function json(body: unknown, status = 200): Response {
   return new Response(JSON.stringify(body), {
@@ -18,22 +20,17 @@ function json(body: unknown, status = 200): Response {
   })
 }
 
-function parseMessages(raw: unknown): ChatMessage[] | null {
-  if (!Array.isArray(raw) || raw.length === 0 || raw.length > MAX_MESSAGES) return null
-  const messages: ChatMessage[] = []
-  for (const item of raw) {
-    const { role, content } = (item ?? {}) as Partial<ChatMessage>
-    if (
-      (role !== 'system' && role !== 'user' && role !== 'assistant') ||
-      typeof content !== 'string' ||
-      !content.trim() ||
-      content.length > MAX_CONTENT_CHARS
-    ) {
-      return null
-    }
-    messages.push({ role, content })
-  }
-  return messages
+function safeEqual(a: string, b: string): boolean {
+  if (a.length !== b.length) return false
+  let diff = 0
+  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i)
+  return diff === 0
+}
+
+/** True when no access code is required, or the request carries the right one. */
+export function hasAccess(request: Request, env: Env): boolean {
+  if (!env.AI_ACCESS_CODE) return true
+  return safeEqual(request.headers.get('x-access-code') ?? '', env.AI_ACCESS_CODE)
 }
 
 export async function handleApi(request: Request, env: Env): Promise<Response> {
@@ -41,15 +38,20 @@ export async function handleApi(request: Request, env: Env): Promise<Response> {
 
   if (pathname === '/api/status' && request.method === 'GET') {
     return json({
+      accessRequired: Boolean(env.AI_ACCESS_CODE),
+      accessOk: hasAccess(request, env),
       providers: PROVIDER_IDS.map((id) => ({
         id,
         configured: isConfigured(id, env),
         model: modelFor(id, env),
+        transcribe: TRANSCRIBE_PROVIDERS.includes(id),
       })),
     })
   }
 
-  if (pathname === '/api/chat') {
+  if (!hasAccess(request, env)) return json({ error: 'access code required' }, 401)
+
+  if (pathname === '/api/task') {
     if (request.method !== 'POST') return json({ error: 'method not allowed' }, 405)
     let body: Record<string, unknown>
     try {
@@ -57,24 +59,54 @@ export async function handleApi(request: Request, env: Env): Promise<Response> {
     } catch {
       return json({ error: 'invalid JSON' }, 400)
     }
-    const messages = parseMessages(body.messages)
-    if (!messages) return json({ error: 'invalid messages' }, 400)
+    const task = body.task as TaskName
+    if (!TASK_NAMES.includes(task)) return json({ error: 'unknown task' }, 400)
+    const spec = buildTask(task, body.input)
+    if (!spec) return json({ error: 'invalid input' }, 400)
 
-    const order = resolveOrder(body.providers ?? body.provider, env)
+    const order = resolveOrder(body.providers, env)
     if (order.length === 0) return json({ error: 'no provider configured' }, 503)
 
-    const maxTokens =
-      typeof body.maxTokens === 'number' ? Math.min(Math.max(body.maxTokens, 1), 1500) : undefined
-    const temperature =
-      typeof body.temperature === 'number' ? Math.min(Math.max(body.temperature, 0), 1) : undefined
+    // A provider whose answer cannot be parsed counts as failed: try the next one.
+    const failed: string[] = []
+    for (const provider of order) {
+      const { result, failed: failures } = await chatWithFallback([provider], env, spec)
+      if (!result) {
+        failed.push(...failures)
+        continue
+      }
+      if (!spec.json) {
+        return json({ provider: result.provider, model: result.model, data: { text: result.text.trim() }, failed })
+      }
+      const data = spec.shape(extractJson(result.text))
+      if (data) return json({ provider: result.provider, model: result.model, data, failed })
+      failed.push(provider)
+    }
+    return json({ error: 'all providers failed', failed }, 502)
+  }
 
-    const { result, failed } = await chatWithFallback(order, env, {
-      messages,
-      maxTokens,
-      temperature,
-    })
-    if (!result) return json({ error: 'all providers failed', failed }, 502)
-    return json({ ...result, failed })
+  if (pathname === '/api/transcribe') {
+    if (request.method !== 'POST') return json({ error: 'method not allowed' }, 405)
+    let form: FormData
+    try {
+      form = await request.formData()
+    } catch {
+      return json({ error: 'invalid form' }, 400)
+    }
+    const file = form.get('file')
+    if (!(file instanceof Blob) || file.size === 0) return json({ error: 'missing audio' }, 400)
+    if (file.size > MAX_AUDIO_BYTES) return json({ error: 'audio too large' }, 413)
+
+    const order = resolveOrder(
+      String(form.get('providers') ?? ''),
+      env,
+      TRANSCRIBE_PROVIDERS,
+    )
+    if (order.length === 0) return json({ error: 'no transcription provider configured' }, 503)
+
+    const { provider, text, failed } = await transcribeWithFallback(order, env, file, 'fr')
+    if (!provider) return json({ error: 'all providers failed', failed }, 502)
+    return json({ provider, text: text.trim(), failed })
   }
 
   return json({ error: 'not found' }, 404)

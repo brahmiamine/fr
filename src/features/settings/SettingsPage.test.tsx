@@ -33,7 +33,7 @@ describe('SettingsPage', () => {
         <SettingsPage />
       </SettingsProvider>,
     )
-    const toggle = screen.getByRole('switch')
+    const toggle = screen.getByRole('switch', { name: 'Afficher le bouton Passer' })
     expect(toggle).toHaveAttribute('aria-checked', 'true')
     await user.click(toggle)
     expect(toggle).toHaveAttribute('aria-checked', 'false')
