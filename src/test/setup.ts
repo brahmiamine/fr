@@ -4,5 +4,5 @@ import { cleanup } from '@testing-library/react'
 
 afterEach(() => {
   cleanup()
-  window.localStorage?.clear()
+  if (typeof window !== 'undefined') window.localStorage?.clear()
 })

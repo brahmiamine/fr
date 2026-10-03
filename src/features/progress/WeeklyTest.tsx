@@ -5,6 +5,13 @@ import type { FormEvent } from 'react'
 import { useAppState } from '../../app/AppStateProvider'
 import { Timer } from '../../components/Timer/Timer'
 import { useAudioRecorder } from '../../hooks/useAudioRecorder'
+import { useAiEnabled } from '../ai/useAiEnabled'
+import {
+  aiErrorMessage,
+  countFillers,
+  countWords,
+  transcribeAudio,
+} from '../../services/ai/client'
 import { contentRepository } from '../../services/content/contentRepository'
 import {
   getWeekKey,
@@ -54,6 +61,28 @@ export default function WeeklyTest() {
   const [measurement, setMeasurement] = useState(emptyMeasurement())
   const recorder = useAudioRecorder({ measureLevels: true })
   const activity = recorder.activity ?? null
+  const aiEnabled = useAiEnabled()
+  const [aiState, setAiState] = useState<{
+    status: 'idle' | 'loading' | 'done' | 'error'
+    message: string
+    transcript: string
+  }>({ status: 'idle', message: '', transcript: '' })
+
+  const countWithAi = async () => {
+    if (!recorder.blobUrl) return
+    setAiState({ status: 'loading', message: '', transcript: '' })
+    try {
+      const { text } = await transcribeAudio(recorder.blobUrl)
+      setMeasurement((prev) => ({
+        ...prev,
+        wordsSpoken: String(countWords(text)),
+        majorFillers: String(countFillers(text)),
+      }))
+      setAiState({ status: 'done', message: '', transcript: text })
+    } catch (caught) {
+      setAiState({ status: 'error', message: aiErrorMessage(caught), transcript: '' })
+    }
+  }
 
   // Pre-fill what the microphone measured; the learner can still correct it.
   useEffect(() => {
@@ -199,6 +228,33 @@ export default function WeeklyTest() {
                 phrase (difficulté de formulation) des pauses entre deux idées.
               </p>
               <AudioClip src={recorder.blobUrl} label="Écouter mon enregistrement" />
+            </div>
+          ) : null}
+          {aiEnabled && recorder.blobUrl ? (
+            <div className="exercise__rescue" aria-live="polite">
+              <h3>Compter avec l'IA</h3>
+              <p className="muted">
+                L'IA transcrit ton enregistrement pour remplir le nombre de mots et
+                d'hésitations (euh, hum…). Les pauses restent à compter toi-même. L'audio est
+                envoyé à un service d'IA pour cette transcription.
+              </p>
+              <button
+                type="button"
+                className="button button--block"
+                disabled={aiState.status === 'loading'}
+                onClick={() => void countWithAi()}
+              >
+                {aiState.status === 'loading' ? 'Transcription…' : 'Compter les mots et hésitations'}
+              </button>
+              {aiState.status === 'done' ? (
+                <details className="ai-transcript">
+                  <summary>Voir la transcription</summary>
+                  <p>{aiState.transcript}</p>
+                </details>
+              ) : null}
+              {aiState.status === 'error' ? (
+                <p role="alert" className="ai-error">{aiState.message}</p>
+              ) : null}
             </div>
           ) : null}
           {activity ? (

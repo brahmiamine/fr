@@ -1,11 +1,16 @@
 import { NavLink } from 'react-router-dom'
 import { Icon } from '../ui'
-import { MAIN_NAV } from './navigation'
+import { useAiEnabled } from '../../features/ai/useAiEnabled'
+import { AI_NAV, MAIN_NAV } from './navigation'
 
 export function MainNav() {
+  const aiEnabled = useAiEnabled()
+  const items = aiEnabled
+    ? [...MAIN_NAV.slice(0, -1), AI_NAV, ...MAIN_NAV.slice(-1)]
+    : MAIN_NAV
   return (
     <nav className="main-nav" aria-label="Navigation principale">
-      {MAIN_NAV.map((item) => (
+      {items.map((item) => (
         <NavLink
           key={item.to}
           to={item.to}

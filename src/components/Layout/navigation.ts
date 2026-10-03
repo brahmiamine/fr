@@ -14,6 +14,9 @@ export const MAIN_NAV: NavItem[] = [
   { to: '/settings', label: 'Paramètres', icon: 'settings' },
 ]
 
+/** Only offered while AI is switched on in the settings. */
+export const AI_NAV: NavItem = { to: '/coach', label: 'Coach IA', icon: 'chunks' }
+
 export const TAB_NAV: NavItem[] = [
   { to: '/', label: 'Accueil', icon: 'home', end: true },
   { to: '/training', label: 'Séance', icon: 'play' },

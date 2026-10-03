@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { SpeakButton } from '../../../components/Speech/SpeakButton'
 import { Timer } from '../../../components/Timer/Timer'
 import { Button, Callout, DotList, Pill } from '../../../components/ui'
+import { AiWordCheck } from '../../ai/AiWordCheck'
 import type { GapItem } from '../types'
 import {
   GAP_PARAPHRASE_SECONDS,
@@ -90,6 +91,7 @@ export function WordGapsExercise({
         <h1 className="gap-answer">
           Réponse : <strong>{item.target}</strong>
         </h1>
+        <AiWordCheck target={item.target} context={item.context ?? ''} />
         <p className="muted">Était-ce exactement le mot que tu as dit ?</p>
         <div className="stack exercise__ratings">
           <button type="button" className="button" onClick={() => onVerify?.(true)}>

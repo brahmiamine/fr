@@ -13,5 +13,8 @@
   "ai": {
     "binding": "AI"
   },
+  "vars": {
+    "CLOUDFLARE_ACCOUNT_ID": "8797102e392273aed8307e4851d63d79"
+  },
   "previews": {}
 }
