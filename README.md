@@ -225,6 +225,30 @@ Vite est configuré avec `base: '/'` : l'application est servie à la racine du
 domaine. Le routage par hash (`#/training`, …) évite toute règle de
 redirection côté serveur.
 
+### Serveur IA (Worker)
+
+`worker/index.ts` est le code serveur du Worker `fr`. Seules les requêtes
+`/api/*` l'exécutent ; tout le reste est servi directement depuis les fichiers
+statiques. Les clés se créent comme **secrets** dans Cloudflare
+(Workers → `fr` → Settings → Variables and Secrets) :
+
+| Secret | Fournisseur |
+| --- | --- |
+| `GEMINI_API_KEY` | Google Gemini |
+| `GROQ_API_KEY` | Groq |
+| `OPENROUTER_API_KEY` | OpenRouter |
+| `HUGGINGFACE_API_KEY` | Hugging Face |
+
+Cloudflare Workers AI n'a pas de clé : il passe par le binding `AI` de
+`wrangler.jsonc`. Variables optionnelles : `PROVIDER_ORDER` (ex.
+`gemini,groq,cloudflare`) et `<FOURNISSEUR>_MODEL` (ex. `GROQ_MODEL`).
+
+- `GET /api/status` : fournisseurs configurés (jamais les clés) ;
+- `POST /api/chat` : `{ messages, providers?, maxTokens?, temperature? }` ;
+  essaie les fournisseurs dans l'ordre et passe au suivant en cas d'échec.
+
+Aucune interface n'appelle encore l'IA : l'application fonctionne comme avant.
+
 ## Interface web et PWA
 
 Parle+ est un **site web mobile-first installable comme application** :

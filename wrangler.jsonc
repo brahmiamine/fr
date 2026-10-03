@@ -1,9 +1,17 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "fr",
+  "main": "worker/index.ts",
   "compatibility_date": "2025-01-01",
   "assets": {
-    "directory": "./dist"
+    "directory": "./dist",
+    "binding": "ASSETS",
+    // Only /api/* runs the Worker; every other request is served straight
+    // from the static assets, exactly as before.
+    "run_worker_first": ["/api/*"]
+  },
+  "ai": {
+    "binding": "AI"
   },
   "previews": {}
 }
