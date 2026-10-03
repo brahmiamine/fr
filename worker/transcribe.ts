@@ -12,6 +12,24 @@ export const TRANSCRIBE_PROVIDERS: readonly ProviderId[] = [
   'cloudflare',
 ]
 
+function transcribeModel(value: string | undefined, fallback: string): string {
+  return value?.trim() || fallback
+}
+
+/** Model used to transcribe with a given provider. */
+export function transcribeModelFor(provider: ProviderId, env: Env): string {
+  switch (provider) {
+    case 'groq':
+      return transcribeModel(env.GROQ_TRANSCRIBE_MODEL, 'whisper-large-v3-turbo')
+    case 'mistral':
+      return transcribeModel(env.MISTRAL_TRANSCRIBE_MODEL, 'voxtral-mini-latest')
+    case 'gemini':
+      return transcribeModel(env.GEMINI_TRANSCRIBE_MODEL, 'gemini-3.8-flash')
+    default:
+      return transcribeModel(env.CLOUDFLARE_TRANSCRIBE_MODEL, '@cf/openai/whisper-large-v3-turbo')
+  }
+}
+
 export const MAX_AUDIO_BYTES = 10 * 1024 * 1024
 
 function toBase64(bytes: Uint8Array): string {
@@ -57,7 +75,7 @@ export async function transcribeWith(
       return multipartTranscription(
         'https://api.groq.com/openai/v1/audio/transcriptions',
         env.GROQ_API_KEY as string,
-        'whisper-large-v3-turbo',
+        transcribeModel(env.GROQ_TRANSCRIBE_MODEL, 'whisper-large-v3-turbo'),
         file,
         language,
       )
@@ -65,14 +83,16 @@ export async function transcribeWith(
       return multipartTranscription(
         'https://api.mistral.ai/v1/audio/transcriptions',
         env.MISTRAL_API_KEY as string,
-        'voxtral-mini-latest',
+        transcribeModel(env.MISTRAL_TRANSCRIBE_MODEL, 'voxtral-mini-latest'),
         file,
         language,
       )
     case 'gemini': {
       const bytes = new Uint8Array(await file.arrayBuffer())
       const response = await fetch(
-        'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent',
+        `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(
+          transcribeModel(env.GEMINI_TRANSCRIBE_MODEL, 'gemini-3.8-flash'),
+        )}:generateContent`,
         {
           method: 'POST',
           headers: {
@@ -112,7 +132,7 @@ export async function transcribeWith(
     }
     case 'cloudflare': {
       const bytes = new Uint8Array(await file.arrayBuffer())
-      const data = (await runCloudflare(env, '@cf/openai/whisper-large-v3-turbo', {
+      const data = (await runCloudflare(env, transcribeModel(env.CLOUDFLARE_TRANSCRIBE_MODEL, '@cf/openai/whisper-large-v3-turbo'), {
         audio: toBase64(bytes),
         language,
       })) as { text?: string } | null

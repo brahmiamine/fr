@@ -1,13 +1,18 @@
 import { useSettings } from '../../app/SettingsProvider'
 import { Card, Eyebrow } from '../../components/ui'
 import { AiSettingsCard } from '../ai/AiSettingsCard'
-import type { ThemeMode } from '../../services/settings/settings'
+import type { ThemeMode, ThemeStyle } from '../../services/settings/settings'
 import './settings.css'
 
 const THEMES: { value: ThemeMode; label: string }[] = [
   { value: 'system', label: 'Auto' },
   { value: 'light', label: 'Clair' },
   { value: 'dark', label: 'Sombre' },
+]
+
+const STYLES: { value: ThemeStyle; label: string }[] = [
+  { value: 'aurora', label: 'Aurora' },
+  { value: 'pulse', label: 'Pulse' },
 ]
 
 export default function SettingsPage() {
@@ -34,6 +39,23 @@ export default function SettingsPage() {
               onClick={() => updateSettings({ theme: theme.value })}
             >
               {theme.label}
+            </button>
+          ))}
+        </div>
+        <p className="muted settings__subtitle">
+          Style : Aurora (indigo et rose) ou Pulse (corail et magenta).
+        </p>
+        <div className="settings__segmented settings__segmented--two" role="radiogroup" aria-label="Style">
+          {STYLES.map((style) => (
+            <button
+              key={style.value}
+              type="button"
+              role="radio"
+              aria-checked={settings.themeStyle === style.value}
+              className={`settings__option${settings.themeStyle === style.value ? ' is-active' : ''}`}
+              onClick={() => updateSettings({ themeStyle: style.value })}
+            >
+              {style.label}
             </button>
           ))}
         </div>

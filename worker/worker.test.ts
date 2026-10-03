@@ -123,6 +123,7 @@ describe('/api/task', () => {
     )
     const data = (await response.json()) as { data: Record<string, unknown>; provider: string }
     expect(data.provider).toBe('groq')
+    expect(data).toMatchObject({ usage: null })
     expect(data.data).toMatchObject({
       summary: 'Bravo',
       corrections: [{ better: 'je partage ton avis' }],
@@ -183,5 +184,30 @@ describe('/api/transcribe', () => {
       { ASSETS: assets, GROQ_API_KEY: 'k' },
     )
     expect(response.status).toBe(400)
+  })
+})
+
+describe('usage reporting', () => {
+  it('returns provider token counts and latency', async () => {
+    vi.spyOn(globalThis, 'fetch').mockImplementation(async () =>
+      new Response(
+        JSON.stringify({
+          choices: [{ message: { content: '{"text":"Ta ville ?"}' } }],
+          usage: { prompt_tokens: 12, completion_tokens: 7, total_tokens: 19 },
+        }),
+      ),
+    )
+    const response = await handleApi(
+      task({ task: 'question', providers: ['groq'], input: {} }),
+      { ASSETS: assets, GROQ_API_KEY: 'k' },
+    )
+    const data = (await response.json()) as {
+      model: string
+      usage: { promptTokens: number; completionTokens: number; totalTokens: number }
+      latencyMs: number
+    }
+    expect(data.usage).toEqual({ promptTokens: 12, completionTokens: 7, totalTokens: 19 })
+    expect(data.model).toBe('llama-3.3-70b-versatile')
+    expect(data.latencyMs).toBeGreaterThanOrEqual(0)
   })
 })

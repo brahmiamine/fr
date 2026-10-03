@@ -1,5 +1,6 @@
 import { AudioClip } from '../../../../components/AudioClip/AudioClip'
 import { Button, Card, Pill } from '../../../../components/ui'
+import { AiAnalysisPanel } from '../../../ai/AiAnalysisPanel'
 import type { RoundRecordings } from '../../useFluencyRecordings'
 import { ROUND_LABELS } from './RoundPills'
 
@@ -36,6 +37,7 @@ export function FluencySummary({ recordings, onContinue }: FluencySummaryProps) 
             ) : (
               <span className="muted">{label} · pas d'enregistrement</span>
             )}
+            <AiAnalysisPanel audioUrl={recordings[index]} />
             {recordings[index] ? (
               <a
                 className="fluency-summary__download"

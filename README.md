@@ -261,13 +261,14 @@ libre à un modèle. Les clés se créent comme **secrets** dans Cloudflare
 | `COHERE_API_KEY` | Cohere |
 
 Variables optionnelles : `PROVIDER_ORDER` (ex. `gemini,groq,cloudflare`),
-`<FOURNISSEUR>_MODEL` (ex. `GROQ_MODEL`) et **`AI_ACCESS_CODE`** : si défini,
-chaque requête doit porter ce code (champ « Code d'accès » des paramètres), pour
-que personne d'autre n'use vos quotas gratuits.
+`<FOURNISSEUR>_MODEL` (ex. `GROQ_MODEL`) et `<FOURNISSEUR>_TRANSCRIBE_MODEL` pour la transcription et `AI_ACCESS_CODE` (réservé : l'application n'a plus de champ pour saisir un
+code, ne le définissez pas, sinon le serveur refusera toutes les requêtes).
 
 - `GET /api/status` : fournisseurs configurés (jamais les clés) ;
 - `POST /api/task` : `analyze-speech`, `judge-word`, `question`, `roleplay` ;
 - `POST /api/transcribe` : transcription (Groq, Mistral, Gemini, Workers AI).
+
+Les réponses portent les tokens consommés et le temps de réponse : l'écran Paramètres affiche, par modèle, les requêtes, échecs, tokens, audio transcrit et temps moyen (comptés dans le navigateur, avec un bouton de remise à zéro).
 
 Chaque appel essaie les fournisseurs dans l'ordre et passe au suivant en cas
 d'échec, de quota épuisé ou de réponse inexploitable. Quand l'IA est utilisée,

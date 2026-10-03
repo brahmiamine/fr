@@ -70,7 +70,11 @@ export function AiAnalysisPanel({
   }
 
   return (
-    <Callout title="Analyse par l'IA" tone="soft" aria-live="polite">
+    <Callout
+      title={status === 'done' ? undefined : "Analyse par l'IA"}
+      tone="soft"
+      aria-live="polite"
+    >
       {status === 'idle' || status === 'error' ? (
         <>
           <p className="muted">
@@ -91,6 +95,13 @@ export function AiAnalysisPanel({
 
       {status === 'done' ? (
         <div className="ai-result">
+          {transcript ? (
+            <details className="ai-transcript">
+              <summary>Voir la transcription</summary>
+              <p>{transcript}</p>
+            </details>
+          ) : null}
+          {analysis ? <h3 className="callout__title">Analyse par l'IA</h3> : null}
           {!analysis ? (
             <p className="muted">
               Je n'ai pas entendu assez de parole pour analyser. Réessaie avec un
@@ -167,12 +178,6 @@ export function AiAnalysisPanel({
             </>
           )}
 
-          {transcript ? (
-            <details className="ai-transcript">
-              <summary>Voir la transcription</summary>
-              <p>{transcript}</p>
-            </details>
-          ) : null}
         </div>
       ) : null}
     </Callout>

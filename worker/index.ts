@@ -10,6 +10,7 @@ import { TASK_NAMES, buildTask, extractJson, type TaskName } from './tasks'
 import {
   MAX_AUDIO_BYTES,
   TRANSCRIBE_PROVIDERS,
+  transcribeModelFor,
   transcribeWithFallback,
 } from './transcribe'
 
@@ -69,6 +70,7 @@ export async function handleApi(request: Request, env: Env): Promise<Response> {
 
     // A provider whose answer cannot be parsed counts as failed: try the next one.
     const failed: string[] = []
+    const startedAt = Date.now()
     for (const provider of order) {
       const { result, failed: failures } = await chatWithFallback([provider], env, spec)
       if (!result) {
@@ -76,10 +78,26 @@ export async function handleApi(request: Request, env: Env): Promise<Response> {
         continue
       }
       if (!spec.json) {
-        return json({ provider: result.provider, model: result.model, data: { text: result.text.trim() }, failed })
+        return json({
+          provider: result.provider,
+          model: result.model,
+          data: { text: result.text.trim() },
+          usage: result.usage,
+          latencyMs: Date.now() - startedAt,
+          failed,
+        })
       }
       const data = spec.shape(extractJson(result.text))
-      if (data) return json({ provider: result.provider, model: result.model, data, failed })
+      if (data) {
+        return json({
+          provider: result.provider,
+          model: result.model,
+          data,
+          usage: result.usage,
+          latencyMs: Date.now() - startedAt,
+          failed,
+        })
+      }
       failed.push(provider)
     }
     return json({ error: 'all providers failed', failed }, 502)
@@ -104,9 +122,17 @@ export async function handleApi(request: Request, env: Env): Promise<Response> {
     )
     if (order.length === 0) return json({ error: 'no transcription provider configured' }, 503)
 
+    const startedAt = Date.now()
     const { provider, text, failed } = await transcribeWithFallback(order, env, file, 'fr')
     if (!provider) return json({ error: 'all providers failed', failed }, 502)
-    return json({ provider, text: text.trim(), failed })
+    return json({
+      provider,
+      model: transcribeModelFor(provider, env),
+      text: text.trim(),
+      audioBytes: file.size,
+      latencyMs: Date.now() - startedAt,
+      failed,
+    })
   }
 
   return json({ error: 'not found' }, 404)

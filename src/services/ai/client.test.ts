@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { SETTINGS_KEY } from '../settings/settings'
+import { clearAiStats, loadAiStats } from './stats'
 import {
   AiError,
   countFillers,
@@ -25,16 +26,53 @@ describe('AI master switch', () => {
     expect(fetchMock).not.toHaveBeenCalled()
   })
 
-  it('sends the access code and the chosen provider once enabled', async () => {
-    setAi({ aiEnabled: true, aiAccessCode: ' sesame ', aiProvider: 'groq' })
+  it('sends only to the chosen provider once enabled', async () => {
+    setAi({ aiEnabled: true, aiProvider: 'groq' })
     const fetchMock = vi
       .spyOn(globalThis, 'fetch')
-      .mockResolvedValue(new Response(JSON.stringify({ data: { text: 'ok' }, provider: 'groq' })))
+      .mockResolvedValue(new Response(
+          JSON.stringify({
+            data: { text: 'ok' },
+            provider: 'groq',
+            model: 'llama',
+            usage: { promptTokens: 10, completionTokens: 5, totalTokens: 15 },
+            latencyMs: 120,
+            failed: ['gemini'],
+          }),
+        ))
     await runAiTask('question', { theme: 'voyage' })
     const [url, init] = fetchMock.mock.calls[0]
     expect(String(url)).toBe('/api/task')
-    expect((init?.headers as Record<string, string>)['x-access-code']).toBe('sesame')
     expect(JSON.parse(String(init?.body)).providers).toEqual(['groq'])
+  })
+
+  it('records usage per model, with failures counted for the providers that missed', async () => {
+    setAi({ aiEnabled: true })
+    vi.spyOn(globalThis, 'fetch').mockImplementation(async () =>
+      new Response(
+        JSON.stringify({
+          data: {},
+          provider: 'groq',
+          model: 'llama',
+          usage: { promptTokens: 10, completionTokens: 5, totalTokens: 15 },
+          latencyMs: 120,
+          failed: ['gemini'],
+        }),
+      ),
+    )
+    await runAiTask('question', {})
+    await runAiTask('question', {})
+    const stats = loadAiStats()
+    expect(stats['groq:text']).toMatchObject({
+      model: 'llama',
+      requests: 2,
+      successes: 2,
+      totalTokens: 30,
+      totalLatencyMs: 240,
+    })
+    expect(stats['gemini:text']).toMatchObject({ requests: 2, failures: 2 })
+    clearAiStats()
+    expect(loadAiStats()).toEqual({})
   })
 
   it('maps server errors to readable codes', async () => {

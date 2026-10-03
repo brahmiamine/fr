@@ -43,6 +43,7 @@ function recorder(overrides: Partial<AudioRecorder> = {}): AudioRecorder {
     start: vi.fn(),
     stop: vi.fn(),
     reset: vi.fn(),
+    release: vi.fn(),
     ...overrides,
   }
 }
