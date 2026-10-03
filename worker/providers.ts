@@ -65,10 +65,36 @@ export interface Env {
   AI_ACCESS_CODE?: string
 }
 
+export interface Usage {
+  promptTokens: number
+  completionTokens: number
+  totalTokens: number
+}
+
 export interface ChatResult {
   provider: ProviderId
   model: string
   text: string
+  usage: Usage | null
+}
+
+interface Completion {
+  text: string
+  usage: Usage | null
+}
+
+function num(value: unknown): number {
+  return typeof value === 'number' && Number.isFinite(value) ? value : 0
+}
+
+/** Token counts as reported by the provider, whatever their field names. */
+function toUsage(raw: unknown, names: [string, string, string]): Usage | null {
+  if (!raw || typeof raw !== 'object') return null
+  const data = raw as Record<string, unknown>
+  const promptTokens = num(data[names[0]])
+  const completionTokens = num(data[names[1]])
+  const totalTokens = num(data[names[2]]) || promptTokens + completionTokens
+  return totalTokens > 0 ? { promptTokens, completionTokens, totalTokens } : null
 }
 
 const DEFAULT_MODELS: Record<ProviderId, string> = {
@@ -177,7 +203,7 @@ async function openAiCompatible(
   messages: ChatMessage[],
   maxTokens: number,
   temperature: number,
-): Promise<string> {
+): Promise<Completion> {
   const spec = OPENAI_COMPATIBLE[provider]
   const key = spec?.key(env)
   if (!spec || !key) throw new Error('not configured')
@@ -193,10 +219,11 @@ async function openAiCompatible(
   if (!response.ok) throw new Error(`HTTP ${response.status}`)
   const data = (await response.json()) as {
     choices?: { message?: { content?: string } }[]
+    usage?: unknown
   }
   const text = data.choices?.[0]?.message?.content
   if (typeof text !== 'string' || !text.trim()) throw new Error('empty response')
-  return text
+  return { text, usage: toUsage(data.usage, ['prompt_tokens', 'completion_tokens', 'total_tokens']) }
 }
 
 async function callGemini(
@@ -205,7 +232,7 @@ async function callGemini(
   messages: ChatMessage[],
   maxTokens: number,
   temperature: number,
-): Promise<string> {
+): Promise<Completion> {
   const system = messages.filter((m) => m.role === 'system').map((m) => m.content)
   const contents = messages
     .filter((m) => m.role !== 'system')
@@ -230,12 +257,20 @@ async function callGemini(
   if (!response.ok) throw new Error(`HTTP ${response.status}`)
   const data = (await response.json()) as {
     candidates?: { content?: { parts?: { text?: string }[] } }[]
+    usageMetadata?: unknown
   }
   const text = data.candidates?.[0]?.content?.parts
     ?.map((part) => part.text ?? '')
     .join('')
   if (!text?.trim()) throw new Error('empty response')
-  return text
+  return {
+    text,
+    usage: toUsage(data.usageMetadata, [
+      'promptTokenCount',
+      'candidatesTokenCount',
+      'totalTokenCount',
+    ]),
+  }
 }
 
 /** Runs a Workers AI model through the binding, or over REST when there is none. */
@@ -262,15 +297,15 @@ async function callCloudflare(
   messages: ChatMessage[],
   maxTokens: number,
   temperature: number,
-): Promise<string> {
+): Promise<Completion> {
   const data = (await runCloudflare(env, model, {
     messages,
     max_tokens: maxTokens,
     temperature,
-  })) as { response?: string } | null
+  })) as { response?: string; usage?: unknown } | null
   const text = data?.response
   if (typeof text !== 'string' || !text.trim()) throw new Error('empty response')
-  return text
+  return { text, usage: toUsage(data?.usage, ['prompt_tokens', 'completion_tokens', 'total_tokens']) }
 }
 
 export interface ChatOptions {
@@ -285,15 +320,15 @@ export async function callProvider(
   { messages, maxTokens = 700, temperature = 0.4 }: ChatOptions,
 ): Promise<ChatResult> {
   const model = modelFor(provider, env)
-  let text: string
+  let completion: Completion
   if (provider === 'gemini') {
-    text = await callGemini(env.GEMINI_API_KEY as string, model, messages, maxTokens, temperature)
+    completion = await callGemini(env.GEMINI_API_KEY as string, model, messages, maxTokens, temperature)
   } else if (provider === 'cloudflare') {
-    text = await callCloudflare(env, model, messages, maxTokens, temperature)
+    completion = await callCloudflare(env, model, messages, maxTokens, temperature)
   } else {
-    text = await openAiCompatible(provider, env, model, messages, maxTokens, temperature)
+    completion = await openAiCompatible(provider, env, model, messages, maxTokens, temperature)
   }
-  return { provider, model, text }
+  return { provider, model, ...completion }
 }
 
 /** Tries each provider in order and returns the first success. */

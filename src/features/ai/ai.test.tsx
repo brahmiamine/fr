@@ -91,8 +91,6 @@ describe('AI on', () => {
     vi.spyOn(globalThis, 'fetch').mockResolvedValue(
       new Response(
         JSON.stringify({
-          accessRequired: false,
-          accessOk: true,
           providers: [{ id: 'groq', configured: true, model: 'm', transcribe: true }],
         }),
       ),

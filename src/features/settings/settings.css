@@ -76,3 +76,11 @@
 .settings__switch.is-on .settings__knob {
   transform: translateX(22px);
 }
+
+.settings__segmented--two {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.settings__subtitle {
+  margin-top: 16px;
+}

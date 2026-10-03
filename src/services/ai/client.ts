@@ -1,4 +1,5 @@
 import { loadSettings } from '../settings/settings'
+import { recordAiFailures, recordAiSuccess } from './stats'
 
 /** Providers the server can use, in its default fallback order. */
 export const AI_PROVIDERS: { id: string; label: string }[] = [
@@ -20,22 +21,24 @@ export interface AiProviderStatus {
 }
 
 export interface AiStatus {
-  accessRequired: boolean
-  accessOk: boolean
   providers: AiProviderStatus[]
 }
 
 export type AiErrorCode = 'disabled' | 'access' | 'unavailable' | 'network' | 'failed'
 
 export class AiError extends Error {
-  constructor(readonly code: AiErrorCode) {
+  constructor(
+    readonly code: AiErrorCode,
+    /** Providers the server tried without success. */
+    readonly failed: string[] = [],
+  ) {
     super(code)
   }
 }
 
 const MESSAGES: Record<AiErrorCode, string> = {
   disabled: "L'IA est désactivée dans les paramètres.",
-  access: "Code d'accès refusé : vérifie-le dans les paramètres.",
+  access: "Le serveur d'IA refuse cette requête.",
   unavailable: "Aucun service d'IA n'est configuré sur le serveur.",
   network: "Impossible de joindre le serveur d'IA. Réessaie dans un instant.",
   failed: "Les services d'IA n'ont pas répondu. Réessaie dans un instant.",
@@ -61,11 +64,6 @@ function requireEnabled() {
   if (!isAiEnabled()) throw new AiError('disabled')
 }
 
-function accessHeaders(): Record<string, string> {
-  const code = currentSettings().aiAccessCode.trim()
-  return code ? { 'x-access-code': code } : {}
-}
-
 function providersParam(): string[] | undefined {
   const { aiProvider } = currentSettings()
   return aiProvider === 'auto' ? undefined : [aiProvider]
@@ -81,13 +79,17 @@ async function send(path: string, init: RequestInit): Promise<Response> {
   if (response.status === 401) throw new AiError('access')
   if (response.status === 503) throw new AiError('unavailable')
   if (response.status === 404) throw new AiError('network')
-  if (!response.ok) throw new AiError('failed')
+  if (!response.ok) {
+    const body = (await response.json().catch(() => null)) as { failed?: unknown } | null
+    const failed = Array.isArray(body?.failed) ? body.failed.map(String) : []
+    throw new AiError('failed', failed)
+  }
   return response
 }
 
 export async function fetchAiStatus(): Promise<AiStatus> {
   requireEnabled()
-  const response = await send('api/status', { headers: accessHeaders() })
+  const response = await send('api/status', {})
   return (await response.json()) as AiStatus
 }
 
@@ -98,12 +100,34 @@ export async function runAiTask<T>(
   input: unknown,
 ): Promise<{ data: T; provider: string }> {
   requireEnabled()
-  const response = await send('api/task', {
-    method: 'POST',
-    headers: { 'content-type': 'application/json', ...accessHeaders() },
-    body: JSON.stringify({ task, input, providers: providersParam() }),
+  let response: Response
+  try {
+    response = await send('api/task', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ task, input, providers: providersParam() }),
+    })
+  } catch (caught) {
+    if (caught instanceof AiError) recordAiFailures(caught.failed, 'text')
+    throw caught
+  }
+  const result = (await response.json()) as {
+    data: T
+    provider: string
+    model: string
+    usage: { promptTokens: number; completionTokens: number; totalTokens: number } | null
+    latencyMs: number
+    failed: string[]
+  }
+  recordAiSuccess({
+    provider: result.provider,
+    kind: 'text',
+    model: result.model,
+    ...result.usage,
+    latencyMs: result.latencyMs,
+    failed: result.failed,
   })
-  return (await response.json()) as { data: T; provider: string }
+  return { data: result.data, provider: result.provider }
 }
 
 /** Transcribes an in-memory recording (a blob: URL from the recorder). */
@@ -121,12 +145,31 @@ export async function transcribeAudio(
   form.append('file', blob, 'audio.webm')
   const providers = providersParam()
   if (providers) form.append('providers', providers.join(','))
-  const response = await send('api/transcribe', {
-    method: 'POST',
-    headers: accessHeaders(),
-    body: form,
+  let response: Response
+  try {
+    response = await send('api/transcribe', { method: 'POST', body: form })
+  } catch (caught) {
+    if (caught instanceof AiError) recordAiFailures(caught.failed, 'audio')
+    throw caught
+  }
+  const result = (await response.json()) as {
+    text: string
+    provider: string
+    model: string
+    audioBytes: number
+    latencyMs: number
+    failed: string[]
+  }
+  recordAiSuccess({
+    provider: result.provider,
+    kind: 'audio',
+    model: result.model,
+    audioBytes: result.audioBytes,
+    words: countWords(result.text),
+    latencyMs: result.latencyMs,
+    failed: result.failed,
   })
-  return (await response.json()) as { text: string; provider: string }
+  return { text: result.text, provider: result.provider }
 }
 
 export interface SpeechAnalysis {

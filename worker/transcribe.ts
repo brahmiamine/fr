@@ -16,6 +16,20 @@ function transcribeModel(value: string | undefined, fallback: string): string {
   return value?.trim() || fallback
 }
 
+/** Model used to transcribe with a given provider. */
+export function transcribeModelFor(provider: ProviderId, env: Env): string {
+  switch (provider) {
+    case 'groq':
+      return transcribeModel(env.GROQ_TRANSCRIBE_MODEL, 'whisper-large-v3-turbo')
+    case 'mistral':
+      return transcribeModel(env.MISTRAL_TRANSCRIBE_MODEL, 'voxtral-mini-latest')
+    case 'gemini':
+      return transcribeModel(env.GEMINI_TRANSCRIBE_MODEL, 'gemini-3.8-flash')
+    default:
+      return transcribeModel(env.CLOUDFLARE_TRANSCRIBE_MODEL, '@cf/openai/whisper-large-v3-turbo')
+  }
+}
+
 export const MAX_AUDIO_BYTES = 10 * 1024 * 1024
 
 function toBase64(bytes: Uint8Array): string {

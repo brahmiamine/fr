@@ -7,12 +7,13 @@ import {
   fetchAiStatus,
 } from '../../services/ai/client'
 import type { AiStatus } from '../../services/ai/client'
+import { AiStatsTable } from './AiStatsTable'
 import './ai.css'
 
 /** Master switch, provider choice and access code for every AI feature. */
 export function AiSettingsCard() {
   const { settings, updateSettings } = useSettings()
-  const { aiEnabled, aiProvider, aiAccessCode } = settings
+  const { aiEnabled, aiProvider } = settings
   const [status, setStatus] = useState<AiStatus | null>(null)
   const [error, setError] = useState('')
 
@@ -40,7 +41,7 @@ export function AiSettingsCard() {
     return () => {
       cancelled = true
     }
-  }, [aiEnabled, aiAccessCode])
+  }, [aiEnabled])
 
   const configured = status?.providers.filter((provider) => provider.configured) ?? []
 
@@ -90,24 +91,8 @@ export function AiSettingsCard() {
             </select>
           </div>
 
-          <div className="field">
-            <label htmlFor="ai-access-code">Code d'accès (si le serveur en demande un)</label>
-            <input
-              id="ai-access-code"
-              type="password"
-              value={aiAccessCode}
-              onChange={(event) => updateSettings({ aiAccessCode: event.target.value })}
-              autoComplete="off"
-            />
-          </div>
-
           <div aria-live="polite">
             {error ? <p role="alert" className="ai-error">{error}</p> : null}
-            {status?.accessRequired && !status.accessOk ? (
-              <p role="alert" className="ai-error">
-                Ce serveur demande un code d'accès valide.
-              </p>
-            ) : null}
             {status ? (
               configured.length > 0 ? (
                 <p className="muted">
@@ -123,6 +108,8 @@ export function AiSettingsCard() {
               )
             ) : null}
           </div>
+
+          <AiStatsTable />
         </div>
       ) : null}
     </Card>

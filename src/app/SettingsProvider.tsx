@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import type { ReactNode } from 'react'
-import { DEFAULT_SETTINGS, applyTheme, loadSettings, saveSettings } from '../services/settings/settings'
+import { DEFAULT_SETTINGS, applyTheme, applyThemeStyle, loadSettings, saveSettings } from '../services/settings/settings'
 import type { AppSettings } from '../services/settings/settings'
 
 interface SettingsContextValue {
@@ -21,6 +21,10 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     applyTheme(settings.theme)
   }, [settings.theme])
+
+  useEffect(() => {
+    applyThemeStyle(settings.themeStyle)
+  }, [settings.themeStyle])
 
   const updateSettings = useCallback((patch: Partial<AppSettings>) => {
     setSettings((prev) => {
