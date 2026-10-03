@@ -14,30 +14,31 @@ export function useFluencyRecordings(
   fluency: TrainingSessionState['fluency'] | undefined,
 ): RoundRecordings {
   const [recordings, setRecordings] = useState<RoundRecordings>({})
-  // The round being stopped, remembered synchronously: the recorder reports its
-  // blob back later, possibly once the next round already started.
-  const stoppedRoundRef = useRef<number | null>(null)
+  // Rounds whose recording is being stopped, oldest first. The recorder reports
+  // each blob back later, possibly once the next round already started, so the
+  // blobs are matched to rounds in order.
+  const pendingRoundsRef = useRef<number[]>([])
 
   const recordAll = fluency?.recordAll ?? false
   const stage = fluency?.stage
   const roundIndex = fluency?.roundIndex ?? 0
-  const { blobUrl, start, status, stop, supported } = recorder
+  const { blobUrl, start, stop, supported } = recorder
 
+  // One fresh recording per round, started as the round starts.
   useEffect(() => {
     if (!recordAll || !supported || stage !== 'running') return
     void start()
     return () => {
-      stoppedRoundRef.current = roundIndex
-      stop()
+      if (stop()) pendingRoundsRef.current.push(roundIndex)
     }
   }, [recordAll, supported, stage, roundIndex, start, stop])
 
   useEffect(() => {
-    const finishedRound = stoppedRoundRef.current
-    if (status !== 'stopped' || !blobUrl || finishedRound === null) return
-    stoppedRoundRef.current = null
+    if (!blobUrl) return
+    const finishedRound = pendingRoundsRef.current.shift()
+    if (finishedRound === undefined) return
     setRecordings((previous) => ({ ...previous, [finishedRound]: blobUrl }))
-  }, [status, blobUrl])
+  }, [blobUrl])
 
   return recordings
 }

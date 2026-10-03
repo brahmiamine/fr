@@ -133,7 +133,7 @@ function skipFor(
 
 export default function TrainingPage() {
   const { state, updateWith } = useAppState()
-  const sessionRecorder = useAudioRecorder()
+  const sessionRecorder = useAudioRecorder({ keepStream: true })
 
   const initialSession = useMemo<TrainingSessionState | null>(() => {
     // An unfinished session saved by an older version restarts cleanly.
@@ -156,6 +156,16 @@ export default function TrainingPage() {
   )
 
   const roundRecordings = useFluencyRecordings(sessionRecorder, session?.fluency)
+
+  // The microphone stays open across the four rounds, then is handed back.
+  const fluencyRecording =
+    Boolean(session) &&
+    getCurrentStage(session) === 'fluency' &&
+    session.fluency.stage !== 'summary'
+  const releaseMicrophone = sessionRecorder.release
+  useEffect(() => {
+    if (!fluencyRecording) releaseMicrophone()
+  }, [fluencyRecording, releaseMicrophone])
 
   useEffect(() => {
     if (!session || session.phase === 'complete') return

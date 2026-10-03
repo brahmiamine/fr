@@ -17,13 +17,22 @@ export interface AudioRecorder {
   /** Pauses / start delay measured on the last recording (measureLevels). */
   activity?: SpeechActivity | null
   start: () => Promise<void>
-  stop: () => void
+  /** Returns true when a recording was actually running and is now stopping. */
+  stop: () => boolean
   reset: () => void
+  /** Closes a microphone kept open by `keepStream`. A running recording is left alone. */
+  release: () => void
 }
 
 export interface AudioRecorderOptions {
   /** Sample the microphone level to measure pauses objectively. */
   measureLevels?: boolean
+  /**
+   * Keep the microphone open between recordings, so a series of short ones (the
+   * four rounds of the 4 → 3 → 2) starts instantly and never re-asks for access.
+   * The caller closes it with `release()`.
+   */
+  keepStream?: boolean
 }
 
 const LEVEL_FRAME_MS = 50
@@ -45,6 +54,7 @@ function audioContextConstructor(): AudioContextConstructor | null {
  */
 export function useAudioRecorder(options: AudioRecorderOptions = {}): AudioRecorder {
   const measureLevels = options.measureLevels ?? false
+  const keepStream = options.keepStream ?? false
   const supported =
     typeof window !== 'undefined' &&
     'MediaRecorder' in window &&
@@ -103,10 +113,21 @@ export function useAudioRecorder(options: AudioRecorderOptions = {}): AudioRecor
     setBlobUrl(null)
   }, [])
 
-  const stop = useCallback(() => {
+  const stop = useCallback((): boolean => {
     stopRequestedRef.current = true
     const recorder = recorderRef.current
-    if (recorder && recorder.state !== 'inactive') recorder.stop()
+    if (recorder && recorder.state !== 'inactive') {
+      recorder.stop()
+      return true
+    }
+    return false
+  }, [])
+
+  const release = useCallback(() => {
+    const recorder = recorderRef.current
+    if (recorder && recorder.state !== 'inactive') return
+    streamRef.current?.getTracks().forEach((track) => track.stop())
+    streamRef.current = null
   }, [])
 
   const start = useCallback(async () => {
@@ -124,10 +145,14 @@ export function useAudioRecorder(options: AudioRecorderOptions = {}): AudioRecor
     stopRequestedRef.current = false
     try {
       setStatus('requesting')
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      const reusable = keepStream ? streamRef.current : null
+      const stream =
+        reusable && reusable.getTracks().some((track) => track.readyState === 'live')
+          ? reusable
+          : await navigator.mediaDevices.getUserMedia({ audio: true })
       // The round ended while the microphone was opening: release it unwrapped.
       if (stopRequestedRef.current) {
-        stream.getTracks().forEach((track) => track.stop())
+        if (!keepStream) stream.getTracks().forEach((track) => track.stop())
         setStatus('idle')
         return
       }
@@ -157,9 +182,13 @@ export function useAudioRecorder(options: AudioRecorderOptions = {}): AudioRecor
         const url = URL.createObjectURL(blob)
         urlsRef.current.push(url)
         setBlobUrl(url)
-        stream.getTracks().forEach((track) => track.stop())
-        streamRef.current = null
-        setStatus('stopped')
+        if (!keepStream) {
+          stream.getTracks().forEach((track) => track.stop())
+          streamRef.current = null
+        }
+        // A newer recording may already have started on the same microphone:
+        // only the latest one decides the status.
+        if (recorderRef.current === recorder) setStatus('stopped')
       }
 
       recorder.start()
@@ -168,7 +197,7 @@ export function useAudioRecorder(options: AudioRecorderOptions = {}): AudioRecor
     } catch {
       setStatus('denied')
     }
-  }, [supported, releaseUrl, measureLevels, startMeter, stopMeter])
+  }, [supported, measureLevels, keepStream, startMeter, stopMeter])
 
   // Stop the recorder and release the microphone on unmount.
   useEffect(() => {
@@ -184,5 +213,5 @@ export function useAudioRecorder(options: AudioRecorderOptions = {}): AudioRecor
     }
   }, [releaseUrl, stopMeter])
 
-  return { status, supported, blobUrl, activity, start, stop, reset: releaseUrl }
+  return { status, supported, blobUrl, activity, start, stop, reset: releaseUrl, release }
 }
