@@ -9,6 +9,7 @@ import SettingsPage from '../settings/SettingsPage'
 import { AiAnalysisPanel } from './AiAnalysisPanel'
 import { AiWordCheck } from './AiWordCheck'
 import CoachPage from './CoachPage'
+import { FluencySummary } from '../training/components/fluency/FluencySummary'
 
 function enableAi() {
   window.localStorage.setItem(SETTINGS_KEY, JSON.stringify({ aiEnabled: true }))
@@ -64,6 +65,21 @@ describe('AI off (default): the app is exactly as before', () => {
   })
 })
 
+describe('4 → 3 → 2 summary', () => {
+  const recordings = { 0: 'blob:r1', 1: 'blob:r2' }
+
+  it('offers no AI while it is off', () => {
+    render(wrap(<FluencySummary recordings={recordings} onContinue={() => undefined} />))
+    expect(screen.queryByRole('button', { name: "Analyser avec l'IA" })).toBeNull()
+  })
+
+  it('offers an analysis for each recorded round when on', () => {
+    enableAi()
+    render(wrap(<FluencySummary recordings={recordings} onContinue={() => undefined} />))
+    expect(screen.getAllByRole('button', { name: "Analyser avec l'IA" })).toHaveLength(2)
+  })
+})
+
 describe('AI on', () => {
   it('shows the menu entry', () => {
     enableAi()
@@ -115,6 +131,11 @@ describe('AI on', () => {
     await user.click(screen.getByRole('button', { name: "Analyser avec l'IA" }))
     await waitFor(() => expect(screen.getByText('« je partage ton avis »')).toBeInTheDocument())
     await user.click(screen.getByRole('button', { name: 'Utiliser' }))
+    const transcription = screen.getByText('Voir la transcription')
+    const analysis = screen.getByRole('heading', { name: "Analyse par l'IA" })
+    expect(
+      transcription.compareDocumentPosition(analysis) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy()
     expect(onUseCorrection).toHaveBeenCalledWith('je partage ton avis')
     expect(screen.getByRole('button', { name: 'Ajouté ✓' })).toBeDisabled()
   })
