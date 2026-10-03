@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import type { KeyboardEvent } from 'react'
+import { SpeakButton } from '../../components/Speech/SpeakButton'
 import { Icon } from '../../components/ui'
 import { useAudioRecorder } from '../../hooks/useAudioRecorder'
 import {
@@ -127,14 +128,23 @@ export function RoleplayChat() {
       </header>
 
       <div className="ai-chatbox__messages" ref={listRef} aria-live="polite">
-        {turns.map((turn, index) => (
-          <p
-            key={index}
-            className={`ai-chat__bubble${turn.role === 'user' ? ' ai-chat__bubble--me' : ''}`}
-          >
-            {turn.content}
-          </p>
-        ))}
+        {turns.map((turn, index) =>
+          turn.role === 'assistant' ? (
+            <div key={index} className="ai-chat__row">
+              <p className="ai-chat__bubble">{turn.content}</p>
+              <SpeakButton
+                text={turn.content}
+                label="Écouter"
+                ariaLabel="Écouter le message"
+                compact
+              />
+            </div>
+          ) : (
+            <p key={index} className="ai-chat__bubble ai-chat__bubble--me">
+              {turn.content}
+            </p>
+          ),
+        )}
         {busy ? (
           <p className="ai-chat__bubble ai-chat__typing" aria-label="Écrit…">
             <span /><span /><span />
