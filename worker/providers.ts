@@ -54,6 +54,11 @@ export interface Env {
   NVIDIA_MODEL?: string
   HUGGINGFACE_MODEL?: string
   COHERE_MODEL?: string
+  /** Optional overrides for transcription models. */
+  GEMINI_TRANSCRIBE_MODEL?: string
+  GROQ_TRANSCRIBE_MODEL?: string
+  MISTRAL_TRANSCRIBE_MODEL?: string
+  CLOUDFLARE_TRANSCRIBE_MODEL?: string
   /** Optional comma-separated fallback order, e.g. "gemini,groq,cloudflare". */
   PROVIDER_ORDER?: string
   /** When set, every /api request must carry it in the x-access-code header. */
@@ -67,10 +72,10 @@ export interface ChatResult {
 }
 
 const DEFAULT_MODELS: Record<ProviderId, string> = {
-  gemini: 'gemini-2.0-flash',
+  gemini: 'gemini-3.5-flash-lite',
   groq: 'llama-3.3-70b-versatile',
   mistral: 'mistral-small-latest',
-  cloudflare: '@cf/meta/llama-3.1-8b-instruct',
+  cloudflare: '@cf/meta/llama-3.3-70b-instruct-fp8-fast',
   openrouter: 'meta-llama/llama-3.3-70b-instruct:free',
   nvidia: 'meta/llama-3.3-70b-instruct',
   huggingface: 'meta-llama/Llama-3.3-70B-Instruct',

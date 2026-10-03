@@ -261,7 +261,7 @@ libre à un modèle. Les clés se créent comme **secrets** dans Cloudflare
 | `COHERE_API_KEY` | Cohere |
 
 Variables optionnelles : `PROVIDER_ORDER` (ex. `gemini,groq,cloudflare`),
-`<FOURNISSEUR>_MODEL` (ex. `GROQ_MODEL`) et **`AI_ACCESS_CODE`** : si défini,
+`<FOURNISSEUR>_MODEL` (ex. `GROQ_MODEL`) et `<FOURNISSEUR>_TRANSCRIBE_MODEL` pour la transcription et **`AI_ACCESS_CODE`** : si défini,
 chaque requête doit porter ce code (champ « Code d'accès » des paramètres), pour
 que personne d'autre n'use vos quotas gratuits.
 
