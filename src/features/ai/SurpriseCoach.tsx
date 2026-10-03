@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { AudioClip } from '../../components/AudioClip/AudioClip'
-import { Button, Card, Icon } from '../../components/ui'
+import { Button, Card, Eyebrow, Icon, Pill, ProgressBar, WaveBars } from '../../components/ui'
 import { useAudioRecorder } from '../../hooks/useAudioRecorder'
 import { runAiTask } from '../../services/ai/client'
 import { contentRepository } from '../../services/content/contentRepository'
@@ -150,81 +150,59 @@ export function SurpriseCoach() {
     if (phase === 'summary' || phase === 'setup') release()
   }, [phase, release])
 
+  const themeLabel = THEMES.find((item) => item.id === themeId)?.label ?? themeId
+
   if (phase === 'setup') {
     return (
-      <Card>
-        <h2>Questions surprises</h2>
-        <p className="muted">
-          Choisis un thème : les questions s'enchaînent avec un compte à rebours, comme dans
-          l'exercice. Tu ne vois la question qu'au dernier moment.
-        </p>
-
-        <div className="field">
-          <span className="field__label" id="coach-theme-label">Thème</span>
-          <div className="chip-row" role="radiogroup" aria-labelledby="coach-theme-label">
-            {THEMES.map((theme) => (
-              <button
-                key={theme.id}
-                type="button"
-                role="radio"
-                aria-checked={themeId === theme.id}
-                className={`chip${themeId === theme.id ? ' is-active' : ''}`}
-                onClick={() => setThemeId(theme.id)}
-              >
-                {theme.label}
-              </button>
-            ))}
-          </div>
+      <Card className="coach-setup">
+        <div className="stack stack--sm">
+          <h2>Questions surprises</h2>
+          <p className="muted coach-setup__lead">
+            Choisis un thème : les questions s'enchaînent avec un compte à rebours, comme dans
+            l'exercice. Tu ne vois la question qu'au dernier moment.
+          </p>
         </div>
 
-        <div className="field">
-          <span className="field__label" id="coach-count-label">Nombre de questions</span>
-          <div className="chip-row" role="radiogroup" aria-labelledby="coach-count-label">
-            {COUNTS.map((count) => (
-              <button
-                key={count}
-                type="button"
-                role="radio"
-                aria-checked={total === count}
-                className={`chip${total === count ? ' is-active' : ''}`}
-                onClick={() => setTotal(count)}
-              >
-                {count}
-              </button>
-            ))}
-          </div>
-        </div>
+        <ChipGroup
+          id="coach-theme"
+          label="Thème"
+          value={themeId}
+          options={THEMES.map((theme) => ({ value: theme.id, label: theme.label }))}
+          onChange={setThemeId}
+        />
 
-        <div className="field">
-          <span className="field__label" id="coach-seconds-label">Temps pour répondre</span>
-          <div className="chip-row" role="radiogroup" aria-labelledby="coach-seconds-label">
-            {SECONDS.map((value) => (
-              <button
-                key={value}
-                type="button"
-                role="radio"
-                aria-checked={seconds === value}
-                className={`chip${seconds === value ? ' is-active' : ''}`}
-                onClick={() => setSeconds(value)}
-              >
-                {value} s
-              </button>
-            ))}
-          </div>
+        <div className="coach-setup__pair">
+          <ChipGroup
+            id="coach-count"
+            label="Nombre de questions"
+            value={total}
+            options={COUNTS.map((count) => ({ value: count, label: String(count) }))}
+            onChange={setTotal}
+          />
+          <ChipGroup
+            id="coach-seconds"
+            label="Temps pour répondre"
+            value={seconds}
+            options={SECONDS.map((value) => ({ value, label: `${value} s` }))}
+            onChange={setSeconds}
+          />
         </div>
 
         {recorder.supported ? (
-          <label className="ai-check">
+          <label className="coach-check">
             <input
               type="checkbox"
               checked={record}
               onChange={(event) => setRecord(event.target.checked)}
             />
-            Enregistrer mes réponses (pour les réécouter et les faire analyser à la fin)
+            <span className="coach-check__box" aria-hidden="true">✓</span>
+            <span>
+              Enregistrer mes réponses (pour les réécouter et les faire analyser à la fin)
+            </span>
           </label>
         ) : null}
 
-        <Button block size="lg" onClick={start}>
+        <Button variant="animated" block size="lg" trailing="→" onClick={start}>
           Commencer
         </Button>
       </Card>
@@ -234,21 +212,29 @@ export function SurpriseCoach() {
   if (phase === 'summary') {
     const answered = questions.slice(0, Math.max(index + 1, 1))
     return (
-      <Card>
-        <h2>Résumé</h2>
-        <p className="muted">Réécoute tes réponses et fais-les analyser une à une.</p>
+      <Card enter="pop">
+        <div className="stack stack--sm">
+          <h2>Résumé</h2>
+          <p className="muted">Réécoute tes réponses et fais-les analyser une à une.</p>
+        </div>
         <ol className="ai-summary">
           {answered.map((question, position) => (
-            <li key={position}>
-              <p className="ai-coach__question ai-coach__question--small">{question}</p>
+            <li key={position} style={{ animationDelay: `${position * 0.08}s` }}>
+              <div className="ai-summary__question">
+                <span className="ai-summary__num">{position + 1}</span>
+                <p className="ai-coach__question ai-coach__question--small">{question}</p>
+              </div>
               {recordings[position] ? (
                 <AudioClip src={recordings[position]} label="Écouter ma réponse" />
               ) : null}
-              <AiAnalysisPanel audioUrl={recordings[position]} />
+              <AiAnalysisPanel
+                audioUrl={recordings[position]}
+                subtitle={`Sur ta réponse ${position + 1}`}
+              />
             </li>
           ))}
         </ol>
-        <Button block onClick={() => setPhase('setup')}>
+        <Button block size="lg" trailing="↻" onClick={() => setPhase('setup')}>
           Nouvelle série
         </Button>
       </Card>
@@ -256,41 +242,87 @@ export function SurpriseCoach() {
   }
 
   const length = phase === 'countdown' ? COUNTDOWN_SECONDS : seconds
-  const progress = Math.round(((length - remaining) / length) * 100)
+  const progress = (length - remaining) / length
 
   return (
-    <Card center aria-live="polite">
-      <p className="pill">Question {index + 1}/{total}</p>
+    <Card center aria-live="polite" className="coach-live">
+      <Pill>Question {index + 1}/{total}</Pill>
 
       {phase === 'countdown' ? (
         <>
           <h2>Question suivante dans…</h2>
-          <p className="ai-timer" aria-label={`${remaining} secondes`}>
-            {ready ? remaining : <span className="muted">…</span>}
+          <p className="coach-bubble" aria-label={`${remaining} secondes`}>
+            {ready ? remaining : <span>…</span>}
           </p>
+          <span className="coach-preparing">
+            <Icon name="sparkle" size={14} />
+            L'IA prépare une question · {themeLabel}
+          </span>
         </>
       ) : (
         <>
+          <Pill tone="warm">{themeLabel}</Pill>
           <h2 className="ai-coach__question">{questions[index]}</h2>
           <p className="ai-timer" aria-label={`${remaining} secondes restantes`}>{remaining}</p>
-          <div className="ai-bar" aria-hidden="true">
-            <span style={{ width: `${progress}%` }} />
-          </div>
+          <ProgressBar value={progress} aria-hidden="true" />
           {recording && recorder.status === 'recording' ? (
-            <span className="rec-badge">
-              <span className="rec-badge__dot" aria-hidden="true" />
-              Enregistrement
-            </span>
+            <div className="coach-rec">
+              <span className="rec-badge">
+                <span className="rec-badge__dot" aria-hidden="true" />
+                Enregistrement
+              </span>
+              <WaveBars count={16} height={32} fluid />
+            </div>
           ) : null}
-          <Button block variant="subtle" trailing="→" onClick={finishQuestion}>
+          <Button block variant="subtle" trailing="→" className="button--between" onClick={finishQuestion}>
             Question suivante
           </Button>
         </>
       )}
 
-      <Button block variant="ghost" onClick={stopAll}>
-        <Icon name="stop" size={16} /> Terminer
-      </Button>
+      <button type="button" className="coach-stop" onClick={stopAll}>
+        <Icon name="stop" size={14} /> Terminer
+      </button>
     </Card>
+  )
+}
+
+interface ChipOption<T> {
+  value: T
+  label: string
+}
+
+/** A labelled row of single-choice chips. */
+function ChipGroup<T extends string | number>({
+  id,
+  label,
+  value,
+  options,
+  onChange,
+}: {
+  id: string
+  label: string
+  value: T
+  options: ChipOption<T>[]
+  onChange: (value: T) => void
+}) {
+  return (
+    <div className="field">
+      <Eyebrow as="span">{label}</Eyebrow>
+      <div className="chip-row" role="radiogroup" aria-label={label} id={id}>
+        {options.map((option) => (
+          <button
+            key={option.value}
+            type="button"
+            role="radio"
+            aria-checked={value === option.value}
+            className={`chip${value === option.value ? ' is-active' : ''}`}
+            onClick={() => onChange(option.value)}
+          >
+            {option.label}
+          </button>
+        ))}
+      </div>
+    </div>
   )
 }

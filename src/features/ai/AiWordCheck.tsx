@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Button, Callout } from '../../components/ui'
+import { AiFrame, AiMark, Button } from '../../components/ui'
 import { aiErrorMessage, runAiTask } from '../../services/ai/client'
 import type { WordVerdict } from '../../services/ai/client'
 import { useAiEnabled } from './useAiEnabled'
@@ -41,31 +41,38 @@ export function AiWordCheck({ target, context }: { target: string; context: stri
   }
 
   return (
-    <Callout title="Un avis de l'IA (facultatif)" tone="soft" aria-live="polite">
-      <div className="field">
-        <label htmlFor="ai-word-attempt">Quel mot as-tu dit ?</label>
-        <input
-          id="ai-word-attempt"
-          value={attempt}
-          onChange={(event) => setAttempt(event.target.value)}
-          autoComplete="off"
-        />
+    <AiFrame size="sm" className="ai-wordcheck" aria-live="polite">
+      <div className="ai-panel__head">
+        <AiMark size={28} />
+        <span className="ai-wordcheck__title">Un avis de l'IA</span>
+        <span className="muted ai-wordcheck__hint">facultatif · avant de te juger</span>
       </div>
-      <Button
-        variant="accent-outline"
-        block
-        disabled={loading || !attempt.trim()}
-        onClick={() => void check()}
-      >
-        {loading ? 'Vérification…' : "Vérifier avec l'IA"}
-      </Button>
+      <div className="ai-wordcheck__row">
+        <div className="field ai-wordcheck__field">
+          <label className="sr-only" htmlFor="ai-word-attempt">Quel mot as-tu dit ?</label>
+          <input
+            id="ai-word-attempt"
+            value={attempt}
+            placeholder="Quel mot as-tu dit ?"
+            onChange={(event) => setAttempt(event.target.value)}
+            autoComplete="off"
+          />
+        </div>
+        <Button
+          variant="accent-outline"
+          disabled={loading || !attempt.trim()}
+          onClick={() => void check()}
+        >
+          {loading ? 'Vérification…' : "Vérifier avec l'IA"}
+        </Button>
+      </div>
       {result ? (
-        <p>
+        <p className={`ai-verdict ai-verdict--${result.verdict}`}>
           <strong>{VERDICT_LABEL[result.verdict]}</strong>
-          {result.comment ? <span className="muted"> — {result.comment}</span> : null}
+          {result.comment ? <span> — {result.comment}</span> : null}
         </p>
       ) : null}
       {error ? <p role="alert" className="ai-error">{error}</p> : null}
-    </Callout>
+    </AiFrame>
   )
 }

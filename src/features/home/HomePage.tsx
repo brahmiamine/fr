@@ -17,6 +17,7 @@ import {
 import { readyProsodyExercises } from '../../services/content/prosodyRepository'
 import { STAGE_META, STAGE_ORDER, prepSecondsForLevel } from '../training/types'
 import { useAiEnabled } from '../ai/useAiEnabled'
+import { CoachPromo } from './components/CoachPromo'
 import { ChallengeCard } from './components/ChallengeCard'
 import { HomeHero } from './components/HomeHero'
 import { ProsodyPromo } from './components/ProsodyPromo'
@@ -115,21 +116,13 @@ export default function HomePage() {
             delay={0.36}
           />
         ) : null}
-        {aiEnabled ? (
-          <ChallengeCard
-            badge="IA · libre"
-            title="Coach IA"
-            description="Une question surprise sur mesure ou un jeu de rôle, avec analyse de ta réponse."
-            to="/coach"
-            cta="Ouvrir le coach"
-            delay={0.42}
-          />
-        ) : null}
         <ProsodyPromo
           ready={readyProsodyExercises.length > 0}
           completed={state.prosodySessions.length}
         />
       </section>
+
+      {aiEnabled ? <CoachPromo /> : null}
     </div>
   )
 }

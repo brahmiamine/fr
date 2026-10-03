@@ -59,6 +59,7 @@ export function SessionFeedbackView({
 
       <AiAnalysisPanel
         audioUrl={audioUrl}
+        subtitle="Sur ta réécoute finale"
         onUseCorrection={(better) =>
           onChange(feedback.abandonedSentence.trim() ? 'awkwardPhrase' : 'abandonedSentence', better)
         }

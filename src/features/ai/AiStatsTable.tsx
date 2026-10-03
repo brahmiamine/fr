@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Button, MiniStat } from '../../components/ui'
 import { AI_PROVIDERS } from '../../services/ai/client'
 import {
   AI_STATS_EVENT,
@@ -33,7 +34,7 @@ function Row({ stat }: { stat: AiUsageStat }) {
   return (
     <li className="ai-stat">
       <h4 className="ai-stat__title">
-        {providerLabel(stat.provider)}
+        <strong>{providerLabel(stat.provider)}</strong>
         <span className="muted">
           {' '}· {stat.model || 'modèle inconnu'}
           {stat.kind === 'audio' ? ' (transcription)' : ''}
@@ -84,7 +85,7 @@ export function AiStatsTable() {
 
   return (
     <div className="ai-stats">
-      <h3 className="settings__title">Statistiques d'utilisation</h3>
+      <h3>Statistiques d'utilisation</h3>
       <p className="muted">
         Comptées sur cet appareil seulement. Les tokens sont ceux que renvoient les
         fournisseurs ; certains n'en donnent pas.
@@ -93,19 +94,19 @@ export function AiStatsTable() {
         <p className="muted">Aucune requête pour l'instant.</p>
       ) : (
         <>
-          <p>
-            <strong>{nf.format(totals.requests)}</strong> requêtes ·{' '}
-            <strong>{nf.format(totals.failures)}</strong> échecs ·{' '}
-            <strong>{nf.format(totals.tokens)}</strong> tokens
-          </p>
+          <div className="mini-stats ai-stats__totals">
+            <MiniStat tone="soft" value={nf.format(totals.requests)} label="requêtes" />
+            <MiniStat tone="soft" value={nf.format(totals.failures)} label="échecs" />
+            <MiniStat tone="soft" value={nf.format(totals.tokens)} label="tokens" />
+          </div>
           <ul className="ai-stat-list">
             {rows.map((stat) => (
               <Row key={`${stat.provider}:${stat.kind}`} stat={stat} />
             ))}
           </ul>
-          <button type="button" className="button button--ghost" onClick={clearAiStats}>
+          <Button variant="ghost" size="sm" className="ai-stats__reset" onClick={clearAiStats}>
             Réinitialiser les statistiques
-          </button>
+          </Button>
         </>
       )}
     </div>

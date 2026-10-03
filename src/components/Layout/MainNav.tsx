@@ -19,6 +19,7 @@ export function MainNav() {
         >
           <Icon name={item.icon} size={20} />
           {item.label}
+          {item.badge ? <span className="main-nav__badge">{item.badge}</span> : null}
         </NavLink>
       ))}
     </nav>

@@ -37,7 +37,10 @@ export function FluencySummary({ recordings, onContinue }: FluencySummaryProps) 
             ) : (
               <span className="muted">{label} · pas d'enregistrement</span>
             )}
-            <AiAnalysisPanel audioUrl={recordings[index]} />
+            <AiAnalysisPanel
+              audioUrl={recordings[index]}
+              subtitle={`Sur ton ${label.toLowerCase().replace(' — ', ' · ')}`}
+            />
             {recordings[index] ? (
               <a
                 className="fluency-summary__download"

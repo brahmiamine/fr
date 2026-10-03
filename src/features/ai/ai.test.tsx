@@ -100,7 +100,8 @@ describe('AI on', () => {
     await user.click(screen.getByRole('switch', { name: "Activer l'intelligence artificielle" }))
     expect(JSON.parse(window.localStorage.getItem(SETTINGS_KEY) ?? '{}').aiEnabled).toBe(true)
     expect(screen.getByLabelText('Fournisseur')).toBeInTheDocument()
-    expect(await screen.findByText(/Services disponibles : Groq/)).toBeInTheDocument()
+    expect(await screen.findByText('Services disponibles :')).toBeInTheDocument()
+    expect(screen.getByText('Groq', { selector: '.ai-service' })).toBeInTheDocument()
   })
 
   it('transcribes, analyses and lets the learner pick a suggestion', async () => {
@@ -131,8 +132,9 @@ describe('AI on', () => {
     await user.click(screen.getByRole('button', { name: 'Utiliser' }))
     const transcription = screen.getByText('Voir la transcription')
     const analysis = screen.getByRole('heading', { name: "Analyse par l'IA" })
+    // The transcript is tucked at the bottom, under the suggestions.
     expect(
-      transcription.compareDocumentPosition(analysis) & Node.DOCUMENT_POSITION_FOLLOWING,
+      analysis.compareDocumentPosition(transcription) & Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy()
     expect(onUseCorrection).toHaveBeenCalledWith('je partage ton avis')
     expect(screen.getByRole('button', { name: 'Ajouté ✓' })).toBeDisabled()

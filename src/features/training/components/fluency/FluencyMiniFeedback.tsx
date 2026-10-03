@@ -79,6 +79,7 @@ export function FluencyMiniFeedback({
 
       <AiAnalysisPanel
         audioUrl={recorder?.blobUrl}
+        subtitle="Sur ton tour 1 · 4:00"
         onUseCorrection={useCorrection}
         onUseExpression={({ expression, intent }) =>
           setValues((prev) => ({ ...prev, missedChunk: expression, missedChunkIntent: intent }))

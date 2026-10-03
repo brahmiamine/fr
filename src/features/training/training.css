@@ -98,17 +98,27 @@
 
 /* ---------- 4 → 3 → 2 summary ---------- */
 .fluency-summary {
-  /* Numbered rounds: "1. Tour 1 — 4:00", each with its own player. */
+  /* One block per round: its player, then the optional AI analysis. */
   margin: 0;
-  padding-left: 1.4rem;
+  padding: 0;
+  list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 0.9rem;
+  gap: 1.1rem;
 }
 
-.fluency-summary li::marker {
-  color: var(--muted);
-  font-weight: 800;
+.fluency-summary > li {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-bottom: 1.1rem;
+  border-bottom: var(--border-width) solid var(--border);
+  animation: fadeUp 0.45s var(--ease) both;
+}
+
+.fluency-summary > li:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
 }
 
 .fluency-summary__download {

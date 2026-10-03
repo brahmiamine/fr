@@ -23,12 +23,17 @@ const PATHS = {
   send: 'M21 3L10 14M21 3l-7 18-4-7-7-4z',
   redo: 'M20 11a8 8 0 1 0-2.3 5.7M20 5v6h-6',
   check: 'M5 12.5l4.5 4.5L19 7.5',
+  sparkle:
+    'M12 2.5l1.9 5.6 5.6 1.9-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.9zM19 15l.9 2.1 2.1.9-2.1.9L19 21l-.9-2.1-2.1-.9 2.1-.9z',
+  lock: 'M6 11h12v9H6zM8.5 11V8a3.5 3.5 0 0 1 7 0v3',
+  volume: 'M4 9v6h4l5 4V5L8 9zM16.5 8.5a5 5 0 0 1 0 7',
+  chat: 'M4 5h16v11H8l-4 4V5zM9 9h6M9 12h4',
 } as const
 
 export type IconName = keyof typeof PATHS
 
 /** Icons drawn as filled shapes rather than strokes. */
-const FILLED: ReadonlySet<IconName> = new Set<IconName>(['play', 'stop'])
+const FILLED: ReadonlySet<IconName> = new Set<IconName>(['play', 'stop', 'sparkle'])
 
 export interface IconProps {
   name: IconName

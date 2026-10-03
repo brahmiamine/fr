@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import type { KeyboardEvent } from 'react'
 import { SpeakButton } from '../../components/Speech/SpeakButton'
-import { Icon } from '../../components/ui'
+import { Icon, WaveBars } from '../../components/ui'
 import { useAudioRecorder } from '../../hooks/useAudioRecorder'
 import {
   aiErrorMessage,
@@ -116,77 +116,95 @@ export function RoleplayChat() {
   const showSend = draft.trim().length > 0 && !recording
 
   return (
-    <section className="ai-chatbox" aria-label="Jeu de rôle">
-      <header className="ai-chatbox__head">
-        <div>
-          <p className="ai-chatbox__situation">{scenario.situation}</p>
-          <p className="muted">Objectif : {scenario.goal}</p>
-        </div>
-        <button type="button" className="chip" onClick={changeScenario}>
-          Autre situation
-        </button>
-      </header>
-
-      <div className="ai-chatbox__messages" ref={listRef} aria-live="polite">
-        {turns.map((turn, index) =>
-          turn.role === 'assistant' ? (
-            <div key={index} className="ai-chat__row">
-              <p className="ai-chat__bubble">{turn.content}</p>
-              <SpeakButton
-                text={turn.content}
-                label="Écouter"
-                ariaLabel="Écouter le message"
-                compact
-              />
+    <>
+      <section className="ai-chatbox" aria-label="Jeu de rôle">
+        <header className="ai-chatbox__head">
+          <div className="ai-chatbox__who">
+            <span className="ai-chatbox__avatar" aria-hidden="true">
+              <Icon name="chat" size={22} strokeWidth={2} />
+              <span className="ai-chatbox__online" />
+            </span>
+            <div>
+              <p className="ai-chatbox__situation">{scenario.situation}</p>
+              <p className="muted">Objectif : {scenario.goal}</p>
             </div>
-          ) : (
-            <p key={index} className="ai-chat__bubble ai-chat__bubble--me">
-              {turn.content}
+          </div>
+          <button type="button" className="ai-chatbox__other" onClick={changeScenario}>
+            Autre situation
+          </button>
+        </header>
+
+        <div className="ai-chatbox__messages" ref={listRef} aria-live="polite">
+          {turns.map((turn, index) =>
+            turn.role === 'assistant' ? (
+              <div key={index} className="ai-chat__row">
+                <p className="ai-chat__bubble">{turn.content}</p>
+                <SpeakButton
+                  text={turn.content}
+                  label="Écouter"
+                  ariaLabel="Écouter le message"
+                  compact
+                />
+              </div>
+            ) : (
+              <p key={index} className="ai-chat__bubble ai-chat__bubble--me">
+                {turn.content}
+              </p>
+            ),
+          )}
+          {busy ? (
+            <p className="ai-chat__bubble ai-chat__typing" aria-label="Écrit…">
+              <span /><span /><span />
             </p>
-          ),
-        )}
-        {busy ? (
-          <p className="ai-chat__bubble ai-chat__typing" aria-label="Écrit…">
-            <span /><span /><span />
-          </p>
+          ) : null}
+        </div>
+
+        {error ? <p role="alert" className="ai-error ai-chatbox__error">{error}</p> : null}
+        {recording ? (
+          <div className="ai-chatbox__rec">
+            <span className="rec-badge__dot" aria-hidden="true" />
+            Enregistrement… touche ■ pour terminer
+            <WaveBars count={5} height={18} tone="accent" speed={0.9} fluid />
+          </div>
         ) : null}
-      </div>
 
-      {error ? <p role="alert" className="ai-error">{error}</p> : null}
-      {recording ? <p className="muted ai-chatbox__hint">Enregistrement… touche ■ pour terminer</p> : null}
-
-      <div className="ai-chatbox__composer">
-        <textarea
-          aria-label="Ton message"
-          rows={1}
-          placeholder="Écris ton message"
-          value={draft}
-          onChange={(event) => setDraft(event.target.value)}
-          onKeyDown={onKeyDown}
-          disabled={recording}
-        />
-        {showSend || !recorder.supported ? (
-          <button
-            type="button"
-            className="ai-chatbox__action"
-            aria-label="Envoyer"
-            disabled={busy || !draft.trim()}
-            onClick={send}
-          >
-            <Icon name="send" size={20} />
-          </button>
-        ) : (
-          <button
-            type="button"
-            className={`ai-chatbox__action${recording ? ' is-recording' : ''}`}
-            aria-label={recording ? 'Terminer le message vocal' : 'Message vocal'}
-            disabled={busy && !recording}
-            onClick={toggleMic}
-          >
-            <Icon name={recording ? 'stop' : 'mic'} size={20} />
-          </button>
-        )}
-      </div>
-    </section>
+        <div className="ai-chatbox__composer">
+          <textarea
+            aria-label="Ton message"
+            rows={1}
+            placeholder="Écris ton message"
+            value={draft}
+            onChange={(event) => setDraft(event.target.value)}
+            onKeyDown={onKeyDown}
+            disabled={recording}
+          />
+          {showSend || !recorder.supported ? (
+            <button
+              type="button"
+              className="ai-chatbox__action"
+              aria-label="Envoyer"
+              disabled={busy || !draft.trim()}
+              onClick={send}
+            >
+              <Icon name="send" size={20} strokeWidth={2} />
+            </button>
+          ) : (
+            <button
+              type="button"
+              className={`ai-chatbox__action${recording ? ' is-recording' : ''}`}
+              aria-label={recording ? 'Terminer le message vocal' : 'Message vocal'}
+              disabled={busy && !recording}
+              onClick={toggleMic}
+            >
+              <Icon name={recording ? 'stop' : 'mic'} size={20} strokeWidth={2} />
+            </button>
+          )}
+        </div>
+      </section>
+      <p className="muted ai-chatbox__hint">
+        Entrée pour envoyer. Le micro transcrit ta voix dans le champ : tu relis avant
+        d'envoyer.
+      </p>
+    </>
   )
 }

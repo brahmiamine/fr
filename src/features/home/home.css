@@ -267,3 +267,48 @@
 .prosody-promo--disabled {
   opacity: 0.85;
 }
+
+/* ---------- Coach IA ---------- */
+.coach-promo {
+  animation: gradientShift 8s ease infinite, aiBorder 8s ease infinite, fadeUp 0.6s 0.5s var(--ease) both;
+}
+
+.coach-promo__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px;
+}
+
+.coach-promo__text {
+  display: flex;
+  flex: 1 1 260px;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.coach-promo__text h3 {
+  font-size: 19px;
+  line-height: 1.2;
+}
+
+.coach-promo__text p {
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.coach-promo__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.coach-promo__actions .button {
+  min-height: 46px;
+  padding: 0 18px;
+  font-size: 15px;
+}
+
+.coach-promo__ghost {
+  padding: 0 16px;
+}
