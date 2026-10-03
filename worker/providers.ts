@@ -2,26 +2,22 @@ export type ProviderId =
   | 'gemini'
   | 'groq'
   | 'mistral'
-  | 'cerebras'
   | 'cloudflare'
   | 'openrouter'
   | 'nvidia'
   | 'huggingface'
   | 'cohere'
-  | 'gateway'
 
 /** Default fallback order: the most generous free tiers first. */
 export const PROVIDER_IDS: readonly ProviderId[] = [
   'gemini',
   'groq',
   'mistral',
-  'cerebras',
   'cloudflare',
   'openrouter',
   'nvidia',
   'huggingface',
   'cohere',
-  'gateway',
 ]
 
 export interface ChatMessage {
@@ -40,12 +36,9 @@ export interface Env {
   GEMINI_API_KEY?: string
   GROQ_API_KEY?: string
   MISTRAL_API_KEY?: string
-  CEREBRAS_API_KEY?: string
   OPENROUTER_API_KEY?: string
   NVIDIA_API_KEY?: string
   COHERE_API_KEY?: string
-  /** Vercel AI Gateway. */
-  AI_GATEWAY_API_KEY?: string
   HF_TOKEN?: string
   /** Older name for HF_TOKEN. */
   HUGGINGFACE_API_KEY?: string
@@ -56,13 +49,11 @@ export interface Env {
   GEMINI_MODEL?: string
   GROQ_MODEL?: string
   MISTRAL_MODEL?: string
-  CEREBRAS_MODEL?: string
   CLOUDFLARE_MODEL?: string
   OPENROUTER_MODEL?: string
   NVIDIA_MODEL?: string
   HUGGINGFACE_MODEL?: string
   COHERE_MODEL?: string
-  GATEWAY_MODEL?: string
   /** Optional comma-separated fallback order, e.g. "gemini,groq,cloudflare". */
   PROVIDER_ORDER?: string
   /** When set, every /api request must carry it in the x-access-code header. */
@@ -79,26 +70,22 @@ const DEFAULT_MODELS: Record<ProviderId, string> = {
   gemini: 'gemini-2.0-flash',
   groq: 'llama-3.3-70b-versatile',
   mistral: 'mistral-small-latest',
-  cerebras: 'llama3.1-8b',
   cloudflare: '@cf/meta/llama-3.1-8b-instruct',
   openrouter: 'meta-llama/llama-3.3-70b-instruct:free',
   nvidia: 'meta/llama-3.3-70b-instruct',
   huggingface: 'meta-llama/Llama-3.3-70B-Instruct',
   cohere: 'command-r-08-2024',
-  gateway: 'openai/gpt-4o-mini',
 }
 
 const MODEL_VARS: Record<ProviderId, keyof Env> = {
   gemini: 'GEMINI_MODEL',
   groq: 'GROQ_MODEL',
   mistral: 'MISTRAL_MODEL',
-  cerebras: 'CEREBRAS_MODEL',
   cloudflare: 'CLOUDFLARE_MODEL',
   openrouter: 'OPENROUTER_MODEL',
   nvidia: 'NVIDIA_MODEL',
   huggingface: 'HUGGINGFACE_MODEL',
   cohere: 'COHERE_MODEL',
-  gateway: 'GATEWAY_MODEL',
 }
 
 /** OpenAI-compatible chat endpoints, with the secret holding their key. */
@@ -112,10 +99,6 @@ const OPENAI_COMPATIBLE: Partial<
   mistral: {
     url: 'https://api.mistral.ai/v1/chat/completions',
     key: (env) => env.MISTRAL_API_KEY,
-  },
-  cerebras: {
-    url: 'https://api.cerebras.ai/v1/chat/completions',
-    key: (env) => env.CEREBRAS_API_KEY,
   },
   openrouter: {
     url: 'https://openrouter.ai/api/v1/chat/completions',
@@ -133,10 +116,6 @@ const OPENAI_COMPATIBLE: Partial<
   cohere: {
     url: 'https://api.cohere.ai/compatibility/v1/chat/completions',
     key: (env) => env.COHERE_API_KEY,
-  },
-  gateway: {
-    url: 'https://ai-gateway.vercel.sh/v1/chat/completions',
-    key: (env) => env.AI_GATEWAY_API_KEY,
   },
 }
 

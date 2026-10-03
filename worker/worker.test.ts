@@ -41,15 +41,13 @@ describe('provider order', () => {
       ASSETS: assets,
       HF_TOKEN: 'k',
       MISTRAL_API_KEY: 'k',
-      CEREBRAS_API_KEY: 'k',
       NVIDIA_API_KEY: 'k',
       COHERE_API_KEY: 'k',
-      AI_GATEWAY_API_KEY: 'k',
       CLOUDFLARE_ACCOUNT_ID: 'a',
       CLOUDFLARE_AI_API_TOKEN: 't',
     }
     expect(resolveOrder(undefined, env).sort()).toEqual(
-      ['cerebras', 'cloudflare', 'cohere', 'gateway', 'huggingface', 'mistral', 'nvidia'].sort(),
+      ['cloudflare', 'cohere', 'huggingface', 'mistral', 'nvidia'].sort(),
     )
   })
 

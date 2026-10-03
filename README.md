@@ -254,13 +254,11 @@ libre à un modèle. Les clés se créent comme **secrets** dans Cloudflare
 | `GEMINI_API_KEY` | Google Gemini |
 | `GROQ_API_KEY` | Groq |
 | `MISTRAL_API_KEY` | Mistral |
-| `CEREBRAS_API_KEY` | Cerebras |
-| `CLOUDFLARE_ACCOUNT_ID` + `CLOUDFLARE_AI_API_TOKEN` | Workers AI en REST (sinon, le binding `AI` de `wrangler.jsonc` suffit) |
+| `CLOUDFLARE_AI_API_TOKEN` | Workers AI en REST, avec `CLOUDFLARE_ACCOUNT_ID` (variable de `wrangler.jsonc`, pas un secret) ; sinon le binding `AI` suffit |
 | `OPENROUTER_API_KEY` | OpenRouter |
 | `NVIDIA_API_KEY` | NVIDIA |
 | `HF_TOKEN` | Hugging Face |
 | `COHERE_API_KEY` | Cohere |
-| `AI_GATEWAY_API_KEY` | Vercel AI Gateway |
 
 Variables optionnelles : `PROVIDER_ORDER` (ex. `gemini,groq,cloudflare`),
 `<FOURNISSEUR>_MODEL` (ex. `GROQ_MODEL`) et **`AI_ACCESS_CODE`** : si défini,

@@ -5,13 +5,11 @@ export const AI_PROVIDERS: { id: string; label: string }[] = [
   { id: 'gemini', label: 'Google Gemini' },
   { id: 'groq', label: 'Groq' },
   { id: 'mistral', label: 'Mistral' },
-  { id: 'cerebras', label: 'Cerebras' },
   { id: 'cloudflare', label: 'Cloudflare Workers AI' },
   { id: 'openrouter', label: 'OpenRouter' },
   { id: 'nvidia', label: 'NVIDIA' },
   { id: 'huggingface', label: 'Hugging Face' },
   { id: 'cohere', label: 'Cohere' },
-  { id: 'gateway', label: 'Vercel AI Gateway' },
 ]
 
 export interface AiProviderStatus {
