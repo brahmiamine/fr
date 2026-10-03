@@ -102,6 +102,23 @@ describe('SurpriseCoach', () => {
   })
 })
 
+describe('RoleplayChat audio', () => {
+  it("offers to listen to the other person's message, not to your own", async () => {
+    vi.stubGlobal('speechSynthesis', { speak: vi.fn(), cancel: vi.fn(), getVoices: () => [] })
+    vi.stubGlobal('SpeechSynthesisUtterance', class {})
+    const user = userEvent.setup()
+    render(wrap(<RoleplayChat />))
+    await screen.findByText('Pourquoi êtes-vous en retard ?')
+    expect(screen.getAllByRole('button', { name: 'Écouter le message' })).toHaveLength(1)
+
+    await user.type(screen.getByLabelText('Ton message'), 'Désolé')
+    await user.click(screen.getByRole('button', { name: 'Envoyer' }))
+    await waitFor(() => expect(screen.queryByLabelText('Écrit…')).toBeNull())
+    expect(screen.getAllByRole('button', { name: 'Écouter le message' })).toHaveLength(2)
+    vi.unstubAllGlobals()
+  })
+})
+
 describe('RoleplayChat', () => {
   it('opens the conversation and shows a mic next to the text, turning into send once you type', async () => {
     vi.stubGlobal('MediaRecorder', class {})
