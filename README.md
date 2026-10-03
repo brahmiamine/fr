@@ -239,7 +239,7 @@ Où l'IA intervient (uniquement quand elle est activée) :
 | Petit retour du 4→3→2 et feedback final | Transcrit l'enregistrement et propose reformulations, expressions et mot manquant ; l'apprenant choisit ce qu'il copie dans le formulaire |
 | Trous de mots (vérification) | Avis facultatif sur le mot que l'apprenant dit avoir trouvé |
 | Test hebdomadaire | Transcrit l'enregistrement et remplit le nombre de mots et d'hésitations |
-| Coach IA (`/coach`) | Question surprise sur mesure avec analyse de la réponse, et jeu de rôle sur les situations de conversation |
+| Coach IA (`/coach`) | **Questions surprises** : série chronométrée dans le thème choisi (compte à rebours, question révélée au dernier moment, enchaînement automatique, réponses enregistrées puis analysées dans le résumé) ; **jeu de rôle** en conversation de messages, avec micro à côté du texte |
 
 La prosodie n'utilise pas l'IA : les modèles gratuits jugent mal l'intonation.
 
