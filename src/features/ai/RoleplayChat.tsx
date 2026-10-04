@@ -66,17 +66,29 @@ export function RoleplayChat() {
     if (list) list.scrollTop = list.scrollHeight
   }, [turns, busy])
 
-  // A voice message: once the recording stops, its transcript fills the input for a last look.
+  // A voice message: once the recording stops, it is transcribed and sent straight away.
   useEffect(() => {
     if (recorder.status !== 'stopped' || !recorder.blobUrl || !voiceRef.current) return
     if (lastTranscribed.current === recorder.blobUrl) return
+    if (!scenario) return
     lastTranscribed.current = recorder.blobUrl
     voiceRef.current = false
     setBusy(true)
+    setError('')
     transcribeAudio(recorder.blobUrl)
-      .then(({ text }) => setDraft(text))
-      .catch((caught) => setError(aiErrorMessage(caught)))
-      .finally(() => setBusy(false))
+      .then(({ text }) => {
+        const content = text.trim()
+        if (!content) {
+          setBusy(false)
+          return
+        }
+        return ask(scenario, [...turns, { role: 'user', content }])
+      })
+      .catch((caught) => {
+        setError(aiErrorMessage(caught))
+        setBusy(false)
+      })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [recorder.status, recorder.blobUrl])
 
   const changeScenario = () => {
@@ -144,6 +156,7 @@ export function RoleplayChat() {
                   label="Écouter"
                   ariaLabel="Écouter le message"
                   compact
+                  iconOnly
                 />
               </div>
             ) : (
@@ -202,8 +215,8 @@ export function RoleplayChat() {
         </div>
       </section>
       <p className="muted ai-chatbox__hint">
-        Entrée pour envoyer. Le micro transcrit ta voix dans le champ : tu relis avant
-        d'envoyer.
+        Entrée pour envoyer. Avec le micro, ton message vocal est envoyé dès que tu termines
+        l'enregistrement.
       </p>
     </>
   )

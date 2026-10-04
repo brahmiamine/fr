@@ -11,6 +11,8 @@ export interface SpeakButtonProps {
   ariaLabel?: string
   rate?: number
   compact?: boolean
+  /** Shows only the wave icon; the label stays available to screen readers. */
+  iconOnly?: boolean
 }
 
 export function SpeakButton({
@@ -19,6 +21,7 @@ export function SpeakButton({
   ariaLabel,
   rate = 0.95,
   compact = false,
+  iconOnly = false,
 }: SpeakButtonProps) {
   const [speaking, setSpeaking] = useState(false)
   const ownsSpeech = useRef(false)
@@ -72,13 +75,13 @@ export function SpeakButton({
   return (
     <button
       type="button"
-      className={`speech-button${compact ? ' speech-button--compact' : ''}${speaking ? ' is-speaking' : ''}`}
+      className={`speech-button${compact ? ' speech-button--compact' : ''}${iconOnly ? ' speech-button--icon' : ''}${speaking ? ' is-speaking' : ''}`}
       aria-label={speaking ? `Arrêter — ${accessibleLabel}` : accessibleLabel}
       aria-pressed={speaking}
       onClick={toggle}
     >
       <WaveBars count={5} height={compact ? 14 : 16} playing={speaking} tone="accent" speed={0.9} />
-      <span>{speaking ? 'Arrêter' : label}</span>
+      {iconOnly ? null : <span>{speaking ? 'Arrêter' : label}</span>}
     </button>
   )
 }

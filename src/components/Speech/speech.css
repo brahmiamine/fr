@@ -36,6 +36,11 @@
   font-size: 0.8rem;
 }
 
+.speech-button--icon {
+  padding: 0 14px;
+  gap: 0;
+}
+
 /* On gradient surfaces (chunk card back). */
 .on-gradient .speech-button {
   border: 1.5px solid rgba(255, 255, 255, 0.6);
