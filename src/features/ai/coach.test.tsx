@@ -108,6 +108,7 @@ describe('RoleplayChat audio', () => {
     vi.stubGlobal('SpeechSynthesisUtterance', class {})
     const user = userEvent.setup()
     render(wrap(<RoleplayChat />))
+    await user.click(screen.getByRole('button', { name: 'Démarrer la conversation' }))
     await screen.findByText('Pourquoi êtes-vous en retard ?')
     expect(screen.getAllByRole('button', { name: 'Écouter le message' })).toHaveLength(1)
 
@@ -120,11 +121,24 @@ describe('RoleplayChat audio', () => {
 })
 
 describe('RoleplayChat', () => {
+  it('does not call the AI until the conversation is started', async () => {
+    const user = userEvent.setup()
+    render(wrap(<RoleplayChat />))
+    expect(screen.getByRole('button', { name: 'Démarrer la conversation' })).toBeInTheDocument()
+    expect(screen.queryByLabelText('Ton message')).toBeNull()
+    expect(globalThis.fetch).not.toHaveBeenCalled()
+
+    await user.click(screen.getByRole('button', { name: 'Démarrer la conversation' }))
+    expect(await screen.findByText('Pourquoi êtes-vous en retard ?')).toBeInTheDocument()
+    expect(globalThis.fetch).toHaveBeenCalledTimes(1)
+  })
+
   it('opens the conversation and shows a mic next to the text, turning into send once you type', async () => {
     vi.stubGlobal('MediaRecorder', class {})
     Object.defineProperty(navigator, 'mediaDevices', { value: {}, configurable: true })
     const user = userEvent.setup()
     render(wrap(<RoleplayChat />))
+    await user.click(screen.getByRole('button', { name: 'Démarrer la conversation' }))
     expect(await screen.findByText('Pourquoi êtes-vous en retard ?')).toBeInTheDocument()
 
     // Same input bar: a mic when empty, a send button once there is text.

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import type { KeyboardEvent } from 'react'
 import { SpeakButton } from '../../components/Speech/SpeakButton'
-import { Icon, WaveBars } from '../../components/ui'
+import { Button, Icon, WaveBars } from '../../components/ui'
 import { useAudioRecorder } from '../../hooks/useAudioRecorder'
 import {
   aiErrorMessage,
@@ -27,13 +27,13 @@ export function RoleplayChat() {
   const [scenario, setScenario] = useState<ConversationScenario | null>(() => pickScenario())
   const [turns, setTurns] = useState<Turn[]>([])
   const [draft, setDraft] = useState('')
+  const [started, setStarted] = useState(false)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
   const recorder = useAudioRecorder()
   const voiceRef = useRef(false)
   const lastTranscribed = useRef<string | null>(null)
   const listRef = useRef<HTMLDivElement>(null)
-  const openedFor = useRef<string | null>(null)
 
   const ask = async (current: ConversationScenario, history: Turn[]) => {
     setBusy(true)
@@ -48,18 +48,19 @@ export function RoleplayChat() {
       setTurns([...history, { role: 'assistant', content: data.text }])
     } catch (caught) {
       setError(aiErrorMessage(caught))
+      // The opening failed: offer the start button again rather than an empty chat.
+      if (history.length === 0) setStarted(false)
     } finally {
       setBusy(false)
     }
   }
 
-  // The other person opens the conversation, as soon as a situation is chosen.
-  useEffect(() => {
-    if (!scenario || openedFor.current === scenario.id) return
-    openedFor.current = scenario.id
+  // The conversation only opens when asked to: visiting the page never spends an AI request.
+  const startConversation = () => {
+    if (!scenario || busy) return
+    setStarted(true)
     void ask(scenario, [])
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [scenario])
+  }
 
   useEffect(() => {
     const list = listRef.current
@@ -96,6 +97,7 @@ export function RoleplayChat() {
     setTurns([])
     setDraft('')
     setError('')
+    setStarted(false)
     setScenario(next)
   }
 
@@ -147,6 +149,17 @@ export function RoleplayChat() {
         </header>
 
         <div className="ai-chatbox__messages" ref={listRef} aria-live="polite">
+          {!started ? (
+            <div className="ai-chatbox__start">
+              <p className="muted">
+                Lance la conversation quand tu es prêt : l'autre personne prend la parole en
+                premier.
+              </p>
+              <Button variant="animated" size="lg" trailing="→" onClick={startConversation}>
+                Démarrer la conversation
+              </Button>
+            </div>
+          ) : null}
           {turns.map((turn, index) =>
             turn.role === 'assistant' ? (
               <div key={index} className="ai-chat__row">
@@ -181,6 +194,7 @@ export function RoleplayChat() {
           </div>
         ) : null}
 
+        {started ? (
         <div className="ai-chatbox__composer">
           <textarea
             aria-label="Ton message"
@@ -213,6 +227,7 @@ export function RoleplayChat() {
             </button>
           )}
         </div>
+        ) : null}
       </section>
       <p className="muted ai-chatbox__hint">
         Entrée pour envoyer. Avec le micro, ton message vocal est envoyé dès que tu termines

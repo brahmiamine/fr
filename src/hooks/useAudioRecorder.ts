@@ -196,6 +196,8 @@ export function useAudioRecorder(options: AudioRecorderOptions = {}): AudioRecor
       setStatus('recording')
     } catch {
       setStatus('denied')
+    } finally {
+      startingRef.current = false
     }
   }, [supported, measureLevels, keepStream, startMeter, stopMeter])
 
