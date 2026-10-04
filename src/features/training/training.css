@@ -57,8 +57,9 @@
   color: transparent;
 }
 
-.flip__countdown {
-  gap: 14px;
+/* Scoped to beat the shared `.row` gap: global.css is injected after feature CSS. */
+.flip .flip__countdown {
+  gap: 28px;
   /* Extra air between the intention title and the 3-2-1 bubble. */
   margin-top: 24px;
 }
