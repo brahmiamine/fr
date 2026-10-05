@@ -19,6 +19,7 @@ import {
   STAGE_LABELS,
   STAGE_ORDER,
   retellingGoalFor,
+  withImitationForLevel,
 } from './types'
 import { buildCustomExercise } from './customExtract'
 import { CustomExtractForm } from './components/CustomExtractForm'
@@ -49,10 +50,13 @@ export default function ProsodyPage({ exercise: exerciseProp }: ProsodyPageProps
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   )
+  const pickForLevel = () => {
+    const picked = pickReadyProsodyExercise(state.recentProsodyIds, Math.random, preferredFocus)
+    return picked ? withImitationForLevel(picked, state.prosodySessions.length) : null
+  }
   const exercise = useMemo(
     () =>
-      exerciseProp ??
-      pickReadyProsodyExercise(state.recentProsodyIds, Math.random, preferredFocus),
+      exerciseProp ?? pickForLevel(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [exerciseProp],
   )

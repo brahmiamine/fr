@@ -639,6 +639,7 @@ function reportBuild({ created, rejected, skipped, options, target }) {
     console.log('\nExtraits privés : ils restent hors du dépôt (git-ignorés).')
     console.log('  • écoute-les et garde ceux qui valent le travail : retire les autres du JSON')
     console.log('  • intonation : les groupes sortent en « level », corrige à la main ceux que tu gardes')
+    console.log('  • puis mesure les groupes sur l\'audio : python3 scripts/prosody_audio/asr_words.py && python3 scripts/prosody_audio/annotate.py')
   } else {
     console.log('\nRelance les tests : npm run test:run')
   }

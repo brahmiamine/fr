@@ -76,6 +76,26 @@ passages déjà exportés, et les suivants sont ignorés. Sans lui, relancer la
 commande dupliquerait tous les extraits sous de nouveaux identifiants, rien
 dans l'entrée ne permettant de retrouver la vidéo d'origine.
 
+## Mesurer les groupes sur l'audio
+
+Les groupes produits par `prosody:youtube` sont devinés à partir de la
+ponctuation : une virgule « monte », un point « descend ». L'exercice de
+marquage note l'apprenant contre ces groupes, donc ils doivent ensuite être
+**mesurés** sur l'enregistrement :
+
+```bash
+pip install faster-whisper praat-parselmouth numpy
+python3 scripts/prosody_audio/asr_words.py   # horodatage de chaque mot (cache)
+python3 scripts/prosody_audio/annotate.py    # pauses, intonation, courbe de hauteur
+```
+
+Chaque extrait annoté porte `annotation: "acoustic"`. Une frontière n'existe
+que là où le locuteur fait une vraie pause (`pauseAfter`) ; l'intonation n'est
+notée que si le mouvement de la dernière syllabe est net
+(`intonationMeasured`) ; `pitch` contient la courbe affichée à l'apprenant.
+Un extrait dont la reconnaissance ne correspond pas à la transcription garde
+ses anciens groupes et n'est pas noté.
+
 ## Ajouter un enregistrement sous licence à la banque publiée
 
 Une entrée `modelKind: 'recording'` doit pointer vers `audio/prosody/<id>.ogg`

@@ -47,10 +47,12 @@ Le contenu n'est **jamais tiré au hasard** : il suit les priorités
   le mot et confirmé. Les mots génériques de `paraphrase-words.json`
   complètent la liste (≈ 70 % perso / 30 % générique) ; un mot générique que
   tu n'aurais pas trouvé peut rejoindre ta base personnelle avec ta propre
-  description de l'idée.
-- **Questions surprises** : la question apparaît pendant la préparation progressive (10 s au début, 5 s après 5 séances, 3 s après 15 — mais le niveau ne monte que si moins de 40 % des réponses des 3 dernières séances ont « beaucoup » bloqué). La parole démarre ensuite automatiquement, sans pause ni sortie anticipée, et s'allonge avec le niveau : 60 s, 75 s puis 90 s. La diversité de catégories et de types est privilégiée et la question la plus mal notée revient **toujours** en « revanche » ; au niveau avancé, la dernière réponse dure 60 s puis enchaîne sur un pivot surprise de 30 s.
-- **4 → 3 → 2** : 4 passages (4 min, 3 min, 2 min, 1 min de transfert). Le mini-feedback (minuteur indicatif de 60 s) demande un mot manquant, une formulation corrigée et **un chunk que tu aurais pu utiliser**, rappelé pendant les tours 2 et 3. Une séance sur trois, le 4→3→2 devient un **retelling** : tu écoutes une courte histoire (`retelling-stories.json`), tu notes 2–3 expressions entendues, puis tu la racontes avec tes mots ; le transfert porte sur une expérience personnelle proche. Le dernier point travaillé en prosodie est rappelé pendant le 4→3→2.
-- **Enregistrement audio** : optionnel, via `MediaRecorder`. S'il est activé, l'enregistrement du premier tour démarre avant le minuteur et s'arrête automatiquement à la fin des 4 minutes. Il reste disponible au mini-feedback puis au feedback final ; l'audio reste uniquement en mémoire.
+  description de l'idée. Une fois révélé, chaque mot est **réinjecté** dans
+  le 4→3→2 et les questions des séances suivantes (« Mots à réutiliser »),
+  sauf le jour où il doit être retrouvé, pour ne jamais te le souffler avant.
+- **Questions surprises** : la question apparaît pendant la préparation progressive (10 s au début, 5 s après 5 séances, 3 s après 15 — mais le niveau ne monte que si moins de 40 % des réponses des 3 dernières séances ont « beaucoup » bloqué). La parole démarre ensuite automatiquement, sans pause ni sortie anticipée, et s'allonge avec le niveau : 60 s, 75 s puis 90 s. La diversité de catégories et de types est privilégiée et la question la plus mal notée revient **toujours** en « revanche » ; au niveau avancé, la dernière réponse dure 60 s puis enchaîne sur un pivot surprise de 30 s. Si l'enregistrement est activé, chaque réponse est enregistrée (en mémoire) : avant la revanche, tu peux réécouter ta première réponse, et le feedback final fait écouter **avant / après**.
+- **4 → 3 → 2** : 4 passages (4 min, 3 min, 2 min, 1 min de transfert). Le mini-feedback (minuteur indicatif de 60 s) demande un mot manquant, une formulation corrigée et **un chunk que tu aurais pu utiliser**, rappelé pendant les tours 2 et 3. Une séance sur trois, le 4→3→2 devient un **retelling** : tu écoutes une courte histoire (`retelling-stories.json`, voix de synthèse) ou un **extrait naturel** d'une vraie personne (`retelling-recordings.json`, puisé dans la banque prosodique sous licence), tu notes 2–3 expressions entendues, puis tu la racontes avec tes mots ; le transfert porte sur une expérience personnelle proche. Le dernier point travaillé en prosodie est rappelé pendant le 4→3→2.
+- **Enregistrement audio** : optionnel, via `MediaRecorder`. S'il est activé, chaque tour du 4→3→2 et chaque réponse aux questions surprises sont enregistrés pendant qu'ils se déroulent. Le tour 1 est réécouté au mini-feedback, les 4 tours dans un résumé, la pire question avant sa revanche ; l'audio reste uniquement en mémoire.
 - **Lecture vocale guidée** : le moteur de synthèse vocale déjà utilisé par les modèles prosodiques TTS est partagé avec la fluidité. Les chunks et mots ne deviennent écoutables qu'après révélation ; le sujet 4→3→2 et les formulations corrigées sont écoutables avant réutilisation. Les questions surprises et les phases de parole chronométrées restent sans lecture pour ne pas modifier la contrainte de production.
 - **Boucle personnalisée** : mots manquants + contexte, formulations corrigées et expressions utiles sont réinjectés dans de futures séances. Une correction précédente n'avance dans son espacement que lorsque tu confirmes l'avoir réellement réutilisée à voix haute ; les expressions utiles deviennent des chunks personnels.
 - **Transfert réel** : un défi hebdomadaire exige au moins 20 min de vraie conversation puis réinjecte les corrections et blocages observés dans l'entraînement. Une situation tirée de `conversation-scenarios.json` (avec ses interruptions) sert de mission, et une répétition solo de 2 min lit les interruptions à voix haute pendant que tu parles.
@@ -70,7 +72,13 @@ Le protocole impose maintenant :
 - une deuxième écoute complète centrée sur les groupes, pauses et mouvements de voix ;
 - un **marquage actif** : l'apprenant place lui-même les frontières `/` et les
   intonations ↑ ↓ → avant de voir le découpage du modèle, puis reçoit un score
-  (frontières trouvées, intonations justes) ;
+  (frontières trouvées, intonations justes) — calculé **uniquement** sur ce qui
+  est fiable (voir « Annotation acoustique » ci-dessous) ;
+- la **courbe de hauteur de voix** réelle du locuteur, avec ses pauses et un
+  curseur qui suit la lecture, affichée avec le découpage ;
+- un segment d'imitation **progressif** : une seule phrase (≤ 8 s) pour les 5
+  premières séances, ≤ 11 s ensuite, puis jusqu'à 15 s — toujours coupé à la
+  fin d'un groupe ;
 - un échauffement mélodique « la-la-la » optionnel avant l'imitation ;
 - au moins 2 écoutes du segment d'imitation avant V1 ;
 - une vraie passe complète de shadowing ;
@@ -78,17 +86,45 @@ Le protocole impose maintenant :
 - un seul focus de correction avant V2 ;
 - aucune lecture du modèle pendant l'enregistrement V1/V2 ;
 - un retelling progressif : 30–60 s pour les 5 premières séances, 45–90 s
-  ensuite, puis 60–120 s après 10 séances ;
+  ensuite, puis 60–120 s après 10 séances, avec une **idée propre à chaque
+  extrait** (ce que dit vraiment ce passage) ;
 - le choix de l'extrait suivant privilégie ton point de travail le plus
   fréquent (pause, intonation…).
 
 Un extrait marqué `ready: true` doit durer **10–30 s** et son segment d'imitation
-**5–15 s**. Les 30 modèles fournis (deux phrases chacun) utilisent la **voix de
-synthèse** du navigateur, ce que l'interface indique clairement. Comme la
-synthèse ne donne aucun horodatage, leurs durées sont **estimées** à partir du
+**5–15 s**. La banque contient **350 extraits de vraies voix** (licence CC BY,
+voir `public/audio/prosody/README.md`), proposés en priorité, et 30 modèles en
+**voix de synthèse** du navigateur, ce que l'interface indique clairement. Comme
+la synthèse ne donne aucun horodatage, leurs durées sont **estimées** à partir du
 nombre de syllabes (`timing: "estimated"`, recalculées par
 `node scripts/estimate-prosody-timings.mjs`) ; un test refuse toute durée
 invraisemblable (moins de 0,12 s ou plus de 0,4 s par syllabe).
+
+### Annotation acoustique
+
+Le marquage n'a de sens que si la référence décrit ce que fait vraiment le
+locuteur. Les groupes des vraies voix sont donc **mesurés sur l'audio**
+(`annotation: "acoustic"`) par `scripts/prosody_audio/` :
+
+1. `asr_words.py` (faster-whisper) donne l'horodatage de chaque mot ;
+2. `annotate.py` (Praat via parselmouth) aligne ces mots sur la transcription,
+   place une frontière **seulement là où le locuteur fait une vraie pause**
+   (silence mesuré, `pauseAfter`), cale la fin de chaque groupe sur l'arrêt réel
+   de la voix, mesure le mouvement de la dernière syllabe en demi-tons
+   (`intonationMeasured: true` seulement si la montée ou la descente est nette,
+   ≥ 3 demi-tons), repère l'allongement final et enregistre la courbe de
+   hauteur (`pitch`).
+
+```bash
+pip install faster-whisper praat-parselmouth numpy
+python3 scripts/prosody_audio/asr_words.py   # cache dans .cache/prosody-asr
+python3 scripts/prosody_audio/annotate.py    # réécrit src/data/prosody.json
+```
+
+Le score ne compte que ce qui est fiable : pour une vraie voix annotée, toutes
+ses pauses et ses mouvements nets ; pour la voix de synthèse, les frontières et
+mouvements sur la ponctuation (là où elle s'arrête vraiment) ; un extrait dont
+les groupes n'ont été que devinés n'est pas noté du tout.
 
 Pour copier une **vraie personne**, le bouton « Utiliser mon propre extrait »
 permet d'importer un fichier audio de 10–60 s (idéalement 10–30 s) avec sa
@@ -126,9 +162,10 @@ Tout le contenu pédagogique variable est statique et vit dans `src/data/`. Les 
 | `src/data/native-expressions.json` | Chunks (expressions) à récupérer |
 | `src/data/question-starters.json` | Amorces naturelles pour démarrer une réponse |
 | `src/data/rescue-structures.json` | Structures de circumlocution quand un mot manque |
-| `src/data/prosody.json` | 30 modèles prosodiques jouables + groupes rythmiques |
+| `src/data/prosody.json` | 350 extraits de vraies voix + 30 modèles de synthèse, avec groupes rythmiques mesurés |
 | `src/data/conversation-scenarios.json` | Situations d'interaction avec interruptions et relances (mission + répétition solo) |
-| `src/data/retelling-stories.json` | Courtes histoires pour la variante retelling du 4 → 3 → 2 |
+| `src/data/retelling-stories.json` | Courtes histoires (voix de synthèse) pour la variante retelling du 4 → 3 → 2 |
+| `src/data/retelling-recordings.json` | Extraits naturels de la banque prosodique utilisés comme histoires de retelling |
 
 ### Schémas
 
@@ -205,7 +242,8 @@ La suite Vitest + React Testing Library couvre notamment :
 - lecture vocale partagée entre prosodie et fluidité, avec garde-fous contre la révélation et l'écoute pendant la parole ;
 - calcul des séries, de la progression hebdomadaire et des minutes totales ;
 - mesure automatique des pauses sur le niveau du micro et comparaison « il y a 4 semaines » tolérante ;
-- marquage prosodique actif, durées estimées plausibles des modèles TTS et progression du retelling ;
+- marquage prosodique actif noté seulement sur les références fiables, courbe de hauteur, segment d'imitation progressif, durées estimées plausibles des modèles TTS et progression du retelling ;
+- enregistrement des réponses aux questions surprises et réinjection des mots débloqués ;
 - vérification honnête des trous de mots, découverte des nouveaux chunks et réinitialisation après échec ;
 - machine à états de la session complète (chunks, 4→3→2, questions + revanche,
   trous de mots, feedback) et parcours de bout en bout.

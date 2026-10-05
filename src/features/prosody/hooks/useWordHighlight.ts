@@ -8,12 +8,14 @@ import type { ProsodyExercise } from '../types'
  */
 export function useWordHighlight(exercise: Pick<ProsodyExercise, 'groups' | 'modelKind'>) {
   const [activeIndex, setActiveIndex] = useState(-1)
+  const [time, setTime] = useState<number | null>(null)
   const { groups, modelKind } = exercise
 
   const onProgress = useCallback(
     (fraction: number, seconds: number) => {
       if (fraction <= 0 || fraction >= 1 || groups.length === 0) {
         setActiveIndex(-1)
+        setTime(null)
         return
       }
       // Synthesised speech has no playhead: map progress onto the excerpt timeline.
@@ -21,9 +23,11 @@ export function useWordHighlight(exercise: Pick<ProsodyExercise, 'groups' | 'mod
       const last = groups[groups.length - 1].end
       const time = modelKind === 'tts' ? first + fraction * (last - first) : seconds
       setActiveIndex(activeWordIndex({ groups }, time))
+      setTime(time)
     },
     [groups, modelKind],
   )
 
-  return { activeIndex, onProgress }
+  /** `time`: playback position on the excerpt timeline, null when idle. */
+  return { activeIndex, time, onProgress }
 }

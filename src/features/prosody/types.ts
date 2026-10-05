@@ -18,6 +18,12 @@ export interface ProsodyGroup {
   start: number
   end: number
   intonation: 'level' | 'rise' | 'fall'
+  /** Measured on the pitch curve of the recording: only these are scored. */
+  intonationMeasured?: boolean
+  /** Silence measured after the group, in seconds (acoustic annotation). */
+  pauseAfter?: number
+  /** Measured [start, end] of each word of `text`, in seconds. */
+  words?: Array<[number, number]>
   finalLengthening?: boolean
   liaisonAfter?: boolean
   enchainementAfter?: boolean
@@ -52,6 +58,17 @@ export interface ProsodyExercise {
   timing?: 'estimated' | 'measured'
   /** Learner-imported excerpt: groups are only a rough guide, not a reference. */
   custom?: boolean
+  /**
+   * `acoustic`: groups end on pauses measured in the audio and intonations
+   * come from the pitch curve (scripts/prosody_audio). Without it, a
+   * recording's groups were guessed from punctuation and are not scored.
+   */
+  annotation?: 'acoustic'
+  /**
+   * Measured melody: every `step` seconds, the pitch in semitones from the
+   * speaker's median, or null where the voice is silent or unvoiced.
+   */
+  pitch?: { step: number; semitones: Array<number | null> }
 }
 
 export const REQUIRED_MEANING_LISTENS = 1
@@ -75,6 +92,37 @@ export function retellingGoalFor(completedProsodySessions: number): RetellingGoa
   if (completedProsodySessions < 5) return { minSeconds: 30, targetSeconds: 60 }
   if (completedProsodySessions < 10) return { minSeconds: 45, targetSeconds: 90 }
   return { minSeconds: 60, targetSeconds: 120 }
+}
+
+/**
+ * "Il vaut mieux très bien reproduire une phrase que mal reproduire 60 secondes":
+ * the imitation segment starts with one short phrase and grows with practice.
+ */
+export function maxImitationSecondsFor(completedProsodySessions: number): number {
+  if (completedProsodySessions < 5) return 8
+  if (completedProsodySessions < 10) return 11
+  return MAX_IMITATION_SECONDS
+}
+
+/**
+ * Shortens the imitation segment to the learner's stage, always ending on the
+ * end of a rhythmic group so the phrase is never cut in the middle.
+ */
+export function withImitationForLevel(
+  exercise: ProsodyExercise,
+  completedProsodySessions: number,
+): ProsodyExercise {
+  const { start, end } = exercise.imitation
+  const max = maxImitationSecondsFor(completedProsodySessions)
+  if (exercise.custom || end - start <= max) return exercise
+  const ends = exercise.groups
+    .filter((group) => group.start >= start - 0.01 && group.end <= end + 0.01)
+    .map((group) => group.end)
+    .filter((groupEnd) => groupEnd - start >= MIN_IMITATION_SECONDS)
+  const fitting = ends.filter((groupEnd) => groupEnd - start <= max)
+  const chosen = fitting.length > 0 ? Math.max(...fitting) : Math.min(...ends)
+  if (!Number.isFinite(chosen) || chosen >= end) return exercise
+  return { ...exercise, imitation: { start, end: chosen } }
 }
 
 export interface ProsodySessionState {
@@ -145,8 +193,25 @@ function intonationMark(value: ProsodyGroup['intonation']): string {
   return '→'
 }
 
+/**
+ * Whether a group's intonation can be trusted as a reference:
+ * - a recording annotated from the audio: only movements measured on its pitch curve;
+ * - the synthetic voice: only group ends on punctuation, where it does move its voice;
+ * - a recording annotated from punctuation alone: never, it was a guess.
+ */
+export function hasReliableIntonation(
+  exercise: Pick<ProsodyExercise, 'annotation' | 'modelKind'>,
+  group: ProsodyGroup,
+): boolean {
+  if (exercise.annotation === 'acoustic') return group.intonationMeasured === true
+  if (exercise.modelKind === 'tts') return /[,;:.!?…]["»)]*$/.test(group.text)
+  return false
+}
+
 export function intonationPattern(exercise: ProsodyExercise): string {
-  return exercise.groups.map((group) => intonationMark(group.intonation)).join(' ')
+  return exercise.groups
+    .map((group) => (hasReliableIntonation(exercise, group) ? intonationMark(group.intonation) : '·'))
+    .join(' ')
 }
 
 export function focusGoal(
