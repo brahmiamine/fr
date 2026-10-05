@@ -6,9 +6,15 @@ import words from './paraphrase-words.json'
 import prosody from './prosody.json'
 import scenarios from './conversation-scenarios.json'
 import stories from './retelling-stories.json'
+import retellingRecordings from './retelling-recordings.json'
+import { contentRepository } from '../services/content/contentRepository'
 import { secondsPerSyllable } from '../services/content/prosodyTiming'
 
 const badFrenchContraction = /\b(?:de les|de le|à les|à le)\b/i
+
+const bundledAudio = new Set(
+  Object.keys(import.meta.glob('/public/audio/prosody/*.ogg', { query: '?url', import: 'default' })),
+)
 
 describe('pedagogical content quality', () => {
   it('contains no common uncontracted French article mistakes in questions', () => {
@@ -79,5 +85,22 @@ describe('pedagogical content quality', () => {
       expect(words).toBeLessThanOrEqual(160)
       expect(story.transferPrompt.length).toBeGreaterThan(10)
     }
+  })
+
+  it('adds real speakers from the prosody bank to the retelling stories', () => {
+    const recorded = contentRepository.retellingStories.filter((story) => story.audio)
+    expect(recorded).toHaveLength(retellingRecordings.length)
+    for (const story of recorded) {
+      expect(story.audio).toMatch(/^audio\/prosody\/prosody_yt_\d{3}\.ogg$/)
+      expect(bundledAudio.has(`/public/${story.audio}`)).toBe(true)
+      expect(story.attribution).toBeTruthy()
+      expect(story.transferPrompt.length).toBeGreaterThan(10)
+    }
+  })
+
+  it('gives every recording its own retelling idea, not one per video', () => {
+    const recordings = prosody.filter((item) => item.modelKind === 'recording')
+    const ideas = new Set(recordings.map((item) => item.retelling.idea))
+    expect(ideas.size).toBe(recordings.length)
   })
 })

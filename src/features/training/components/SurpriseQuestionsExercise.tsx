@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import type { Chunk, Question } from '../../../types/content'
+import { AudioClip } from '../../../components/AudioClip/AudioClip'
 import { Timer } from '../../../components/Timer/Timer'
 import { Button, Callout, Card, ChoiceButton, ChoiceGrid, DotList, InfoLine, Pill } from '../../../components/ui'
 import {
@@ -22,6 +23,10 @@ export interface SurpriseQuestionsExerciseProps {
   focusWords: string[]
   pivotQuestion?: Question | null
   revenge?: boolean
+  /** The microphone is capturing this answer. */
+  recording?: boolean
+  /** Revenge only: the first answer to this question, to hear it again first. */
+  previousAnswerUrl?: string | null
   onCountdownDone: () => void
   onPrepDone: () => void
   onSpeakingDone: () => void
@@ -42,6 +47,8 @@ export function SurpriseQuestionsExercise({
   focusWords,
   pivotQuestion = null,
   revenge = false,
+  recording = false,
+  previousAnswerUrl = null,
   onCountdownDone,
   onPrepDone,
   onSpeakingDone,
@@ -54,6 +61,23 @@ export function SurpriseQuestionsExercise({
   const timerKey = revenge ? 'revenge' : `question-${index}`
 
   const counterLabel = revenge ? 'Revanche' : `Question ${index + 1}/${total}`
+
+  if (stage === 'countdown' && revenge && previousAnswerUrl) {
+    return (
+      <Card center aria-live="polite">
+        <Pill tone="contrast" pop>{counterLabel}</Pill>
+        <h2>Revanche</h2>
+        <p className="muted">
+          C'est la question où tu as le plus bloqué. Réécoute ta première
+          réponse si tu veux, repère où tu t'es arrêté, puis refais-la.
+        </p>
+        <AudioClip src={previousAnswerUrl} label="Ma première réponse" />
+        <Button variant="animated" size="lg" block trailing="▶" onClick={onCountdownDone}>
+          Je refais la question
+        </Button>
+      </Card>
+    )
+  }
 
   if (stage === 'countdown') {
     return (
@@ -144,6 +168,12 @@ export function SurpriseQuestionsExercise({
 
   return (
     <Card aria-labelledby="question-title">
+      {recording ? (
+        <span className="rec-badge">
+          <span className="rec-badge__dot" aria-hidden="true" />
+          Enregistrement de ta réponse
+        </span>
+      ) : null}
       <p className={`pill${pivotActive ? ' pill--warm' : ''}`}>
         {pivotActive ? 'Pivot — change de sujet maintenant' : counterLabel}
       </p>

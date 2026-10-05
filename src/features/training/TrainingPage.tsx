@@ -40,6 +40,8 @@ import {
   speakingSecondsForLevel,
 } from './types'
 import { useFluencyRecordings } from './useFluencyRecordings'
+import { REVENGE_RECORDING, useQuestionRecordings } from './useQuestionRecordings'
+import type { QuestionRecordings } from './useQuestionRecordings'
 import './training.css'
 
 function sessionDurationMinutes(session: TrainingSessionState): number {
@@ -158,16 +160,20 @@ export default function TrainingPage() {
   )
 
   const roundRecordings = useFluencyRecordings(sessionRecorder, session?.fluency)
+  const inQuestions =
+    Boolean(session) && session.phase === 'active' && getCurrentStage(session) === 'questions'
+  const questionRecordings = useQuestionRecordings(sessionRecorder, session, inQuestions)
 
-  // The microphone stays open across the four rounds, then is handed back.
-  const fluencyRecording =
+  // The microphone stays open across the four rounds and the surprise
+  // questions, then is handed back.
+  const microphoneInUse =
     Boolean(session) &&
-    getCurrentStage(session) === 'fluency' &&
-    session.fluency.stage !== 'summary'
+    ((getCurrentStage(session) === 'fluency' && session.fluency.stage !== 'summary') ||
+      inQuestions)
   const releaseMicrophone = sessionRecorder.release
   useEffect(() => {
-    if (!fluencyRecording) releaseMicrophone()
-  }, [fluencyRecording, releaseMicrophone])
+    if (!microphoneInUse) releaseMicrophone()
+  }, [microphoneInUse, releaseMicrophone])
 
   const sessionRef = useRef(session)
   sessionRef.current = session
@@ -423,7 +429,12 @@ export default function TrainingPage() {
       ) : null}
 
       {session.phase === 'active' && stage === 'questions' ? (
-        <QuestionsRenderer session={session} onSession={dispatch} />
+        <QuestionsRenderer
+          session={session}
+          onSession={dispatch}
+          recordings={questionRecordings}
+          recording={sessionRecorder.status === 'recording'}
+        />
       ) : null}
 
       {session.phase === 'active' && stage === 'gaps' ? (
@@ -457,6 +468,14 @@ export default function TrainingPage() {
           onToggleReminder={(reminderId) =>
             dispatch({ type: 'FLUENCY_TOGGLE_REMINDER_USED', reminderId })
           }
+          revengeClips={
+            session.revenge.questionId && questionRecordings[REVENGE_RECORDING]
+              ? {
+                  before: questionRecordings[session.revenge.questionId] ?? null,
+                  after: questionRecordings[REVENGE_RECORDING],
+                }
+              : null
+          }
           chunksOfDay={session.plan.chunksOfDay}
           usedChunkIds={session.usedChunkIds ?? []}
           onToggleChunk={(chunkId) => dispatch({ type: 'CHUNK_TOGGLE_USED', chunkId })}
@@ -476,9 +495,13 @@ export default function TrainingPage() {
 function QuestionsRenderer({
   session,
   onSession,
+  recordings,
+  recording,
 }: {
   session: TrainingSessionState
   onSession: (action: Parameters<typeof sessionReducer>[1]) => void
+  recordings: QuestionRecordings
+  recording: boolean
 }) {
   const plan = session.plan
 
@@ -521,6 +544,10 @@ function QuestionsRenderer({
         chunksOfDay={plan.chunksOfDay}
         focusWords={plan.focusWords}
         revenge
+        recording={recording && session.revenge.stage === 'speaking'}
+        previousAnswerUrl={
+          session.revenge.questionId ? recordings[session.revenge.questionId] ?? null : null
+        }
         onCountdownDone={() => onSession({ type: 'REVENGE_COUNTDOWN_DONE' })}
         onPrepDone={() => onSession({ type: 'REVENGE_PREP_DONE' })}
         onSpeakingDone={() => onSession({ type: 'REVENGE_DONE' })}
@@ -548,6 +575,7 @@ function QuestionsRenderer({
       chunksOfDay={plan.chunksOfDay}
       focusWords={plan.focusWords}
       pivotQuestion={pivotQuestion}
+      recording={recording && session.questions.stage === 'speaking'}
       onCountdownDone={() => onSession({ type: 'QUESTION_COUNTDOWN_DONE' })}
       onPrepDone={() => onSession({ type: 'QUESTION_PREP_DONE' })}
       onSpeakingDone={() => onSession({ type: 'QUESTION_SPEAKING_DONE' })}

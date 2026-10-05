@@ -64,6 +64,16 @@ describe('buildSessionPlan', () => {
     expect(plan.focusWords).toContain('prise électrique')
   })
 
+  it('reinjects a word revealed today, but never one due for retrieval today', () => {
+    const revealed = stateWithGaps()
+    revealed.wordGaps[0] = { ...revealed.wordGaps[0], successCount: 0, nextReview: '2099-01-01' }
+    expect(buildSessionPlan(revealed, () => 0.5).focusWords).toContain('prise électrique')
+
+    const due = stateWithGaps()
+    due.wordGaps[0] = { ...due.wordGaps[0], nextReview: toLocalDateString() }
+    expect(buildSessionPlan(due, () => 0.5).focusWords).not.toContain('prise électrique')
+  })
+
   it('selects due feedback notes as fluency reminders', () => {
     const state: AppState = {
       ...createInitialState(),

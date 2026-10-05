@@ -126,7 +126,7 @@ export function FluencyPrep({
         <RecordSwitch
           checked={recordAll}
           onChange={onRecordAllChange}
-          label="Enregistrer les 4 tours (résumé à la fin)"
+          label="Enregistrer les 4 tours et mes réponses aux questions"
         />
       ) : null}
 
