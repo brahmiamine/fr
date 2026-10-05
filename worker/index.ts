@@ -5,6 +5,7 @@ import {
   modelFor,
   resolveOrder,
   type Env,
+  type ProviderId,
 } from './providers'
 import { TASK_NAMES, buildTask, extractJson, type TaskName } from './tasks'
 import {
@@ -32,6 +33,18 @@ function safeEqual(a: string, b: string): boolean {
 export function hasAccess(request: Request, env: Env): boolean {
   if (!env.AI_ACCESS_CODE) return true
   return safeEqual(request.headers.get('x-access-code') ?? '', env.AI_ACCESS_CODE)
+}
+
+/** Model each provider was asked to use, so a failure still shows what was tried. */
+function modelsOf(
+  providers: string[],
+  modelOf: (provider: ProviderId) => string,
+): Record<string, string> {
+  const models: Record<string, string> = {}
+  for (const id of providers) {
+    if (PROVIDER_IDS.includes(id as ProviderId)) models[id] = modelOf(id as ProviderId)
+  }
+  return models
 }
 
 export async function handleApi(request: Request, env: Env): Promise<Response> {
@@ -70,6 +83,7 @@ export async function handleApi(request: Request, env: Env): Promise<Response> {
 
     // A provider whose answer cannot be parsed counts as failed: try the next one.
     const failed: string[] = []
+    const modelOfProvider = (id: ProviderId) => modelFor(id, env)
     const startedAt = Date.now()
     for (const provider of order) {
       const { result, failed: failures } = await chatWithFallback([provider], env, spec)
@@ -85,6 +99,7 @@ export async function handleApi(request: Request, env: Env): Promise<Response> {
           usage: result.usage,
           latencyMs: Date.now() - startedAt,
           failed,
+          models: modelsOf(failed, modelOfProvider),
         })
       }
       const data = spec.shape(extractJson(result.text))
@@ -96,11 +111,12 @@ export async function handleApi(request: Request, env: Env): Promise<Response> {
           usage: result.usage,
           latencyMs: Date.now() - startedAt,
           failed,
+          models: modelsOf(failed, modelOfProvider),
         })
       }
       failed.push(provider)
     }
-    return json({ error: 'all providers failed', failed }, 502)
+    return json({ error: 'all providers failed', failed, models: modelsOf(failed, modelOfProvider) }, 502)
   }
 
   if (pathname === '/api/transcribe') {
@@ -124,7 +140,10 @@ export async function handleApi(request: Request, env: Env): Promise<Response> {
 
     const startedAt = Date.now()
     const { provider, text, failed } = await transcribeWithFallback(order, env, file, 'fr')
-    if (!provider) return json({ error: 'all providers failed', failed }, 502)
+    const modelOfProvider = (id: ProviderId) => transcribeModelFor(id, env)
+    if (!provider) {
+      return json({ error: 'all providers failed', failed, models: modelsOf(failed, modelOfProvider) }, 502)
+    }
     return json({
       provider,
       model: transcribeModelFor(provider, env),
@@ -132,6 +151,7 @@ export async function handleApi(request: Request, env: Env): Promise<Response> {
       audioBytes: file.size,
       latencyMs: Date.now() - startedAt,
       failed,
+      models: modelsOf(failed, modelOfProvider),
     })
   }
 

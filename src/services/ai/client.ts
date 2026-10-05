@@ -24,6 +24,16 @@ export interface AiStatus {
   providers: AiProviderStatus[]
 }
 
+function stringMap(value: unknown): Record<string, string> {
+  const result: Record<string, string> = {}
+  if (value && typeof value === 'object') {
+    for (const [key, item] of Object.entries(value)) {
+      if (typeof item === 'string') result[key] = item
+    }
+  }
+  return result
+}
+
 export type AiErrorCode = 'disabled' | 'access' | 'unavailable' | 'network' | 'failed'
 
 export class AiError extends Error {
@@ -31,6 +41,8 @@ export class AiError extends Error {
     readonly code: AiErrorCode,
     /** Providers the server tried without success. */
     readonly failed: string[] = [],
+    /** Model each failed provider was asked to use. */
+    readonly models: Record<string, string> = {},
   ) {
     super(code)
   }
@@ -80,9 +92,12 @@ async function send(path: string, init: RequestInit): Promise<Response> {
   if (response.status === 503) throw new AiError('unavailable')
   if (response.status === 404) throw new AiError('network')
   if (!response.ok) {
-    const body = (await response.json().catch(() => null)) as { failed?: unknown } | null
+    const body = (await response.json().catch(() => null)) as {
+      failed?: unknown
+      models?: unknown
+    } | null
     const failed = Array.isArray(body?.failed) ? body.failed.map(String) : []
-    throw new AiError('failed', failed)
+    throw new AiError('failed', failed, stringMap(body?.models))
   }
   return response
 }
@@ -113,7 +128,7 @@ export async function runAiTask<T>(
       body: JSON.stringify({ task, input, providers: providersParam() }),
     })
   } catch (caught) {
-    if (caught instanceof AiError) recordAiFailures(caught.failed, 'text')
+    if (caught instanceof AiError) recordAiFailures(caught.failed, 'text', caught.models)
     throw caught
   }
   const result = (await response.json()) as {
@@ -123,6 +138,7 @@ export async function runAiTask<T>(
     usage: { promptTokens: number; completionTokens: number; totalTokens: number } | null
     latencyMs: number
     failed: string[]
+    models?: Record<string, string>
   }
   recordAiSuccess({
     provider: result.provider,
@@ -131,6 +147,7 @@ export async function runAiTask<T>(
     ...result.usage,
     latencyMs: result.latencyMs,
     failed: result.failed,
+    models: result.models,
   })
   return { data: result.data, provider: result.provider }
 }
@@ -154,7 +171,7 @@ export async function transcribeAudio(
   try {
     response = await send('api/transcribe', { method: 'POST', body: form })
   } catch (caught) {
-    if (caught instanceof AiError) recordAiFailures(caught.failed, 'audio')
+    if (caught instanceof AiError) recordAiFailures(caught.failed, 'audio', caught.models)
     throw caught
   }
   const result = (await response.json()) as {
@@ -164,6 +181,7 @@ export async function transcribeAudio(
     audioBytes: number
     latencyMs: number
     failed: string[]
+    models?: Record<string, string>
   }
   recordAiSuccess({
     provider: result.provider,
@@ -173,6 +191,7 @@ export async function transcribeAudio(
     words: countWords(result.text),
     latencyMs: result.latencyMs,
     failed: result.failed,
+    models: result.models,
   })
   return { text: result.text, provider: result.provider }
 }

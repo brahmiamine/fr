@@ -143,16 +143,25 @@ describe('/api/task', () => {
       task({ task: 'question', providers: ['groq', 'gemini'], input: {} }),
       env,
     )
-    const data = (await response.json()) as { provider: string; data: { text: string }; failed: string[] }
+    const data = (await response.json()) as {
+      provider: string
+      data: { text: string }
+      failed: string[]
+      models: Record<string, string>
+    }
     expect(data.provider).toBe('gemini')
     expect(data.data.text).toBe('Quel est ton souvenir ?')
     expect(data.failed).toEqual(['groq'])
+    expect(data.models).toEqual({ groq: 'llama-3.3-70b-versatile' })
   })
 
   it('answers 502 when every provider fails', async () => {
     vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response('', { status: 500 }))
     const response = await handleApi(task({ task: 'question', input: {} }), env)
     expect(response.status).toBe(502)
+    const data = (await response.json()) as { failed: string[]; models: Record<string, string> }
+    expect(data.failed.length).toBeGreaterThan(0)
+    for (const id of data.failed) expect(data.models[id]).toBeTruthy()
   })
 
   it('returns plain text for the role-play', async () => {

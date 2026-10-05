@@ -78,12 +78,14 @@ export interface SuccessRecord {
   latencyMs?: number
   /** Providers tried first that did not answer. */
   failed?: string[]
+  /** Model each provider was asked to use, by provider id. */
+  models?: Record<string, string>
 }
 
 export function recordAiSuccess(record: SuccessRecord): void {
   const stats = loadAiStats()
   for (const provider of record.failed ?? []) {
-    const failed = entry(stats, provider, record.kind)
+    const failed = entry(stats, provider, record.kind, record.models?.[provider])
     failed.requests += 1
     failed.failures += 1
   }
@@ -100,11 +102,15 @@ export function recordAiSuccess(record: SuccessRecord): void {
   save(stats)
 }
 
-export function recordAiFailures(providers: string[], kind: AiKind): void {
+export function recordAiFailures(
+  providers: string[],
+  kind: AiKind,
+  models: Record<string, string> = {},
+): void {
   if (providers.length === 0) return
   const stats = loadAiStats()
   for (const provider of providers) {
-    const stat = entry(stats, provider, kind)
+    const stat = entry(stats, provider, kind, models[provider])
     stat.requests += 1
     stat.failures += 1
     stat.lastUsed = new Date().toISOString()
