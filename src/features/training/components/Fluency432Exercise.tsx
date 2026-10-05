@@ -11,6 +11,8 @@ import { RoundPills } from './fluency/RoundPills'
 
 export interface Fluency432ExerciseProps {
   topic: Topic
+  /** The transfer subject of `topic` was written by the AI. */
+  aiTransfer?: boolean
   roundIndex: number
   stage: 'prep' | 'ready' | 'running' | 'feedback' | 'summary'
   feedback: FluencyFeedback
@@ -38,6 +40,7 @@ export interface Fluency432ExerciseProps {
 
 export function Fluency432Exercise({
   topic,
+  aiTransfer = false,
   roundIndex,
   stage,
   feedback,
@@ -86,6 +89,7 @@ export function Fluency432Exercise({
           topic={topic}
           roundIndex={roundIndex}
           feedback={feedback}
+          aiTransfer={aiTransfer}
           onBegin={() => onBeginRound?.()}
         />
       ) : null}

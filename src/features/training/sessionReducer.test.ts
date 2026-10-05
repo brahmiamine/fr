@@ -336,6 +336,37 @@ describe('skipping other exercises', () => {
     expect(getCurrentStage(withoutSummary)).toBe('questions')
   })
 
+  it('keeps an AI transfer subject only until the transfer round is reached', () => {
+    const withFluency = (roundIndex: number, transferPrompt?: string) => ({
+      ...newSession(),
+      stageIndex: 1,
+      fluency: {
+        roundIndex,
+        stage: 'running' as const,
+        keywords: [],
+        recordAll: true,
+        transferPrompt,
+      },
+    })
+
+    const stored = sessionReducer(withFluency(1), {
+      type: 'FLUENCY_SET_TRANSFER',
+      prompt: '  Ville ou campagne ?  ',
+    })
+    expect(stored.fluency.transferPrompt).toBe('Ville ou campagne ?')
+
+    // Set once: a second answer never replaces the first.
+    const second = sessionReducer(stored, { type: 'FLUENCY_SET_TRANSFER', prompt: 'Autre' })
+    expect(second.fluency.transferPrompt).toBe('Ville ou campagne ?')
+
+    // Too late: the learner is already on the transfer round.
+    const late = withFluency(3)
+    expect(sessionReducer(late, { type: 'FLUENCY_SET_TRANSFER', prompt: 'Trop tard' })).toBe(late)
+
+    const empty = withFluency(0)
+    expect(sessionReducer(empty, { type: 'FLUENCY_SET_TRANSFER', prompt: '  ' })).toBe(empty)
+  })
+
   it('completes the session when the feedback is skipped', () => {
     const state = sessionReducer({ ...newSession(), stageIndex: 4 }, { type: 'FEEDBACK_SKIP' })
     expect(state.phase).toBe('complete')

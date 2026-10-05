@@ -1,8 +1,10 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
-import { describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { SETTINGS_KEY } from '../../services/settings/settings'
 import { AppStateProvider } from '../../app/AppStateProvider'
+import { SettingsProvider } from '../../app/SettingsProvider'
 import { buildSessionPlan } from '../../services/review/selectPlan'
 import { createInitialState, STORAGE_KEY } from '../../types/progress'
 import type { AppState } from '../../types/progress'
@@ -14,11 +16,13 @@ const plan = buildSessionPlan(createInitialState(), () => 0.5)
 
 function renderTraining(initialState?: AppState) {
   return render(
-    <AppStateProvider initialState={initialState}>
-      <MemoryRouter initialEntries={['/training']}>
-        <TrainingPage />
-      </MemoryRouter>
-    </AppStateProvider>,
+    <SettingsProvider>
+      <AppStateProvider initialState={initialState}>
+        <MemoryRouter initialEntries={['/training']}>
+          <TrainingPage />
+        </MemoryRouter>
+      </AppStateProvider>
+    </SettingsProvider>,
   )
 }
 
@@ -200,5 +204,73 @@ describe('TrainingPage', () => {
     }
     renderTraining({ ...createInitialState(), inProgressSession: session })
     expect(screen.getByRole('button', { name: 'Terminer la séance' })).toBeDisabled()
+  })
+
+  describe('AI transfer subject', () => {
+    const roundOne: TrainingSessionState = {
+      ...createSessionState(plan, 2, new Date('2026-10-02T10:00:00.000Z')),
+      stageIndex: 1,
+      fluency: { roundIndex: 0, stage: 'running', keywords: [], recordAll: false },
+    }
+
+    beforeEach(() => window.localStorage.clear())
+    afterEach(() => vi.restoreAllMocks())
+
+    function reply(text: string) {
+      return vi.spyOn(globalThis, 'fetch').mockImplementation(
+        async () =>
+          new Response(
+            JSON.stringify({ data: { text }, provider: 'groq', model: 'm', usage: null, latencyMs: 1, failed: [] }),
+          ),
+      )
+    }
+
+    it('asks for it once the first round runs and stores it in the session', async () => {
+      window.localStorage.setItem(SETTINGS_KEY, JSON.stringify({ aiEnabled: true }))
+      const fetchMock = reply('Ville ou campagne ?')
+      renderTraining({ ...createInitialState(), inProgressSession: roundOne })
+
+      await waitFor(() => {
+        const saved = JSON.parse(window.localStorage.getItem(STORAGE_KEY) as string)
+        expect(saved.inProgressSession.fluency.transferPrompt).toBe('Ville ou campagne ?')
+      })
+      expect(fetchMock).toHaveBeenCalledTimes(1)
+    })
+
+    it('does nothing while the AI is off', async () => {
+      const fetchMock = reply('Ville ou campagne ?')
+      renderTraining({ ...createInitialState(), inProgressSession: roundOne })
+      await waitFor(() => expect(window.localStorage.getItem(STORAGE_KEY)).toBeTruthy())
+      expect(fetchMock).not.toHaveBeenCalled()
+    })
+
+    it('keeps the written subject if the AI fails', async () => {
+      window.localStorage.setItem(SETTINGS_KEY, JSON.stringify({ aiEnabled: true }))
+      vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response('', { status: 502 }))
+      renderTraining({ ...createInitialState(), inProgressSession: roundOne })
+      await waitFor(() => expect(globalThis.fetch).toHaveBeenCalled())
+      const saved = JSON.parse(window.localStorage.getItem(STORAGE_KEY) as string)
+      expect(saved.inProgressSession.fluency.transferPrompt).toBeUndefined()
+    })
+
+    it('shows the AI subject, flagged, before the transfer round', () => {
+      window.localStorage.setItem(SETTINGS_KEY, JSON.stringify({ aiEnabled: true }))
+      reply('x')
+      renderTraining({
+        ...createInitialState(),
+        inProgressSession: {
+          ...roundOne,
+          fluency: {
+            roundIndex: 3,
+            stage: 'ready',
+            keywords: [],
+            recordAll: false,
+            transferPrompt: 'Ville ou campagne ?',
+          },
+        },
+      })
+      expect(screen.getByText('Ville ou campagne ?')).toBeInTheDocument()
+      expect(screen.getByText(/Sujet proposé par l'IA/)).toBeInTheDocument()
+    })
   })
 })

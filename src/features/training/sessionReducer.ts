@@ -18,6 +18,7 @@ export type TrainingAction =
   | { type: 'FLUENCY_SET_RECORD_ALL'; recordAll: boolean }
   | { type: 'FLUENCY_START' }
   | { type: 'FLUENCY_BEGIN' }
+  | { type: 'FLUENCY_SET_TRANSFER'; prompt: string }
   | { type: 'FLUENCY_ROUND_COMPLETE' }
   | { type: 'FLUENCY_SKIP' }
   | { type: 'FLUENCY_SUMMARY_DONE' }
@@ -227,6 +228,17 @@ export function sessionReducer(
 
     case 'FLUENCY_START':
       return { ...state, fluency: { ...state.fluency, stage: 'running' } }
+
+    // Accepted only until the transfer round is reached: its subject never
+    // changes under the learner's eyes, and an AI answer arriving late is dropped.
+    case 'FLUENCY_SET_TRANSFER': {
+      const prompt = action.prompt.trim()
+      const { roundIndex, transferPrompt } = state.fluency
+      if (!prompt || transferPrompt || roundIndex >= FLUENCY_ROUND_SECONDS.length - 1) {
+        return state
+      }
+      return { ...state, fluency: { ...state.fluency, transferPrompt: prompt } }
+    }
 
     // Rounds 2–4 first leave time to read the prompt, then the timer and the
     // recording start together.

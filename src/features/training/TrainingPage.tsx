@@ -5,6 +5,7 @@ import { TimerPersistenceContext } from '../../components/Timer/TimerPersistence
 import type { TimerPersistence } from '../../components/Timer/TimerPersistence'
 import { Confetti, IconTile, MiniStat, SkipButton } from '../../components/ui'
 import { useAudioRecorder } from '../../hooks/useAudioRecorder'
+import { runAiTask } from '../../services/ai/client'
 import { buildSessionPlan } from '../../services/review/selectPlan'
 import {
   applyGapResult,
@@ -19,6 +20,7 @@ import {
   upsertPersonalChunk,
 } from '../../services/progress/progress'
 import type { SessionRecord } from '../../types/progress'
+import { useAiEnabled } from '../ai/useAiEnabled'
 import { ChunksExercise } from './components/ChunksExercise'
 import { Fluency432Exercise } from './components/Fluency432Exercise'
 import { SessionFeedbackView } from './components/SessionFeedback'
@@ -167,13 +169,45 @@ export default function TrainingPage() {
     if (!fluencyRecording) releaseMicrophone()
   }, [fluencyRecording, releaseMicrophone])
 
+  const sessionRef = useRef(session)
+  sessionRef.current = session
+
+  // With the AI on, the transfer subject is written once the first round has
+  // started, long before round 4, from the subject the learner is working on.
+  const aiEnabled = useAiEnabled()
+  const wantsTransfer =
+    aiEnabled &&
+    Boolean(session) &&
+    session.phase === 'active' &&
+    getCurrentStage(session) === 'fluency' &&
+    (session.fluency.stage !== 'prep' || session.fluency.roundIndex > 0) &&
+    session.fluency.roundIndex < FLUENCY_ROUND_SECONDS.length - 1 &&
+    !session.fluency.transferPrompt
+  const topicId = session?.plan.topic.id
+  useEffect(() => {
+    const topic = sessionRef.current?.plan.topic
+    if (!wantsTransfer || !topic) return
+    let cancelled = false
+    runAiTask<{ text: string }>('transfer-topic', {
+      title: topic.title,
+      category: topic.category,
+      transferPrompt: topic.transferPrompt,
+    })
+      .then(({ data }) => {
+        if (!cancelled) dispatch({ type: 'FLUENCY_SET_TRANSFER', prompt: data.text })
+      })
+      // Any failure keeps the subject written in the content files.
+      .catch(() => undefined)
+    return () => {
+      cancelled = true
+    }
+  }, [wantsTransfer, topicId])
+
   useEffect(() => {
     if (!session || session.phase === 'complete') return
     updateWith((prev) => setInProgressSession(prev, session))
   }, [session, updateWith])
 
-  const sessionRef = useRef(session)
-  sessionRef.current = session
   const timerPersistence = useMemo<TimerPersistence>(
     () => ({
       get: (key) => sessionRef.current?.timers?.[key] ?? null,
@@ -355,7 +389,11 @@ export default function TrainingPage() {
       {session.phase === 'active' && stage === 'fluency' ? (
         <Fluency432Exercise
           key={`fluency-${session.fluency.roundIndex}`}
-          topic={session.plan.topic}
+          topic={{
+            ...session.plan.topic,
+            transferPrompt: session.fluency.transferPrompt ?? session.plan.topic.transferPrompt,
+          }}
+          aiTransfer={Boolean(session.fluency.transferPrompt)}
           roundIndex={session.fluency.roundIndex}
           stage={session.fluency.stage}
           feedback={session.fluencyFeedback}

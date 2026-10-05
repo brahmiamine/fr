@@ -114,6 +114,8 @@ export interface TrainingSessionState {
     keywords: string[]
     /** Record every round through the microphone to replay them at the end. */
     recordAll: boolean
+    /** Transfer subject written by the AI for this session (replaces the topic's static one). */
+    transferPrompt?: string
   }
   fluencyFeedback: FluencyFeedback
 

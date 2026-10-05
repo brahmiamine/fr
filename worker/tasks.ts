@@ -1,12 +1,18 @@
 import type { ChatMessage } from './providers'
 
-export type TaskName = 'analyze-speech' | 'judge-word' | 'question' | 'roleplay'
+export type TaskName =
+  | 'analyze-speech'
+  | 'judge-word'
+  | 'question'
+  | 'roleplay'
+  | 'transfer-topic'
 
 export const TASK_NAMES: readonly TaskName[] = [
   'analyze-speech',
   'judge-word',
   'question',
   'roleplay',
+  'transfer-topic',
 ]
 
 export interface TaskSpec {
@@ -159,6 +165,52 @@ function question(input: Record<string, unknown>): TaskSpec {
   }
 }
 
+function normalize(value: string): string {
+  return value.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ').trim()
+}
+
+/** Subject of the 1-minute transfer round, close in reasoning to the 4 → 3 → 2 subject. */
+function transferTopic(input: Record<string, unknown>): TaskSpec | null {
+  const title = text(input.title)
+  if (!title) return null
+  const category = text(input.category, 80)
+  const example = text(input.transferPrompt)
+  return {
+    messages: [
+      {
+        role: 'system',
+        content:
+          `${SYSTEM_BASE}\n` +
+          "Un apprenant vient de parler pendant plusieurs minutes d'un sujet (méthode 4-3-2). " +
+          'Invente le sujet de la manche finale de « transfert » : une minute sur un AUTRE sujet, ' +
+          'qui demande le même type de raisonnement (par exemple donner son avis et argumenter, ' +
+          'comparer deux options, imaginer une situation, raconter un souvenir). ' +
+          'Le sujet doit être clairement différent (autre thème, autres mots-clés), concret, ' +
+          'sans vocabulaire rare, et tenir en une seule question ou consigne. ' +
+          'Réponds uniquement par un objet JSON : {"text": "le sujet"}',
+      },
+      {
+        role: 'user',
+        content:
+          `Sujet travaillé : ${title}\n` +
+          (category ? `Catégorie : ${category}\n` : '') +
+          (example ? `Exemple de transfert possible (à ne pas recopier) : ${example}` : ''),
+      },
+    ],
+    maxTokens: 120,
+    temperature: 0.8,
+    json: true,
+    shape: (raw) => {
+      const value = text((raw as Record<string, unknown> | null)?.text, 240)
+      // Repeating the worked subject (or the example) would defeat the transfer.
+      if (!value || normalize(value) === normalize(title) || normalize(value) === normalize(example)) {
+        return null
+      }
+      return { text: value }
+    },
+  }
+}
+
 function roleplay(input: Record<string, unknown>): TaskSpec | null {
   const situation = text(input.situation)
   if (!situation) return null
@@ -205,5 +257,7 @@ export function buildTask(task: TaskName, input: unknown): TaskSpec | null {
       return question(data)
     case 'roleplay':
       return roleplay(data)
+    case 'transfer-topic':
+      return transferTopic(data)
   }
 }

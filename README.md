@@ -236,6 +236,7 @@ Où l'IA intervient (uniquement quand elle est activée) :
 
 | Écran | Rôle de l'IA |
 | --- | --- |
+| Manche de transfert du 4→3→2 | Écrit un sujet proche (même type de raisonnement, autre thème), demandé dès le tour 1 ; le sujet écrit dans `topics.json` reste utilisé si l'IA est éteinte ou échoue |
 | Petit retour du 4→3→2 et feedback final | Transcrit l'enregistrement et propose reformulations, expressions et mot manquant ; l'apprenant choisit ce qu'il copie dans le formulaire |
 | Trous de mots (vérification) | Avis facultatif sur le mot que l'apprenant dit avoir trouvé |
 | Test hebdomadaire | Transcrit l'enregistrement et remplit le nombre de mots et d'hésitations |

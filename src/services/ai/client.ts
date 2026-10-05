@@ -93,7 +93,12 @@ export async function fetchAiStatus(): Promise<AiStatus> {
   return (await response.json()) as AiStatus
 }
 
-export type AiTask = 'analyze-speech' | 'judge-word' | 'question' | 'roleplay'
+export type AiTask =
+  | 'analyze-speech'
+  | 'judge-word'
+  | 'question'
+  | 'roleplay'
+  | 'transfer-topic'
 
 export async function runAiTask<T>(
   task: AiTask,

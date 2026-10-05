@@ -211,3 +211,38 @@ describe('usage reporting', () => {
     expect(data.latencyMs).toBeGreaterThanOrEqual(0)
   })
 })
+
+describe('transfer-topic task', () => {
+  const env: Env = { ASSETS: assets, GROQ_API_KEY: 'k' }
+  const input = {
+    title: 'Télétravail ou bureau ?',
+    category: 'travail',
+    transferPrompt: 'La semaine de quatre jours est-elle une bonne idée ?',
+  }
+
+  it('returns a new subject', async () => {
+    vi.spyOn(globalThis, 'fetch').mockImplementation(async () =>
+      openAiReply('{"text":"Vaut-il mieux vivre en ville ou à la campagne ?"}'),
+    )
+    const response = await handleApi(task({ task: 'transfer-topic', input }), env)
+    const data = (await response.json()) as { data: { text: string } }
+    expect(data.data.text).toBe('Vaut-il mieux vivre en ville ou à la campagne ?')
+  })
+
+  it('refuses a subject that repeats the worked one or the example', async () => {
+    vi.spyOn(globalThis, 'fetch').mockImplementation(async () =>
+      openAiReply('{"text":"Télétravail ou bureau"}'),
+    )
+    expect((await handleApi(task({ task: 'transfer-topic', input }), env)).status).toBe(502)
+
+    vi.spyOn(globalThis, 'fetch').mockImplementation(async () =>
+      openAiReply('{"text":"La semaine de quatre jours est-elle une bonne idée"}'),
+    )
+    expect((await handleApi(task({ task: 'transfer-topic', input }), env)).status).toBe(502)
+  })
+
+  it('needs the worked subject', async () => {
+    const response = await handleApi(task({ task: 'transfer-topic', input: {} }), env)
+    expect(response.status).toBe(400)
+  })
+})
