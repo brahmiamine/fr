@@ -32,10 +32,11 @@ export const MODEL_CATALOG: Record<ProviderId, ModelSpec[]> = {
     { id: 'openai/gpt-oss-20b', extra: { reasoning_effort: 'low' }, minTokens: 600 },
   ],
   // Mistral "Experiment" plan (free, about 1 request per second).
+  // mistral-small-latest answered 429 on every call of the free plan.
   mistral: [
-    { id: 'mistral-small-latest' },
     { id: 'ministral-14b-latest' },
     { id: 'ministral-8b-latest' },
+    { id: 'mistral-small-latest' },
   ],
   // Workers AI: free daily allowance of 10,000 neurons.
   cloudflare: [
@@ -45,8 +46,10 @@ export const MODEL_CATALOG: Record<ProviderId, ModelSpec[]> = {
   ],
   // ":free" routes only.
   openrouter: [
-    { id: 'qwen/qwen3.8-27b:free', extra: { reasoning: { enabled: false } } },
     { id: 'google/gemma-4-31b-it:free', extra: { reasoning: { enabled: false } } },
+    { id: 'google/gemma-4-26b-a4b-it:free', extra: { reasoning: { enabled: false } } },
+    { id: 'thinkingmachines/inkling-small:free', extra: { reasoning: { enabled: false } } },
+    { id: 'nvidia/nemotron-3-super-120b-a12b:free', extra: { reasoning: { effort: 'low', exclude: true } }, minTokens: 600 },
     { id: 'openrouter/free', extra: { reasoning: { exclude: true } }, minTokens: 600 },
   ],
   // NVIDIA API catalog (free developer access).

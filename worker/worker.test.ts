@@ -306,3 +306,14 @@ describe('fewer wasted requests', () => {
     expect(data.reports[0].error).toContain('HTTP 429: quota exceeded')
   })
 })
+
+describe('transcripts of silence', () => {
+  it('drops the subtitle credits Whisper invents on silence, not real speech', async () => {
+    const { cleanTranscript } = await import('./transcribe')
+    expect(cleanTranscript(' Sous-titrage Société Radio-Canada')).toBe('')
+    expect(cleanTranscript('Sous-titrage FR ?')).toBe('')
+    expect(cleanTranscript('[silence]')).toBe('')
+    expect(cleanTranscript('Silence, on tourne et je parle.')).toBe('Silence, on tourne et je parle.')
+    expect(cleanTranscript('Bonjour, je parle.')).toBe('Bonjour, je parle.')
+  })
+})

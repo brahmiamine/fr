@@ -28,7 +28,7 @@ export function transcribeModelFor(provider: ProviderId, env: Env): string {
     case 'mistral':
       return transcribeModel(env.MISTRAL_TRANSCRIBE_MODEL, 'voxtral-mini-latest')
     case 'gemini':
-      return transcribeModel(env.GEMINI_TRANSCRIBE_MODEL, 'gemini-3.8-flash')
+      return transcribeModel(env.GEMINI_TRANSCRIBE_MODEL, 'gemini-3.5-flash-lite')
     default:
       return transcribeModel(env.CLOUDFLARE_TRANSCRIBE_MODEL, '@cf/openai/whisper-large-v3-turbo')
   }
@@ -59,6 +59,7 @@ async function multipartTranscription(
   form.append('response_format', 'json')
   const response = await fetch(url, {
     method: 'POST',
+    signal: AbortSignal.timeout(30_000),
     headers: { authorization: `Bearer ${key}` },
     body: form,
   })
@@ -68,6 +69,16 @@ async function multipartTranscription(
   const data = (await response.json()) as { text?: string }
   if (typeof data.text !== 'string') throw new Error('empty response')
   return data.text
+}
+
+/**
+ * Whisper invents a TV subtitle credit when it hears silence: such a transcript
+ * means nothing was said.
+ */
+const SILENCE_HALLUCINATION = /^\W*(silence|(sous-titrage|sous-titres|merci d'avoir regard)[^.!?]*)[.!?]?\W*$/i
+
+export function cleanTranscript(text: string): string {
+  return SILENCE_HALLUCINATION.test(text.trim()) ? '' : text
 }
 
 export async function transcribeWith(
@@ -97,10 +108,11 @@ export async function transcribeWith(
       const bytes = new Uint8Array(await file.arrayBuffer())
       const response = await fetch(
         `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(
-          transcribeModel(env.GEMINI_TRANSCRIBE_MODEL, 'gemini-3.8-flash'),
+          transcribeModel(env.GEMINI_TRANSCRIBE_MODEL, 'gemini-3.5-flash-lite'),
         )}:generateContent`,
         {
           method: 'POST',
+          signal: AbortSignal.timeout(30_000),
           headers: {
             'content-type': 'application/json',
             'x-goog-api-key': env.GEMINI_API_KEY as string,
@@ -114,7 +126,8 @@ export async function transcribeWith(
                     text:
                       'Transcris fidèlement cet enregistrement en français, mot à mot, ' +
                       'en gardant les hésitations (euh, hum) et les répétitions. ' +
-                      'Réponds uniquement par la transcription.',
+                      'Réponds uniquement par la transcription. ' +
+                      "Si personne ne parle, réponds exactement : [silence]",
                   },
                   {
                     inline_data: {
@@ -125,6 +138,7 @@ export async function transcribeWith(
                 ],
               },
             ],
+            generationConfig: { thinkingConfig: { thinkingLevel: 'minimal' } },
           }),
         },
       )
@@ -135,7 +149,7 @@ export async function transcribeWith(
         candidates?: { content?: { parts?: { text?: string }[] } }[]
       }
       const text = data.candidates?.[0]?.content?.parts?.map((p) => p.text ?? '').join('')
-      if (!text?.trim()) throw new Error('empty response')
+      if (text === undefined) throw new Error('empty response')
       return text
     }
     case 'cloudflare': {
@@ -166,7 +180,8 @@ export async function transcribeWithFallback(
   )
   for (const provider of available.length ? available : order.slice(0, 1)) {
     try {
-      return { provider, text: await transcribeWith(provider, env, file, language), attempts }
+      const text = cleanTranscript(await transcribeWith(provider, env, file, language))
+      return { provider, text, attempts }
     } catch (error) {
       const model = transcribeModelFor(provider, env)
       attempts.push({ provider, model, error: String((error as Error)?.message ?? error) })

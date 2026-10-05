@@ -205,6 +205,9 @@ export class ProviderError extends Error {
   }
 }
 
+/** A slow provider is abandoned for the next one rather than kept waiting on. */
+export const CALL_TIMEOUT_MS = 20_000
+
 async function httpError(response: Response): Promise<ProviderError> {
   const body = await response.text().catch(() => '')
   return new ProviderError(response.status, body.replace(/\s+/g, ' ').slice(0, 300))
@@ -223,6 +226,7 @@ async function openAiCompatible(
   if (!endpoint || !key) throw new ProviderError(0, 'not configured')
   const response = await fetch(endpoint.url, {
     method: 'POST',
+    signal: AbortSignal.timeout(CALL_TIMEOUT_MS),
     headers: {
       'content-type': 'application/json',
       authorization: `Bearer ${key}`,
@@ -268,6 +272,7 @@ async function callGemini(
     `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(spec.id)}:generateContent`,
     {
       method: 'POST',
+      signal: AbortSignal.timeout(CALL_TIMEOUT_MS),
       headers: { 'content-type': 'application/json', 'x-goog-api-key': key },
       body: JSON.stringify({
         contents,
@@ -309,6 +314,7 @@ export async function runCloudflare(env: Env, model: string, input: unknown): Pr
     `https://api.cloudflare.com/client/v4/accounts/${rest.account}/ai/run/${model}`,
     {
       method: 'POST',
+      signal: AbortSignal.timeout(CALL_TIMEOUT_MS),
       headers: { 'content-type': 'application/json', authorization: `Bearer ${rest.token}` },
       body: JSON.stringify(input),
     },
