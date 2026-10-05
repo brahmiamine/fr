@@ -8,6 +8,7 @@ import scenarios from './conversation-scenarios.json'
 import stories from './retelling-stories.json'
 import retellingRecordings from './retelling-recordings.json'
 import { contentRepository } from '../services/content/contentRepository'
+import type { ProsodyExercise } from '../features/prosody/types'
 import { secondsPerSyllable } from '../services/content/prosodyTiming'
 
 const badFrenchContraction = /\b(?:de les|de le|à les|à le)\b/i
@@ -95,6 +96,22 @@ describe('pedagogical content quality', () => {
       expect(bundledAudio.has(`/public/${story.audio}`)).toBe(true)
       expect(story.attribution).toBeTruthy()
       expect(story.transferPrompt.length).toBeGreaterThan(10)
+    }
+  })
+
+  it('measures the groups of the real recordings on the audio', () => {
+    const bank = prosody as unknown as ProsodyExercise[]
+    const recordings = bank.filter((item) => item.modelKind === 'recording')
+    const annotated = recordings.filter((item) => item.annotation === 'acoustic')
+    expect(annotated.length).toBeGreaterThanOrEqual(recordings.length - 5)
+    for (const item of annotated) {
+      expect(item.pitch?.semitones.length).toBeGreaterThan(50)
+      item.groups.forEach((group, index) => {
+        expect(group.words?.length).toBe(group.text.split(/\s+/).length)
+        expect(typeof group.intonationMeasured).toBe('boolean')
+        // A boundary only exists where the speaker really pauses.
+        if (index < item.groups.length - 1) expect(group.pauseAfter).toBeGreaterThanOrEqual(0.08)
+      })
     }
   })
 

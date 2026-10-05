@@ -134,6 +134,23 @@ def align(tokens, asr):
     return fixed, matched / max(len(tokens), 1)
 
 
+def has_punctuation(tokens):
+    return sum(1 for token in tokens if PUNCTUATION.search(token)) >= max(1, len(tokens) // 40)
+
+
+def plausible_asr(asr, tokens):
+    """The recogniser's text looks like the same French passage, not a hallucination."""
+    if not asr or not 0.6 <= len(asr) / max(len(tokens), 1) <= 1.5:
+        return False
+    text = ' '.join(word['text'] for word in asr)
+    if re.search(r"[^\w\s'’\-,;:.!?…«»\"()%€$/°]", text) or re.search(r'[^\x00-\u024f\s«»’…€]', text):
+        return False
+    # A loop such as "c'est une compétence. c'est une compétence." is a hallucination.
+    words = [normalize(word['text']) for word in asr]
+    trigrams = [' '.join(words[i:i + 3]) for i in range(len(words) - 2)]
+    return len(trigrams) == 0 or len(set(trigrams)) / len(trigrams) > 0.85
+
+
 def load_sound(path):
     handle, wav = tempfile.mkstemp(suffix='.wav')
     os.close(handle)
@@ -284,7 +301,14 @@ def pick_imitation(groups):
 def annotate(entry, asr_words):
     # Caption cues such as [Musique] are not words the speaker says.
     tokens = [token for token in entry['transcript'].split() if not CUE.fullmatch(token)]
-    times, ratio = align(tokens, merge_asr_words(asr_words))
+    asr = merge_asr_words(asr_words)
+    times, ratio = align(tokens, asr)
+    # YouTube auto-captions carry no punctuation and many misheard words: the
+    # recogniser's own transcript is then the better text for the learner.
+    if (ratio < MIN_MATCH_RATIO or not has_punctuation(tokens)) and plausible_asr(asr, tokens):
+        tokens = [word['text'] for word in asr]
+        times = [(word['start'], word['end']) for word in asr]
+        times, ratio = align(tokens, asr)
     if ratio < MIN_MATCH_RATIO:
         return None, ratio, None
 
