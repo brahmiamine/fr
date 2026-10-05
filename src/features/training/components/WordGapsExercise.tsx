@@ -111,7 +111,10 @@ export function WordGapsExercise({
 
   if (step === 'paraphrase') {
     return (
-      <section className="card card--slide exercise-card" aria-live="polite">
+      <section
+        className="card card--slide exercise-card gap-paraphrase"
+        aria-live="polite"
+      >
         <div className="exercise-topline"><span className="exercise-topline__label">Mot {index + 1}/{total}</span><Pill tone="fresh">{item.isPersonal ? 'Mes trous de mots' : 'Vocabulaire'}</Pill></div>
         {item.kind === 'retrieve' ? (
           <h1 className="exercise__intent">Explique l'idée sans le mot.</h1>
