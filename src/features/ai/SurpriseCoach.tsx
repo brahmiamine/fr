@@ -7,7 +7,11 @@ import { contentRepository } from '../../services/content/contentRepository'
 import { AiAnalysisPanel } from './AiAnalysisPanel'
 import './ai.css'
 
+/** Picks a different theme for each question. */
+const RANDOM_THEME = 'aleatoire'
+
 const THEMES: { id: string; label: string }[] = [
+  { id: RANDOM_THEME, label: 'Aléatoire' },
   { id: 'societe', label: 'Société' },
   { id: 'quotidien', label: 'Quotidien' },
   { id: 'technologie', label: 'Technologie' },
@@ -28,13 +32,16 @@ const THEMES: { id: string; label: string }[] = [
 
 const COUNTS = [5, 10]
 const SECONDS = [30, 60, 90]
+const READING = [5, 10, 15]
 const COUNTDOWN_SECONDS = 3
 
-type Phase = 'setup' | 'countdown' | 'speaking' | 'summary'
+type Phase = 'setup' | 'countdown' | 'reading' | 'speaking' | 'summary'
 
 /** The whole series in one AI request; an empty list when the AI cannot answer. */
 async function fetchSeries(themeId: string, count: number, avoid: string[]): Promise<string[]> {
-  const theme = THEMES.find((item) => item.id === themeId)?.label ?? themeId
+  // No theme: the AI varies the subject from one question to the next.
+  const theme =
+    themeId === RANDOM_THEME ? '' : (THEMES.find((item) => item.id === themeId)?.label ?? themeId)
   try {
     const { data } = await runAiTask<{ questions?: string[]; text?: string }>('question', {
       theme,
@@ -50,7 +57,8 @@ async function fetchSeries(themeId: string, count: number, avoid: string[]): Pro
 /** A question from the built-in bank, in the theme when possible. */
 function bankQuestion(themeId: string, avoid: string[]): string {
   const pool = contentRepository.questions.filter(
-    (question) => question.category === themeId && !avoid.includes(question.text),
+    (question) =>
+      (themeId === RANDOM_THEME || question.category === themeId) && !avoid.includes(question.text),
   )
   const fallback = pool.length > 0 ? pool : contentRepository.questions
   return fallback[Math.floor(Math.random() * fallback.length)].text
@@ -58,15 +66,17 @@ function bankQuestion(themeId: string, avoid: string[]): string {
 
 /**
  * Surprise questions with a timer, like the real exercise: a short countdown, a
- * question in the chosen theme, a speaking timer, then the next question straight away.
+ * question in the chosen theme with a few seconds to read it, a speaking timer
+ * (recording starts then), then the next question straight away.
  * The whole series is asked for in one AI request when it starts; the built-in bank
  * fills in when the AI gives fewer questions or none.
  */
 export function SurpriseCoach() {
   const recorder = useAudioRecorder({ keepStream: true })
-  const [themeId, setThemeId] = useState('societe')
+  const [themeId, setThemeId] = useState(RANDOM_THEME)
   const [total, setTotal] = useState(5)
   const [seconds, setSeconds] = useState(60)
+  const [reading, setReading] = useState(5)
   const [record, setRecord] = useState(true)
 
   const [phase, setPhase] = useState<Phase>('setup')
@@ -117,14 +127,20 @@ export function SurpriseCoach() {
     void loadQuestion()
   }, [index, total, recording, recorder, loadQuestion])
 
+  const startSpeaking = useCallback(() => {
+    setPhase('speaking')
+    setRemaining(seconds)
+    if (recording) void recorder.start()
+  }, [seconds, recording, recorder])
+
   const stopAll = () => {
     if (recording && recorder.stop()) pendingRef.current.push(index)
     setPhase('summary')
   }
 
-  // One tick per second while a countdown or a speaking timer runs.
+  // One tick per second while a countdown, the reading time or a speaking timer runs.
   useEffect(() => {
-    if (phase !== 'countdown' && phase !== 'speaking') return
+    if (phase !== 'countdown' && phase !== 'reading' && phase !== 'speaking') return
     const timer = setInterval(() => setRemaining((value) => Math.max(0, value - 1)), 1000)
     return () => clearInterval(timer)
   }, [phase, index])
@@ -132,9 +148,10 @@ export function SurpriseCoach() {
   useEffect(() => {
     if (remaining > 0) return
     if (phase === 'countdown' && ready) {
-      setPhase('speaking')
-      setRemaining(seconds)
-      if (recording) void recorder.start()
+      setPhase('reading')
+      setRemaining(reading)
+    } else if (phase === 'reading') {
+      startSpeaking()
     } else if (phase === 'speaking') {
       finishQuestion()
     }
@@ -192,6 +209,14 @@ export function SurpriseCoach() {
           />
         </div>
 
+        <ChipGroup
+          id="coach-reading"
+          label="Temps pour lire la question"
+          value={reading}
+          options={READING.map((value) => ({ value, label: `${value} s` }))}
+          onChange={setReading}
+        />
+
         {recorder.supported ? (
           <label className="coach-check">
             <input
@@ -245,7 +270,8 @@ export function SurpriseCoach() {
     )
   }
 
-  const length = phase === 'countdown' ? COUNTDOWN_SECONDS : seconds
+  const length =
+    phase === 'countdown' ? COUNTDOWN_SECONDS : phase === 'reading' ? reading : seconds
   const progress = (length - remaining) / length
 
   return (
@@ -262,6 +288,17 @@ export function SurpriseCoach() {
             <Icon name="sparkle" size={14} />
             L'IA prépare une question · {themeLabel}
           </span>
+        </>
+      ) : phase === 'reading' ? (
+        <>
+          <Pill tone="warm">{themeLabel}</Pill>
+          <h2 className="ai-coach__question">{questions[index]}</h2>
+          <p className="muted">Lis la question. Tu parles dans…</p>
+          <p className="coach-bubble" aria-label={`${remaining} secondes pour lire`}>{remaining}</p>
+          <ProgressBar value={progress} aria-hidden="true" />
+          <Button block variant="subtle" trailing="→" className="button--between" onClick={startSpeaking}>
+            Je suis prêt, je parle
+          </Button>
         </>
       ) : (
         <>

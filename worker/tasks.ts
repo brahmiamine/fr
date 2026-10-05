@@ -158,7 +158,11 @@ function question(input: Record<string, unknown>): TaskSpec {
       {
         role: 'user',
         content:
-          (theme ? `Thème : ${theme}\n` : 'Thème libre.\n') +
+          (theme
+            ? `Thème : ${theme}\n`
+            : count > 1
+              ? 'Thèmes variés : chaque question sur un sujet différent.\n'
+              : 'Thème libre.\n') +
           (avoid.length ? `Ne répète pas : ${avoid.join(' | ')}` : ''),
       },
     ],

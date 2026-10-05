@@ -75,6 +75,12 @@ describe('SurpriseCoach', () => {
       await vi.advanceTimersByTimeAsync(3500)
     })
     expect(await screen.findByText('Question numéro 1 ?')).toBeInTheDocument()
+    // A few seconds to read the question before the speaking timer starts.
+    expect(screen.getByLabelText('5 secondes pour lire')).toBeInTheDocument()
+    expect(screen.queryByLabelText(/secondes restantes/)).toBeNull()
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(5500)
+    })
     expect(screen.getByLabelText(/secondes restantes/)).toBeInTheDocument()
 
     await user.click(screen.getByRole('button', { name: /Question suivante/ }))
@@ -101,9 +107,33 @@ describe('SurpriseCoach', () => {
     })
     await screen.findByText('Question numéro 1 ?')
     await act(async () => {
+      await vi.advanceTimersByTimeAsync(5500)
+    })
+    await act(async () => {
       await vi.advanceTimersByTimeAsync(31000)
     })
     expect(screen.getByText('Question 2/5')).toBeInTheDocument()
+  })
+})
+
+describe('SurpriseCoach options', () => {
+  it('picks random themes by default and lets you skip the reading time', async () => {
+    vi.useFakeTimers({ shouldAdvanceTime: true })
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime })
+    render(wrap(<SurpriseCoach />))
+    expect(screen.getByRole('radio', { name: 'Aléatoire' })).toHaveAttribute('aria-checked', 'true')
+
+    await user.click(screen.getByRole('radio', { name: '15 s' }))
+    await user.click(screen.getByRole('button', { name: 'Commencer' }))
+    const body = JSON.parse(String(vi.mocked(globalThis.fetch).mock.calls[0][1]?.body))
+    expect(body.input.theme).toBe('')
+
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(3500)
+    })
+    expect(await screen.findByLabelText('15 secondes pour lire')).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: /Je suis prêt/ }))
+    expect(screen.getByLabelText(/secondes restantes/)).toBeInTheDocument()
   })
 })
 
