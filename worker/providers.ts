@@ -252,7 +252,7 @@ async function openAiCompatible(
 
 async function callGemini(
   key: string,
-  model: string,
+  spec: ModelSpec,
   messages: ChatMessage[],
   maxTokens: number,
   temperature: number,
@@ -265,7 +265,7 @@ async function callGemini(
       parts: [{ text: m.content }],
     }))
   const response = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,
+    `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(spec.id)}:generateContent`,
     {
       method: 'POST',
       headers: { 'content-type': 'application/json', 'x-goog-api-key': key },
@@ -274,12 +274,8 @@ async function callGemini(
         ...(system.length
           ? { systemInstruction: { parts: [{ text: system.join('\n') }] } }
           : {}),
-        generationConfig: {
-          maxOutputTokens: maxTokens,
-          temperature,
-          // Short coaching answers need no thinking: it only burns the token budget.
-          thinkingConfig: { thinkingBudget: 0 },
-        },
+        // Model-specific settings (e.g. thinking level) go into generationConfig.
+        generationConfig: { maxOutputTokens: maxTokens, temperature, ...spec.extra },
       }),
     },
   )
@@ -363,7 +359,7 @@ export async function callModel(
   let completion: Completion
   try {
     if (provider === 'gemini') {
-      completion = await callGemini(env.GEMINI_API_KEY as string, spec.id, messages, tokens, temperature)
+      completion = await callGemini(env.GEMINI_API_KEY as string, spec, messages, tokens, temperature)
     } else if (provider === 'cloudflare') {
       completion = await callCloudflare(env, spec, messages, tokens, temperature)
     } else {

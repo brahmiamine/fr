@@ -115,11 +115,18 @@ export type AiTask =
   | 'roleplay'
   | 'transfer-topic'
 
+/** Tasks whose answer only depends on the input (temperature 0): asked once per visit. */
+const CACHED_TASKS: ReadonlySet<AiTask> = new Set(['judge-word'])
+const taskCache = new Map<string, { data: unknown; provider: string }>()
+
 export async function runAiTask<T>(
   task: AiTask,
   input: unknown,
 ): Promise<{ data: T; provider: string }> {
   requireEnabled()
+  const cacheKey = CACHED_TASKS.has(task) ? `${task}:${JSON.stringify(input)}` : null
+  const cached = cacheKey ? taskCache.get(cacheKey) : undefined
+  if (cached) return cached as { data: T; provider: string }
   let response: Response
   try {
     response = await send('api/task', {
@@ -149,6 +156,7 @@ export async function runAiTask<T>(
     failed: result.failed,
     models: result.models,
   })
+  if (cacheKey) taskCache.set(cacheKey, { data: result.data, provider: result.provider })
   return { data: result.data, provider: result.provider }
 }
 

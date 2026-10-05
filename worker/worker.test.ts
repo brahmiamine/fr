@@ -3,6 +3,7 @@ import { describe, expect, it, vi, afterEach } from 'vitest'
 import { handleApi } from './index'
 import { resetFailures, resolveOrder, type Env } from './providers'
 import { extractJson } from './tasks'
+import { MODEL_CATALOG } from './models'
 
 const assets = { fetch: async () => new Response('') }
 
@@ -155,7 +156,7 @@ describe('/api/task', () => {
     expect(data.provider).toBe('gemini')
     expect(data.data.text).toBe('Quel est ton souvenir ?')
     expect(data.failed).toEqual(['groq'])
-    expect(data.models).toEqual({ groq: 'llama-3.3-70b-versatile' })
+    expect(data.models).toEqual({ groq: MODEL_CATALOG.groq[0].id })
   })
 
   it('answers 502 when every provider fails', async () => {
@@ -219,7 +220,7 @@ describe('usage reporting', () => {
       latencyMs: number
     }
     expect(data.usage).toEqual({ promptTokens: 12, completionTokens: 7, totalTokens: 19 })
-    expect(data.model).toBe('llama-3.3-70b-versatile')
+    expect(data.model).toBe(MODEL_CATALOG.groq[0].id)
     expect(data.latencyMs).toBeGreaterThanOrEqual(0)
   })
 })

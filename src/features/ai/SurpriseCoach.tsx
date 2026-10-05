@@ -32,28 +32,35 @@ const COUNTDOWN_SECONDS = 3
 
 type Phase = 'setup' | 'countdown' | 'speaking' | 'summary'
 
-/** A question in the chosen theme: from the AI, or from the built-in bank if it cannot answer. */
-async function fetchQuestion(themeId: string, avoid: string[]): Promise<string> {
+/** The whole series in one AI request; an empty list when the AI cannot answer. */
+async function fetchSeries(themeId: string, count: number, avoid: string[]): Promise<string[]> {
   const theme = THEMES.find((item) => item.id === themeId)?.label ?? themeId
   try {
-    const { data } = await runAiTask<{ text: string }>('question', {
+    const { data } = await runAiTask<{ questions?: string[]; text?: string }>('question', {
       theme,
+      count,
       avoid: avoid.slice(-8),
     })
-    return data.text
+    return data.questions ?? (data.text ? [data.text] : [])
   } catch {
-    const pool = contentRepository.questions.filter(
-      (question) => question.category === themeId && !avoid.includes(question.text),
-    )
-    const fallback = pool.length > 0 ? pool : contentRepository.questions
-    return fallback[Math.floor(Math.random() * fallback.length)].text
+    return []
   }
+}
+
+/** A question from the built-in bank, in the theme when possible. */
+function bankQuestion(themeId: string, avoid: string[]): string {
+  const pool = contentRepository.questions.filter(
+    (question) => question.category === themeId && !avoid.includes(question.text),
+  )
+  const fallback = pool.length > 0 ? pool : contentRepository.questions
+  return fallback[Math.floor(Math.random() * fallback.length)].text
 }
 
 /**
  * Surprise questions with a timer, like the real exercise: a short countdown, a
  * question in the chosen theme, a speaking timer, then the next question straight away.
- * The next question is fetched while you speak, so the change is instant.
+ * The whole series is asked for in one AI request when it starts; the built-in bank
+ * fills in when the AI gives fewer questions or none.
  */
 export function SurpriseCoach() {
   const recorder = useAudioRecorder({ keepStream: true })
@@ -70,27 +77,25 @@ export function SurpriseCoach() {
   const [recordings, setRecordings] = useState<Record<number, string>>({})
 
   const askedRef = useRef<string[]>([])
-  const nextRef = useRef<Promise<string> | null>(null)
+  const seriesRef = useRef<Promise<string[]>>(Promise.resolve([]))
   const pendingRef = useRef<number[]>([])
   const recording = record && recorder.supported
 
-  const prefetch = useCallback(() => {
-    nextRef.current = fetchQuestion(themeId, askedRef.current)
-  }, [themeId])
-
   const loadQuestion = useCallback(async () => {
     setReady(false)
-    const promise = nextRef.current ?? fetchQuestion(themeId, askedRef.current)
-    nextRef.current = null
-    const text = await promise
-    askedRef.current = [...askedRef.current, text]
+    const series = await seriesRef.current
+    const asked = askedRef.current
+    const text =
+      series.find((question) => !asked.includes(question)) ?? bankQuestion(themeId, asked)
+    askedRef.current = [...asked, text]
     setQuestions([...askedRef.current])
     setReady(true)
   }, [themeId])
 
   const start = () => {
+    // Questions of the previous series are not asked again.
+    seriesRef.current = fetchSeries(themeId, total, askedRef.current)
     askedRef.current = []
-    nextRef.current = null
     pendingRef.current = []
     setQuestions([])
     setRecordings({})
@@ -129,7 +134,6 @@ export function SurpriseCoach() {
     if (phase === 'countdown' && ready) {
       setPhase('speaking')
       setRemaining(seconds)
-      prefetch()
       if (recording) void recorder.start()
     } else if (phase === 'speaking') {
       finishQuestion()

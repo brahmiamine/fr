@@ -22,14 +22,17 @@ beforeEach(() => {
   window.localStorage.setItem(SETTINGS_KEY, JSON.stringify({ aiEnabled: true }))
   questionNumber = 0
   vi.spyOn(globalThis, 'fetch').mockImplementation(async (_input, init) => {
-    const body = JSON.parse(String(init?.body ?? '{}')) as { task?: string }
+    const body = JSON.parse(String(init?.body ?? '{}')) as { task?: string; input?: { count?: number } }
     if (body.task === 'question') {
-      questionNumber += 1
+      const questions = Array.from(
+        { length: body.input?.count ?? 1 },
+        () => `Question numéro ${(questionNumber += 1)} ?`,
+      )
       return new Response(
         JSON.stringify({
           provider: 'groq',
           model: 'm',
-          data: { text: `Question numéro ${questionNumber} ?` },
+          data: { text: questions[0], questions },
           usage: null,
           latencyMs: 1,
           failed: [],
@@ -80,6 +83,8 @@ describe('SurpriseCoach', () => {
       await vi.advanceTimersByTimeAsync(3500)
     })
     expect(await screen.findByText('Question numéro 2 ?')).toBeInTheDocument()
+    // The whole series came from a single AI request.
+    expect(globalThis.fetch).toHaveBeenCalledTimes(1)
 
     await user.click(screen.getByRole('button', { name: 'Terminer' }))
     expect(screen.getByRole('heading', { name: 'Résumé' })).toBeInTheDocument()

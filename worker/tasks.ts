@@ -71,7 +71,7 @@ function analyzeSpeech(input: Record<string, unknown>): TaskSpec | null {
       },
       { role: 'user', content: `Transcription :\n"""\n${transcript}\n"""` },
     ],
-    maxTokens: 700,
+    maxTokens: 550,
     temperature: 0.3,
     json: true,
     shape: (raw) => {
@@ -138,15 +138,22 @@ function judgeWord(input: Record<string, unknown>): TaskSpec | null {
 function question(input: Record<string, unknown>): TaskSpec {
   const theme = text(input.theme, 80)
   const avoid = list(input.avoid, 8).map((item) => text(item, 160)).filter(Boolean)
+  // A whole series in one request: one system prompt instead of one per question.
+  const count = Math.min(10, Math.max(1, Math.round(Number(input.count) || 1)))
   return {
     messages: [
       {
         role: 'system',
         content:
           `${SYSTEM_BASE}\n` +
-          'Invente UNE question surprise pour faire parler un apprenant pendant une minute : ' +
+          (count === 1
+            ? 'Invente UNE question surprise'
+            : `Invente ${count} questions surprises, toutes différentes,`) +
+          ' pour faire parler un apprenant pendant une minute : ' +
           'ouverte, concrète, sans réponse évidente, sans vocabulaire rare, une seule phrase. ' +
-          'Réponds uniquement par un objet JSON : {"text": "la question"}',
+          (count === 1
+            ? 'Réponds uniquement par un objet JSON : {"text": "la question"}'
+            : 'Réponds uniquement par un objet JSON : {"questions": ["question 1", "question 2"]}'),
       },
       {
         role: 'user',
@@ -155,12 +162,15 @@ function question(input: Record<string, unknown>): TaskSpec {
           (avoid.length ? `Ne répète pas : ${avoid.join(' | ')}` : ''),
       },
     ],
-    maxTokens: 120,
+    maxTokens: 40 + 50 * count,
     temperature: 0.9,
     json: true,
     shape: (raw) => {
-      const value = text((raw as Record<string, unknown> | null)?.text, 240)
-      return value ? { text: value } : null
+      const data = (raw ?? {}) as Record<string, unknown>
+      const questions = [...new Set([data.text, ...list(data.questions, count)].map((item) => text(item, 240)))]
+        .filter(Boolean)
+        .slice(0, count)
+      return questions.length ? { text: questions[0], questions } : null
     },
   }
 }
