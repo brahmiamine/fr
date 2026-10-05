@@ -375,6 +375,7 @@ export default function TrainingPage() {
             dispatch({ type: 'FLUENCY_SET_RECORD_ALL', recordAll })
           }
           onStartRound={() => dispatch({ type: 'FLUENCY_START' })}
+          onBeginRound={() => dispatch({ type: 'FLUENCY_BEGIN' })}
           onRoundComplete={() => dispatch({ type: 'FLUENCY_ROUND_COMPLETE' })}
           onSummaryDone={() => dispatch({ type: 'FLUENCY_SUMMARY_DONE' })}
           onSubmitFeedback={(values) =>

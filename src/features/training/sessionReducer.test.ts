@@ -69,8 +69,12 @@ describe('full session walk', () => {
     })
     expect(state.fluency.roundIndex).toBe(1)
     expect(state.fluency.keywords).toHaveLength(3)
+    expect(state.fluency.stage).toBe('ready')
 
     for (let i = 0; i < 3; i += 1) {
+      // Reading time first, then the round itself.
+      state = sessionReducer(state, { type: 'FLUENCY_BEGIN' })
+      expect(state.fluency.stage).toBe('running')
       state = sessionReducer(state, { type: 'FLUENCY_ROUND_COMPLETE' })
     }
     expect(state.fluency.stage).toBe('summary')
@@ -289,7 +293,10 @@ describe('skipping other exercises', () => {
     expect(skipped.fluency).toMatchObject({ roundIndex: 0, stage: 'feedback' })
 
     const nextRound = sessionReducer(skipped, { type: 'FLUENCY_SKIP' })
-    expect(nextRound.fluency).toMatchObject({ roundIndex: 1, stage: 'running' })
+    expect(nextRound.fluency).toMatchObject({ roundIndex: 1, stage: 'ready' })
+    expect(
+      sessionReducer(nextRound, { type: 'FLUENCY_BEGIN' }).fluency,
+    ).toMatchObject({ roundIndex: 1, stage: 'running' })
   })
 
   it('skips one fluency round at a time, then reaches the summary after the transfert', () => {
@@ -297,7 +304,7 @@ describe('skipping other exercises', () => {
 
     // Skipped from the preparation screen: straight to the next round.
     state = sessionReducer(state, { type: 'FLUENCY_SKIP' })
-    expect(state.fluency).toMatchObject({ roundIndex: 1, stage: 'running' })
+    expect(state.fluency).toMatchObject({ roundIndex: 1, stage: 'ready' })
     expect(getCurrentStage(state)).toBe('fluency')
 
     for (let i = 0; i < 3; i += 1) {

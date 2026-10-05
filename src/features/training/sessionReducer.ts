@@ -17,6 +17,7 @@ export type TrainingAction =
   | { type: 'FLUENCY_SET_KEYWORDS'; keywords: string[] }
   | { type: 'FLUENCY_SET_RECORD_ALL'; recordAll: boolean }
   | { type: 'FLUENCY_START' }
+  | { type: 'FLUENCY_BEGIN' }
   | { type: 'FLUENCY_ROUND_COMPLETE' }
   | { type: 'FLUENCY_SKIP' }
   | { type: 'FLUENCY_SUMMARY_DONE' }
@@ -157,7 +158,7 @@ function advanceFluencyRound(state: TrainingSessionState): TrainingSessionState 
     fluency: {
       ...state.fluency,
       roundIndex: state.fluency.roundIndex + 1,
-      stage: 'running',
+      stage: 'ready',
     },
   }
 }
@@ -227,6 +228,12 @@ export function sessionReducer(
     case 'FLUENCY_START':
       return { ...state, fluency: { ...state.fluency, stage: 'running' } }
 
+    // Rounds 2–4 first leave time to read the prompt, then the timer and the
+    // recording start together.
+    case 'FLUENCY_BEGIN':
+      if (state.fluency.stage !== 'ready') return state
+      return { ...state, fluency: { ...state.fluency, stage: 'running' } }
+
     case 'FLUENCY_ROUND_COMPLETE': {
       if (state.fluency.stage !== 'running') return state
       return completeFluencyRound(state)
@@ -250,7 +257,7 @@ export function sessionReducer(
           missedChunk: action.missedChunk ?? '',
           missedChunkIntent: action.missedChunkIntent ?? '',
         },
-        fluency: { ...state.fluency, roundIndex: 1, stage: 'running' },
+        fluency: { ...state.fluency, roundIndex: 1, stage: 'ready' },
       }
 
     case 'QUESTION_COUNTDOWN_DONE':

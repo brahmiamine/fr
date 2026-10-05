@@ -4,6 +4,7 @@ import type { RoundRecordings } from '../useFluencyRecordings'
 import type { FluencyFeedback, FluencyReminder } from '../types'
 import { FluencyMiniFeedback } from './fluency/FluencyMiniFeedback'
 import { FluencyPrep } from './fluency/FluencyPrep'
+import { FluencyReady } from './fluency/FluencyReady'
 import { FluencyRun } from './fluency/FluencyRun'
 import { FluencySummary } from './fluency/FluencySummary'
 import { RoundPills } from './fluency/RoundPills'
@@ -11,7 +12,7 @@ import { RoundPills } from './fluency/RoundPills'
 export interface Fluency432ExerciseProps {
   topic: Topic
   roundIndex: number
-  stage: 'prep' | 'running' | 'feedback' | 'summary'
+  stage: 'prep' | 'ready' | 'running' | 'feedback' | 'summary'
   feedback: FluencyFeedback
   keywords: string[]
   chunksOfDay: Chunk[]
@@ -29,6 +30,7 @@ export interface Fluency432ExerciseProps {
   onKeywordsChange: (keywords: string[]) => void
   onRecordAllChange: (recordAll: boolean) => void
   onStartRound: () => void
+  onBeginRound?: () => void
   onRoundComplete: () => void
   onSummaryDone: () => void
   onSubmitFeedback: (values: FluencyFeedback) => void
@@ -51,6 +53,7 @@ export function Fluency432Exercise({
   onKeywordsChange,
   onRecordAllChange,
   onStartRound,
+  onBeginRound,
   onRoundComplete,
   onSummaryDone,
   onSubmitFeedback,
@@ -75,6 +78,15 @@ export function Fluency432Exercise({
           onKeywordsChange={onKeywordsChange}
           onRecordAllChange={onRecordAllChange}
           onStartRound={onStartRound}
+        />
+      ) : null}
+
+      {stage === 'ready' ? (
+        <FluencyReady
+          topic={topic}
+          roundIndex={roundIndex}
+          feedback={feedback}
+          onBegin={() => onBeginRound?.()}
         />
       ) : null}
 

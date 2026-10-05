@@ -110,7 +110,7 @@ export interface TrainingSessionState {
 
   fluency: {
     roundIndex: number
-    stage: 'prep' | 'running' | 'feedback' | 'summary'
+    stage: 'prep' | 'ready' | 'running' | 'feedback' | 'summary'
     keywords: string[]
     /** Record every round through the microphone to replay them at the end. */
     recordAll: boolean
@@ -157,6 +157,8 @@ export const STAGE_META: Record<StageKind, { title: string; minutes: number }> =
 }
 
 export const FLUENCY_ROUND_SECONDS = [240, 180, 120, 60] as const
+/** Time to read the prompt of rounds 2–4 before the timer and the recording start. */
+export const FLUENCY_READ_SECONDS = 10
 export const CHUNKS_PER_SESSION = 4
 export const QUESTIONS_PER_SESSION = 5
 export const GAPS_PER_SESSION = 5

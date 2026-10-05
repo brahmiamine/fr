@@ -18,6 +18,41 @@ const STORY_HINTS = [
   'Nouveau sujet : réutilise ce que tu viens de travailler.',
 ]
 
+/** The prompt spoken in a round: the topic, or the transfer prompt for the last one. */
+export function roundPrompt(topic: Topic, roundIndex: number): string {
+  return roundIndex === FLUENCY_ROUND_SECONDS.length - 1 ? topic.transferPrompt : topic.title
+}
+
+/** Corrections from the mini feedback to place again in rounds 2 and 3. */
+export function retryTargetsFor(roundIndex: number, feedback: FluencyFeedback) {
+  if (roundIndex !== 1 && roundIndex !== 2) return []
+  return [
+    { label: 'Correction', text: feedback.importantError },
+    { label: 'Formulation', text: feedback.difficultPhrase },
+    { label: 'Chunk à placer', text: feedback.missedChunk ?? '' },
+  ].filter((target) => target.text.trim())
+}
+
+export function RetryTargets({
+  targets,
+}: {
+  targets: { label: string; text: string }[]
+}) {
+  if (targets.length === 0) return null
+  return (
+    <Callout tone="dashed" className="fluency-run__missed">
+      <p className="muted">À réutiliser dans ce tour :</p>
+      <ul className="fluency-run__targets">
+        {targets.map((target) => (
+          <li key={target.label}>
+            <span className="muted">{target.label} :</span> <strong>{target.text}</strong>
+          </li>
+        ))}
+      </ul>
+    </Callout>
+  )
+}
+
 export interface FluencyRunProps {
   topic: Topic
   roundIndex: number
@@ -48,16 +83,8 @@ export function FluencyRun({
 }: FluencyRunProps) {
   const isTransfer = roundIndex === FLUENCY_ROUND_SECONDS.length - 1
   const seconds = FLUENCY_ROUND_SECONDS[roundIndex] ?? 60
-  const prompt = isTransfer ? topic.transferPrompt : topic.title
-
-  const retryTargets =
-    roundIndex === 1 || roundIndex === 2
-      ? [
-          { label: 'Correction', text: feedback.importantError },
-          { label: 'Formulation', text: feedback.difficultPhrase },
-          { label: 'Chunk à placer', text: feedback.missedChunk ?? '' },
-        ].filter((target) => target.text.trim())
-      : []
+  const prompt = roundPrompt(topic, roundIndex)
+  const retryTargets = retryTargetsFor(roundIndex, feedback)
 
   const finishRound = () => onRoundComplete()
 
@@ -83,18 +110,7 @@ export function FluencyRun({
       </p>
 
       <div className="fluency-run__reminders">
-        {retryTargets.length > 0 ? (
-          <Callout tone="dashed" className="fluency-run__missed">
-            <p className="muted">À réutiliser dans ce tour :</p>
-            <ul className="fluency-run__targets">
-              {retryTargets.map((target) => (
-                <li key={target.label}>
-                  <span className="muted">{target.label} :</span> <strong>{target.text}</strong>
-                </li>
-              ))}
-            </ul>
-          </Callout>
-        ) : null}
+        <RetryTargets targets={retryTargets} />
 
         {prosodyFocusGoal ? <InfoLine label="Prosodie :">{prosodyFocusGoal}</InfoLine> : null}
 
