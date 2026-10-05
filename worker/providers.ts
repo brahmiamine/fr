@@ -1,3 +1,5 @@
+import { MODEL_CATALOG, type ModelSpec } from './models'
+
 export type ProviderId =
   | 'gemini'
   | 'groq'
@@ -97,28 +99,6 @@ function toUsage(raw: unknown, names: [string, string, string]): Usage | null {
   return totalTokens > 0 ? { promptTokens, completionTokens, totalTokens } : null
 }
 
-const DEFAULT_MODELS: Record<ProviderId, string> = {
-  gemini: 'gemini-3.5-flash-lite',
-  groq: 'llama-3.3-70b-versatile',
-  mistral: 'mistral-small-latest',
-  cloudflare: '@cf/meta/llama-3.3-70b-instruct-fp8-fast',
-  openrouter: 'meta-llama/llama-3.3-70b-instruct:free',
-  nvidia: 'meta/llama-3.3-70b-instruct',
-  huggingface: 'meta-llama/Llama-3.3-70B-Instruct',
-  cohere: 'command-r-08-2024',
-}
-
-const MODEL_VARS: Record<ProviderId, keyof Env> = {
-  gemini: 'GEMINI_MODEL',
-  groq: 'GROQ_MODEL',
-  mistral: 'MISTRAL_MODEL',
-  cloudflare: 'CLOUDFLARE_MODEL',
-  openrouter: 'OPENROUTER_MODEL',
-  nvidia: 'NVIDIA_MODEL',
-  huggingface: 'HUGGINGFACE_MODEL',
-  cohere: 'COHERE_MODEL',
-}
-
 /** OpenAI-compatible chat endpoints, with the secret holding their key. */
 const OPENAI_COMPATIBLE: Partial<
   Record<ProviderId, { url: string; key: (env: Env) => string | undefined; headers?: Record<string, string> }>
@@ -150,11 +130,30 @@ const OPENAI_COMPATIBLE: Partial<
   },
 }
 
-export function modelFor(provider: ProviderId, env: Env): string {
+const MODEL_VARS: Record<ProviderId, keyof Env> = {
+  gemini: 'GEMINI_MODEL',
+  groq: 'GROQ_MODEL',
+  mistral: 'MISTRAL_MODEL',
+  cloudflare: 'CLOUDFLARE_MODEL',
+  openrouter: 'OPENROUTER_MODEL',
+  nvidia: 'NVIDIA_MODEL',
+  huggingface: 'HUGGINGFACE_MODEL',
+  cohere: 'COHERE_MODEL',
+}
+
+/** Models to try for a provider, in order: the *_MODEL override first, then the catalog. */
+export function modelsFor(provider: ProviderId, env: Env): ModelSpec[] {
+  const catalog = MODEL_CATALOG[provider]
   const override = env[MODEL_VARS[provider]]
-  return typeof override === 'string' && override.trim()
-    ? override.trim()
-    : DEFAULT_MODELS[provider]
+  if (typeof override !== 'string' || !override.trim()) return catalog
+  const id = override.trim()
+  const known = catalog.find((spec) => spec.id === id)
+  return [known ?? { id }, ...catalog.filter((spec) => spec.id !== id)]
+}
+
+/** The model a provider uses first. */
+export function modelFor(provider: ProviderId, env: Env): string {
+  return modelsFor(provider, env)[0].id
 }
 
 /** Workers AI is reachable through the binding, or over REST with a token. */
@@ -196,33 +195,58 @@ export function resolveOrder(
   return base.filter((id) => allowed.includes(id) && isConfigured(id, env))
 }
 
+/** A failed call, with what the provider said (shown by /api/diagnose). */
+export class ProviderError extends Error {
+  constructor(
+    readonly status: number,
+    detail: string,
+  ) {
+    super(status ? `HTTP ${status}: ${detail}` : detail)
+  }
+}
+
+async function httpError(response: Response): Promise<ProviderError> {
+  const body = await response.text().catch(() => '')
+  return new ProviderError(response.status, body.replace(/\s+/g, ' ').slice(0, 300))
+}
+
 async function openAiCompatible(
   provider: ProviderId,
   env: Env,
-  model: string,
+  spec: ModelSpec,
   messages: ChatMessage[],
   maxTokens: number,
   temperature: number,
 ): Promise<Completion> {
-  const spec = OPENAI_COMPATIBLE[provider]
-  const key = spec?.key(env)
-  if (!spec || !key) throw new Error('not configured')
-  const response = await fetch(spec.url, {
+  const endpoint = OPENAI_COMPATIBLE[provider]
+  const key = endpoint?.key(env)
+  if (!endpoint || !key) throw new ProviderError(0, 'not configured')
+  const response = await fetch(endpoint.url, {
     method: 'POST',
     headers: {
       'content-type': 'application/json',
       authorization: `Bearer ${key}`,
-      ...spec.headers,
+      ...endpoint.headers,
     },
-    body: JSON.stringify({ model, messages, max_tokens: maxTokens, temperature }),
+    body: JSON.stringify({
+      model: spec.id,
+      messages,
+      max_tokens: maxTokens,
+      temperature,
+      ...spec.extra,
+    }),
   })
-  if (!response.ok) throw new Error(`HTTP ${response.status}`)
+  if (!response.ok) throw await httpError(response)
   const data = (await response.json()) as {
-    choices?: { message?: { content?: string } }[]
+    choices?: { message?: { content?: string | null; reasoning?: string }; finish_reason?: string }[]
     usage?: unknown
   }
-  const text = data.choices?.[0]?.message?.content
-  if (typeof text !== 'string' || !text.trim()) throw new Error('empty response')
+  const choice = data.choices?.[0]
+  const text = choice?.message?.content
+  if (typeof text !== 'string' || !text.trim()) {
+    const why = choice?.message?.reasoning ? 'only reasoning, no answer' : 'empty answer'
+    throw new ProviderError(0, `${why} (finish_reason: ${choice?.finish_reason ?? '?'})`)
+  }
   return { text, usage: toUsage(data.usage, ['prompt_tokens', 'completion_tokens', 'total_tokens']) }
 }
 
@@ -250,19 +274,26 @@ async function callGemini(
         ...(system.length
           ? { systemInstruction: { parts: [{ text: system.join('\n') }] } }
           : {}),
-        generationConfig: { maxOutputTokens: maxTokens, temperature },
+        generationConfig: {
+          maxOutputTokens: maxTokens,
+          temperature,
+          // Short coaching answers need no thinking: it only burns the token budget.
+          thinkingConfig: { thinkingBudget: 0 },
+        },
       }),
     },
   )
-  if (!response.ok) throw new Error(`HTTP ${response.status}`)
+  if (!response.ok) throw await httpError(response)
   const data = (await response.json()) as {
-    candidates?: { content?: { parts?: { text?: string }[] } }[]
+    candidates?: { content?: { parts?: { text?: string }[] }; finishReason?: string }[]
     usageMetadata?: unknown
   }
   const text = data.candidates?.[0]?.content?.parts
     ?.map((part) => part.text ?? '')
     .join('')
-  if (!text?.trim()) throw new Error('empty response')
+  if (!text?.trim()) {
+    throw new ProviderError(0, `empty answer (finishReason: ${data.candidates?.[0]?.finishReason ?? '?'})`)
+  }
   return {
     text,
     usage: toUsage(data.usageMetadata, [
@@ -277,7 +308,7 @@ async function callGemini(
 export async function runCloudflare(env: Env, model: string, input: unknown): Promise<unknown> {
   if (env.AI) return env.AI.run(model, input)
   const rest = cloudflareRest(env)
-  if (!rest) throw new Error('not configured')
+  if (!rest) throw new ProviderError(0, 'not configured')
   const response = await fetch(
     `https://api.cloudflare.com/client/v4/accounts/${rest.account}/ai/run/${model}`,
     {
@@ -286,25 +317,32 @@ export async function runCloudflare(env: Env, model: string, input: unknown): Pr
       body: JSON.stringify(input),
     },
   )
-  if (!response.ok) throw new Error(`HTTP ${response.status}`)
+  if (!response.ok) throw await httpError(response)
   const data = (await response.json()) as { result?: unknown }
   return data.result
 }
 
 async function callCloudflare(
   env: Env,
-  model: string,
+  spec: ModelSpec,
   messages: ChatMessage[],
   maxTokens: number,
   temperature: number,
 ): Promise<Completion> {
-  const data = (await runCloudflare(env, model, {
+  const data = (await runCloudflare(env, spec.id, {
     messages,
     max_tokens: maxTokens,
     temperature,
-  })) as { response?: string; usage?: unknown } | null
-  const text = data?.response
-  if (typeof text !== 'string' || !text.trim()) throw new Error('empty response')
+    ...spec.extra,
+  })) as {
+    response?: unknown
+    choices?: { message?: { content?: string | null } }[]
+    usage?: unknown
+  } | null
+  // Most models answer { response }, OpenAI-style ones answer { choices }.
+  const raw = data?.response ?? data?.choices?.[0]?.message?.content
+  const text = typeof raw === 'string' ? raw : raw && typeof raw === 'object' ? JSON.stringify(raw) : ''
+  if (!text.trim()) throw new ProviderError(0, 'empty answer')
   return { text, usage: toUsage(data?.usage, ['prompt_tokens', 'completion_tokens', 'total_tokens']) }
 }
 
@@ -314,21 +352,92 @@ export interface ChatOptions {
   temperature?: number
 }
 
-export async function callProvider(
+/** Calls one model of one provider. */
+export async function callModel(
   provider: ProviderId,
+  spec: ModelSpec,
   env: Env,
   { messages, maxTokens = 700, temperature = 0.4 }: ChatOptions,
 ): Promise<ChatResult> {
-  const model = modelFor(provider, env)
+  const tokens = Math.max(maxTokens, spec.minTokens ?? 0)
   let completion: Completion
-  if (provider === 'gemini') {
-    completion = await callGemini(env.GEMINI_API_KEY as string, model, messages, maxTokens, temperature)
-  } else if (provider === 'cloudflare') {
-    completion = await callCloudflare(env, model, messages, maxTokens, temperature)
-  } else {
-    completion = await openAiCompatible(provider, env, model, messages, maxTokens, temperature)
+  try {
+    if (provider === 'gemini') {
+      completion = await callGemini(env.GEMINI_API_KEY as string, spec.id, messages, tokens, temperature)
+    } else if (provider === 'cloudflare') {
+      completion = await callCloudflare(env, spec, messages, tokens, temperature)
+    } else {
+      completion = await openAiCompatible(provider, env, spec, messages, tokens, temperature)
+    }
+  } catch (error) {
+    if (error instanceof ProviderError) throw error
+    throw new ProviderError(0, error instanceof Error ? error.message : String(error))
   }
-  return { provider, model, ...completion }
+  return { provider, model: spec.id, ...completion }
+}
+
+/**
+ * Providers and models that just failed are skipped for a while, so one broken
+ * provider does not cost a wasted request on every call. Kept per Worker isolate.
+ */
+const downUntil = new Map<string, number>()
+
+export function isDown(key: string, now: number): boolean {
+  const until = downUntil.get(key)
+  if (until === undefined) return false
+  if (until > now) return true
+  downUntil.delete(key)
+  return false
+}
+
+const MINUTE = 60_000
+
+export function markFailure(provider: ProviderId, model: string, error: unknown, now: number) {
+  const status = error instanceof ProviderError ? error.status : 0
+  if (status === 401 || status === 402 || status === 403) {
+    downUntil.set(provider, now + 30 * MINUTE) // key or account problem
+  } else if (status === 429) {
+    downUntil.set(provider, now + MINUTE) // rate limited: try again soon
+  } else if (status === 400 || status === 404 || status === 410 || status === 422) {
+    downUntil.set(`${provider}|${model}`, now + 6 * 60 * MINUTE) // model gone or refused
+  } else {
+    downUntil.set(`${provider}|${model}`, now + 2 * MINUTE)
+  }
+}
+
+/** Forgets every failure (tests, diagnostics). */
+export function resetFailures() {
+  downUntil.clear()
+}
+
+export interface Attempt {
+  provider: ProviderId
+  model: string
+  error: string
+}
+
+/** Tries each provider's first available model, and the next ones when it fails. */
+export async function callProvider(
+  provider: ProviderId,
+  env: Env,
+  options: ChatOptions,
+  attempts: Attempt[] = [],
+  ignoreFailures = false,
+): Promise<ChatResult | null> {
+  const now = Date.now()
+  if (!ignoreFailures && isDown(provider, now)) return null
+  for (const spec of modelsFor(provider, env)) {
+    if (!ignoreFailures && isDown(`${provider}|${spec.id}`, now)) continue
+    try {
+      return await callModel(provider, spec, env, options)
+    } catch (error) {
+      attempts.push({ provider, model: spec.id, error: String((error as Error).message ?? error) })
+      markFailure(provider, spec.id, error, now)
+      // The whole provider is down: its other models would fail the same way.
+      if (isDown(provider, now)) return null
+    }
+  }
+  return null
 }
 
 /** Tries each provider in order and returns the first success. */
@@ -336,14 +445,20 @@ export async function chatWithFallback(
   order: ProviderId[],
   env: Env,
   options: ChatOptions,
-): Promise<{ result: ChatResult | null; failed: ProviderId[] }> {
-  const failed: ProviderId[] = []
+): Promise<{ result: ChatResult | null; failed: ProviderId[]; attempts: Attempt[] }> {
+  const attempts: Attempt[] = []
   for (const provider of order) {
-    try {
-      return { result: await callProvider(provider, env, options), failed }
-    } catch {
-      failed.push(provider)
-    }
+    const result = await callProvider(provider, env, options, attempts)
+    if (result) return { result, failed: failedProviders(attempts), attempts }
   }
-  return { result: null, failed }
+  // Everything was skipped as recently failed: give the first provider one real try.
+  if (attempts.length === 0 && order.length > 0) {
+    const result = await callProvider(order[0], env, options, attempts, true)
+    if (result) return { result, failed: failedProviders(attempts), attempts }
+  }
+  return { result: null, failed: failedProviders(attempts), attempts }
+}
+
+function failedProviders(attempts: Attempt[]): ProviderId[] {
+  return [...new Set(attempts.map((attempt) => attempt.provider))]
 }

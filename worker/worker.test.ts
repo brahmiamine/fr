@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { describe, expect, it, vi, afterEach } from 'vitest'
 import { handleApi } from './index'
-import { resolveOrder, type Env } from './providers'
+import { resetFailures, resolveOrder, type Env } from './providers'
 import { extractJson } from './tasks'
 
 const assets = { fetch: async () => new Response('') }
@@ -18,7 +18,10 @@ function openAiReply(content: string): Response {
   return new Response(JSON.stringify({ choices: [{ message: { content } }] }))
 }
 
-afterEach(() => vi.restoreAllMocks())
+afterEach(() => {
+  vi.restoreAllMocks()
+  resetFailures()
+})
 
 describe('provider order', () => {
   it('keeps only configured providers, in the requested order', () => {
@@ -253,5 +256,52 @@ describe('transfer-topic task', () => {
   it('needs the worked subject', async () => {
     const response = await handleApi(task({ task: 'transfer-topic', input: {} }), env)
     expect(response.status).toBe(400)
+  })
+})
+
+describe('fewer wasted requests', () => {
+  const env: Env = { ASSETS: assets, GROQ_API_KEY: 'k', GEMINI_API_KEY: 'k' }
+  const geminiReply = () =>
+    new Response(JSON.stringify({ candidates: [{ content: { parts: [{ text: '{"text":"Et toi ?"}' }] } }] }))
+
+  it('skips a provider whose key was just refused', async () => {
+    const fetchMock = vi.spyOn(globalThis, 'fetch').mockImplementation(async (input) =>
+      String(input).includes('groq.com') ? new Response('bad key', { status: 401 }) : geminiReply(),
+    )
+    await handleApi(task({ task: 'question', providers: ['groq', 'gemini'], input: {} }), env)
+    const groqCalls = () => fetchMock.mock.calls.filter(([input]) => String(input).includes('groq.com')).length
+    expect(groqCalls()).toBe(1)
+
+    const response = await handleApi(task({ task: 'question', providers: ['groq', 'gemini'], input: {} }), env)
+    const data = (await response.json()) as { provider: string; failed: string[] }
+    expect(data.provider).toBe('gemini')
+    expect(data.failed).toEqual([])
+    expect(groqCalls()).toBe(1)
+  })
+
+  it('tries the next model of a provider when one is gone', async () => {
+    const models: string[] = []
+    vi.spyOn(globalThis, 'fetch').mockImplementation(async (_input, init) => {
+      const model = JSON.parse(String(init?.body)).model as string
+      models.push(model)
+      return models.length === 1 ? new Response('model not found', { status: 404 }) : openAiReply('{"text":"Et toi ?"}')
+    })
+    const response = await handleApi(task({ task: 'question', providers: ['groq'], input: {} }), env)
+    const data = (await response.json()) as { provider: string; model: string }
+    expect(data.provider).toBe('groq')
+    expect(data.model).toBe(models[1])
+    expect(models[0]).not.toBe(models[1])
+  })
+
+  it('reports the exact error of every model in /api/diagnose', async () => {
+    vi.spyOn(globalThis, 'fetch').mockImplementation(async () => new Response('quota exceeded', { status: 429 }))
+    const response = await handleApi(new Request('https://x.test/api/diagnose?provider=groq'), env)
+    const data = (await response.json()) as {
+      summary: { provider: string; ok: boolean }[]
+      reports: { model: string; ok: boolean; error?: string }[]
+    }
+    expect(data.summary).toEqual([{ provider: 'groq', ok: false, firstWorking: null }])
+    expect(data.reports.length).toBeGreaterThan(1)
+    expect(data.reports[0].error).toContain('HTTP 429: quota exceeded')
   })
 })

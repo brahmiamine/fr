@@ -1,13 +1,15 @@
 import {
   PROVIDER_IDS,
-  chatWithFallback,
+  callProvider,
   isConfigured,
   modelFor,
   resolveOrder,
+  type Attempt,
   type Env,
   type ProviderId,
 } from './providers'
 import { TASK_NAMES, buildTask, extractJson, type TaskName } from './tasks'
+import { diagnose } from './diagnose'
 import {
   MAX_AUDIO_BYTES,
   TRANSCRIBE_PROVIDERS,
@@ -35,20 +37,16 @@ export function hasAccess(request: Request, env: Env): boolean {
   return safeEqual(request.headers.get('x-access-code') ?? '', env.AI_ACCESS_CODE)
 }
 
-/** Model each provider was asked to use, so a failure still shows what was tried. */
-function modelsOf(
-  providers: string[],
-  modelOf: (provider: ProviderId) => string,
-): Record<string, string> {
+/** Providers that failed, and the last model each one was asked to use. */
+function failures(attempts: Attempt[]): { failed: string[]; models: Record<string, string> } {
   const models: Record<string, string> = {}
-  for (const id of providers) {
-    if (PROVIDER_IDS.includes(id as ProviderId)) models[id] = modelOf(id as ProviderId)
-  }
-  return models
+  for (const attempt of attempts) models[attempt.provider] = attempt.model
+  return { failed: Object.keys(models), models }
 }
 
 export async function handleApi(request: Request, env: Env): Promise<Response> {
-  const { pathname } = new URL(request.url)
+  const url = new URL(request.url)
+  const { pathname } = url
 
   if (pathname === '/api/status' && request.method === 'GET') {
     return json({
@@ -64,6 +62,11 @@ export async function handleApi(request: Request, env: Env): Promise<Response> {
   }
 
   if (!hasAccess(request, env)) return json({ error: 'access code required' }, 401)
+
+  if (pathname === '/api/diagnose' && request.method === 'GET') {
+    const result = await diagnose(env, url.searchParams)
+    return json(result.body, result.status)
+  }
 
   if (pathname === '/api/task') {
     if (request.method !== 'POST') return json({ error: 'method not allowed' }, 405)
@@ -81,42 +84,33 @@ export async function handleApi(request: Request, env: Env): Promise<Response> {
     const order = resolveOrder(body.providers, env)
     if (order.length === 0) return json({ error: 'no provider configured' }, 503)
 
-    // A provider whose answer cannot be parsed counts as failed: try the next one.
-    const failed: string[] = []
-    const modelOfProvider = (id: ProviderId) => modelFor(id, env)
+    const attempts: Attempt[] = []
     const startedAt = Date.now()
-    for (const provider of order) {
-      const { result, failed: failures } = await chatWithFallback([provider], env, spec)
-      if (!result) {
-        failed.push(...failures)
-        continue
-      }
-      if (!spec.json) {
-        return json({
-          provider: result.provider,
-          model: result.model,
-          data: { text: result.text.trim() },
-          usage: result.usage,
-          latencyMs: Date.now() - startedAt,
-          failed,
-          models: modelsOf(failed, modelOfProvider),
-        })
-      }
-      const data = spec.shape(extractJson(result.text))
-      if (data) {
-        return json({
-          provider: result.provider,
-          model: result.model,
-          data,
-          usage: result.usage,
-          latencyMs: Date.now() - startedAt,
-          failed,
-          models: modelsOf(failed, modelOfProvider),
-        })
-      }
-      failed.push(provider)
+    const answer = async (provider: ProviderId, ignoreFailures = false) => {
+      const result = await callProvider(provider, env, spec, attempts, ignoreFailures)
+      if (!result) return null
+      const data = spec.json ? spec.shape(extractJson(result.text)) : { text: result.text.trim() }
+      if (data) return { result, data }
+      // A reply that cannot be parsed counts as failed: try the next provider.
+      attempts.push({ provider, model: result.model, error: 'unusable answer' })
+      return null
     }
-    return json({ error: 'all providers failed', failed, models: modelsOf(failed, modelOfProvider) }, 502)
+    let found: Awaited<ReturnType<typeof answer>> = null
+    for (const provider of order) {
+      found = await answer(provider)
+      if (found) break
+    }
+    // Every provider was skipped as recently failed: give the first one a real try.
+    if (!found && attempts.length === 0) found = await answer(order[0], true)
+    if (!found) return json({ error: 'all providers failed', ...failures(attempts) }, 502)
+    return json({
+      provider: found.result.provider,
+      model: found.result.model,
+      data: found.data,
+      usage: found.result.usage,
+      latencyMs: Date.now() - startedAt,
+      ...failures(attempts),
+    })
   }
 
   if (pathname === '/api/transcribe') {
@@ -139,19 +133,15 @@ export async function handleApi(request: Request, env: Env): Promise<Response> {
     if (order.length === 0) return json({ error: 'no transcription provider configured' }, 503)
 
     const startedAt = Date.now()
-    const { provider, text, failed } = await transcribeWithFallback(order, env, file, 'fr')
-    const modelOfProvider = (id: ProviderId) => transcribeModelFor(id, env)
-    if (!provider) {
-      return json({ error: 'all providers failed', failed, models: modelsOf(failed, modelOfProvider) }, 502)
-    }
+    const { provider, text, attempts } = await transcribeWithFallback(order, env, file, 'fr')
+    if (!provider) return json({ error: 'all providers failed', ...failures(attempts) }, 502)
     return json({
       provider,
       model: transcribeModelFor(provider, env),
       text: text.trim(),
       audioBytes: file.size,
       latencyMs: Date.now() - startedAt,
-      failed,
-      models: modelsOf(failed, modelOfProvider),
+      ...failures(attempts),
     })
   }
 

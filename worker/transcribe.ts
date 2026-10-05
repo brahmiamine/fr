@@ -1,5 +1,9 @@
 import {
+  ProviderError,
+  isDown,
+  markFailure,
   runCloudflare,
+  type Attempt,
   type Env,
   type ProviderId,
 } from './providers'
@@ -58,7 +62,9 @@ async function multipartTranscription(
     headers: { authorization: `Bearer ${key}` },
     body: form,
   })
-  if (!response.ok) throw new Error(`HTTP ${response.status}`)
+  if (!response.ok) {
+    throw new ProviderError(response.status, (await response.text().catch(() => '')).slice(0, 300))
+  }
   const data = (await response.json()) as { text?: string }
   if (typeof data.text !== 'string') throw new Error('empty response')
   return data.text
@@ -122,7 +128,9 @@ export async function transcribeWith(
           }),
         },
       )
-      if (!response.ok) throw new Error(`HTTP ${response.status}`)
+      if (!response.ok) {
+        throw new ProviderError(response.status, (await response.text().catch(() => '')).slice(0, 300))
+      }
       const data = (await response.json()) as {
         candidates?: { content?: { parts?: { text?: string }[] } }[]
       }
@@ -149,14 +157,21 @@ export async function transcribeWithFallback(
   env: Env,
   file: Blob,
   language: string,
-): Promise<{ provider: ProviderId | null; text: string; failed: ProviderId[] }> {
-  const failed: ProviderId[] = []
-  for (const provider of order) {
+): Promise<{ provider: ProviderId | null; text: string; attempts: Attempt[] }> {
+  const attempts: Attempt[] = []
+  const now = Date.now()
+  // Recently failed providers are skipped, unless that would leave nothing to try.
+  const available = order.filter(
+    (provider) => !isDown(provider, now) && !isDown(`${provider}|${transcribeModelFor(provider, env)}`, now),
+  )
+  for (const provider of available.length ? available : order.slice(0, 1)) {
     try {
-      return { provider, text: await transcribeWith(provider, env, file, language), failed }
-    } catch {
-      failed.push(provider)
+      return { provider, text: await transcribeWith(provider, env, file, language), attempts }
+    } catch (error) {
+      const model = transcribeModelFor(provider, env)
+      attempts.push({ provider, model, error: String((error as Error)?.message ?? error) })
+      markFailure(provider, model, error, now)
     }
   }
-  return { provider: null, text: '', failed }
+  return { provider: null, text: '', attempts }
 }
