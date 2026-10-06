@@ -1,4 +1,5 @@
 import type { ProsodyExercise } from '../types'
+import { slicePitch } from '../../../services/audio/pitch'
 
 const HEIGHT = 90
 const RANGE = 9 // semitones shown above and below the speaker's usual pitch
@@ -58,9 +59,7 @@ export function PitchContour({
 
   const from = start ?? 0
   const to = end ?? pitch.semitones.length * pitch.step
-  const first = Math.max(0, Math.floor(from / pitch.step))
-  const last = Math.min(pitch.semitones.length, Math.ceil(to / pitch.step))
-  const model = pitch.semitones.slice(first, last)
+  const model = slicePitch(pitch, from, to).semitones
   if (model.length < 2) return null
 
   const width = model.length - 1

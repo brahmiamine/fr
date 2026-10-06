@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { dtwDistance, finalMovement, framePitch, pitchCurve, pitchRange, resample, trimUnvoiced } from './pitch'
+import { dtwDistance, finalMovement, framePitch, pitchCurve, pitchRange, resample, slicePitch, trimUnvoiced } from './pitch'
 
 const RATE = 16000
 
@@ -51,5 +51,10 @@ describe('melody comparison', () => {
     expect(resample([0, 10], 3)).toEqual([0, 5, 10])
     expect(pitchRange([0, 0.1, -0.1, 0, 0.2, -0.2, 0, 0.1])).toBeLessThan(1)
     expect(pitchRange([-6, -3, 0, 3, 6, -5, 5, 0])).toBeGreaterThan(8)
+  })
+
+  it('cuts a curve to a segment in seconds', () => {
+    const curve = { step: 0.1, semitones: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] }
+    expect(slicePitch(curve, 0.2, 0.6).semitones).toEqual([2, 3, 4, 5, 6])
   })
 })
