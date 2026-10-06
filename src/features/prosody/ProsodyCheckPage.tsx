@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { getJson, listEntryKeys, putEntry, putJson } from '../../services/storage/audioDb'
 import { AudioClip } from '../../components/AudioClip/AudioClip'
 import { InfoButton } from '../../components/ui'
 import { useProsodyRecorder } from './hooks/useProsodyRecorder'
 import { RecorderControls } from './components/RecorderControls'
-import { CHECK_PROMPTS, measureRecording, nextCheckKind } from './check'
-import type { CheckItem, CheckItemKind, ProsodyCheckKind, ProsodyCheckRecord } from './check'
+import { CHECK_PROMPTS, checkStatus, measureRecording } from './check'
+import type { CheckItem, CheckItemKind, CheckMeasures, ProsodyCheckKind, ProsodyCheckRecord } from './check'
 
 type Step = 'intro' | 'imitation' | 'reading' | 'story' | 'argument' | 'done'
 
@@ -25,6 +25,12 @@ export default function ProsodyCheckPage() {
   const [listened, setListened] = useState(false)
   const [items, setItems] = useState<CheckItem[]>([])
   const [saved, setSaved] = useState(false)
+  const [saving, setSaving] = useState(false)
+  // The bilan to wait for (S4 or S8 before their date), with its date.
+  const [waitFor, setWaitFor] = useState<{ kind: ProsodyCheckKind; availableOn: string } | null>(null)
+  // Writes and measurements still running: the bilan is only saved once they settle.
+  const pendingRef = useRef<Promise<unknown>[]>([])
+  const measuresRef = useRef(new Map<string, CheckMeasures | null>())
 
   useEffect(() => {
     let cancelled = false
@@ -39,7 +45,11 @@ export default function ProsodyCheckPage() {
       })
       .then((records) => {
         if (cancelled) return
-        setKind(nextCheckKind(records.map((record) => record.kind)))
+        const status = checkStatus(records)
+        if (status.state === 'wait' && status.kind && status.availableOn) {
+          setWaitFor({ kind: status.kind, availableOn: status.availableOn })
+        }
+        setKind(status.state === 'due' ? status.kind : null)
       })
       .catch(() => {
         if (!cancelled) setKind('S0')
@@ -58,28 +68,40 @@ export default function ProsodyCheckPage() {
     const item: CheckItem = { id: itemId, kind: itemKind, prompt, audioId, measures: null }
     setItems((prev) => [...prev, item])
     if (rec) {
-      void putEntry(audioId, rec.blob)
+      pendingRef.current.push(putEntry(audioId, rec.blob).catch(() => undefined))
       const url = URL.createObjectURL(rec.blob)
-      void measureRecording(url)
+      const measuring = measureRecording(url)
         .then((measures) => {
-          URL.revokeObjectURL(url)
+          measuresRef.current.set(itemId, measures)
           setItems((prev) => prev.map((it) => (it.id === itemId ? { ...it, measures } : it)))
         })
-        .catch(() => URL.revokeObjectURL(url))
+        .catch(() => undefined)
+        .finally(() => URL.revokeObjectURL(url))
+      pendingRef.current.push(measuring)
     }
     recorder.reset()
     setListened(false)
     then()
   }
 
-  const finish = () => {
+  const finish = async () => {
+    if (saving) return
+    setSaving(true)
+    // Let the audio writes and the acoustic measures finish first, so no item
+    // is saved with `measures: null` just because the learner was quicker.
+    await Promise.allSettled(pendingRef.current)
     const record: ProsodyCheckRecord = {
       id: `check-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
       kind: kind as ProsodyCheckKind,
       date: new Date().toISOString(),
-      items,
+      items: items.map((item) => ({
+        ...item,
+        measures: measuresRef.current.get(item.id) ?? item.measures,
+      })),
     }
-    void putJson(`check-${record.id}`, record).then(() => setSaved(true))
+    await putJson(`check-${record.id}`, record).catch(() => undefined)
+    setSaved(true)
+    setSaving(false)
   }
 
   const kindLabel = kind === 'S0' ? 'de départ (S0)' : kind === 'S4' ? 'des 4 semaines (S4)' : 'des 8 semaines (S8)'
@@ -100,8 +122,26 @@ export default function ProsodyCheckPage() {
           </div>
         </header>
         <section className="card exercise exercise--center">
-          <h1>Tous les bilans sont faits.</h1>
-          <p className="muted">S0, S4 et S8 sont enregistrés. Compare-les à l'aveugle.</p>
+          {waitFor ? (
+            <>
+              <h1>Le bilan {waitFor.kind} n'est pas encore disponible.</h1>
+              <p className="muted">
+                Il faut laisser passer {waitFor.kind === 'S4' ? '4' : '8'} semaines depuis
+                le bilan de départ : rendez-vous le{' '}
+                {new Date(`${waitFor.availableOn}T12:00:00`).toLocaleDateString('fr-FR', {
+                  weekday: 'long',
+                  day: 'numeric',
+                  month: 'long',
+                })}
+                . Les faire plus tôt fausserait la comparaison.
+              </p>
+            </>
+          ) : (
+            <>
+              <h1>Tous les bilans sont faits.</h1>
+              <p className="muted">S0, S4 et S8 sont enregistrés. Compare-les à l'aveugle.</p>
+            </>
+          )}
           <Link className="button button--block" to="/prosody/blind">
             Noter mes enregistrements à l'aveugle
           </Link>
@@ -281,8 +321,13 @@ export default function ProsodyCheckPage() {
         </p>
         <div className="stack">
           {!saved ? (
-            <button type="button" className="button button--block" onClick={finish}>
-              Enregistrer ce bilan
+            <button
+              type="button"
+              className="button button--block"
+              disabled={saving}
+              onClick={() => void finish()}
+            >
+              {saving ? 'Mesures en cours…' : 'Enregistrer ce bilan'}
             </button>
           ) : null}
           <Link className="button button--block" to="/prosody/blind">

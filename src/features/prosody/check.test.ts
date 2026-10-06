@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { nextCheckKind, parseStoredRating, ratingKey, ratingsToCsv, summarizeRatings } from './check'
+import { checkStatus, nextCheckKind, parseStoredRating, ratingKey, ratingsToCsv, summarizeRatings } from './check'
 import type { ProsodyCheckKind, ProsodyCheckRecord, StoredRating } from './check'
 
 describe('nextCheckKind', () => {
@@ -12,6 +12,31 @@ describe('nextCheckKind', () => {
 
   it('recovers a missed intermediate bilan', () => {
     expect(nextCheckKind(['S4'] as ProsodyCheckKind[])).toBe('S0')
+  })
+})
+
+describe('checkStatus', () => {
+  const at = (date: string, kind: ProsodyCheckKind) => ({ kind, date: `${date}T10:00:00.000Z` })
+
+  it('offers S0 straight away', () => {
+    expect(checkStatus([], new Date('2026-10-01T12:00:00'))).toEqual({ state: 'due', kind: 'S0', availableOn: null })
+  })
+
+  it('holds S4 back until 4 weeks after S0, and S8 until 8 weeks', () => {
+    const s0 = at('2026-10-01', 'S0')
+    const sameDay = checkStatus([s0], new Date('2026-10-01T18:00:00'))
+    expect(sameDay).toEqual({ state: 'wait', kind: 'S4', availableOn: '2026-10-29' })
+    expect(checkStatus([s0], new Date('2026-10-28T12:00:00')).state).toBe('wait')
+    expect(checkStatus([s0], new Date('2026-10-29T12:00:00')).state).toBe('due')
+
+    const both = [s0, at('2026-10-30', 'S4')]
+    expect(checkStatus(both, new Date('2026-10-30T12:00:00'))).toMatchObject({ state: 'wait', kind: 'S8', availableOn: '2026-11-26' })
+    expect(checkStatus(both, new Date('2026-12-01T12:00:00')).state).toBe('due')
+  })
+
+  it('is done once the three bilans are recorded', () => {
+    const all = [at('2026-10-01', 'S0'), at('2026-10-30', 'S4'), at('2026-11-30', 'S8')]
+    expect(checkStatus(all)).toEqual({ state: 'done', kind: null, availableOn: null })
   })
 })
 

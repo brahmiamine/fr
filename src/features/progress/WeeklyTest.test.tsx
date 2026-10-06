@@ -2,6 +2,7 @@ import { act, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { AppStateProvider } from '../../app/AppStateProvider'
 import { createInitialState, STORAGE_KEY } from '../../types/progress'
+import { contentRepository } from '../../services/content/contentRepository'
 import WeeklyTest, { combineUnknown } from './WeeklyTest'
 
 function renderWeeklyTest() {
@@ -79,6 +80,57 @@ describe('WeeklyTest', () => {
     expect(tests[0].paraphraseAttempts).toBe(10)
     expect(tests[0].questionIds).toHaveLength(3)
     expect(tests[0].known.wordsPerMinute).toBe(100)
+  })
+})
+
+describe('WeeklyTest unknown questions', () => {
+  it('never asks a question already met in any past session, however old', async () => {
+    vi.useFakeTimers()
+    const all = contentRepository.questions.map((question) => question.id)
+    const allowed = all.slice(-3)
+    const state = {
+      ...createInitialState(),
+      // `recentQuestionIds` only keeps 15 ids: everything older lives in the sessions.
+      sessions: [
+        {
+          id: 's1',
+          date: '2026-01-01',
+          completedAt: '2026-01-01T10:00:00.000Z',
+          durationMinutes: 40,
+          blockCount: 0,
+          fluencyScore: 3,
+          blockedWord: '',
+          expressionToReuse: '',
+          topicId: 't001',
+          questionIds: all.slice(0, -3),
+          chunkIds: [],
+          genericWordIds: [],
+          summary: { chunksWorked: 0, gapsPracticed: 0, questionsAsked: 0, fluencyDone: true },
+        },
+      ],
+    }
+    render(
+      <AppStateProvider initialState={state}>
+        <WeeklyTest />
+      </AppStateProvider>,
+    )
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: 'Lancer le test' }))
+    })
+    await advance(180)
+
+    const asked: string[] = []
+    for (let question = 0; question < 3; question += 1) {
+      await act(async () => {
+        fireEvent.click(screen.getByRole('button', { name: 'Continuer' }))
+      })
+      asked.push(screen.getByText(`2/3 · Question inconnue ${question + 1}/3`).nextElementSibling?.textContent ?? '')
+      await advance(90)
+    }
+    const allowedTexts = contentRepository.questions
+      .filter((question) => allowed.includes(question.id))
+      .map((question) => question.text)
+    expect([...asked].sort()).toEqual([...allowedTexts].sort())
   })
 })
 

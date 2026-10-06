@@ -213,7 +213,7 @@ en prosodie. Il ne reste qu'un point absent, signalé ci-dessous.
 | Paires fonctionnelles d'intonation (*Tu viens. / Tu viens ?*) | ✅ |
 | Un locuteur principal pendant 3 à 4 semaines ; préférer le non scripté | ✅ |
 | Extraits de conversation à deux voix (semaines 5 à 8) | ⬜ |
-| Tests S0 / S4 / S8 et notation à l'aveugle (par soi-même ou par des natifs qui écoutent sur l'appareil, sous leur prénom) | ✅ |
+| Tests S0 / S4 / S8 (S4 et S8 ouverts 4 et 8 semaines après S0) et notation à l'aveugle (par soi-même ou par des natifs qui écoutent sur l'appareil, sous leur prénom) | ✅ |
 | Marquage `/ ↑ ↓` avant de voir le modèle, A → B → A, une seule correction | ✅ |
 
 > Les extraits de **conversation à deux voix** (semaines 5 à 8) sont encore

@@ -51,6 +51,47 @@ export function nextCheckKind(done: readonly ProsodyCheckKind[]): ProsodyCheckKi
   return null
 }
 
+/** S4 comes 4 weeks after S0, S8 8 weeks after S0. */
+export const CHECK_DELAY_DAYS: Record<ProsodyCheckKind, number> = { S0: 0, S4: 28, S8: 56 }
+
+export interface CheckStatus {
+  /** `due`: run it now; `wait`: not yet; `done`: all three are recorded. */
+  state: 'due' | 'wait' | 'done'
+  kind: ProsodyCheckKind | null
+  /** Local date (YYYY-MM-DD) from which the next bilan can be run. */
+  availableOn: string | null
+}
+
+const DAY_MS = 86_400_000
+
+function localDate(time: number): string {
+  const date = new Date(time)
+  const pad = (value: number) => String(value).padStart(2, '0')
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`
+}
+
+/**
+ * Which bilan to run now. S4 and S8 are only offered once their interval since
+ * S0 has passed: running all three on the same day would void the four- and
+ * eight-week comparison.
+ */
+export function checkStatus(
+  records: ReadonlyArray<Pick<ProsodyCheckRecord, 'kind' | 'date'>>,
+  now: Date = new Date(),
+): CheckStatus {
+  const kind = nextCheckKind(records.map((record) => record.kind))
+  if (kind === null) return { state: 'done', kind: null, availableOn: null }
+  if (kind === 'S0') return { state: 'due', kind, availableOn: null }
+  const first = records.find((record) => record.kind === 'S0')
+  const start = first ? new Date(first.date).getTime() : NaN
+  if (Number.isNaN(start)) return { state: 'due', kind, availableOn: null }
+  const availableAt = start + CHECK_DELAY_DAYS[kind] * DAY_MS
+  const availableOn = localDate(availableAt)
+  return localDate(now.getTime()) >= availableOn
+    ? { state: 'due', kind, availableOn }
+    : { state: 'wait', kind, availableOn }
+}
+
 /** Decodes the recording and measures pauses (≥ 250 ms) and the pitch shape. */
 export async function measureRecording(url: string): Promise<CheckMeasures | null> {
   const [activity, pitch] = await Promise.all([

@@ -70,8 +70,11 @@ function knownTopic(state: AppState): { topic: Topic; fromWeek: boolean } {
 
 function pickContent(state: AppState): TestContent {
   const { topic, fromWeek } = knownTopic(state)
+  // "Jamais vues": no question already asked in any session (not only the 15
+  // most recent) nor in a previous test.
   const asked = [
     ...state.recentQuestionIds,
+    ...state.sessions.flatMap((session) => session.questionIds),
     ...state.weeklyTests.flatMap((test) => test.questionIds ?? []),
   ]
   return {
