@@ -15,6 +15,7 @@ import {
 } from './types'
 
 export type ProsodyAction =
+  | { type: 'COLD_RECORDED' }
   | { type: 'LISTEN_PLAYED' }
   | { type: 'LISTEN_NEXT' }
   | { type: 'LISTEN_MARKED'; marking: LearnerMarking }
@@ -23,6 +24,7 @@ export type ProsodyAction =
   | { type: 'IMITATION_RECORDED' }
   | { type: 'SHADOW_PLAYED' }
   | { type: 'SHADOW_DONE' }
+  | { type: 'MEMORY_DONE' }
   | { type: 'ABA_COMPLETE' }
   | { type: 'COMPARISON_DONE' }
   | { type: 'CHOOSE_FOCUS'; focus: ProsodyFocus }
@@ -40,13 +42,15 @@ export function createProsodySession(
     minSeconds: MIN_RETELL_SECONDS,
     targetSeconds: TARGET_RETELL_SECONDS,
   },
+  cold = false,
 ): ProsodySessionState {
   return {
     id: `p-${now.getTime()}-${Math.random().toString(36).slice(2, 8)}`,
     exerciseId: exercise.id,
     startedAt: now.toISOString(),
-    stage: 'listening',
+    stage: cold ? 'cold' : 'listening',
     completed: false,
+    cold,
     listening: { step: 'meaning', meaningPlays: 0, prosodyPlays: 0, marking: null },
     imitation: { step: 'listen', modelPlays: 0, shadowPlays: 0 },
     comparison: { step: 'aba', focus: null, abaCompleted: false },
@@ -64,6 +68,11 @@ export function prosodyReducer(
   action: ProsodyAction,
 ): ProsodySessionState {
   switch (action.type) {
+    // The cold version is recorded before the model is heard.
+    case 'COLD_RECORDED':
+      if (state.stage !== 'cold') return state
+      return { ...state, stage: 'listening' }
+
     case 'LISTEN_PLAYED': {
       if (state.stage !== 'listening') return state
       if (state.listening.step === 'meaning') {
@@ -158,6 +167,11 @@ export function prosodyReducer(
       ) {
         return state
       }
+      // Chorusing done: the segment is now said from memory.
+      return { ...state, imitation: { ...state.imitation, step: 'memory' } }
+
+    case 'MEMORY_DONE':
+      if (state.stage !== 'imitation' || state.imitation.step !== 'memory') return state
       return {
         ...state,
         stage: 'comparison',
@@ -211,6 +225,7 @@ export function prosodyReducer(
       }
 
     case 'SKIP_STAGE': {
+      if (state.stage === 'cold') return { ...state, stage: 'listening' }
       if (state.stage === 'listening') {
         return { ...state, stage: 'imitation', imitation: { ...state.imitation, step: 'listen' } }
       }

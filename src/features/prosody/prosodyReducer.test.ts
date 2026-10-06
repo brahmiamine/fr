@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { CHORUS_PASSES } from './types'
 import type { ProsodyExercise, ProsodySessionState } from './types'
 import { createProsodySession, prosodyReducer } from './prosodyReducer'
 
@@ -38,8 +39,11 @@ function reach(stage: ProsodySessionState['stage']): ProsodySessionState {
   state = prosodyReducer(state, { type: 'IMITATION_MODEL_PLAYED' })
   state = prosodyReducer(state, { type: 'IMITATION_LISTENED' })
   state = prosodyReducer(state, { type: 'IMITATION_RECORDED' })
-  state = prosodyReducer(state, { type: 'SHADOW_PLAYED' })
+  for (let pass = 0; pass < CHORUS_PASSES; pass += 1) {
+    state = prosodyReducer(state, { type: 'SHADOW_PLAYED' })
+  }
   state = prosodyReducer(state, { type: 'SHADOW_DONE' })
+  state = prosodyReducer(state, { type: 'MEMORY_DONE' })
 
   if (stage === 'comparison') return state
 
@@ -93,7 +97,7 @@ describe('prosodyReducer protocol gates', () => {
     expect(state.listening.step).toBe('prosody')
   })
 
-  it('requires two model listens and one shadowing pass', () => {
+  it('requires two model listens, six chorusing passes and the segment said from memory', () => {
     let state = reach('imitation')
 
     state = prosodyReducer(state, { type: 'IMITATION_MODEL_PLAYED' })
@@ -108,9 +112,29 @@ describe('prosodyReducer protocol gates', () => {
     state = prosodyReducer(state, { type: 'SHADOW_DONE' })
     expect(state.stage).toBe('imitation')
 
+    for (let pass = 0; pass < CHORUS_PASSES - 1; pass += 1) {
+      state = prosodyReducer(state, { type: 'SHADOW_PLAYED' })
+    }
+    state = prosodyReducer(state, { type: 'SHADOW_DONE' })
+    expect(state.imitation.step).toBe('shadow')
+
     state = prosodyReducer(state, { type: 'SHADOW_PLAYED' })
     state = prosodyReducer(state, { type: 'SHADOW_DONE' })
+    expect(state.stage).toBe('imitation')
+    expect(state.imitation.step).toBe('memory')
+
+    state = prosodyReducer(state, { type: 'MEMORY_DONE' })
     expect(state.stage).toBe('comparison')
+  })
+
+  it('starts a review with the cold version, before any listening', () => {
+    let state = createProsodySession(exercise, new Date(), undefined, true)
+    expect(state.stage).toBe('cold')
+    state = prosodyReducer(state, { type: 'LISTEN_PLAYED' })
+    expect(state.listening.meaningPlays).toBe(0)
+    state = prosodyReducer(state, { type: 'COLD_RECORDED' })
+    expect(state.stage).toBe('listening')
+    expect(createProsodySession(exercise).stage).toBe('listening')
   })
 
   it('requires a completed automatic A/B/A sequence', () => {

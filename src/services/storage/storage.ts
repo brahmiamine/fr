@@ -45,6 +45,13 @@ function normalizeV4(raw: Record<string, unknown>): AppState {
     prosodySessions: Array.isArray(raw.prosodySessions)
       ? (raw.prosodySessions as AppState['prosodySessions'])
       : [],
+    prosodyPlans: Array.isArray(raw.prosodyPlans)
+      ? (raw.prosodyPlans as AppState['prosodyPlans'])
+      : [],
+    prosodySpeaker:
+      isRecord(raw.prosodySpeaker) && typeof raw.prosodySpeaker.name === 'string'
+        ? (raw.prosodySpeaker as unknown as AppState['prosodySpeaker'])
+        : null,
     weeklyTests: Array.isArray(raw.weeklyTests)
       ? (raw.weeklyTests as AppState['weeklyTests'])
       : [],

@@ -1,4 +1,4 @@
-export type ProsodyStage = 'listening' | 'imitation' | 'comparison' | 'retelling'
+export type ProsodyStage = 'cold' | 'listening' | 'imitation' | 'comparison' | 'retelling'
 
 export type ProsodyFocus =
   | 'pause'
@@ -51,6 +51,10 @@ export interface ProsodyExercise {
   /** Range selected from the original source, before it was normalized for the app. */
   sourceRange?: { start: number; end: number }
   voiceLocale?: string
+  /** Who speaks (recordings): the learner keeps one main speaker for 3 to 4 weeks. */
+  speaker?: string
+  /** `lu` (voice-over, read text) is a poor model for conversational French. */
+  style?: 'monologue' | 'interview' | 'reportage' | 'lu'
   register?: 'familier' | 'courant' | 'soutenu'
   speed?: ProsodySpeed
   focus?: ProsodyFocus[]
@@ -74,7 +78,15 @@ export interface ProsodyExercise {
 export const REQUIRED_MEANING_LISTENS = 1
 export const REQUIRED_PROSODY_LISTENS = 1
 export const REQUIRED_IMITATION_LISTENS = 2
-export const REQUIRED_SHADOW_PLAYS = 1
+/** Chorusing: 6 passes over the same segment, 650 ms apart. */
+export const CHORUS_PASSES = 6
+export const CHORUS_GAP_MS = 650
+export const REQUIRED_SHADOW_PLAYS = CHORUS_PASSES
+/** Slowed to 0.75× (without distortion) only during the first sessions. */
+export const SLOW_SPEED = 0.75
+export const SLOW_SESSIONS = 3
+/** Silence kept between hearing the segment and saying it from memory. */
+export const MEMORY_GAP_SECONDS = 2
 export const MIN_FULL_AUDIO_SECONDS = 10
 export const MAX_FULL_AUDIO_SECONDS = 30
 export const MIN_IMITATION_SECONDS = 5
@@ -138,8 +150,10 @@ export interface ProsodySessionState {
     prosodyPlays: number
     marking: { boundaries: number[]; intonations: Array<ProsodyGroup['intonation']> } | null
   }
+  /** A review starts from memory: the first version is recorded before any listening. */
+  cold: boolean
   imitation: {
-    step: 'listen' | 'record' | 'shadow'
+    step: 'listen' | 'record' | 'shadow' | 'memory'
     modelPlays: number
     shadowPlays: number
   }
@@ -157,6 +171,7 @@ export interface ProsodySessionState {
 }
 
 export const STAGE_ORDER: ProsodyStage[] = [
+  'cold',
   'listening',
   'imitation',
   'comparison',
@@ -164,6 +179,7 @@ export const STAGE_ORDER: ProsodyStage[] = [
 ]
 
 export const STAGE_LABELS: Record<ProsodyStage, string> = {
+  cold: 'À froid',
   listening: 'Écoute',
   imitation: 'Imitation',
   comparison: 'Comparaison',

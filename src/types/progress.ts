@@ -59,6 +59,26 @@ export interface ProsodySessionRecord {
   durationMinutes: number
   focus: ProsodyFocus | null
   retellingSeconds: number
+  /** The session started with a cold version, recorded before listening. */
+  cold?: boolean
+  /** V1 → V2 and cold → V1 melody distances, in semitones (smaller = closer). */
+  melodyDistance?: { v1?: number; v2?: number; cold?: number }
+}
+
+/**
+ * An excerpt worked on for several days, then taken up again at J+1, J+3
+ * and J+7 ("peu d'extraits, travaillés à fond").
+ */
+export interface ProsodyPlan {
+  exerciseId: string
+  speaker?: string
+  /** Days the excerpt was practised during the learning phase. */
+  practiceDates: string[]
+  /** Date of the last learning session; the reviews count from it. */
+  learnedOn: string | null
+  reviewsDone: number
+  nextReview: string | null
+  done: boolean
 }
 
 export interface WeeklyTestRecord {
@@ -191,6 +211,9 @@ export interface AppState {
   version: typeof APP_STATE_VERSION
   sessions: SessionRecord[]
   prosodySessions: ProsodySessionRecord[]
+  prosodyPlans: ProsodyPlan[]
+  /** The main speaker, kept for 3 to 4 weeks before adding other voices. */
+  prosodySpeaker: { name: string; since: string } | null
   weeklyTests: WeeklyTestRecord[]
   conversationPractices: ConversationPractice[]
   wordGaps: WordGap[]
@@ -238,6 +261,8 @@ export function createInitialState(): AppState {
     version: APP_STATE_VERSION,
     sessions: [],
     prosodySessions: [],
+    prosodyPlans: [],
+    prosodySpeaker: null,
     weeklyTests: [],
     conversationPractices: [],
     wordGaps: [],
