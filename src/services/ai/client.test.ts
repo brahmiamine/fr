@@ -4,6 +4,8 @@ import { clearAiStats, loadAiStats } from './stats'
 import {
   AiError,
   countFillers,
+  countMarkers,
+  typeTokenRatio,
   countWords,
   fetchAiStatus,
   runAiTask,
@@ -88,7 +90,11 @@ describe('transcript counting', () => {
   it('counts words and spoken hesitations', () => {
     expect(countWords('  je pense que  oui ')).toBe(4)
     expect(countWords('')).toBe(0)
-    expect(countFillers('Euh, je pense, hum... ben oui, bien sûr. Heuuu')).toBe(4)
+    expect(countFillers('Euh, je pense, hum... ben oui, bien sûr. Heuuu')).toBe(3)
     expect(countFillers('Un thème humain et bénéfique')).toBe(0)
+    expect(countMarkers('Bon, en fait, disons que… ben oui, du coup.')).toBe(5)
+    expect(countMarkers('Un bonbon bien fait')).toBe(0)
+    expect(typeTokenRatio('le chat le chien', 4)).toBe(0.75)
+    expect(typeTokenRatio('trop court', 200)).toBeNull()
   })
 })

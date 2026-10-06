@@ -1,32 +1,114 @@
 import { AudioClip } from '../../components/AudioClip/AudioClip'
 import { InfoButton, SkipButton } from '../../components/ui'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 import { useAppState } from '../../app/AppStateProvider'
 import { Timer } from '../../components/Timer/Timer'
 import { useAudioRecorder } from '../../hooks/useAudioRecorder'
+import type { SpeechActivity } from '../../services/audio/speechActivity'
 import { useAiEnabled } from '../ai/useAiEnabled'
 import {
   aiErrorMessage,
   countFillers,
+  countMarkers,
   countWords,
   transcribeAudio,
+  typeTokenRatio,
 } from '../../services/ai/client'
 import { contentRepository } from '../../services/content/contentRepository'
+import { topicById } from '../../services/review/selectPlan'
+import { selectUniqueItems } from '../../services/content/selectContent'
 import {
   getWeekKey,
   recordWeeklyTest,
   toLocalDateString,
 } from '../../services/progress/progress'
-import type { Topic } from '../../types/content'
-import type { WeeklyTestRecord } from '../../types/progress'
+import type { ParaphraseWord, Question, Topic } from '../../types/content'
+import type { AppState, WeeklyTaskMeasure, WeeklyTestRecord } from '../../types/progress'
 
-const TEST_SECONDS = 180
+export const KNOWN_SECONDS = 180
+export const UNKNOWN_QUESTIONS = 3
+export const UNKNOWN_SECONDS = 90
+export const PARAPHRASE_WORDS = 10
+export const PARAPHRASE_SECONDS = 20
+export const L1_SECONDS = 90
 
-function pickTopic(recent: readonly string[]): Topic {
-  const fresh = contentRepository.topics.filter((topic) => !recent.includes(topic.id))
-  const pool = fresh.length > 0 ? fresh : [...contentRepository.topics]
-  return pool[Math.floor(Math.random() * pool.length)]
+type Stage =
+  | { kind: 'intro' }
+  | { kind: 'known' }
+  | { kind: 'unknown'; index: number }
+  | { kind: 'paraphrase'; index: number }
+  | { kind: 'l1' }
+  | { kind: 'between'; next: Stage; label: string }
+  | { kind: 'form' }
+
+type ClipKey = 'known' | 'unknown-0' | 'unknown-1' | 'unknown-2' | 'l1'
+
+interface Clip {
+  url: string
+  activity: SpeechActivity | null
+}
+
+interface TestContent {
+  known: Topic
+  knownIsFromWeek: boolean
+  questions: Question[]
+  words: ParaphraseWord[]
+}
+
+/** A subject worked during the week (the last one), else a recent one, else any. */
+function knownTopic(state: AppState): { topic: Topic; fromWeek: boolean } {
+  const weekKey = getWeekKey()
+  const sorted = [...state.sessions].sort((a, b) => b.completedAt.localeCompare(a.completedAt))
+  for (const session of sorted) {
+    const topic = topicById(session.topicId)
+    if (topic) return { topic, fromWeek: session.date >= weekKey }
+  }
+  const pool = contentRepository.topics
+  return { topic: pool[Math.floor(Math.random() * pool.length)], fromWeek: false }
+}
+
+function pickContent(state: AppState): TestContent {
+  const { topic, fromWeek } = knownTopic(state)
+  const asked = [
+    ...state.recentQuestionIds,
+    ...state.weeklyTests.flatMap((test) => test.questionIds ?? []),
+  ]
+  return {
+    known: topic,
+    knownIsFromWeek: fromWeek,
+    questions: selectUniqueItems(contentRepository.questions, UNKNOWN_QUESTIONS, asked),
+    words: selectUniqueItems(contentRepository.paraphraseWords, PARAPHRASE_WORDS, state.recentWordIds),
+  }
+}
+
+function measureOf(activity: SpeechActivity | null | undefined): WeeklyTaskMeasure | undefined {
+  if (!activity) return undefined
+  return {
+    startDelaySeconds: activity.startDelaySeconds,
+    longPauses: activity.longPauses,
+    meanPauseSeconds: activity.meanPauseSeconds ?? 0,
+    longestSpeechSeconds: activity.longestSpeechSeconds,
+  }
+}
+
+/** The unknown task as one measure: mean start delay, total pauses, longest stretch. */
+export function combineUnknown(activities: readonly (SpeechActivity | null)[]): WeeklyTaskMeasure | undefined {
+  const measured = activities.filter((activity): activity is SpeechActivity => Boolean(activity))
+  if (measured.length === 0) return undefined
+  const mean = (values: number[]) =>
+    Math.round((values.reduce((sum, value) => sum + value, 0) / values.length) * 10) / 10
+  const pauses = measured.reduce((sum, activity) => sum + (activity.shortPauses ?? 0), 0)
+  const pausedSeconds = measured.reduce(
+    (sum, activity) => sum + (activity.meanPauseSeconds ?? 0) * (activity.shortPauses ?? 0),
+    0,
+  )
+  return {
+    startDelaySeconds: mean(measured.map((activity) => activity.startDelaySeconds)),
+    longPauses: measured.reduce((sum, activity) => sum + activity.longPauses, 0),
+    meanPauseSeconds: pauses > 0 ? Math.round((pausedSeconds / pauses) * 100) / 100 : 0,
+    longestSpeechSeconds: Math.max(...measured.map((activity) => activity.longestSpeechSeconds)),
+  }
 }
 
 function emptyMeasurement() {
@@ -35,10 +117,11 @@ function emptyMeasurement() {
     midSentencePauses: '',
     betweenIdeaPauses: '',
     majorFillers: '',
-    successfulParaphrases: '',
+    markers: '',
     abandonedSentences: '',
     longestFluentSegmentSeconds: '',
-    wordsSpoken: '',
+    wordsKnown: '',
+    wordsUnknown: '',
     score: '',
   }
 }
@@ -47,20 +130,25 @@ function toNumber(value: string): number {
   return value.trim() === '' ? 0 : Math.max(0, Number(value))
 }
 
-function wordsPerMinute(test: WeeklyTestRecord): number {
-  return Math.round((test.wordsSpoken ?? 0) / 3)
+function perMinute(words: string, seconds: number): number | undefined {
+  if (words.trim() === '') return undefined
+  return Math.round(toNumber(words) / (seconds / 60))
 }
 
 export default function WeeklyTest() {
   const { state, updateWith } = useAppState()
   const weekKey = getWeekKey()
   const existing = state.weeklyTests.find((test) => test.weekKey === weekKey)
+  const needsBaseline = !state.weeklyTests.some((test) => test.l1Baseline)
 
-  const [topic, setTopic] = useState<Topic | null>(null)
-  const [stage, setStage] = useState<'intro' | 'running' | 'form'>('intro')
+  const [content, setContent] = useState<TestContent | null>(null)
+  const [stage, setStage] = useState<Stage>({ kind: 'intro' })
+  const [clips, setClips] = useState<Partial<Record<ClipKey, Clip>>>({})
+  const [guessed, setGuessed] = useState<boolean[]>([])
   const [measurement, setMeasurement] = useState(emptyMeasurement())
+  const [ttr, setTtr] = useState<number | null>(null)
   const recorder = useAudioRecorder({ measureLevels: true })
-  const activity = recorder.activity ?? null
+  const pendingRef = useRef<ClipKey | null>(null)
   const aiEnabled = useAiEnabled()
   const [aiState, setAiState] = useState<{
     status: 'idle' | 'loading' | 'done' | 'error'
@@ -68,37 +156,33 @@ export default function WeeklyTest() {
     transcript: string
   }>({ status: 'idle', message: '', transcript: '' })
 
-  const countWithAi = async () => {
-    if (!recorder.blobUrl) return
-    setAiState({ status: 'loading', message: '', transcript: '' })
-    try {
-      const { text } = await transcribeAudio(recorder.blobUrl)
-      setMeasurement((prev) => ({
-        ...prev,
-        wordsSpoken: String(countWords(text)),
-        majorFillers: String(countFillers(text)),
-      }))
-      setAiState({ status: 'done', message: '', transcript: text })
-    } catch (caught) {
-      setAiState({ status: 'error', message: aiErrorMessage(caught), transcript: '' })
-    }
-  }
+  // Each finished recording is kept with what the microphone measured on it.
+  const { blobUrl, activity } = recorder
+  useEffect(() => {
+    if (!blobUrl || !pendingRef.current) return
+    const key = pendingRef.current
+    pendingRef.current = null
+    setClips((previous) => ({ ...previous, [key]: { url: blobUrl, activity: activity ?? null } }))
+  }, [blobUrl, activity])
+
+  const unknownMeasure = useMemo(
+    () =>
+      combineUnknown(
+        Array.from({ length: UNKNOWN_QUESTIONS }, (_, index) => clips[`unknown-${index}` as ClipKey]?.activity ?? null),
+      ),
+    [clips],
+  )
 
   // Pre-fill what the microphone measured; the learner can still correct it.
   useEffect(() => {
-    if (!activity) return
+    if (stage.kind !== 'form' || !unknownMeasure) return
     setMeasurement((prev) => ({
       ...prev,
-      startDelaySeconds: prev.startDelaySeconds || String(activity.startDelaySeconds),
+      startDelaySeconds: prev.startDelaySeconds || String(unknownMeasure.startDelaySeconds),
       longestFluentSegmentSeconds:
-        prev.longestFluentSegmentSeconds || String(Math.round(activity.longestSpeechSeconds)),
+        prev.longestFluentSegmentSeconds || String(Math.round(unknownMeasure.longestSpeechSeconds)),
     }))
-  }, [activity])
-
-  const recentTopicIds = useMemo(
-    () => [...state.recentTopicIds, ...state.weeklyTests.map((test) => test.topicId)],
-    [state.recentTopicIds, state.weeklyTests],
-  )
+  }, [stage.kind, unknownMeasure])
 
   if (existing) {
     return (
@@ -106,61 +190,141 @@ export default function WeeklyTest() {
         <h2 id="weekly-done">Test de la semaine ✓</h2>
         <p className="muted">Déjà réalisé cette semaine. Reviens lundi.</p>
         <ul className="weekly-test__summary">
-          <li>Démarrage : {existing.startDelaySeconds}s</li>
+          <li>Démarrage (questions inconnues) : {existing.startDelaySeconds}s</li>
           <li>Pauses au milieu d'une phrase : {existing.midSentencePauses ?? existing.longPauses}</li>
           <li>Pauses entre deux idées : {existing.betweenIdeaPauses ?? 0}</li>
-          <li>Hésitations importantes : {existing.majorFillers}</li>
+          <li>« euh » nus : {existing.majorFillers} · marqueurs français : {existing.markers ?? '—'}</li>
           <li>Phrases abandonnées : {existing.abandonedSentences}</li>
-          <li>Mots contournés : {existing.successfulParaphrases}</li>
+          <li>
+            Mots contournés : {existing.successfulParaphrases}
+            {existing.paraphraseAttempts ? `/${existing.paraphraseAttempts}` : ''}
+          </li>
           <li>Plus long segment fluide : {existing.longestFluentSegmentSeconds}s</li>
-          <li>Débit approximatif : {wordsPerMinute(existing)} mots/min</li>
-          <li>Score ressenti : {existing.score}/5</li>
-          {existing.measured ? (
+          {existing.known?.wordsPerMinute !== undefined || existing.unknown?.wordsPerMinute !== undefined ? (
             <li>
-              Mesuré au micro : {existing.measured.longPauses} pauses &gt; 1 s ·
-              plus longue séquence {existing.measured.longestSpeechSeconds} s
+              Débit : connu {existing.known?.wordsPerMinute ?? '—'} · inconnu{' '}
+              {existing.unknown?.wordsPerMinute ?? '—'} mots/min
             </li>
           ) : null}
+          {existing.unknown ? <li>Durée moyenne des pauses : {existing.unknown.meanPauseSeconds} s</li> : null}
+          <li>Score ressenti : {existing.score}/5</li>
         </ul>
       </section>
     )
   }
 
-  const handleStart = async () => {
-    const nextTopic = pickTopic(recentTopicIds)
-    // Same conditions every week: the recording starts with the topic, so the
-    // time before the first word can be measured.
+  const startRecording = async (key: ClipKey) => {
+    pendingRef.current = key
     if (recorder.supported) await recorder.start()
-    setTopic(nextTopic)
-    setStage('running')
+  }
+
+  const finishRecording = (next: Stage, label: string) => {
+    recorder.stop()
+    setStage({ kind: 'between', next, label })
+  }
+
+  const begin = async (next: Stage) => {
+    if (next.kind === 'known') await startRecording('known')
+    if (next.kind === 'unknown') await startRecording(`unknown-${next.index}` as ClipKey)
+    if (next.kind === 'l1') await startRecording('l1')
+    setStage(next)
+  }
+
+  const afterParaphrase = (index: number): Stage =>
+    index + 1 < (content?.words.length ?? 0)
+      ? { kind: 'paraphrase', index: index + 1 }
+      : needsBaseline
+        ? { kind: 'between', next: { kind: 'l1' }, label: 'Référence dans ta langue maternelle (une seule fois)' }
+        : { kind: 'form' }
+
+  const guess = (index: number, success: boolean) => {
+    setGuessed((previous) => {
+      const next = [...previous]
+      next[index] = success
+      return next
+    })
+    setStage(afterParaphrase(index))
+  }
+
+  const countWithAi = async () => {
+    setAiState({ status: 'loading', message: '', transcript: '' })
+    try {
+      const known = clips.known ? (await transcribeAudio(clips.known.url)).text : ''
+      const unknownTexts: string[] = []
+      for (let index = 0; index < UNKNOWN_QUESTIONS; index += 1) {
+        const clip = clips[`unknown-${index}` as ClipKey]
+        if (clip) unknownTexts.push((await transcribeAudio(clip.url)).text)
+      }
+      const unknown = unknownTexts.join(' ')
+      setMeasurement((prev) => ({
+        ...prev,
+        wordsKnown: known ? String(countWords(known)) : prev.wordsKnown,
+        wordsUnknown: unknown ? String(countWords(unknown)) : prev.wordsUnknown,
+        majorFillers: String(countFillers(`${known} ${unknown}`)),
+        markers: String(countMarkers(`${known} ${unknown}`)),
+      }))
+      setTtr(typeTokenRatio(unknown))
+      setAiState({ status: 'done', message: '', transcript: `${known}\n\n${unknown}`.trim() })
+    } catch (caught) {
+      setAiState({ status: 'error', message: aiErrorMessage(caught), transcript: '' })
+    }
   }
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault()
+    if (!content) return
     const now = new Date()
     const midSentencePauses = toNumber(measurement.midSentencePauses)
     const betweenIdeaPauses = toNumber(measurement.betweenIdeaPauses)
+    const knownMeasure = measureOf(clips.known?.activity)
+    const unknownSeconds = UNKNOWN_QUESTIONS * UNKNOWN_SECONDS
+    const l1 = clips.l1?.activity
     const record: WeeklyTestRecord = {
       id: `wt-${weekKey}`,
       weekKey,
       date: toLocalDateString(now),
-      topicId: topic?.id ?? '',
-      durationMinutes: Math.round(TEST_SECONDS / 60),
+      topicId: content.known.id,
+      questionIds: content.questions.map((question) => question.id),
+      durationMinutes: 20,
       startDelaySeconds: toNumber(measurement.startDelaySeconds),
       longPauses: midSentencePauses + betweenIdeaPauses,
       midSentencePauses,
       betweenIdeaPauses,
       majorFillers: toNumber(measurement.majorFillers),
-      successfulParaphrases: toNumber(measurement.successfulParaphrases),
+      markers: toNumber(measurement.markers),
+      successfulParaphrases: guessed.filter(Boolean).length,
+      paraphraseAttempts: content.words.length,
       abandonedSentences: toNumber(measurement.abandonedSentences),
       longestFluentSegmentSeconds: toNumber(measurement.longestFluentSegmentSeconds),
-      wordsSpoken: toNumber(measurement.wordsSpoken),
+      // The known task lasts 3 minutes: words ÷ 3 stays the speaking rate.
+      wordsSpoken: toNumber(measurement.wordsKnown),
       score: Math.min(5, Math.max(1, toNumber(measurement.score) || 3)),
-      ...(activity ? { measured: activity } : {}),
+      ...(knownMeasure
+        ? { known: { ...knownMeasure, wordsPerMinute: perMinute(measurement.wordsKnown, KNOWN_SECONDS) } }
+        : measurement.wordsKnown
+          ? { known: { startDelaySeconds: 0, longPauses: 0, meanPauseSeconds: 0, longestSpeechSeconds: 0, wordsPerMinute: perMinute(measurement.wordsKnown, KNOWN_SECONDS) } }
+          : {}),
+      ...(unknownMeasure
+        ? {
+            unknown: { ...unknownMeasure, wordsPerMinute: perMinute(measurement.wordsUnknown, unknownSeconds) },
+            measured: {
+              startDelaySeconds: unknownMeasure.startDelaySeconds,
+              longPauses: unknownMeasure.longPauses,
+              longestSpeechSeconds: unknownMeasure.longestSpeechSeconds,
+              speechRatio: 0,
+              meanPauseSeconds: unknownMeasure.meanPauseSeconds,
+            },
+          }
+        : {}),
+      ...(ttr !== null ? { typeTokenRatio: ttr } : {}),
+      ...(l1 ? { l1Baseline: measureOf(l1) } : {}),
     }
     updateWith((prev) => recordWeeklyTest(prev, record))
-    setStage('intro')
+    setStage({ kind: 'intro' })
   }
+
+  const knownWpm = perMinute(measurement.wordsKnown, KNOWN_SECONDS)
+  const unknownWpm = perMinute(measurement.wordsUnknown, UNKNOWN_QUESTIONS * UNKNOWN_SECONDS)
 
   return (
     <section className="card weekly-test" aria-labelledby="weekly-title">
@@ -169,74 +333,199 @@ export default function WeeklyTest() {
         <InfoButton id="weeklyTest" />
       </div>
 
-      {stage === 'intro' || !topic ? (
+      {stage.kind === 'intro' || !content ? (
         <>
           <p className="muted">
-            Un sujet jamais vu récemment, aucune préparation, puis 3 minutes de
-            parole spontanée dans les mêmes conditions chaque semaine.
+            Même jour, même heure, mêmes conditions chaque semaine (≈ 20 min) :
           </p>
+          <ol className="muted">
+            <li>Tâche connue : 3 minutes sur un sujet travaillé cette semaine.</li>
+            <li>Tâche inconnue : 3 questions jamais vues, 90 secondes chacune, démarrage immédiat.</li>
+            <li>Contournement : 10 mots à faire deviner sans les dire, 20 secondes chacun.</li>
+            {needsBaseline ? (
+              <li>La première fois : une question dans ta langue maternelle, ton plafond réaliste.</li>
+            ) : null}
+          </ol>
           <p className="muted">
             {recorder.supported
-              ? "Ta voix est enregistrée (uniquement en mémoire) pour mesurer le temps avant le premier mot, les pauses de plus d'1 s et ta plus longue séquence continue."
-              : "Sans micro disponible, note tes mesures juste après avoir parlé."}
+              ? "Ta voix est enregistrée (uniquement en mémoire) pour mesurer le temps avant le premier mot, les pauses et ta plus longue séquence continue."
+              : 'Sans micro disponible, note tes mesures juste après avoir parlé.'}
           </p>
           <button
             type="button"
             className="button button--block"
-            onClick={() => void handleStart()}
+            onClick={() => {
+              setContent(pickContent(state))
+              setClips({})
+              setGuessed([])
+              setMeasurement(emptyMeasurement())
+              setTtr(null)
+              void begin({ kind: 'known' })
+            }}
           >
-            Lancer le test de 3 minutes
+            Lancer le test
           </button>
         </>
       ) : null}
 
-      {stage === 'running' && topic ? (
+      {stage.kind === 'known' && content ? (
         <>
-          <h3 className="weekly-test__topic">{topic.title}</h3>
-          <p className="muted">
-            Parle sans préparation. Compte ensuite tes pauses et estime le
-            nombre de mots prononcés.
-          </p>
+          <p className="pill">1/3 · Tâche connue</p>
+          <h3 className="weekly-test__topic">{content.known.title}</h3>
+          {!content.knownIsFromWeek ? (
+            <p className="muted">Aucun sujet travaillé cette semaine : prends celui-ci comme sujet connu.</p>
+          ) : null}
           <Timer
-            durationSeconds={TEST_SECONDS}
+            durationSeconds={KNOWN_SECONDS}
             autoStart
             hideControls
             label="Parle librement"
-            onComplete={() => {
-              recorder.stop()
-              setStage('form')
-            }}
+            onComplete={() =>
+              finishRecording({ kind: 'unknown', index: 0 }, 'Tâche inconnue : 3 questions, démarrage immédiat')
+            }
           />
           <SkipButton
-            onClick={() => {
-              recorder.stop()
-              setStage('form')
-            }}
+            onClick={() =>
+              finishRecording({ kind: 'unknown', index: 0 }, 'Tâche inconnue : 3 questions, démarrage immédiat')
+            }
           >
-            Passer au formulaire
+            Passer à la tâche inconnue
           </SkipButton>
         </>
       ) : null}
 
-      {stage === 'form' ? (
+      {stage.kind === 'unknown' && content ? (
+        <>
+          <p className="pill">
+            2/3 · Question inconnue {stage.index + 1}/{content.questions.length}
+          </p>
+          <h3 className="weekly-test__topic">{content.questions[stage.index]?.text}</h3>
+          <Timer
+            key={stage.index}
+            durationSeconds={UNKNOWN_SECONDS}
+            autoStart
+            hideControls
+            label="Réponds tout de suite"
+            onComplete={() => {
+              const nextIndex = stage.index + 1
+              finishRecording(
+                nextIndex < content.questions.length
+                  ? { kind: 'unknown', index: nextIndex }
+                  : { kind: 'paraphrase', index: 0 },
+                nextIndex < content.questions.length
+                  ? `Question inconnue ${nextIndex + 1}/${content.questions.length}`
+                  : 'Contournement : 10 mots, 20 secondes chacun',
+              )
+            }}
+          />
+        </>
+      ) : null}
+
+      {stage.kind === 'paraphrase' && content ? (
+        <>
+          <p className="pill">
+            3/3 · Contournement {stage.index + 1}/{content.words.length}
+          </p>
+          <p className="muted">Fais deviner ce mot sans le dire (à quelqu'un, ou à toi-même) :</p>
+          <h3 className="weekly-test__topic">{content.words[stage.index]?.word}</h3>
+          <Timer
+            key={stage.index}
+            durationSeconds={PARAPHRASE_SECONDS}
+            autoStart
+            hideControls
+            compact
+            secondsOnly
+            onComplete={() => guess(stage.index, false)}
+          />
+          <div className="button-row">
+            <button type="button" className="button" onClick={() => guess(stage.index, true)}>
+              Deviné
+            </button>
+            <button type="button" className="button button--ghost" onClick={() => guess(stage.index, false)}>
+              Pas deviné
+            </button>
+          </div>
+        </>
+      ) : null}
+
+      {stage.kind === 'l1' && content ? (
+        <>
+          <p className="pill">Référence L1 (une seule fois)</p>
+          <p className="muted">Réponds dans ta langue maternelle :</p>
+          <h3 className="weekly-test__topic">{content.questions[0]?.text}</h3>
+          <Timer
+            durationSeconds={L1_SECONDS}
+            autoStart
+            hideControls
+            label="Réponds"
+            onComplete={() => finishRecording({ kind: 'form' }, 'Mesures')}
+          />
+        </>
+      ) : null}
+
+      {stage.kind === 'between' ? (
+        <div className="stack">
+          <p className="muted">Partie terminée. Ensuite : {stage.label}.</p>
+          <button type="button" className="button button--block" onClick={() => void begin(stage.next)}>
+            Continuer
+          </button>
+          {stage.next.kind === 'l1' ? (
+            <SkipButton onClick={() => setStage({ kind: 'form' })}>Passer la référence L1</SkipButton>
+          ) : null}
+        </div>
+      ) : null}
+
+      {stage.kind === 'form' && content ? (
         <form onSubmit={handleSubmit}>
           <h3>Mesures</h3>
-          {recorder.blobUrl ? (
-            <div className="exercise__rescue">
-              <p className="muted">
-                Réécoute-toi pour compter : distingue les pauses au milieu d'une
-                phrase (difficulté de formulation) des pauses entre deux idées.
-              </p>
-              <AudioClip src={recorder.blobUrl} label="Écouter mon enregistrement" />
+          <div className="exercise__rescue">
+            <p className="muted">
+              Réécoute tes questions inconnues pour classer tes pauses : au milieu
+              d'une phrase (difficulté de formulation) ou entre deux idées.
+            </p>
+            {clips.known ? <AudioClip src={clips.known.url} label="Tâche connue" /> : null}
+            {content.questions.map((question, index) =>
+              clips[`unknown-${index}` as ClipKey] ? (
+                <AudioClip
+                  key={question.id}
+                  src={clips[`unknown-${index}` as ClipKey]?.url}
+                  label={`Question inconnue ${index + 1}`}
+                />
+              ) : null,
+            )}
+          </div>
+
+          {unknownMeasure || clips.known?.activity ? (
+            <div className="exercise__rescue" aria-live="polite">
+              <h3>Mesuré automatiquement</h3>
+              <ul>
+                {unknownMeasure ? (
+                  <>
+                    <li>Temps avant de parler (moyenne des questions) : {unknownMeasure.startDelaySeconds} s</li>
+                    <li>Pauses de plus d'1 s (questions) : {unknownMeasure.longPauses}</li>
+                    <li>Durée moyenne des pauses ≥ 250 ms : {unknownMeasure.meanPauseSeconds} s</li>
+                    <li>Plus longue séquence continue : {unknownMeasure.longestSpeechSeconds} s</li>
+                  </>
+                ) : null}
+                {clips.known?.activity ? (
+                  <li>Tâche connue : {clips.known.activity.longPauses} pauses de plus d'1 s</li>
+                ) : null}
+              </ul>
             </div>
           ) : null}
-          {aiEnabled && recorder.blobUrl ? (
+
+          <p className="pill">
+            Mots contournés : {guessed.filter(Boolean).length}/{content.words.length}
+          </p>
+
+          {aiEnabled && (clips.known || clips['unknown-0']) ? (
             <div className="exercise__rescue" aria-live="polite">
               <h3>Compter avec l'IA</h3>
               <p className="muted">
-                L'IA transcrit ton enregistrement pour remplir le nombre de mots et
-                d'hésitations (euh, hum…). Les pauses restent à compter toi-même. L'audio est
-                envoyé à un service d'IA pour cette transcription.
+                L'IA transcrit tes enregistrements pour compter les mots, les « euh »
+                nus, les marqueurs français et la diversité du vocabulaire. Les pauses
+                restent à classer toi-même. Beaucoup d'outils effacent les « euh » :
+                vérifie à l'oreille. L'audio est envoyé à un service d'IA.
               </p>
               <button
                 type="button"
@@ -244,7 +533,7 @@ export default function WeeklyTest() {
                 disabled={aiState.status === 'loading'}
                 onClick={() => void countWithAi()}
               >
-                {aiState.status === 'loading' ? 'Transcription…' : 'Compter les mots et hésitations'}
+                {aiState.status === 'loading' ? 'Transcription…' : 'Compter avec l’IA'}
               </button>
               {aiState.status === 'done' ? (
                 <details className="ai-transcript">
@@ -252,35 +541,24 @@ export default function WeeklyTest() {
                   <p>{aiState.transcript}</p>
                 </details>
               ) : null}
+              {ttr !== null ? <p className="muted">Diversité (200 premiers mots) : {ttr}</p> : null}
               {aiState.status === 'error' ? (
                 <p role="alert" className="ai-error">{aiState.message}</p>
               ) : null}
             </div>
           ) : null}
-          {activity ? (
-            <div className="exercise__rescue" aria-live="polite">
-              <h3>Mesuré automatiquement</h3>
-              <ul>
-                <li>Temps avant le premier son : {activity.startDelaySeconds} s</li>
-                <li>
-                  Pauses de plus d'1 s : {activity.longPauses} (à répartir
-                  ci-dessous entre milieu de phrase et entre deux idées)
-                </li>
-                <li>Plus longue séquence continue : {activity.longestSpeechSeconds} s</li>
-                <li>Temps passé à parler : {Math.round(activity.speechRatio * 100)} %</li>
-              </ul>
-            </div>
-          ) : null}
+
           {(
             [
-              ['startDelaySeconds', "Temps avant de démarrer (s)"],
+              ['startDelaySeconds', 'Temps avant de démarrer, questions inconnues (s)'],
               ['midSentencePauses', "Pauses > 1 s au milieu d'une phrase"],
               ['betweenIdeaPauses', 'Pauses > 1 s entre deux idées'],
-              ['majorFillers', 'Hésitations importantes'],
               ['abandonedSentences', 'Phrases abandonnées'],
-              ['successfulParaphrases', 'Mots contournés avec succès'],
+              ['majorFillers', '« euh » / « hum » nus'],
+              ['markers', 'Marqueurs français (« disons », « en fait », « bon »…)'],
               ['longestFluentSegmentSeconds', 'Durée max sans blocage (s)'],
-              ['wordsSpoken', 'Nombre approximatif de mots en 3 min'],
+              ['wordsKnown', 'Mots prononcés, tâche connue (3 min)'],
+              ['wordsUnknown', 'Mots prononcés, questions inconnues (4 min 30)'],
             ] as const
           ).map(([field, label]) => (
             <div className="field" key={field}>
@@ -301,6 +579,13 @@ export default function WeeklyTest() {
             </div>
           ))}
 
+          {knownWpm !== undefined && unknownWpm !== undefined ? (
+            <p className="muted">
+              Débit : connu {knownWpm} · inconnu {unknownWpm} mots/min. L'écart entre
+              les deux est ton indicateur de transfert : il doit se réduire.
+            </p>
+          ) : null}
+
           <div className="field">
             <label htmlFor="wt-score">Score ressenti (1 à 5)</label>
             <select
@@ -320,7 +605,7 @@ export default function WeeklyTest() {
           <button type="submit" className="button button--block">
             Enregistrer le test
           </button>
-          <SkipButton onClick={() => setStage('intro')}>Passer, sans enregistrer</SkipButton>
+          <SkipButton onClick={() => setStage({ kind: 'intro' })}>Passer, sans enregistrer</SkipButton>
         </form>
       ) : null}
     </section>

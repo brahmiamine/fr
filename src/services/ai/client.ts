@@ -230,9 +230,33 @@ export function countWords(text: string): number {
   return text.trim() ? text.trim().split(/\s+/).length : 0
 }
 
-const FILLER = /(?:^|[^\p{L}])(?:euh+|heu+|hum+|hmm+|mmh+|ben|bah|bof)(?=$|[^\p{L}])/giu
+const FILLER = /(?:^|[^\p{L}])(?:euh+|heu+|hum+|hmm+|mmh+)(?=$|[^\p{L}])/giu
+const MARKER =
+  /(?:^|[^\p{L}])(?:disons|en fait|comment dire|du coup|tu vois|vous voyez|enfin|bon|ben|bah|bref|voilà|genre|en gros)(?=$|[^\p{L}])/giu
 
-/** Spoken hesitations ("euh", "hum", "ben"…) found in a transcript. */
+/** Bare hesitations ("euh", "hum"…) found in a transcript. */
 export function countFillers(text: string): number {
   return text.match(FILLER)?.length ?? 0
+}
+
+/**
+ * French discourse markers that do the job of a hesitation ("disons", "en
+ * fait", "bon", "ben"…): the goal is more of these and fewer bare "euh".
+ */
+export function countMarkers(text: string): number {
+  return text.match(MARKER)?.length ?? 0
+}
+
+/**
+ * Lexical diversity on the first `size` words: distinct words ÷ `size`. The
+ * ratio depends on the length of the text, so it is always measured on the
+ * same number of words; null when the transcript is shorter.
+ */
+export function typeTokenRatio(text: string, size = 200): number | null {
+  const words = text
+    .toLowerCase()
+    .split(/[^\p{L}'-]+/u)
+    .filter(Boolean)
+  if (words.length < size) return null
+  return Math.round((new Set(words.slice(0, size)).size / size) * 100) / 100
 }

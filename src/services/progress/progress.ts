@@ -277,14 +277,21 @@ export function recordWeeklyTest(state: AppState, test: WeeklyTestRecord): AppSt
   return { ...state, weeklyTests: [...remaining, test] }
 }
 
+/** Conversations are 2 to 3 a week: each one is kept. */
 export function recordConversationPractice(
   state: AppState,
   practice: ConversationPractice,
 ): AppState {
-  const remaining = state.conversationPractices.filter(
-    (existing) => existing.weekKey !== practice.weekKey,
-  )
+  const remaining = state.conversationPractices.filter((existing) => existing.id !== practice.id)
   return { ...state, conversationPractices: [...remaining, practice] }
+}
+
+export function conversationsThisWeek(
+  practices: readonly ConversationPractice[],
+  today: Date = new Date(),
+): number {
+  const weekKey = getWeekKey(today)
+  return practices.filter((practice) => practice.weekKey === weekKey).length
 }
 
 /**

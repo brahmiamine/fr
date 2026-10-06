@@ -11,6 +11,12 @@ export interface SpeechActivity {
   longPauses: number
   longestSpeechSeconds: number
   speechRatio: number
+  /** Silences of 250 ms or more, as researchers count them (de Jong & Bosker). */
+  shortPauses?: number
+  /** Mean length of those silences, in seconds. */
+  meanPauseSeconds?: number
+  /** Time from the first to the last sound, in seconds. */
+  spokenSeconds?: number
 }
 
 export interface SpeechActivityOptions {
@@ -19,6 +25,8 @@ export interface SpeechActivityOptions {
   longPauseSeconds?: number
   /** Shorter silences (stops, breathing) do not split a speech segment. */
   minGapSeconds?: number
+  /** Silences counted as pauses for the mean pause length. */
+  shortPauseSeconds?: number
 }
 
 /**
@@ -40,6 +48,7 @@ export function analyzeSpeechActivity(
   const frameSeconds = options.frameSeconds ?? 0.05
   const longPauseSeconds = options.longPauseSeconds ?? 1
   const minGapSeconds = options.minGapSeconds ?? 0.3
+  const shortPauseSeconds = options.shortPauseSeconds ?? 0.25
   if (levels.length === 0) return null
 
   const threshold = speechThreshold(levels)
@@ -55,10 +64,16 @@ export function analyzeSpeechActivity(
   let segmentStart = firstSpeech
   let silenceFrames = 0
   let speechFrames = 0
+  let shortPauses = 0
+  let pausedFrames = 0
 
   for (let index = firstSpeech; index <= lastSpeech; index += 1) {
     if (speaking[index]) {
       speechFrames += 1
+      if (silenceFrames * frameSeconds >= shortPauseSeconds - 1e-9) {
+        shortPauses += 1
+        pausedFrames += silenceFrames
+      }
       if (silenceFrames * frameSeconds >= minGapSeconds) {
         // The gap ended a segment.
         if (silenceFrames * frameSeconds >= longPauseSeconds) longPauses += 1
@@ -77,5 +92,8 @@ export function analyzeSpeechActivity(
     longPauses,
     longestSpeechSeconds: round(longestSpeechFrames * frameSeconds),
     speechRatio: Math.round((speechFrames / (lastSpeech - firstSpeech + 1)) * 100) / 100,
+    shortPauses,
+    meanPauseSeconds: shortPauses > 0 ? Math.round(((pausedFrames * frameSeconds) / shortPauses) * 100) / 100 : 0,
+    spokenSeconds: round((lastSpeech - firstSpeech + 1) * frameSeconds),
   }
 }

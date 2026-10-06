@@ -66,6 +66,8 @@ export interface WeeklyTestRecord {
   weekKey: string
   date: string
   topicId: string
+  /** The unknown questions, never asked again in a later test. */
+  questionIds?: string[]
   durationMinutes: number
   startDelaySeconds: number
   longPauses: number
@@ -83,7 +85,32 @@ export interface WeeklyTestRecord {
     longPauses: number
     longestSpeechSeconds: number
     speechRatio: number
+    shortPauses?: number
+    meanPauseSeconds?: number
   }
+  /** Known task: 3 minutes on a subject worked during the week. */
+  known?: WeeklyTaskMeasure
+  /** Unknown task: 3 questions never seen, 90 s each, immediate start. */
+  unknown?: WeeklyTaskMeasure
+  /** Circumlocution task: words guessed out of `paraphraseAttempts`. */
+  paraphraseAttempts?: number
+  /** French discourse markers ("disons", "en fait"…) next to bare "euh". */
+  markers?: number
+  /** Distinct words ÷ 200 on the first 200 words of the unknown task. */
+  typeTokenRatio?: number
+  /** First test only: the same unknown task in the native language. */
+  l1Baseline?: WeeklyTaskMeasure
+}
+
+export interface WeeklyTaskMeasure {
+  startDelaySeconds: number
+  longPauses: number
+  meanPauseSeconds: number
+  longestSpeechSeconds: number
+  /** Words per minute, from a transcription or the learner's count. */
+  wordsPerMinute?: number
+  /** Bare "euh" per minute (L1 baseline). */
+  fillersPerMinute?: number
 }
 
 export interface WordGap {
@@ -148,7 +175,17 @@ export interface ConversationPractice {
   blockingMoment: string
   expressionToReuse: string
   expressionIntent: string
+  /** The hardest minute, transcribed, then rewritten with the reformulations. */
+  transcribedMinute?: string
+  rewrittenMinute?: string
+  midClausePauses?: number
+  abandonedSentences?: number
+  /** Reformulations noted by the partner, one per line. */
+  reformulations?: string[]
 }
+
+/** "2 à 3 fois par semaine". */
+export const CONVERSATIONS_PER_WEEK = { min: 2, max: 3 } as const
 
 export interface AppState {
   version: typeof APP_STATE_VERSION
