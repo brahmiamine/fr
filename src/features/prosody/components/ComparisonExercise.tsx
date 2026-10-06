@@ -2,9 +2,11 @@ import { useState } from 'react'
 import type { ProsodyExercise, ProsodyFocus } from '../types'
 import { FOCUS_OPTIONS, focusGoal, imitationTranscript, speechRateFor } from '../types'
 import type { ProsodyRecorder } from '../hooks/useProsodyRecorder'
+import { useMelodyComparison } from '../hooks/useMelodyComparison'
 import { AbaPlayer } from './AbaPlayer'
 import { AudioClip } from '../../../components/AudioClip/AudioClip'
 import { RecorderControls } from './RecorderControls'
+import { PitchContour } from './PitchContour'
 
 export interface ComparisonExerciseProps {
   exercise: ProsodyExercise
@@ -35,6 +37,7 @@ export function ComparisonExercise({
 }: ComparisonExerciseProps) {
   const [selected, setSelected] = useState<ProsodyFocus | null>(focus)
   const [modelPlaying, setModelPlaying] = useState(false)
+  const melody = useMelodyComparison(exercise, recorder)
 
   if (step === 'aba') {
     const hasAttempt = Boolean(recorder.attempt1?.url)
@@ -146,20 +149,50 @@ export function ComparisonExercise({
     )
   }
 
+  const attempts = [
+    ...(recorder.cold ? [{ key: 'cold', label: 'À froid', recording: recorder.cold, melody: melody.cold }] : []),
+    { key: 'v1', label: 'V1', recording: recorder.attempt1, melody: melody.v1 },
+    { key: 'v2', label: 'V2', recording: recorder.attempt2, melody: melody.v2 },
+  ].filter((attempt) => attempt.recording?.url)
+
+  const learners = attempts
+    .map((attempt) =>
+      attempt.melody.curve
+        ? { key: attempt.key, label: attempt.label, semitones: attempt.melody.curve.semitones }
+        : null,
+    )
+    .filter((item): item is NonNullable<typeof item> => item !== null)
+
   return (
     <section className="card exercise" aria-labelledby="comparison-attempts">
       <p className="pill">V1 ↔ V2</p>
-      <h2 id="comparison-attempts">Compare tes deux versions.</h2>
+      <h2 id="comparison-attempts">Compare tes versions.</h2>
       <div className="stack">
-        <div className="audio__row">
-          <span className="muted">V1</span>
-          <AudioClip src={recorder.attempt1?.url ?? undefined} label="Écouter ma version 1" />
-        </div>
-        <div className="audio__row">
-          <span className="muted">V2</span>
-          <AudioClip src={recorder.attempt2?.url ?? undefined} label="Écouter ma version 2" />
-        </div>
+        {attempts.map((attempt) => (
+          <div className="audio__row" key={attempt.key}>
+            <span className="muted">{attempt.label}</span>
+            <AudioClip src={attempt.recording?.url ?? undefined} label={`Écouter ma version ${attempt.label}`} />
+            {attempt.melody.distance !== null ? (
+              <span className="pill" title="Écart de mélodie au modèle, en demi-tons">
+                Δ {attempt.melody.distance}
+              </span>
+            ) : null}
+          </div>
+        ))}
       </div>
+      {melody.model ? (
+        <PitchContour
+          exercise={exercise}
+          learners={learners}
+          start={exercise.imitation.start}
+          end={exercise.imitation.end}
+        />
+      ) : null}
+      <p className="muted">
+        {melody.model
+          ? "Ta courbe est superposée à celle du modèle. Plus Δ est petit, plus ta mélodie est proche de la sienne."
+          : "La voix de synthèse n'a pas de courbe mesurée : compare à l'oreille."}
+      </p>
       <button type="button" className="button button--block" onClick={onCompareDone}>
         Continuer vers le retelling
       </button>

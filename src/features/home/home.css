@@ -264,6 +264,25 @@
   font-weight: 800;
 }
 
+.prosody-promo-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.prosody-promo__pairs {
+  align-self: flex-end;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  text-decoration: none;
+  padding: 2px 4px;
+}
+
+.prosody-promo__pairs:hover {
+  color: var(--accent);
+}
+
 .prosody-promo--disabled {
   opacity: 0.85;
 }

@@ -27,6 +27,7 @@ import {
   withImitationForLevel,
 } from './types'
 import { buildCustomExercise } from './customExtract'
+import { learnerMelody, modelPitchFor } from './melody'
 import { CustomExtractForm } from './components/CustomExtractForm'
 import { createProsodySession, prosodyReducer } from './prosodyReducer'
 import { useProsodyRecorder } from './hooks/useProsodyRecorder'
@@ -214,9 +215,33 @@ function ProsodySession({
       retellingSeconds: session.retelling.durationSeconds,
       cold: session.cold,
     }
-    updateWith((prev) =>
-      advancePlan(recordProsodySession(prev, record), exercise, record.date, now),
-    )
+    // Measure the melody distance against the model before saving, so the
+    // history can show it. Synthetic voices have no curve: the record keeps
+    // no distance.
+    let cancelled = false
+    const model = modelPitchFor(exercise)
+    void Promise.all([
+      learnerMelody(model, recorder.attempt1?.url),
+      learnerMelody(model, recorder.attempt2?.url),
+      learnerMelody(model, recorder.cold?.url),
+    ]).then(([v1, v2, coldMelody]) => {
+      if (cancelled) return
+      const melodyDistance: ProsodySessionRecord['melodyDistance'] = {}
+      if (v1.distance !== null) melodyDistance.v1 = v1.distance
+      if (v2.distance !== null) melodyDistance.v2 = v2.distance
+      if (coldMelody.distance !== null) melodyDistance.cold = coldMelody.distance
+      updateWith((prev) =>
+        advancePlan(
+          recordProsodySession(prev, { ...record, melodyDistance }),
+          exercise,
+          record.date,
+          now,
+        ),
+      )
+    })
+    return () => {
+      cancelled = true
+    }
   }, [session, exercise, updateWith])
 
   if (session.completed) {
@@ -326,6 +351,7 @@ function ProsodySession({
           durationSeconds={session.retelling.durationSeconds}
           minSeconds={session.retelling.minSeconds}
           targetSeconds={session.retelling.targetSeconds}
+          completedSessions={state.prosodySessions.length}
           onStart={() => dispatch({ type: 'RETELL_START' })}
           onRecorded={(durationSeconds) =>
             dispatch({ type: 'RETELL_RECORDED', durationSeconds })

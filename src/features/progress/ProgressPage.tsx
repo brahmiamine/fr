@@ -222,10 +222,16 @@ export default function ProgressPage() {
         entries={recentProsodySessions.slice(0, 8).map((session) => ({
           key: session.id,
           title: formatDate(session.date),
-          notes: [`Extrait : ${session.exerciseId}`],
+          notes: [
+            `Extrait : ${session.exerciseId}`,
+            ...(session.melodyDistance?.v2 !== undefined
+              ? [`Écart de mélodie (V2) : ${session.melodyDistance.v2}`]
+              : []),
+          ],
           tags: [
             `${session.durationMinutes} min`,
             `Retelling ${session.retellingSeconds} s`,
+            ...(session.cold ? ['À froid'] : []),
             ...(session.focus ? [`Focus : ${session.focus}`] : []),
           ],
         }))}

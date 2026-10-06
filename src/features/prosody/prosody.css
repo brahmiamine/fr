@@ -193,6 +193,12 @@
   vector-effect: non-scaling-stroke;
 }
 
+.pitch-contour__line--learner {
+  stroke: var(--accent-2);
+  stroke-width: 2;
+  opacity: 0.75;
+}
+
 .pitch-contour__mid {
   stroke: var(--border);
   stroke-dasharray: 4 4;

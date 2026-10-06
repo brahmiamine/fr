@@ -83,6 +83,13 @@ export function trimUnvoiced(values: ReadonlyArray<number | null>): Array<number
   return values.slice(first, last + 1)
 }
 
+/** Cuts a curve to a [start, end] range in seconds (the imitation segment). */
+export function slicePitch(curve: PitchCurve, start: number, end: number): PitchCurve {
+  const first = Math.max(0, Math.floor(start / curve.step))
+  const last = Math.min(curve.semitones.length, Math.ceil(end / curve.step))
+  return { step: curve.step, semitones: curve.semitones.slice(first, last) }
+}
+
 /** `count` values along the whole curve, so two curves of different length can be laid over each other. */
 export function resample(values: ReadonlyArray<number | null>, count: number): Array<number | null> {
   if (values.length === 0 || count <= 0) return []

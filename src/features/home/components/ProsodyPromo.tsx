@@ -30,9 +30,14 @@ export function ProsodyPromo({ ready, completed }: { ready: boolean; completed: 
   }
 
   return (
-    <Link to="/prosody" className="prosody-promo">
-      {content}
-      <span className="prosody-promo__cta">Commencer →</span>
-    </Link>
+    <div className="prosody-promo-wrap">
+      <Link to="/prosody" className="prosody-promo">
+        {content}
+        <span className="prosody-promo__cta">Commencer →</span>
+      </Link>
+      <Link to="/prosody/pairs" className="prosody-promo__pairs">
+        Paires d'intonation · 2 min
+      </Link>
+    </div>
   )
 }

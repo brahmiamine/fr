@@ -1,0 +1,32 @@
+[
+  {
+    "id": "pairs-tu-viens",
+    "base": "Tu viens",
+    "attitudes": [
+      { "kind": "constat", "label": "Constat", "text": "Tu viens.", "movement": "fall" },
+      { "kind": "question", "label": "Question", "text": "Tu viens ?", "movement": "rise" },
+      { "kind": "surprise", "label": "Surprise", "text": "Tu viens ?!", "movement": "rise" },
+      { "kind": "hesitation", "label": "Hésitation", "text": "Bon… tu viens.", "movement": "rise" }
+    ]
+  },
+  {
+    "id": "pairs-tu-as-fini",
+    "base": "Tu as fini",
+    "attitudes": [
+      { "kind": "constat", "label": "Constat", "text": "Tu as fini.", "movement": "fall" },
+      { "kind": "question", "label": "Question", "text": "Tu as fini ?", "movement": "rise" },
+      { "kind": "surprise", "label": "Surprise", "text": "Tu as fini ?!", "movement": "rise" },
+      { "kind": "hesitation", "label": "Hésitation", "text": "Bon… tu as fini.", "movement": "rise" }
+    ]
+  },
+  {
+    "id": "pairs-cest-toi",
+    "base": "C'est toi",
+    "attitudes": [
+      { "kind": "constat", "label": "Constat", "text": "C'est toi.", "movement": "fall" },
+      { "kind": "question", "label": "Question", "text": "C'est toi ?", "movement": "rise" },
+      { "kind": "surprise", "label": "Surprise", "text": "C'est toi ?!", "movement": "rise" },
+      { "kind": "hesitation", "label": "Hésitation", "text": "Ben… c'est toi.", "movement": "rise" }
+    ]
+  }
+]

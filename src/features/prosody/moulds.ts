@@ -14,7 +14,7 @@ export function retellingMoulds(exercise: ProsodyExercise): string[] {
   const text = exercise.transcript.toLowerCase()
 
   const rise = groups.slice(0, -1).find((group) => group.intonation === 'rise' && group.intonationMeasured !== false)
-  if (rise) moulds.push(`Une montée de continuation après « ${rise.text.trim()} » : la voix monte, tu n'as pas fini.`)
+  if (rise) moulds.push("Une montée de continuation : la voix monte, tu n'as pas fini.")
 
   const last = groups[groups.length - 1]
   if (last && last.intonation === 'fall') {
@@ -22,7 +22,7 @@ export function retellingMoulds(exercise: ProsodyExercise): string[] {
   }
 
   const dislocation = groups.find((group, index) => index < groups.length - 1 && /^(moi|toi|lui|elle|nous|vous|eux|ça|ce \w+|cette \w+)\b[^,]*,?$/i.test(group.text.trim()) && group.text.split(/\s+/).length <= 4)
-  if (dislocation) moulds.push(`Une dislocation, comme « ${dislocation.text.trim()}… » : l'élément détaché, puis une montée.`)
+  if (dislocation) moulds.push("Une dislocation : l'élément détaché en tête, puis une montée.")
 
   const marker = MARKERS.find((item) => new RegExp(`(^|[^\\p{L}])${item}([^\\p{L}]|$)`, 'u').test(text))
   if (marker) moulds.push(`Un marqueur : « ${marker} ».`)
