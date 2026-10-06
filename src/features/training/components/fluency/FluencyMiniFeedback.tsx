@@ -49,7 +49,7 @@ export function FluencyMiniFeedback({
   return (
     <Card enter="pop" aria-labelledby="feedback-title">
       <div className="card-head">
-        <h2 id="feedback-title">Petit retour (30–60 s)</h2>
+        <h2 id="feedback-title">Petit retour (1–2 min)</h2>
         <Timer
           persistKey="fluency-mini-feedback"
           durationSeconds={MINI_FEEDBACK_SECONDS}
@@ -63,10 +63,11 @@ export function FluencyMiniFeedback({
       </div>
 
       {recorder?.blobUrl ? (
-        <Callout title="Écoute environ 1 minute">
+        <Callout title="Réécoute ton tour 1">
           <p className="muted">
-            Écoute ton tour avant de corriger. Cherche seulement un mot, une
-            phrase difficile et une erreur importante.
+            Relève seulement 2 ou 3 trous : un mot qui a manqué, une phrase
+            abandonnée ou une erreur, un chunk que tu aurais pu placer. Trouve
+            la bonne formulation avant le tour 2.
           </p>
           <AudioClip src={recorder.blobUrl} label="Écouter mon tour" />
         </Callout>

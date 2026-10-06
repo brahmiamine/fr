@@ -1,6 +1,7 @@
 import { AudioClip } from '../../../components/AudioClip/AudioClip'
 import type { ProsodyExercise } from '../types'
 import { MIN_RETELL_SECONDS, TARGET_RETELL_SECONDS } from '../types'
+import { mouldsForLevel, retellingMoulds } from '../moulds'
 import type { ProsodyRecorder } from '../hooks/useProsodyRecorder'
 import { RecorderControls } from './RecorderControls'
 
@@ -11,6 +12,8 @@ export interface RetellingExerciseProps {
   durationSeconds: number
   minSeconds?: number
   targetSeconds?: number
+  /** Completed prosody sessions, to suggest one mould first, then three. */
+  completedSessions?: number
   onStart: () => void
   onRecorded: (durationSeconds: number) => void
   onDone: () => void
@@ -23,11 +26,13 @@ export function RetellingExercise({
   durationSeconds,
   minSeconds = MIN_RETELL_SECONDS,
   targetSeconds = TARGET_RETELL_SECONDS,
+  completedSessions = 0,
   onStart,
   onRecorded,
   onDone,
 }: RetellingExerciseProps) {
   if (step === 'prompt') {
+    const moulds = mouldsForLevel(retellingMoulds(exercise), completedSessions)
     return (
       <section className="card exercise exercise--center" aria-labelledby="retelling-prompt">
         <p className="pill">Retelling</p>
@@ -38,6 +43,14 @@ export function RetellingExercise({
           tes propres mots, en gardant les groupes, le rythme, les pauses et une
           mélodie similaire.
         </p>
+        <div className="exercise__rescue">
+          <h3>Moules à réutiliser :</h3>
+          <ul>
+            {moulds.map((mould) => (
+              <li key={mould}>{mould}</li>
+            ))}
+          </ul>
+        </div>
         <p className="pill">
           Objectif : {minSeconds}–{targetSeconds} s
         </p>

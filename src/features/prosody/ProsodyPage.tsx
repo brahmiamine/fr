@@ -3,28 +3,36 @@ import { Link } from 'react-router-dom'
 import { useAppState } from '../../app/AppStateProvider'
 import { assetUrl } from '../../services/assets'
 import {
-  pickReadyProsodyExercise,
   prosodyRepository,
   validateProsodyExercise,
 } from '../../services/content/prosodyRepository'
 import {
   recentProsodyFocus,
   recordProsodySession,
+  setProsodyMelodyDistance,
   toLocalDateString,
 } from '../../services/progress/progress'
+import {
+  advancePlan,
+  nextProsodyAssignment,
+  pickNewExtract,
+} from '../../services/review/prosodyPlan'
 import type { ProsodySessionRecord } from '../../types/progress'
 import type { ProsodyExercise, ProsodyFocus, ProsodyStage } from './types'
 import {
   FOCUS_OPTIONS,
+  SLOW_SESSIONS,
   STAGE_LABELS,
   STAGE_ORDER,
   retellingGoalFor,
   withImitationForLevel,
 } from './types'
 import { buildCustomExercise } from './customExtract'
+import { learnerMelody, modelPitchFor } from './melody'
 import { CustomExtractForm } from './components/CustomExtractForm'
 import { createProsodySession, prosodyReducer } from './prosodyReducer'
 import { useProsodyRecorder } from './hooks/useProsodyRecorder'
+import { ColdExercise } from './components/ColdExercise'
 import { ListeningExercise } from './components/ListeningExercise'
 import { ImitationExercise } from './components/ImitationExercise'
 import { ComparisonExercise } from './components/ComparisonExercise'
@@ -50,13 +58,25 @@ export default function ProsodyPage({ exercise: exerciseProp }: ProsodyPageProps
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   )
-  const pickForLevel = () => {
-    const picked = pickReadyProsodyExercise(state.recentProsodyIds, Math.random, preferredFocus)
-    return picked ? withImitationForLevel(picked, state.prosodySessions.length) : null
-  }
+  // The plan decides what to practise today (review > daily > new), unless an
+  // exercise is forced by a prop (tests) or a custom extract was imported.
+  const assignment = useMemo(
+    () => (exerciseProp ? null : nextProsodyAssignment(state)),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [exerciseProp],
+  )
   const exercise = useMemo(
-    () =>
-      exerciseProp ?? pickForLevel(),
+    () => {
+      if (exerciseProp) return exerciseProp
+      if (!assignment) return null
+      const planned = assignment.plan
+        ? prosodyRepository.find((item) => item.id === assignment.plan?.exerciseId)
+        : undefined
+      const picked =
+        planned ??
+        pickNewExtract(state, Math.random, preferredFocus)
+      return picked ? withImitationForLevel(picked, state.prosodySessions.length) : null
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [exerciseProp],
   )
@@ -64,7 +84,7 @@ export default function ProsodyPage({ exercise: exerciseProp }: ProsodyPageProps
   if (mode === 'import') {
     return (
       <div className="training">
-        <ProsodyHeader position={0} title="Mon extrait" />
+        <ProsodyHeader stages={STAGE_ORDER} position={0} title="Mon extrait" />
         <CustomExtractForm
           onCancel={() => setMode('model')}
           onSubmit={(input) => {
@@ -82,6 +102,7 @@ export default function ProsodyPage({ exercise: exerciseProp }: ProsodyPageProps
         key={customExercise.id}
         exercise={customExercise}
         preferredFocus={preferredFocus}
+        cold={false}
       />
     )
   }
@@ -93,7 +114,7 @@ export default function ProsodyPage({ exercise: exerciseProp }: ProsodyPageProps
     }))
     return (
       <div className="training">
-        <ProsodyHeader position={0} title="Audio à préparer" />
+        <ProsodyHeader stages={STAGE_ORDER} position={0} title="Audio à préparer" />
         <section className="card exercise">
           <h1>Les extraits modèles ne sont pas encore prêts</h1>
           <p className="muted">
@@ -139,6 +160,7 @@ export default function ProsodyPage({ exercise: exerciseProp }: ProsodyPageProps
     <ProsodySession
       exercise={exercise}
       preferredFocus={preferredFocus}
+      cold={assignment?.cold ?? false}
       onUseOwnExtract={() => setMode('import')}
     />
   )
@@ -148,19 +170,26 @@ function focusLabel(focus: ProsodyFocus | null): string | null {
   return FOCUS_OPTIONS.find((option) => option.value === focus)?.goal ?? null
 }
 
+/** The real list of stages: the "cold" step only exists when reviewing. */
+function stagesForSession(cold: boolean): ProsodyStage[] {
+  return cold ? STAGE_ORDER : STAGE_ORDER.filter((stage) => stage !== 'cold')
+}
+
 function ProsodySession({
   exercise,
   preferredFocus = null,
+  cold = false,
   onUseOwnExtract,
 }: {
   exercise: ProsodyExercise
   preferredFocus?: ProsodyFocus | null
+  cold?: boolean
   onUseOwnExtract?: () => void
 }) {
   const { state, updateWith } = useAppState()
   const recorder = useProsodyRecorder()
   const [session, dispatch] = useReducer(prosodyReducer, exercise, (value) =>
-    createProsodySession(value, new Date(), retellingGoalFor(state.prosodySessions.length)),
+    createProsodySession(value, new Date(), retellingGoalFor(state.prosodySessions.length), cold),
   )
   const finalizedRef = useRef(false)
 
@@ -170,7 +199,8 @@ function ProsodySession({
       : assetUrl(exercise.audio)
     : ''
   const recentFocusGoal = focusLabel(preferredFocus)
-  const position = STAGE_ORDER.indexOf(session.stage) + 1
+  const stages = stagesForSession(session.cold)
+  const position = stages.indexOf(session.stage) + 1
 
   useEffect(() => {
     if (!session.completed || finalizedRef.current) return
@@ -184,14 +214,38 @@ function ProsodySession({
       durationMinutes: sessionDurationMinutes(session.startedAt),
       focus: session.comparison.focus,
       retellingSeconds: session.retelling.durationSeconds,
+      cold: session.cold,
     }
-    updateWith((prev) => recordProsodySession(prev, record))
-  }, [session, exercise.id, updateWith])
+    // The session and its plan are saved right away: nothing depends on the
+    // melody measure finishing (nor on this component staying mounted, nor on
+    // StrictMode running the effect twice).
+    updateWith((prev) =>
+      advancePlan(recordProsodySession(prev, record), exercise, record.date, now),
+    )
+
+    // The melody distance against the model is measured afterwards and added
+    // to the saved record. Synthetic voices have no curve: no distance.
+    const model = modelPitchFor(exercise)
+    void Promise.all([
+      learnerMelody(model, recorder.attempt1?.url),
+      learnerMelody(model, recorder.attempt2?.url),
+      learnerMelody(model, recorder.cold?.url),
+    ]).then(([v1, v2, coldMelody]) => {
+      const melodyDistance: NonNullable<ProsodySessionRecord['melodyDistance']> = {}
+      if (v1.distance !== null) melodyDistance.v1 = v1.distance
+      if (v2.distance !== null) melodyDistance.v2 = v2.distance
+      if (coldMelody.distance !== null) melodyDistance.cold = coldMelody.distance
+      if (Object.keys(melodyDistance).length === 0) return
+      updateWith((prev) => setProsodyMelodyDistance(prev, record.id, melodyDistance))
+    })
+    // `recorder` only gives the recordings of this very session.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session, exercise, updateWith])
 
   if (session.completed) {
     return (
       <div className="training">
-        <ProsodyHeader position={STAGE_ORDER.length} title="Terminé" />
+        <ProsodyHeader stages={stages} position={stages.length} title="Terminé" />
         <section className="card exercise exercise--center">
           <h1>Séance prosodie terminée</h1>
           <p className="exercise__expression">
@@ -221,6 +275,7 @@ function ProsodySession({
   return (
     <div className="training">
       <ProsodyHeader
+        stages={stages}
         position={position}
         title={STAGE_LABELS[session.stage]}
         stage={session.stage}
@@ -228,6 +283,14 @@ function ProsodySession({
 
       {recentFocusGoal && session.stage === 'listening' && session.listening.step === 'meaning' ? (
         <p className="pill pill--soft">Ton point de travail récent : {recentFocusGoal}</p>
+      ) : null}
+
+      {session.stage === 'cold' ? (
+        <ColdExercise
+          exercise={exercise}
+          recorder={recorder}
+          onRecorded={() => dispatch({ type: 'COLD_RECORDED' })}
+        />
       ) : null}
 
       {session.stage === 'listening' ? (
@@ -250,14 +313,15 @@ function ProsodySession({
           exercise={exercise}
           step={session.imitation.step}
           modelPlays={session.imitation.modelPlays}
-          shadowPlays={session.imitation.shadowPlays}
           audioSrc={audioSrc}
           recorder={recorder}
+          slowByDefault={state.prosodySessions.length < SLOW_SESSIONS}
           onModelPlayed={() => dispatch({ type: 'IMITATION_MODEL_PLAYED' })}
           onListened={() => dispatch({ type: 'IMITATION_LISTENED' })}
           onRecorded={() => dispatch({ type: 'IMITATION_RECORDED' })}
           onShadowPlayed={() => dispatch({ type: 'SHADOW_PLAYED' })}
           onShadowDone={() => dispatch({ type: 'SHADOW_DONE' })}
+          onMemoryDone={() => dispatch({ type: 'MEMORY_DONE' })}
         />
       ) : null}
 
@@ -285,6 +349,7 @@ function ProsodySession({
           durationSeconds={session.retelling.durationSeconds}
           minSeconds={session.retelling.minSeconds}
           targetSeconds={session.retelling.targetSeconds}
+          completedSessions={state.prosodySessions.length}
           onStart={() => dispatch({ type: 'RETELL_START' })}
           onRecorded={(durationSeconds) =>
             dispatch({ type: 'RETELL_RECORDED', durationSeconds })
@@ -301,15 +366,18 @@ function ProsodySession({
 }
 
 function ProsodyHeader({
+  stages,
   position,
   title,
   stage,
 }: {
+  stages: ProsodyStage[]
   position: number
   title: string
   stage?: ProsodyStage
 }) {
-  const safePosition = Math.max(0, position)
+  const total = stages.length
+  const safePosition = Math.max(0, Math.min(position, total))
   return (
     <header className="session-header">
       <div className="session-header__top">
@@ -317,7 +385,7 @@ function ProsodyHeader({
           <IconTile icon="music" size={40} iconSize={20} />
           <div className="session-header__titles">
             <span className="session-header__label">
-              {safePosition}/{STAGE_ORDER.length}
+              {safePosition}/{total}
             </span>
             <span className="session-header__title">Sonner plus naturel · {title}</span>
           </div>
@@ -328,15 +396,15 @@ function ProsodyHeader({
         </div>
       </div>
       <SegmentedProgress
-        segments={STAGE_ORDER.map((_, index) =>
-          index < safePosition - 1 || safePosition === STAGE_ORDER.length ? 1 : index === safePosition - 1 ? 0.5 : 0,
+        segments={stages.map((_, index) =>
+          index < safePosition - 1 || safePosition === total ? 1 : index === safePosition - 1 ? 0.5 : 0,
         )}
-        labels={STAGE_ORDER.map((stage) => STAGE_LABELS[stage])}
+        labels={stages.map((item) => STAGE_LABELS[item])}
         activeIndex={safePosition - 1}
         role="progressbar"
         aria-valuenow={safePosition}
         aria-valuemin={0}
-        aria-valuemax={STAGE_ORDER.length}
+        aria-valuemax={total}
       />
     </header>
   )

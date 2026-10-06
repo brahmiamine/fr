@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest'
 import type { AudioRecorder } from '../../hooks/useAudioRecorder'
 import type { Question } from '../../types/content'
 import type { TrainingSessionState } from './types'
-import { REVENGE_RECORDING, useQuestionRecordings } from './useQuestionRecordings'
+import { ZAPPING_RECORDING, retryKey, useQuestionRecordings } from './useQuestionRecordings'
 
 const questions = [
   { id: 'q1', text: 'Q1', category: 'travail', difficulty: 'easy' },
@@ -13,15 +13,18 @@ const questions = [
 function session(
   index: number,
   stage: TrainingSessionState['questions']['stage'],
-  revenge: TrainingSessionState['revenge'] = { questionId: null, stage: 'idle' },
+  zapping: TrainingSessionState['zapping'] = { stage: 'intro', index: 0 },
   recordAll = true,
 ): TrainingSessionState {
   return {
     phase: 'active',
-    plan: { questions },
+    stageIndex: 3,
+    plan: { questions, zappingQuestions: questions, gapItems: [], skippedStages: [] },
     fluency: { roundIndex: 3, stage: 'summary', keywords: [], recordAll },
+    reprise: { stage: 'intro' },
     questions: { index, stage },
-    revenge,
+    zapping,
+    taboo: { stage: 'intro', rating: null },
   } as unknown as TrainingSessionState
 }
 
@@ -48,31 +51,32 @@ function recorderFactory() {
 }
 
 describe('useQuestionRecordings', () => {
-  it('records each answer and the revenge, matched by question', () => {
+  it('records the first and second answer of each question, then the zapping', () => {
     const { start, make } = recorderFactory()
     const { result, rerender } = renderHook(
-      ({ recorder, state }) => useQuestionRecordings(recorder, state, true),
+      ({ recorder, state }) => useQuestionRecordings(recorder, state),
       { initialProps: { recorder: make(null), state: session(0, 'speaking') } },
     )
     rerender({ recorder: make(null), state: session(0, 'rate') })
     rerender({ recorder: make('blob:q1'), state: session(0, 'rate') })
-    rerender({ recorder: make('blob:q1'), state: session(1, 'speaking') })
-    rerender({ recorder: make('blob:q1'), state: session(1, 'rate') })
-    rerender({ recorder: make('blob:q2'), state: session(1, 'rate') })
-    const revenge = { questionId: 'q2', stage: 'speaking' as const }
-    rerender({ recorder: make('blob:q2'), state: session(1, 'rate', revenge) })
-    rerender({ recorder: make('blob:q2'), state: session(1, 'rate', { ...revenge, stage: 'done' }) })
-    rerender({ recorder: make('blob:revenge'), state: session(1, 'rate', { ...revenge, stage: 'done' }) })
+    rerender({ recorder: make('blob:q1'), state: session(0, 'retry') })
+    rerender({ recorder: make('blob:q1'), state: session(1, 'countdown') })
+    rerender({ recorder: make('blob:q1-retry'), state: session(1, 'countdown') })
+    rerender({ recorder: make('blob:q1-retry'), state: session(2, 'countdown', { stage: 'running', index: 0 }) })
+    rerender({ recorder: make('blob:q1-retry'), state: session(2, 'countdown', { stage: 'done', index: 2 }) })
+    rerender({ recorder: make('blob:zapping'), state: session(2, 'countdown', { stage: 'done', index: 2 }) })
 
     expect(start).toHaveBeenCalledTimes(3)
-    expect(result.current).toEqual({ q1: 'blob:q1', q2: 'blob:q2', [REVENGE_RECORDING]: 'blob:revenge' })
+    expect(result.current).toEqual({
+      q1: 'blob:q1',
+      [retryKey('q1')]: 'blob:q1-retry',
+      [ZAPPING_RECORDING]: 'blob:zapping',
+    })
   })
 
   it('follows the record switch of the session', () => {
     const { start, make } = recorderFactory()
-    renderHook(() =>
-      useQuestionRecordings(make(null), session(0, 'speaking', undefined, false), true),
-    )
+    renderHook(() => useQuestionRecordings(make(null), session(0, 'speaking', undefined, false)))
     expect(start).not.toHaveBeenCalled()
   })
 })

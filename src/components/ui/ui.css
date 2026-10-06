@@ -129,6 +129,7 @@
 
 .icon-tile--chunks { background: var(--tile-chunks); }
 .icon-tile--fluency { background: var(--tile-fluency); }
+.icon-tile--reprise { background: var(--tile-reprise); }
 .icon-tile--questions { background: var(--tile-questions); }
 .icon-tile--gaps { background: var(--tile-gaps); }
 .icon-tile--feedback { background: var(--tile-feedback); }

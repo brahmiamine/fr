@@ -38,7 +38,7 @@ describe('TrainingPage', () => {
   it('resumes a persisted session at the current stage', () => {
     const session: TrainingSessionState = {
       ...createSessionState(plan, 2, new Date('2026-10-02T10:00:00.000Z')),
-      stageIndex: 2,
+      stageIndex: 3,
       questions: { index: 0, stage: 'countdown' },
     }
     renderTraining({ ...createInitialState(), inProgressSession: session })
@@ -49,7 +49,7 @@ describe('TrainingPage', () => {
     const user = userEvent.setup()
     const session: TrainingSessionState = {
       ...createSessionState(plan, 2, new Date('2026-10-02T10:00:00.000Z')),
-      stageIndex: 4,
+      stageIndex: 5,
       fluencyFeedback: {
         missingWord: 'prise électrique',
         missingWordContext: 'l’endroit dans le mur où je branche un appareil',
@@ -99,7 +99,7 @@ describe('TrainingPage', () => {
         2,
         new Date('2026-10-02T10:00:00.000Z'),
       ),
-      stageIndex: 4,
+      stageIndex: 5,
       usedFluencyReminderIds: [],
       feedback: {
         blockedWord: '',
@@ -143,7 +143,7 @@ describe('TrainingPage', () => {
         2,
         new Date('2026-10-02T10:00:00.000Z'),
       ),
-      stageIndex: 4,
+      stageIndex: 5,
       usedFluencyReminderIds: ['note-1'],
       feedback: {
         blockedWord: '',
@@ -171,11 +171,13 @@ describe('TrainingPage', () => {
     })
   })
 
-  it('records the advanced pivot among the questions actually practised', async () => {
+  it('records the zapping questions and schedules a blocked question for J+3', async () => {
     const user = userEvent.setup()
     const session: TrainingSessionState = {
       ...createSessionState(plan, 3, new Date('2026-10-02T10:00:00.000Z')),
-      stageIndex: 4,
+      stageIndex: 5,
+      zapping: { stage: 'done', index: 4 },
+      questionRatings: [{ questionId: plan.questions[0].id, rating: 'much' }],
       feedback: {
         blockedWord: '',
         blockedWordContext: '',
@@ -193,14 +195,20 @@ describe('TrainingPage', () => {
 
     await waitFor(() => {
       const parsed = JSON.parse(window.localStorage.getItem(STORAGE_KEY) as string)
-      expect(parsed.sessions[0].questionIds).toContain(plan.pivotQuestion?.id)
+      expect(parsed.sessions[0].questionIds).toEqual(
+        [...plan.questions, ...plan.zappingQuestions].map((question) => question.id),
+      )
+      expect(parsed.sessions[0].summary.zappingDone).toBe(true)
+      expect(parsed.questionReviews).toEqual([
+        { questionId: plan.questions[0].id, nextReview: expect.any(String) },
+      ])
     })
   })
 
   it('keeps the submit disabled until feedback is valid', () => {
     const session: TrainingSessionState = {
       ...createSessionState(plan, 2, new Date('2026-10-02T10:00:00.000Z')),
-      stageIndex: 4,
+      stageIndex: 5,
     }
     renderTraining({ ...createInitialState(), inProgressSession: session })
     expect(screen.getByRole('button', { name: 'Terminer la séance' })).toBeDisabled()

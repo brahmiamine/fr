@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { ReactNode } from 'react'
 import type { Chunk } from '../../../types/content'
 import { SpeakButton } from '../../../components/Speech/SpeakButton'
+import { NativeClip } from '../../../components/AudioClip/NativeClip'
 import { Timer } from '../../../components/Timer/Timer'
 import { Button, Card, ChoiceButton, ChoiceGrid, Eyebrow, Pill } from '../../../components/ui'
 import type { ChoiceTone } from '../../../components/ui'
@@ -91,6 +92,10 @@ function ChunksOfDay({ chunksOfDay, onContinue }: { chunksOfDay: Chunk[]; onCont
         Ces expressions seront rappelées pendant le 4 → 3 → 2 et les questions
         surprises. À la fin, tu confirmeras celles que tu as réellement placées.
       </p>
+      <p className="muted">
+        Varie-les : la même formule toutes les 20 secondes sonne aussi artificiel
+        qu'un manuel.
+      </p>
       <Button block size="lg" trailing="→" onClick={onContinue}>
         Continuer
       </Button>
@@ -160,8 +165,10 @@ export function ChunksExercise({
             </>
           ) : (
             <>
-              <p className="muted">Essaie de retrouver l'expression travaillée.</p>
-              <p className="text-strong">Dis-la à voix haute, puis vérifie.</p>
+              <p className="muted">Retrouve l'expression travaillée, à voix haute.</p>
+              <p className="text-strong">
+                Avant de vérifier, dis 2 phrases différentes avec elle.
+              </p>
             </>
           )}
         </div>
@@ -175,10 +182,16 @@ export function ChunksExercise({
         {chunk.intent} · registre {chunk.register ?? 'courant'}
       </span>
       <p className="flip__expression">« {chunk.expression} »</p>
+      {chunk.spoken ? (
+        <p className="flip__tip">
+          À l'oral : <strong>« {chunk.spoken} »</strong>
+        </p>
+      ) : null}
       {chunk.usageTip ? <p className="flip__tip">{chunk.usageTip}</p> : null}
       <p className="flip__instruction">
-        Fais maintenant 2 ou 3 phrases différentes avec cette expression, à
-        voix haute.
+        {isNew
+          ? 'Fais maintenant 2 ou 3 phrases différentes avec cette expression, à voix haute.'
+          : "Tes 2 phrases utilisaient-elles exactement cette expression ? Sinon, refais-en une avec la bonne forme."}
       </p>
       <SpeakButton text={chunk.expression} label="Écouter" ariaLabel="Écouter l'expression" />
     </>
@@ -188,6 +201,7 @@ export function ChunksExercise({
     <section className="exercise screen-enter" aria-live="polite">
       <ChunkTopline index={index} total={total} isNew={isNew} chunk={chunk} />
       <FlipCard revealed={revealed} front={front} back={back} />
+      {revealed && chunk.nativeClip ? <NativeClip clip={chunk.nativeClip} /> : null}
 
       {!revealed && ready ? (
         <Button variant="animated" size="lg" block trailing="→" onClick={onReveal}>

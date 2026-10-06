@@ -1,0 +1,463 @@
+[
+  {
+    "id": "taboo_001",
+    "subject": "Les embouteillages",
+    "category": "quotidien",
+    "forbidden": [
+      "voiture",
+      "route",
+      "trafic",
+      "bouchon"
+    ]
+  },
+  {
+    "id": "taboo_002",
+    "subject": "Un parapluie",
+    "category": "objets",
+    "forbidden": [
+      "pluie",
+      "eau",
+      "ouvrir"
+    ]
+  },
+  {
+    "id": "taboo_003",
+    "subject": "Le petit-déjeuner",
+    "category": "quotidien",
+    "forbidden": [
+      "matin",
+      "manger",
+      "café",
+      "pain"
+    ]
+  },
+  {
+    "id": "taboo_004",
+    "subject": "Un déménagement",
+    "category": "logement",
+    "forbidden": [
+      "carton",
+      "maison",
+      "appartement",
+      "bouger"
+    ]
+  },
+  {
+    "id": "taboo_005",
+    "subject": "Les vacances à la plage",
+    "category": "voyage",
+    "forbidden": [
+      "mer",
+      "sable",
+      "soleil",
+      "nager"
+    ]
+  },
+  {
+    "id": "taboo_006",
+    "subject": "Un entretien d'embauche",
+    "category": "travail",
+    "forbidden": [
+      "travail",
+      "poste",
+      "patron",
+      "CV"
+    ]
+  },
+  {
+    "id": "taboo_007",
+    "subject": "Le supermarché",
+    "category": "quotidien",
+    "forbidden": [
+      "courses",
+      "acheter",
+      "caddie",
+      "magasin"
+    ]
+  },
+  {
+    "id": "taboo_008",
+    "subject": "Un anniversaire",
+    "category": "relations",
+    "forbidden": [
+      "gâteau",
+      "âge",
+      "fête",
+      "cadeau"
+    ]
+  },
+  {
+    "id": "taboo_009",
+    "subject": "Le télétravail",
+    "category": "travail",
+    "forbidden": [
+      "maison",
+      "bureau",
+      "ordinateur",
+      "distance"
+    ]
+  },
+  {
+    "id": "taboo_010",
+    "subject": "Un smartphone",
+    "category": "technologie",
+    "forbidden": [
+      "téléphone",
+      "appeler",
+      "écran",
+      "application"
+    ]
+  },
+  {
+    "id": "taboo_011",
+    "subject": "La salle de sport",
+    "category": "sport",
+    "forbidden": [
+      "muscles",
+      "exercice",
+      "machine",
+      "forme"
+    ]
+  },
+  {
+    "id": "taboo_012",
+    "subject": "Un mariage",
+    "category": "relations",
+    "forbidden": [
+      "robe",
+      "amour",
+      "église",
+      "mariés"
+    ]
+  },
+  {
+    "id": "taboo_013",
+    "subject": "Les réseaux sociaux",
+    "category": "technologie",
+    "forbidden": [
+      "internet",
+      "photo",
+      "partager",
+      "abonné"
+    ]
+  },
+  {
+    "id": "taboo_014",
+    "subject": "Le médecin",
+    "category": "sante",
+    "forbidden": [
+      "malade",
+      "soigner",
+      "ordonnance",
+      "docteur"
+    ]
+  },
+  {
+    "id": "taboo_015",
+    "subject": "Un train en retard",
+    "category": "mobilite",
+    "forbidden": [
+      "gare",
+      "heure",
+      "attendre",
+      "quai"
+    ]
+  },
+  {
+    "id": "taboo_016",
+    "subject": "La cuisine",
+    "category": "quotidien",
+    "forbidden": [
+      "recette",
+      "manger",
+      "four",
+      "cuisiner"
+    ]
+  },
+  {
+    "id": "taboo_017",
+    "subject": "Un concert",
+    "category": "culture",
+    "forbidden": [
+      "musique",
+      "chanteur",
+      "scène",
+      "public"
+    ]
+  },
+  {
+    "id": "taboo_018",
+    "subject": "L'école primaire",
+    "category": "education",
+    "forbidden": [
+      "enfants",
+      "maîtresse",
+      "classe",
+      "apprendre"
+    ]
+  },
+  {
+    "id": "taboo_019",
+    "subject": "Le recyclage",
+    "category": "environnement",
+    "forbidden": [
+      "poubelle",
+      "déchets",
+      "plastique",
+      "trier"
+    ]
+  },
+  {
+    "id": "taboo_020",
+    "subject": "Une banque",
+    "category": "argent",
+    "forbidden": [
+      "argent",
+      "compte",
+      "carte",
+      "prêt"
+    ]
+  },
+  {
+    "id": "taboo_021",
+    "subject": "Un voisin bruyant",
+    "category": "logement",
+    "forbidden": [
+      "bruit",
+      "mur",
+      "appartement",
+      "musique"
+    ]
+  },
+  {
+    "id": "taboo_022",
+    "subject": "Le café du matin",
+    "category": "habitudes",
+    "forbidden": [
+      "tasse",
+      "boire",
+      "réveil",
+      "matin"
+    ]
+  },
+  {
+    "id": "taboo_023",
+    "subject": "Un musée",
+    "category": "culture",
+    "forbidden": [
+      "tableau",
+      "art",
+      "visite",
+      "exposition"
+    ]
+  },
+  {
+    "id": "taboo_024",
+    "subject": "La pluie",
+    "category": "quotidien",
+    "forbidden": [
+      "eau",
+      "nuage",
+      "parapluie",
+      "mouillé"
+    ]
+  },
+  {
+    "id": "taboo_025",
+    "subject": "Un avion",
+    "category": "voyage",
+    "forbidden": [
+      "voler",
+      "aéroport",
+      "pilote",
+      "ciel"
+    ]
+  },
+  {
+    "id": "taboo_026",
+    "subject": "Les soldes",
+    "category": "argent",
+    "forbidden": [
+      "prix",
+      "réduction",
+      "acheter",
+      "magasin"
+    ]
+  },
+  {
+    "id": "taboo_027",
+    "subject": "Un ordinateur portable",
+    "category": "technologie",
+    "forbidden": [
+      "écran",
+      "clavier",
+      "internet",
+      "batterie"
+    ]
+  },
+  {
+    "id": "taboo_028",
+    "subject": "Le dentiste",
+    "category": "sante",
+    "forbidden": [
+      "dents",
+      "bouche",
+      "mal",
+      "soigner"
+    ]
+  },
+  {
+    "id": "taboo_029",
+    "subject": "Un vélo",
+    "category": "mobilite",
+    "forbidden": [
+      "pédaler",
+      "roue",
+      "rouler",
+      "casque"
+    ]
+  },
+  {
+    "id": "taboo_030",
+    "subject": "La procrastination",
+    "category": "habitudes",
+    "forbidden": [
+      "remettre",
+      "plus tard",
+      "travail",
+      "attendre"
+    ]
+  },
+  {
+    "id": "taboo_031",
+    "subject": "La confiance en soi",
+    "category": "relations",
+    "forbidden": [
+      "peur",
+      "timide",
+      "oser",
+      "sûr"
+    ]
+  },
+  {
+    "id": "taboo_032",
+    "subject": "Un séjour à l'étranger",
+    "category": "voyage",
+    "forbidden": [
+      "pays",
+      "langue",
+      "valise",
+      "étranger"
+    ]
+  },
+  {
+    "id": "taboo_033",
+    "subject": "Le chômage",
+    "category": "travail",
+    "forbidden": [
+      "emploi",
+      "travail",
+      "chercher",
+      "perdre"
+    ]
+  },
+  {
+    "id": "taboo_034",
+    "subject": "Une coupure d'électricité",
+    "category": "quotidien",
+    "forbidden": [
+      "lumière",
+      "courant",
+      "noir",
+      "panne"
+    ]
+  },
+  {
+    "id": "taboo_035",
+    "subject": "La colocation",
+    "category": "logement",
+    "forbidden": [
+      "partager",
+      "appartement",
+      "loyer",
+      "cuisine"
+    ]
+  },
+  {
+    "id": "taboo_036",
+    "subject": "Un jeu vidéo",
+    "category": "culture",
+    "forbidden": [
+      "jouer",
+      "console",
+      "écran",
+      "niveau"
+    ]
+  },
+  {
+    "id": "taboo_037",
+    "subject": "Le stress",
+    "category": "sante",
+    "forbidden": [
+      "angoisse",
+      "nerveux",
+      "pression",
+      "calme"
+    ]
+  },
+  {
+    "id": "taboo_038",
+    "subject": "Un pique-nique",
+    "category": "habitudes",
+    "forbidden": [
+      "herbe",
+      "manger",
+      "panier",
+      "parc"
+    ]
+  },
+  {
+    "id": "taboo_039",
+    "subject": "Le marché du dimanche",
+    "category": "quotidien",
+    "forbidden": [
+      "légumes",
+      "acheter",
+      "vendeur",
+      "fruits"
+    ]
+  },
+  {
+    "id": "taboo_040",
+    "subject": "Une panne de voiture",
+    "category": "mobilite",
+    "forbidden": [
+      "garage",
+      "moteur",
+      "route",
+      "réparer"
+    ]
+  },
+  {
+    "id": "taboo_041",
+    "subject": "L'intelligence artificielle",
+    "category": "technologie",
+    "forbidden": [
+      "robot",
+      "ordinateur",
+      "machine",
+      "intelligent"
+    ]
+  },
+  {
+    "id": "taboo_042",
+    "subject": "Le bénévolat",
+    "category": "societe",
+    "forbidden": [
+      "aider",
+      "association",
+      "gratuit",
+      "volontaire"
+    ]
+  }
+]

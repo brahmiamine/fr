@@ -45,16 +45,32 @@ describe('WeeklyConversation', () => {
     )
     await user.type(screen.getByLabelText(/À quoi sert cette expression/), 'Opposer une idée')
 
+    await user.type(
+      screen.getByLabelText(/reformulations de ton partenaire/),
+      'Je me suis rendu compte que…{enter}Ça m’a pris du temps.',
+    )
+    await user.type(screen.getByLabelText(/Pauses au milieu d'une phrase/), '4')
+    await user.type(screen.getByLabelText(/La même minute, réécrite/), 'Version réécrite')
+
     await user.click(screen.getByRole('button', { name: 'Enregistrer la conversation' }))
 
-    expect(
-      screen.getByRole('heading', { name: 'Vraie conversation de la semaine ✓' }),
-    ).toBeInTheDocument()
+    expect(screen.getByRole('status')).toHaveTextContent('Conversation enregistrée')
+    expect(screen.getByText(/Cette semaine : 1\/2–3/)).toBeInTheDocument()
 
     const parsed = JSON.parse(window.localStorage.getItem(STORAGE_KEY) as string)
     expect(parsed.conversationPractices).toHaveLength(1)
+    expect(parsed.conversationPractices[0].midClausePauses).toBe(4)
+    expect(parsed.conversationPractices[0].rewrittenMinute).toBe('Version réécrite')
     expect(parsed.wordGaps[0].context).toContain('mur')
     expect(parsed.personalChunks[0].expression).toBe('En revanche…')
+    expect(parsed.fluencyNotes).toHaveLength(3)
     expect(parsed.fluencyNotes[0].kind).toBe('conversationBlock')
+
+    // A second conversation the same week is kept too.
+    await user.clear(screen.getByLabelText(/Durée réelle/))
+    await user.type(screen.getByLabelText(/Durée réelle/), '25')
+    await user.click(screen.getByRole('button', { name: 'Enregistrer la conversation' }))
+    const again = JSON.parse(window.localStorage.getItem(STORAGE_KEY) as string)
+    expect(again.conversationPractices).toHaveLength(2)
   })
 })

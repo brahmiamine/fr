@@ -22,6 +22,8 @@ export interface AudioClipProps {
   start?: number
   end?: number
   label?: string
+  /** Slower or faster playback, pitch preserved (0.75 = slowed without distortion). */
+  playbackRate?: number
   /** Text under the waveform; defaults to the label. */
   caption?: string
   disabled?: boolean
@@ -46,6 +48,7 @@ export function AudioClip({
   start,
   end,
   label = 'Écouter',
+  playbackRate = 1,
   caption,
   disabled = false,
   onPlaybackChange,
@@ -105,7 +108,7 @@ export function AudioClip({
       onProgress?.(0, 0)
       const started = speakText(speechText, {
         lang: speechLocale,
-        rate: speechRate,
+        rate: (speechRate ?? 1) * playbackRate,
         onStart: () => setPlayback(true),
         onEnd: completePlayback,
         onError: () => setPlayback(false),
@@ -129,6 +132,7 @@ export function AudioClip({
       audio.currentTime = start ?? 0
     }
     completedRef.current = false
+    audio.playbackRate = playbackRate
     void audio.play().then(() => setPlayback(true)).catch(() => setPlayback(false))
   }
 

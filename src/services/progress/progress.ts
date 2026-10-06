@@ -206,6 +206,21 @@ export function recordProsodySession(
   }
 }
 
+/** Adds the measured melody distances to an already saved prosody session. */
+export function setProsodyMelodyDistance(
+  state: AppState,
+  sessionId: string,
+  melodyDistance: NonNullable<ProsodySessionRecord['melodyDistance']>,
+): AppState {
+  if (!state.prosodySessions.some((session) => session.id === sessionId)) return state
+  return {
+    ...state,
+    prosodySessions: state.prosodySessions.map((session) =>
+      session.id === sessionId ? { ...session, melodyDistance } : session,
+    ),
+  }
+}
+
 /**
  * The prosody point the learner chose most often in their last 5 sessions
  * (most recent wins a tie). Used to pick matching excerpts and to keep the
@@ -236,6 +251,11 @@ export function calculateProsodyMinutes(
     (total, session) => total + (session.durationMinutes || 0),
     0,
   )
+}
+
+/** Whole days from `b` to `a` (local dates "YYYY-MM-DD"). */
+export function daysBetween(a: string, b: string): number {
+  return dayDistance(a, b)
 }
 
 function dayDistance(a: string, b: string): number {
@@ -272,14 +292,42 @@ export function recordWeeklyTest(state: AppState, test: WeeklyTestRecord): AppSt
   return { ...state, weeklyTests: [...remaining, test] }
 }
 
+/** Conversations are 2 to 3 a week: each one is kept. */
 export function recordConversationPractice(
   state: AppState,
   practice: ConversationPractice,
 ): AppState {
-  const remaining = state.conversationPractices.filter(
-    (existing) => existing.weekKey !== practice.weekKey,
-  )
+  const remaining = state.conversationPractices.filter((existing) => existing.id !== practice.id)
   return { ...state, conversationPractices: [...remaining, practice] }
+}
+
+export function conversationsThisWeek(
+  practices: readonly ConversationPractice[],
+  today: Date = new Date(),
+): number {
+  const weekKey = getWeekKey(today)
+  return practices.filter((practice) => practice.weekKey === weekKey).length
+}
+
+/**
+ * "Une question ratée revient dans la pioche 3 à 7 jours plus tard": a big
+ * block schedules the question again at J+3; any other answer to a question
+ * that was waiting closes its review.
+ */
+export function applyQuestionRatings(
+  state: AppState,
+  ratings: readonly { questionId: string; rating: 'none' | 'some' | 'much' }[],
+  now: Date = new Date(),
+  reviewDays = 3,
+): AppState {
+  let reviews = [...(state.questionReviews ?? [])]
+  for (const { questionId, rating } of ratings) {
+    reviews = reviews.filter((review) => review.questionId !== questionId)
+    if (rating === 'much') {
+      reviews.push({ questionId, nextReview: nextReviewAfter(reviewDays, now) })
+    }
+  }
+  return { ...state, questionReviews: reviews }
 }
 
 export function setInProgressSession(

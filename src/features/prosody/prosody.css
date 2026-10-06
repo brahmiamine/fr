@@ -193,6 +193,12 @@
   vector-effect: non-scaling-stroke;
 }
 
+.pitch-contour__line--learner {
+  stroke: var(--accent-2);
+  stroke-width: 2;
+  opacity: 0.75;
+}
+
 .pitch-contour__mid {
   stroke: var(--border);
   stroke-dasharray: 4 4;
@@ -210,4 +216,23 @@
   stroke: var(--accent-2);
   stroke-width: 2;
   vector-effect: non-scaling-stroke;
+}
+
+.rating-scale {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 12px;
+}
+
+.rating-scale input[type="range"] {
+  width: 100%;
+}
+
+.exercise__reading {
+  line-height: 1.7;
+  padding: 12px;
+  border-radius: 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
 }

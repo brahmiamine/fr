@@ -1,14 +1,26 @@
 import { contentRepository } from '../content/contentRepository'
 import { pickInPriority, selectUniqueItems } from '../content/selectContent'
-import { recentProsodyFocus, toLocalDateString } from '../progress/progress'
+import {
+  daysBetween,
+  getWeekKey,
+  recentProsodyFocus,
+  toLocalDateString,
+} from '../progress/progress'
 import type { AppState } from '../../types/progress'
-import type { Chunk, RetellingStory, Topic } from '../../types/content'
+import type { Chunk, Question, RetellingStory, TabooTopic, Topic } from '../../types/content'
 import { FOCUS_OPTIONS } from '../../features/prosody/types'
-import type { GapItem, SessionPlan } from '../../features/training/types'
+import type { GapItem, SessionMode, SessionPlan, StageKind } from '../../features/training/types'
 import {
   CHUNKS_PER_SESSION,
+  CONSTANT_ROUND_SECONDS,
+  FLUENCY_ROUND_SECONDS,
   GAPS_PER_SESSION,
+  MODE_STAGES,
   QUESTIONS_PER_SESSION,
+  REPRISE_MAX_DAYS,
+  REPRISE_MIN_DAYS,
+  STAGE_ORDER,
+  ZAPPING_QUESTIONS,
 } from '../../features/training/types'
 
 const PERSONAL_GAP_RATIO = 0.7
@@ -159,14 +171,16 @@ function selectDiverseQuestions(
   state: AppState,
   count: number,
   random: () => number,
-) {
+  excludeIds: readonly string[] = [],
+): Question[] {
+  const excluded = new Set(excludeIds)
   const ordered = selectUniqueItems(
-    contentRepository.questions,
+    contentRepository.questions.filter((question) => !excluded.has(question.id)),
     contentRepository.questions.length,
     state.recentQuestionIds,
     random,
   )
-  const chosen = []
+  const chosen: Question[] = []
   const usedCategories = new Set<string>()
   const usedTypes = new Set<string>()
 
@@ -201,6 +215,19 @@ function selectDiverseQuestions(
   return chosen
 }
 
+/**
+ * "Une question ratée revient dans la pioche 3 à 7 jours plus tard": questions
+ * with a big block that are due again come first.
+ */
+function dueReviewQuestions(state: AppState, today: string): Question[] {
+  const byId = new Map(contentRepository.questions.map((question) => [question.id, question]))
+  return [...(state.questionReviews ?? [])]
+    .filter((review) => review.nextReview <= today)
+    .sort((a, b) => a.nextReview.localeCompare(b.nextReview))
+    .map((review) => byId.get(review.questionId))
+    .filter((question): question is Question => Boolean(question))
+}
+
 function selectFluencyReminders(state: AppState, random: () => number) {
   const today = toLocalDateString()
   return shuffle(
@@ -211,52 +238,119 @@ function selectFluencyReminders(state: AppState, random: () => number) {
     .map((note) => ({ id: note.id, kind: note.kind, text: note.text }))
 }
 
+/** The topic a session record refers to: a 4 → 3 → 2 subject or a retold story. */
+export function topicById(id: string): Topic | null {
+  const topic = contentRepository.topics.find((item) => item.id === id)
+  if (topic) return topic
+  const story = contentRepository.retellingStories.find((item) => item.id === id)
+  return story ? topicFromStory(story) : null
+}
+
+/**
+ * "Chaque sujet revient une fois, entre J+2 et J+7": the oldest subject in
+ * that window that was not taken up again yet.
+ */
+export function selectRepriseTopic(state: AppState, today: string = toLocalDateString()): Topic | null {
+  const reprised = new Set(
+    state.sessions.map((session) => session.repriseTopicId).filter(Boolean) as string[],
+  )
+  const candidates = [...state.sessions]
+    .filter((session) => {
+      const age = daysBetween(today, session.date)
+      return age >= REPRISE_MIN_DAYS && age <= REPRISE_MAX_DAYS && !reprised.has(session.topicId)
+    })
+    .sort((a, b) => a.date.localeCompare(b.date))
+  for (const session of candidates) {
+    const topic = topicById(session.topicId)
+    if (topic) return topic
+  }
+  return null
+}
+
+/**
+ * "Une fois par semaine, faire la version 3/3/3": the third session of the
+ * week, or the first weekend session when fewer were done.
+ */
+export function isConstantTimeSession(state: AppState, now: Date = new Date()): boolean {
+  const weekKey = getWeekKey(now)
+  const thisWeek = state.sessions.filter((session) => getWeekKey(parseDate(session.date)) === weekKey)
+  if (thisWeek.some((session) => session.summary?.constantTime)) return false
+  if (thisWeek.length === 2) return true
+  const weekend = now.getDay() === 0 || now.getDay() === 6
+  return weekend && thisWeek.length > 0
+}
+
+function parseDate(value: string): Date {
+  const [year, month, day] = value.split('-').map(Number)
+  return new Date(year, (month ?? 1) - 1, day ?? 1)
+}
+
+function selectTaboo(state: AppState, random: () => number): TabooTopic | null {
+  const recent = state.sessions
+    .slice(-12)
+    .map((session) => session.tabooId)
+    .filter(Boolean) as string[]
+  return selectUniqueItems(contentRepository.tabooTopics, 1, recent, random)[0] ?? null
+}
+
+function skippedStagesFor(mode: SessionMode): StageKind[] {
+  const kept = new Set(MODE_STAGES[mode])
+  return STAGE_ORDER.filter((stage) => !kept.has(stage))
+}
+
 export function buildSessionPlan(
   state: AppState,
   random: () => number = Math.random,
+  mode: SessionMode = 'full',
+  now: Date = new Date(),
 ): SessionPlan {
+  const today = toLocalDateString(now)
   const story = isRetellingDay(state.sessions.length)
     ? selectUniqueItems(contentRepository.retellingStories, 1, state.recentTopicIds, random)[0] ?? null
     : null
+  const repriseTopic = mode === 'full' ? selectRepriseTopic(state, today) : null
+  const exclude = repriseTopic ? [...state.recentTopicIds, repriseTopic.id] : state.recentTopicIds
   const topics = story
     ? [topicFromStory(story)]
-    : selectUniqueItems(contentRepository.topics, 1, state.recentTopicIds, random)
+    : selectUniqueItems(contentRepository.topics, 1, exclude, random)
   if (topics.length === 0) throw new Error('Aucun sujet de conversation disponible.')
   const topic: Topic = topics[0]
   const prosodyFocus = recentProsodyFocus(state.prosodySessions)
+  const constantTime = mode !== 'short' && isConstantTimeSession(state, now)
 
-  const questionPool = selectDiverseQuestions(
+  const questionCount = mode === 'short' ? 1 : QUESTIONS_PER_SESSION
+  const zappingCount = mode === 'full' ? ZAPPING_QUESTIONS : 0
+  const reviewed = dueReviewQuestions(state, today).slice(0, 1)
+  const fresh = selectDiverseQuestions(
     state,
-    QUESTIONS_PER_SESSION,
+    questionCount - reviewed.length + zappingCount,
     random,
+    reviewed.map((question) => question.id),
   )
-  const questions = questionPool.slice(0, QUESTIONS_PER_SESSION)
+  const questions = [...reviewed, ...fresh].slice(0, questionCount)
+  const zappingQuestions = fresh.slice(questionCount - reviewed.length).slice(0, zappingCount)
 
-  const pivotSource = questions[questions.length - 1]
-  const pivotIds = pivotSource?.pivots ?? []
-  const pivotQuestion =
-    pivotIds
-      .map((id) => contentRepository.questions.find((question) => question.id === id))
-      .find((question) => question && !state.recentQuestionIds.includes(question.id)) ??
-    pivotIds
-      .map((id) => contentRepository.questions.find((question) => question.id === id))
-      .find(Boolean) ??
-    null
   const chunks = selectChunks(state, CHUNKS_PER_SESSION, random)
   const chunksOfDay = shuffle(chunks, random)
-  const reviewed = new Set(state.chunkReviews.map((review) => review.chunkId))
+  const reviewedChunks = new Set(state.chunkReviews.map((review) => review.chunkId))
   const personal = new Set(state.personalChunks.map((chunk) => chunk.id))
   const newChunkIds = chunks
-    .filter((chunk) => !reviewed.has(chunk.id) && !personal.has(chunk.id))
+    .filter((chunk) => !reviewedChunks.has(chunk.id) && !personal.has(chunk.id))
     .map((chunk) => chunk.id)
 
   return {
+    mode,
+    skippedStages: skippedStagesFor(mode),
     topic,
+    roundSeconds: [...(constantTime ? CONSTANT_ROUND_SECONDS : FLUENCY_ROUND_SECONDS)],
+    constantTime,
+    repriseTopic,
     chunks,
     chunksOfDay,
     questions,
-    pivotQuestion,
-    gapItems: selectGapItems(state, GAPS_PER_SESSION, random),
+    zappingQuestions,
+    taboo: mode === 'full' ? selectTaboo(state, random) : null,
+    gapItems: mode === 'full' ? selectGapItems(state, GAPS_PER_SESSION, random) : [],
     focusWords: selectFocusWords(state, random),
     fluencyReminders: selectFluencyReminders(state, random),
     newChunkIds,

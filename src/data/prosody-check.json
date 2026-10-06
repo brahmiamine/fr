@@ -1,0 +1,12 @@
+{
+  "phrases": [
+    "Franchement, je ne m'attendais pas du tout à ça.",
+    "En fait, ce qui m'a le plus surpris, c'est sa réaction.",
+    "Du coup, on a décidé de repartir le lendemain matin.",
+    "Ce que je veux dire, c'est qu'il faut du temps pour s'y habituer.",
+    "Par contre, une chose est sûre : je n'oublierai pas ce moment."
+  ],
+  "readingText": "Hier, en rentrant du travail, je suis passé devant la petite librairie du quartier. La vitrine était décorée avec des photos anciennes de la ville, et je me suis arrêté pour les regarder. Un monsieur est sorti pour me proposer un café, et nous avons discuté un bon moment. Il m'a raconté que ce quartier avait beaucoup changé en vingt ans : les commerces ont fermé les uns après les autres, remplacés par des immeubles, mais quelques familles sont restées et se connaissent toujours. Ce que j'ai aimé, c'est la façon dont il parlait des gens d'ici, avec un mélange de nostalgie et de tendresse. Avant de partir, il m'a offert un vieux livre sur l'histoire de la région. Le soir, en le feuilletant, j'ai pensé que les lieux ne valent que par ceux qui les habitent.",
+  "storyPrompt": "Raconte une journée qui t'a marqué, en détail et dans l'ordre.",
+  "argumentPrompt": "Faut-il limiter l'usage du téléphone dans les transports en commun ?"
+}

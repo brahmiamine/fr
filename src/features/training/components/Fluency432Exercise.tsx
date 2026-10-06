@@ -29,6 +29,10 @@ export interface Fluency432ExerciseProps {
   retellingStory?: RetellingStory | null
   /** Recent prosody point to keep while speaking. */
   prosodyFocusGoal?: string | null
+  /** Length of each round (4/3/2/2 or the weekly 3/3/3/2). */
+  roundSeconds?: readonly number[]
+  /** The week's constant-time version. */
+  constantTime?: boolean
   onKeywordsChange: (keywords: string[]) => void
   onRecordAllChange: (recordAll: boolean) => void
   onStartRound: () => void
@@ -53,6 +57,8 @@ export function Fluency432Exercise({
   recordings,
   retellingStory = null,
   prosodyFocusGoal = null,
+  roundSeconds,
+  constantTime = false,
   onKeywordsChange,
   onRecordAllChange,
   onStartRound,
@@ -65,7 +71,11 @@ export function Fluency432Exercise({
 
   return (
     <section className="exercise screen-enter">
-      <RoundPills roundIndex={roundIndex} done={stage === 'feedback' || summary} />
+      <RoundPills
+        roundIndex={roundIndex}
+        done={stage === 'feedback' || summary}
+        roundSeconds={roundSeconds}
+      />
 
       {stage === 'prep' ? (
         <FluencyPrep
@@ -78,6 +88,7 @@ export function Fluency432Exercise({
           recordAll={recordAll}
           retellingStory={retellingStory}
           prosodyFocusGoal={prosodyFocusGoal}
+          constantTime={constantTime}
           onKeywordsChange={onKeywordsChange}
           onRecordAllChange={onRecordAllChange}
           onStartRound={onStartRound}
@@ -90,6 +101,8 @@ export function Fluency432Exercise({
           roundIndex={roundIndex}
           feedback={feedback}
           aiTransfer={aiTransfer}
+          roundSeconds={roundSeconds}
+          prosodyFocusGoal={prosodyFocusGoal}
           onBegin={() => onBeginRound?.()}
         />
       ) : null}
@@ -106,6 +119,7 @@ export function Fluency432Exercise({
           recording={recorder?.status === 'recording'}
           retellingStory={retellingStory}
           prosodyFocusGoal={prosodyFocusGoal}
+          roundSeconds={roundSeconds}
           onRoundComplete={onRoundComplete}
         />
       ) : null}
@@ -118,7 +132,7 @@ export function Fluency432Exercise({
         />
       ) : null}
 
-      {summary ? <FluencySummary recordings={recordings} onContinue={onSummaryDone} /> : null}
+      {summary ? <FluencySummary recordings={recordings} roundSeconds={roundSeconds} onContinue={onSummaryDone} /> : null}
     </section>
   )
 }

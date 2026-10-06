@@ -8,12 +8,14 @@ import {
   calculateCurrentStreak,
   calculateTotalPracticeMinutes,
   calculateWeeklyProgress,
+  conversationsThisWeek,
   formatDuration,
   getWeekKey,
   masteredGapCount,
   setInProgressSession,
   trainingLevelForSessions,
 } from '../../services/progress/progress'
+import { CONVERSATIONS_PER_WEEK } from '../../types/progress'
 import { readyProsodyExercises } from '../../services/content/prosodyRepository'
 import { STAGE_META, STAGE_ORDER, prepSecondsForLevel } from '../training/types'
 import { useAiEnabled } from '../ai/useAiEnabled'
@@ -49,9 +51,7 @@ export default function HomePage() {
       practicedDays: practicedWeekDays(sessions),
       level: trainingLevelForSessions(sessions),
       weeklyTestAvailable: !state.weeklyTests.some((test) => test.weekKey === weekKey),
-      conversationAvailable: !state.conversationPractices.some(
-        (practice) => practice.weekKey === weekKey,
-      ),
+      conversationsDone: conversationsThisWeek(state.conversationPractices),
     }
   }, [sessions, state.weeklyTests, state.conversationPractices])
 
@@ -98,19 +98,19 @@ export default function HomePage() {
       <section className="home__challenges">
         {summary.weeklyTestAvailable ? (
           <ChallengeCard
-            badge="Hebdo · 3 min"
+            badge="Hebdo · 20 min"
             title="Test de fluidité disponible"
-            description="3 minutes, une fois par semaine."
+            description="Tâche connue, questions inconnues, contournement : une fois par semaine."
             to="/progress"
             cta="Faire le test"
             delay={0.3}
           />
         ) : null}
-        {summary.conversationAvailable ? (
+        {summary.conversationsDone < CONVERSATIONS_PER_WEEK.min ? (
           <ChallengeCard
-            badge="Défi · 20–30 min"
-            title="Défi de vraie conversation"
-            description="20–30 minutes avec une personne, une fois par semaine."
+            badge={`Conversation · ${summary.conversationsDone}/${CONVERSATIONS_PER_WEEK.min}–${CONVERSATIONS_PER_WEEK.max}`}
+            title="Vraie conversation"
+            description="20–30 minutes avec une personne, 2 à 3 fois par semaine."
             to="/progress"
             cta="Voir le défi"
             delay={0.36}

@@ -4,6 +4,7 @@ import type { IconName } from './Icon'
 export type TileTone =
   | 'chunks'
   | 'fluency'
+  | 'reprise'
   | 'questions'
   | 'gaps'
   | 'feedback'

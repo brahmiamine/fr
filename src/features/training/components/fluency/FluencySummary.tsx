@@ -2,11 +2,12 @@ import { AudioClip } from '../../../../components/AudioClip/AudioClip'
 import { Button, Card, Pill } from '../../../../components/ui'
 import { AiAnalysisPanel } from '../../../ai/AiAnalysisPanel'
 import type { RoundRecordings } from '../../useFluencyRecordings'
-import { ROUND_LABELS } from './RoundPills'
+import { FLUENCY_ROUND_SECONDS, roundLabels } from '../../types'
 
 export interface FluencySummaryProps {
   /** Recordings of the rounds, by round index. */
   recordings: RoundRecordings
+  roundSeconds?: readonly number[]
   onContinue: () => void
 }
 
@@ -14,7 +15,12 @@ export interface FluencySummaryProps {
  * End of the 4 → 3 → 2: replay the four rounds captured by the microphone.
  * Shown only when the learner kept recording switched on for the exercise.
  */
-export function FluencySummary({ recordings, onContinue }: FluencySummaryProps) {
+export function FluencySummary({
+  recordings,
+  roundSeconds = FLUENCY_ROUND_SECONDS,
+  onContinue,
+}: FluencySummaryProps) {
+  const labels = roundLabels(roundSeconds)
   return (
     <Card enter="pop" aria-labelledby="fluency-summary-title">
       <div className="row">
@@ -25,8 +31,13 @@ export function FluencySummary({ recordings, onContinue }: FluencySummaryProps) 
         Compare tes tours : chacun doit être plus clair et plus fluide que le
         précédent, sans perdre le contenu.
       </p>
+      <p className="muted">
+        <span className="text-strong">Écoute prosodique :</span> dans ton tour 3,
+        réécoute seulement 1 ou 2 groupes. Coupes-tu au bon endroit ? La dernière
+        syllabe s'allonge-t-elle ? Ta voix monte-t-elle avant de continuer ?
+      </p>
       <ol className="fluency-summary">
-        {ROUND_LABELS.map((label, index) => (
+        {labels.map((label, index) => (
           <li key={label}>
             {recordings[index] ? (
               <AudioClip

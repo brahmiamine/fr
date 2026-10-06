@@ -11,8 +11,8 @@ export interface SessionFeedbackProps {
   onChange: (field: keyof SessionFeedback, value: string | number | null) => void
   onSubmit: () => void
   audioUrl?: string | null
-  /** The worst surprise question, first answer and revenge, when both were recorded. */
-  revengeClips?: { before: string | null; after: string } | null
+  /** Each surprise question answered twice: first answer and second one. */
+  questionClips?: { question: string; before: string | null; after: string | null }[]
   fluencyReminders?: FluencyReminder[]
   usedReminderIds?: string[]
   onToggleReminder?: (reminderId: string) => void
@@ -26,7 +26,7 @@ export function SessionFeedbackView({
   onChange,
   onSubmit,
   audioUrl = null,
-  revengeClips = null,
+  questionClips = [],
   fluencyReminders = [],
   usedReminderIds = [],
   onToggleReminder,
@@ -60,17 +60,20 @@ export function SessionFeedbackView({
         </div>
       ) : null}
 
-      {revengeClips ? (
+      {questionClips.length > 0 ? (
         <div className="callout">
-          <h2>Ta revanche : avant / après</h2>
+          <h2>Répondre → reprendre : avant / après</h2>
           <p className="muted">
-            Compare tes deux réponses à la question où tu as le plus bloqué :
-            démarres-tu plus vite ? Bloques-tu moins ?
+            Compare tes deux réponses à chaque question : démarres-tu plus vite ?
+            Bloques-tu moins au milieu des phrases ?
           </p>
-          {revengeClips.before ? (
-            <AudioClip src={revengeClips.before} label="Première réponse" />
-          ) : null}
-          <AudioClip src={revengeClips.after} label="Revanche" />
+          {questionClips.map((clip) => (
+            <div key={clip.question} className="stack">
+              <p className="text-strong">{clip.question}</p>
+              {clip.before ? <AudioClip src={clip.before} label="Première réponse" /> : null}
+              {clip.after ? <AudioClip src={clip.after} label="Deuxième réponse" /> : null}
+            </div>
+          ))}
         </div>
       ) : null}
 

@@ -1,26 +1,26 @@
 import { Timer } from '../../../../components/Timer/Timer'
 import { Callout, Card, InfoLine } from '../../../../components/ui'
 import type { Chunk, RetellingStory, Topic } from '../../../../types/content'
-import { FLUENCY_ROUND_SECONDS } from '../../types'
+import { FLUENCY_ROUND_SECONDS, prosodyCueForRound } from '../../types'
 import type { FluencyFeedback, FluencyReminder } from '../../types'
 
 const RUNNING_HINTS = [
   'Continue. Un mot manque ? Explique-le autrement.',
   'Reformule, ne récite pas.',
   'Continue à parler.',
-  'Nouveau sujet : réutilise ce que tu viens de travailler.',
+  'Nouvelle question : réutilise ce que tu viens de travailler.',
 ]
 
 const STORY_HINTS = [
   "Raconte l'histoire avec tes mots. Un mot manque ? Explique-le autrement.",
   'Raconte-la de nouveau, autrement : ne récite pas.',
   "L'essentiel, plus vite, sans t'arrêter.",
-  'Nouveau sujet : réutilise ce que tu viens de travailler.',
+  'Nouvelle question : réutilise ce que tu viens de travailler.',
 ]
 
 /** The prompt spoken in a round: the topic, or the transfer prompt for the last one. */
-export function roundPrompt(topic: Topic, roundIndex: number): string {
-  return roundIndex === FLUENCY_ROUND_SECONDS.length - 1 ? topic.transferPrompt : topic.title
+export function roundPrompt(topic: Topic, roundIndex: number, rounds: number = FLUENCY_ROUND_SECONDS.length): string {
+  return roundIndex === rounds - 1 ? topic.transferPrompt : topic.title
 }
 
 /** Corrections from the mini feedback to place again in rounds 2 and 3. */
@@ -65,6 +65,8 @@ export interface FluencyRunProps {
   recording: boolean
   retellingStory: RetellingStory | null
   prosodyFocusGoal: string | null
+  /** Length of each round of this session. */
+  roundSeconds?: readonly number[]
   onRoundComplete: () => void
 }
 
@@ -79,11 +81,13 @@ export function FluencyRun({
   recording,
   retellingStory,
   prosodyFocusGoal,
+  roundSeconds = FLUENCY_ROUND_SECONDS,
   onRoundComplete,
 }: FluencyRunProps) {
-  const isTransfer = roundIndex === FLUENCY_ROUND_SECONDS.length - 1
-  const seconds = FLUENCY_ROUND_SECONDS[roundIndex] ?? 60
-  const prompt = roundPrompt(topic, roundIndex)
+  const isTransfer = roundIndex === roundSeconds.length - 1
+  const seconds = roundSeconds[roundIndex] ?? 120
+  const prompt = roundPrompt(topic, roundIndex, roundSeconds.length)
+  const prosodyCue = prosodyCueForRound(roundIndex, prosodyFocusGoal)
   const retryTargets = retryTargetsFor(roundIndex, feedback)
 
   const finishRound = () => onRoundComplete()
@@ -112,7 +116,7 @@ export function FluencyRun({
       <div className="fluency-run__reminders">
         <RetryTargets targets={retryTargets} />
 
-        {prosodyFocusGoal ? <InfoLine label="Prosodie :">{prosodyFocusGoal}</InfoLine> : null}
+        {prosodyCue ? <InfoLine label="Une seule consigne de prosodie :">{prosodyCue}</InfoLine> : null}
 
         {keywords.length > 0 ? (
           <div className="chip-row chip-row--center">

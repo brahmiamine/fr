@@ -52,11 +52,13 @@ function mockRecorder(overrides: Partial<ProsodyRecorder> = {}): ProsodyRecorder
     status: 'idle',
     supported: true,
     current: null,
+    cold: null,
     attempt1: null,
     attempt2: null,
     recordingSeconds: 0,
     start: vi.fn(async () => undefined),
     stop: vi.fn(),
+    keepAsCold: vi.fn(),
     keepAsAttempt1: vi.fn(),
     keepAsAttempt2: vi.fn(),
     reset: vi.fn(),
@@ -272,7 +274,6 @@ describe('prosody imitation alignment', () => {
         exercise={exercise}
         step="listen"
         modelPlays={1}
-        shadowPlays={0}
         audioSrc={audioSrc}
         recorder={mockRecorder()}
         onModelPlayed={() => undefined}
@@ -280,6 +281,7 @@ describe('prosody imitation alignment', () => {
         onRecorded={() => undefined}
         onShadowPlayed={() => undefined}
         onShadowDone={() => undefined}
+        onMemoryDone={() => undefined}
       />,
     )
     expect(
@@ -287,13 +289,12 @@ describe('prosody imitation alignment', () => {
     ).toBeDisabled()
   })
 
-  it('requires one complete shadowing pass before comparison', () => {
+  it('requires the six chorusing passes before the memory step', () => {
     render(
       <ImitationExercise
         exercise={exercise}
         step="shadow"
         modelPlays={2}
-        shadowPlays={0}
         audioSrc={audioSrc}
         recorder={mockRecorder()}
         onModelPlayed={() => undefined}
@@ -301,10 +302,11 @@ describe('prosody imitation alignment', () => {
         onRecorded={() => undefined}
         onShadowPlayed={() => undefined}
         onShadowDone={() => undefined}
+        onMemoryDone={() => undefined}
       />,
     )
     expect(
-      screen.getByRole('button', { name: /Continuer vers la comparaison/ }),
+      screen.getByRole('button', { name: /Continuer vers la mémoire/ }),
     ).toBeDisabled()
   })
 
@@ -314,7 +316,6 @@ describe('prosody imitation alignment', () => {
         exercise={exercise}
         step="record"
         modelPlays={2}
-        shadowPlays={0}
         audioSrc={audioSrc}
         recorder={mockRecorder({ status: 'recording' })}
         onModelPlayed={() => undefined}
@@ -322,6 +323,7 @@ describe('prosody imitation alignment', () => {
         onRecorded={() => undefined}
         onShadowPlayed={() => undefined}
         onShadowDone={() => undefined}
+        onMemoryDone={() => undefined}
       />,
     )
     expect(screen.getByRole('button', { name: /Réécouter le segment/ })).toBeDisabled()

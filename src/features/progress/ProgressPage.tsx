@@ -23,6 +23,7 @@ import {
 import ConversationPrep from './ConversationPrep'
 import WeeklyConversation from './WeeklyConversation'
 import WeeklyTest from './WeeklyTest'
+import type { WeeklyTestRecord } from '../../types/progress'
 import './progress.css'
 
 function formatDate(value: string): string {
@@ -37,6 +38,13 @@ function formatDate(value: string): string {
 
 function wpm(wordsSpoken?: number): number {
   return Math.round((wordsSpoken ?? 0) / 3)
+}
+
+/** Known minus unknown speaking rate: the transfer indicator. */
+function transferGap(test: WeeklyTestRecord): number | null {
+  const known = test.known?.wordsPerMinute
+  const unknown = test.unknown?.wordsPerMinute
+  return known === undefined || unknown === undefined ? null : known - unknown
 }
 
 export default function ProgressPage() {
@@ -139,12 +147,36 @@ export default function ProgressPage() {
                 <td>{wpm(currentTest.wordsSpoken)}</td>
               </tr>
               <tr>
+                <th scope="row">Écart connu / inconnu (mots/min)</th>
+                <td>{transferGap(comparisonTest) ?? '—'}</td>
+                <td>{transferGap(currentTest) ?? '—'}</td>
+              </tr>
+              <tr>
+                <th scope="row">Durée moyenne des pauses (s)</th>
+                <td>{comparisonTest.unknown?.meanPauseSeconds ?? '—'}</td>
+                <td>{currentTest.unknown?.meanPauseSeconds ?? '—'}</td>
+              </tr>
+              <tr>
+                <th scope="row">« euh » nus / marqueurs</th>
+                <td>
+                  {comparisonTest.majorFillers} / {comparisonTest.markers ?? '—'}
+                </td>
+                <td>
+                  {currentTest.majorFillers} / {currentTest.markers ?? '—'}
+                </td>
+              </tr>
+              <tr>
                 <th scope="row">Score ressenti</th>
                 <td>{comparisonTest.score}</td>
                 <td>{currentTest.score}</td>
               </tr>
             </tbody>
           </table>
+          <p className="muted">
+            Si l'écart entre tâche connue et inconnue se réduit, l'automatisation est
+            générale ; s'il reste stable, tu automatises des discours, pas la langue.
+            Les silences baissent plus lentement que le débit : juge sur 4 à 6 semaines.
+          </p>
         </section>
       ) : null}
 
@@ -190,10 +222,16 @@ export default function ProgressPage() {
         entries={recentProsodySessions.slice(0, 8).map((session) => ({
           key: session.id,
           title: formatDate(session.date),
-          notes: [`Extrait : ${session.exerciseId}`],
+          notes: [
+            `Extrait : ${session.exerciseId}`,
+            ...(session.melodyDistance?.v2 !== undefined
+              ? [`Écart de mélodie (V2) : ${session.melodyDistance.v2}`]
+              : []),
+          ],
           tags: [
             `${session.durationMinutes} min`,
             `Retelling ${session.retellingSeconds} s`,
+            ...(session.cold ? ['À froid'] : []),
             ...(session.focus ? [`Focus : ${session.focus}`] : []),
           ],
         }))}

@@ -30,6 +30,10 @@ describe('analyzeSpeechActivity', () => {
     expect(result?.longPauses).toBe(1)
     expect(result?.longestSpeechSeconds).toBeCloseTo(8.2, 1)
     expect(result?.speechRatio).toBeGreaterThan(0.85)
+    // Pauses of 250 ms or more: 1.5 s and 0.5 s (the 0.2 s breath does not count).
+    expect(result?.shortPauses).toBe(2)
+    expect(result?.meanPauseSeconds).toBe(1)
+    expect(result?.spokenSeconds).toBeCloseTo(16.2, 1)
   })
 
   it('returns null when nothing was said', () => {

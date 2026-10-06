@@ -1,37 +1,52 @@
 import { useEffect, useRef, useState } from 'react'
 import type { AudioRecorder } from '../../hooks/useAudioRecorder'
+import { getCurrentStage } from './sessionReducer'
 import type { TrainingSessionState } from './types'
 
-/** Key of the second answer to the worst question. */
-export const REVENGE_RECORDING = 'revenge'
+/** Key of the second answer to a question. */
+export function retryKey(questionId: string): string {
+  return `${questionId}:retry`
+}
+export const ZAPPING_RECORDING = 'zapping'
+export const REPRISE_RECORDING = 'reprise'
+export const TABOO_RECORDING = 'taboo'
 
-/** Blob URL of each spoken answer, by question id (and `revenge`). Session-only. */
+/** Blob URL of each spoken answer, by key. Session-only. */
 export type QuestionRecordings = Record<string, string>
 
-/** The answer being spoken right now, or null between answers. */
-function speakingKey(session: TrainingSessionState | undefined): string | null {
+/**
+ * The answer being spoken right now, or null between answers: a first answer,
+ * a second answer, the zapping, the subject taken up again or the taboo
+ * monologue.
+ */
+export function speakingKey(session: TrainingSessionState | undefined): string | null {
   if (!session || session.phase !== 'active') return null
-  if (session.revenge.stage === 'speaking') return REVENGE_RECORDING
-  if (session.revenge.stage !== 'idle') return null
-  if (session.questions.stage !== 'speaking') return null
-  return session.plan.questions[session.questions.index]?.id ?? null
+  const stage = getCurrentStage(session)
+  if (stage === 'reprise') return session.reprise.stage === 'running' ? REPRISE_RECORDING : null
+  if (stage === 'gaps') return session.taboo.stage === 'running' ? TABOO_RECORDING : null
+  if (stage !== 'questions') return null
+  if (session.zapping.stage === 'running') return ZAPPING_RECORDING
+  const question = session.plan.questions[session.questions.index]
+  if (!question) return null
+  if (session.questions.stage === 'speaking') return question.id
+  if (session.questions.stage === 'retry') return retryKey(question.id)
+  return null
 }
 
 /**
- * Records every surprise-question answer while it is spoken, so the worst one
- * can be heard again before the revenge, and both versions compared at the end.
- * Follows the same "record" switch as the 4 → 3 → 2.
+ * Records every spoken answer outside the 4 → 3 → 2 while it is spoken, so
+ * the first answer can be heard again before the second one, and both
+ * compared at the end. Follows the same "record" switch as the 4 → 3 → 2.
  */
 export function useQuestionRecordings(
   recorder: AudioRecorder,
   session: TrainingSessionState | undefined,
-  inQuestions: boolean,
 ): QuestionRecordings {
   const [recordings, setRecordings] = useState<QuestionRecordings>({})
   const pendingRef = useRef<string[]>([])
 
   const recordAll = session?.fluency.recordAll ?? false
-  const key = inQuestions ? speakingKey(session) : null
+  const key = speakingKey(session)
   const { blobUrl, start, stop, supported } = recorder
 
   useEffect(() => {

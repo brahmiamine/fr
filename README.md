@@ -8,17 +8,49 @@ fonctionne en statique sur Cloudflare Workers, avec une IA facultative.
 
 Application déployée : https://fr.testcivique.workers.dev/
 
+## La méthode
+
+L'application applique deux méthodes, décrites en détail (exercices, durées,
+niveau de preuve, mesures et références) dans `docs/` :
+
+| Document | Compétence | Boucle |
+|---|---|---|
+| [`docs/Parler sans bloquer.md`](docs/Parler%20sans%20bloquer.md) | **Fluidité** : trouver ses mots, tenir un discours, ne plus bloquer | récupérer → parler → bloquer → contourner → identifier → corriger → espacer → réutiliser |
+| [`docs/Sonner plus naturel.md`](docs/Sonner%20plus%20naturel.md) | **Prosodie** : rythme et intonation du français parlé | entendre → découper → copier → s'écouter → comparer → corriger un point → revenir à froid → parler seul |
+| [`docs/ai-models.md`](docs/ai-models.md) | Modèles d'IA gratuits du Worker | diagnostic et choix des modèles |
+
+Trois principes traversent les deux méthodes :
+
+1. **Répéter avant de passer à autre chose** : la répétition consolide, la
+   nouveauté seule ne consolide pas (de Jong & Perfetti, 2011). Même sujet,
+   même question, même extrait, plutôt qu'un contenu neuf à chaque fois.
+2. **Espacer les retours** : revenir quelques jours plus tard (J+1, J+3, J+7
+   pour les chunks et les mots ; J+2 à J+7 pour les sujets).
+3. **Boucler par une rétroaction** : s'enregistrer, repérer peu de choses (une
+   à trois), corriger entre deux passages, jamais pendant, et réinjecter.
+
+La séance de fluidité recommandée dure ≈ 40 min : chunks (5 min), 4→3→2+
+(15 min), reprise d'un ancien sujet (3 min), questions surprises « répondre →
+reprendre » + zapping (10 min), trous de mots + monologue tabou (5 min),
+feedback (2 min). Le bloc prosodie ajoute 10 à 15 min par jour, sur 1 à 3
+extraits par semaine travaillés à fond.
+
+Les sections suivantes décrivent ce que l'application fait. La section
+[« Écarts entre la méthode et l'application »](#écarts-entre-la-méthode-et-lapplication)
+signale le seul point encore absent.
+
 ## Le principe
 
-Une séance (≈ 35 min) suit un parcours guidé en 5 étapes :
+Dans l'application, une séance de fluidité (≈ 40 min) suit un parcours guidé en 6 étapes :
 
 | Étape | Durée |
 |---|---:|
-| Chunks + récupération espacée | 5–7 min |
-| 4 → 3 → 2 + transfert | 12–15 min |
-| Questions surprises | 8–10 min |
-| Trous de mots / paraphrase | 5 min |
-| Feedback final | 2–3 min |
+| Chunks + récupération espacée | 5 min |
+| 4 → 3 → 2 + transfert | 15 min |
+| Reprise d'un sujet | 3 min |
+| Questions surprises + zapping | 10 min |
+| Trous de mots + monologue tabou | 5 min |
+| Feedback final | 2 min |
 
 Le contenu n'est **jamais tiré au hasard** : il suit les priorités
 
@@ -138,6 +170,56 @@ Les enregistrements personnels V1/V2/retelling restent uniquement en mémoire.
 Seules les métadonnées de progression (extrait, focus, durée, retelling) sont
 conservées dans `localStorage`.
 
+## Écarts entre la méthode et l'application
+
+La méthode de `docs/` a été mise à jour à partir de deux synthèses de
+recherche. L'application en applique désormais l'essentiel, en fluidité comme
+en prosodie. Il ne reste qu'un point absent, signalé ci-dessous.
+
+**État :** ✅ fait · 🟡 partiel · ⬜ à faire
+
+### Fluidité (`Parler sans bloquer`)
+
+| Élément de la méthode | État |
+|---|:---:|
+| Reprise d'un sujet du 4→3→2 entre J+2 et J+7 (3 min, sans préparation) | ✅ |
+| Transfert de 2 min sur une **question** différente | ✅ |
+| Version 3/3/3 une fois par semaine | ✅ |
+| Réécoute de 1 à 2 min entre les tours | ✅ |
+| Une consigne prosodique par tour | ✅ |
+| Questions « répondre → reprendre » pour chaque question | ✅ |
+| Zapping (4 × 45 s avec transitions) | ✅ |
+| Démarrer par un tremplin ; structure position → raison → exemple → nuance → conclusion | ✅ |
+| Questions ratées reprogrammées entre J+3 et J+7 | ✅ |
+| Chunks : dire 2 phrases **avant** de vérifier | ✅ |
+| Chunks récoltés dans l'écoute native, avec leur forme orale (« chais pas ») | ✅ |
+| Monologue tabou (90 s) et règle d'une seconde | ✅ |
+| Boîte à outils de 8 à 10 formules de contournement | ✅ |
+| Conversation réelle 2 à 3 fois par semaine, minute transcrite puis réécrite | ✅ |
+| Test hebdo : tâche connue + 3 questions inconnues, contournement de 10 mots, référence L1 | ✅ |
+| Pauses ≥ 250 ms et durée moyenne ; « euh » nus séparés des marqueurs français | ✅ |
+
+### Prosodie (`Sonner plus naturel`)
+
+| Élément de la méthode | État |
+|---|:---:|
+| 1 à 3 extraits par semaine, repris 3 jours puis révisés à J+1, J+3, J+7 | ✅ |
+| Test à froid avant toute écoute | ✅ |
+| Chorusing en boucle (6 répétitions, une dimension par passe) | ✅ |
+| Écouter, pause, reproduire de mémoire, puis changer un mot | ✅ |
+| Ralenti à 0,75× les premiers jours | ✅ |
+| Courbe de l'apprenant superposée à celle du modèle (demi-tons) | ✅ |
+| Retelling en réutilisant 2 ou 3 « moules » de l'extrait | ✅ |
+| Paires fonctionnelles d'intonation (*Tu viens. / Tu viens ?*) | ✅ |
+| Un locuteur principal pendant 3 à 4 semaines ; préférer le non scripté | ✅ |
+| Extraits de conversation à deux voix (semaines 5 à 8) | ⬜ |
+| Tests S0 / S4 / S8 (S4 et S8 ouverts 4 et 8 semaines après S0) et notation à l'aveugle (par soi-même ou par des natifs qui écoutent sur l'appareil, sous leur prénom) | ✅ |
+| Marquage `/ ↑ ↓` avant de voir le modèle, A → B → A, une seule correction | ✅ |
+
+> Les extraits de **conversation à deux voix** (semaines 5 à 8) sont encore
+> presque absents de la banque : ils s'importent via « Utiliser mon propre
+> extrait ».
+
 ## Démarrage local
 
 Prérequis : Node.js 20+ et npm.
@@ -224,12 +306,19 @@ d'anciennes données peuvent être considérées comme déjà vues.
 ## Stockage local et confidentialité
 
 - Aucune donnée ne quitte l'appareil.
-- Tout est stocké dans `localStorage` sous la clé `parle-plus`, dans un schéma versionné (`version: 4`, avec migration depuis les v1/v2/v3 et depuis l'ancienne clé `fr-fluency-trainer`).
+- La progression est stockée dans `localStorage` sous la clé `parle-plus`, dans un schéma versionné (`version: 4`, avec migration depuis les v1/v2/v3 et depuis l'ancienne clé `fr-fluency-trainer`).
 - Données conservées : sessions terminées, tests hebdomadaires, **trous de
   mots** (`wordGaps`), **révisions de chunks** (`chunkReviews`), exemples
   personnels, contenus récents, progression prosodique (sans audio) et session de fluidité en cours.
-- Si `localStorage` est indisponible, l'entraînement continue en mémoire et un
-  avertissement non bloquant s'affiche.
+- **Exception — le bilan prosodique S0 / S4 / S8** : ses enregistrements sont
+  conservés dans **IndexedDB** (base `parle-plus-audio`) sur l'appareil, pour
+  être notés à l'aveugle et comparés plus tard. Ils ne sont jamais envoyés. Les
+  notes sont gardées par évaluateur (toi, ou un natif qui écoute sur
+  l'appareil sous son prénom) ; les bilans ne sont nommés qu'une fois la
+  notation finie, avec un tableau des moyennes et un export CSV.
+  Tout le reste de l'audio reste uniquement en mémoire.
+- Si `localStorage` (ou IndexedDB) est indisponible, l'entraînement continue en
+  mémoire et un avertissement non bloquant s'affiche.
 
 ## Tests
 
@@ -243,6 +332,7 @@ La suite Vitest + React Testing Library couvre notamment :
 - calcul des séries, de la progression hebdomadaire et des minutes totales ;
 - mesure automatique des pauses sur le niveau du micro et comparaison « il y a 4 semaines » tolérante ;
 - marquage prosodique actif noté seulement sur les références fiables, courbe de hauteur, segment d'imitation progressif, durées estimées plausibles des modèles TTS et progression du retelling ;
+- plan prosodique (3 jours d'apprentissage, révisions J+1/J+3/J+7, plafond de 3 extraits par semaine, locuteur principal), test à froid, chorusing en boucle, « de mémoire puis changer un mot », courbe superposée et distance DTW, paires d'intonation et bilans S0/S4/S8 ;
 - enregistrement des réponses aux questions surprises et réinjection des mots débloqués ;
 - vérification honnête des trous de mots, découverte des nouveaux chunks et réinitialisation après échec ;
 - machine à états de la session complète (chunks, 4→3→2, questions + revanche,

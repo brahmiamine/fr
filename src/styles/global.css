@@ -381,6 +381,17 @@ ul.warning-banner {
   padding-left: 1.8rem;
 }
 
+.success-banner {
+  margin: 0;
+  background: color-mix(in srgb, var(--success) 14%, transparent);
+  color: var(--text);
+  border: 1px solid color-mix(in srgb, var(--success) 40%, transparent);
+  border-radius: var(--radius-sm);
+  padding: 0.7rem 0.9rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) .warning-banner {
     background: #3a2c10;

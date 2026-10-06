@@ -199,7 +199,9 @@ describe('surprise questions: longer answers as the learner progresses', () => {
         onPrepDone={() => undefined}
         onSpeakingDone={onSpeakingDone}
         onRate={() => undefined}
-        onDone={() => undefined}
+        onNoteChange={() => undefined}
+        onNoteDone={() => undefined}
+        onRetryDone={() => undefined}
       />,
     )
     act(() => {
@@ -226,7 +228,9 @@ describe('surprise questions: longer answers as the learner progresses', () => {
         onPrepDone={() => undefined}
         onSpeakingDone={() => undefined}
         onRate={() => undefined}
-        onDone={() => undefined}
+        onNoteChange={() => undefined}
+        onNoteDone={() => undefined}
+        onRetryDone={() => undefined}
       />,
     )
     expect(screen.getByText('Type : résolution de problème')).toBeInTheDocument()

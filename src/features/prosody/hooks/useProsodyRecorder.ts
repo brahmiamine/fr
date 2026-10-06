@@ -11,11 +11,14 @@ export interface ProsodyRecorder {
   status: RecorderStatus
   supported: boolean
   current: ProsodyRecording | null
+  /** Version recorded from memory, before the model was heard (reviews). */
+  cold: ProsodyRecording | null
   attempt1: ProsodyRecording | null
   attempt2: ProsodyRecording | null
   recordingSeconds: number
   start: () => Promise<void>
   stop: () => void
+  keepAsCold: () => void
   keepAsAttempt1: () => void
   keepAsAttempt2: () => void
   reset: () => void
@@ -31,6 +34,7 @@ export function useProsodyRecorder(): ProsodyRecorder {
     supported ? 'idle' : 'unsupported',
   )
   const [current, setCurrent] = useState<ProsodyRecording | null>(null)
+  const [cold, setCold] = useState<ProsodyRecording | null>(null)
   const [attempt1, setAttempt1] = useState<ProsodyRecording | null>(null)
   const [attempt2, setAttempt2] = useState<ProsodyRecording | null>(null)
   const [recordingSeconds, setRecordingSeconds] = useState(0)
@@ -125,6 +129,15 @@ export function useProsodyRecorder(): ProsodyRecorder {
     }
   }, [supported, revoke, clearTimer])
 
+  const keepAsCold = useCallback(() => {
+    if (!current) return
+    if (cold) revoke(cold.url)
+    setCold(current)
+    setCurrent(null)
+    setRecordingSeconds(0)
+    setStatus('idle')
+  }, [current, cold, revoke])
+
   const keepAsAttempt1 = useCallback(() => {
     if (!current) return
     if (attempt1) revoke(attempt1.url)
@@ -157,6 +170,7 @@ export function useProsodyRecorder(): ProsodyRecorder {
 
     for (const url of [...urlsRef.current]) revoke(url)
     setCurrent(null)
+    setCold(null)
     setAttempt1(null)
     setAttempt2(null)
     setRecordingSeconds(0)
@@ -181,11 +195,13 @@ export function useProsodyRecorder(): ProsodyRecorder {
     status,
     supported,
     current,
+    cold,
     attempt1,
     attempt2,
     recordingSeconds,
     start,
     stop,
+    keepAsCold,
     keepAsAttempt1,
     keepAsAttempt2,
     reset,

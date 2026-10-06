@@ -3,41 +3,49 @@ import type { ProsodyExercise } from '../types'
 import { imitationTranscript, speechRateFor } from '../types'
 import {
   REQUIRED_IMITATION_LISTENS,
-  REQUIRED_SHADOW_PLAYS,
+  SLOW_SPEED,
 } from '../types'
 import type { ProsodyRecorder } from '../hooks/useProsodyRecorder'
 import { AudioClip } from '../../../components/AudioClip/AudioClip'
+import { ToggleChip } from '../../../components/ui'
 import { MelodyWarmup } from './MelodyWarmup'
 import { RecorderControls } from './RecorderControls'
+import { ChorusLoop } from './ChorusLoop'
+import { MemoryStep } from './MemoryStep'
 
 export interface ImitationExerciseProps {
   exercise: ProsodyExercise
-  step: 'listen' | 'record' | 'shadow'
+  step: 'listen' | 'record' | 'shadow' | 'memory'
   modelPlays: number
-  shadowPlays: number
   audioSrc: string
   recorder: ProsodyRecorder
+  /** Start the listening slowed to 0.75× (first sessions). */
+  slowByDefault?: boolean
   onModelPlayed: () => void
   onListened: () => void
   onRecorded: () => void
   onShadowPlayed: () => void
   onShadowDone: () => void
+  onMemoryDone: () => void
 }
 
 export function ImitationExercise({
   exercise,
   step,
   modelPlays,
-  shadowPlays,
   audioSrc,
   recorder,
+  slowByDefault = false,
   onModelPlayed,
   onListened,
   onRecorded,
   onShadowPlayed,
   onShadowDone,
+  onMemoryDone,
 }: ImitationExerciseProps) {
   const [modelPlaying, setModelPlaying] = useState(false)
+  const [slow, setSlow] = useState(slowByDefault)
+  const playbackRate = slow ? SLOW_SPEED : 1
 
   if (step === 'listen') {
     const ready = modelPlays >= REQUIRED_IMITATION_LISTENS
@@ -50,11 +58,17 @@ export function ImitationExercise({
           speechText={exercise.modelKind === 'tts' ? imitationTranscript(exercise) : undefined}
           speechLocale={exercise.voiceLocale}
           speechRate={speechRateFor(exercise)}
+          playbackRate={playbackRate}
           start={exercise.imitation.start}
           end={exercise.imitation.end}
           label="Écouter le segment"
           onComplete={onModelPlayed}
         />
+        <div className="stack">
+          <ToggleChip active={slow} onClick={() => setSlow((value) => !value)}>
+            Ralenti 0,75×
+          </ToggleChip>
+        </div>
         <p className="muted">
           Écoutes complètes : {Math.min(modelPlays, REQUIRED_IMITATION_LISTENS)}/
           {REQUIRED_IMITATION_LISTENS} minimum
@@ -98,12 +112,18 @@ export function ImitationExercise({
           speechText={exercise.modelKind === 'tts' ? imitationTranscript(exercise) : undefined}
           speechLocale={exercise.voiceLocale}
           speechRate={speechRateFor(exercise)}
+          playbackRate={playbackRate}
           start={exercise.imitation.start}
           end={exercise.imitation.end}
           label="Réécouter le segment"
           disabled={recorderBusy}
           onPlaybackChange={setModelPlaying}
         />
+        <div className="stack">
+          <ToggleChip active={slow} onClick={() => setSlow((value) => !value)}>
+            Ralenti 0,75×
+          </ToggleChip>
+        </div>
         <RecorderControls
           recorder={recorder}
           recordLabel="Enregistrer mon imitation"
@@ -124,34 +144,13 @@ export function ImitationExercise({
     )
   }
 
-  const shadowDone = shadowPlays >= REQUIRED_SHADOW_PLAYS
+  if (step === 'memory') {
+    return (
+      <MemoryStep exercise={exercise} audioSrc={audioSrc} recorder={recorder} onDone={onMemoryDone} />
+    )
+  }
+
   return (
-    <section className="card exercise exercise--center" aria-labelledby="imitation-shadow">
-      <p className="pill">Shadowing</p>
-      <h2 id="imitation-shadow">Parle presque en même temps que le locuteur.</h2>
-      <p className="muted">
-        Lance le segment et suis réellement la voix jusqu'au bout. Le but est
-        d'automatiser son mouvement.
-      </p>
-      <AudioClip
-        src={audioSrc || undefined}
-        speechText={exercise.modelKind === 'tts' ? imitationTranscript(exercise) : undefined}
-        speechLocale={exercise.voiceLocale}
-        speechRate={speechRateFor(exercise)}
-        start={exercise.imitation.start}
-        end={exercise.imitation.end}
-        label="Démarrer le shadowing"
-        onComplete={onShadowPlayed}
-      />
-      <p className="muted">Shadowing complet : {Math.min(shadowPlays, 1)}/1</p>
-      <button
-        type="button"
-        className="button button--block"
-        onClick={onShadowDone}
-        disabled={!shadowDone}
-      >
-        Continuer vers la comparaison
-      </button>
-    </section>
+    <ChorusLoop exercise={exercise} audioSrc={audioSrc} onPass={onShadowPlayed} onDone={onShadowDone} />
   )
 }

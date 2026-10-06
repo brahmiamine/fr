@@ -264,6 +264,25 @@
   font-weight: 800;
 }
 
+.prosody-promo-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.prosody-promo__pairs {
+  align-self: flex-end;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  text-decoration: none;
+  padding: 2px 4px;
+}
+
+.prosody-promo__pairs:hover {
+  color: var(--accent);
+}
+
 .prosody-promo--disabled {
   opacity: 0.85;
 }
@@ -311,4 +330,10 @@
 
 .coach-promo__ghost {
   padding: 0 16px;
+}
+
+.today__modes {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }

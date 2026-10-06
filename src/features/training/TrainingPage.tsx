@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useReducer, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { useAppState } from '../../app/AppStateProvider'
 import { TimerPersistenceContext } from '../../components/Timer/TimerPersistence'
 import type { TimerPersistence } from '../../components/Timer/TimerPersistence'
@@ -9,6 +9,7 @@ import { runAiTask } from '../../services/ai/client'
 import { buildSessionPlan } from '../../services/review/selectPlan'
 import {
   applyGapResult,
+  applyQuestionRatings,
   captureWordGap,
   markFluencyNoteUsed,
   recordCompletedSession,
@@ -25,22 +26,28 @@ import { ChunksExercise } from './components/ChunksExercise'
 import { Fluency432Exercise } from './components/Fluency432Exercise'
 import { SessionFeedbackView } from './components/SessionFeedback'
 import { SessionHeader } from './components/SessionHeader'
+import { RepriseExercise } from './components/RepriseExercise'
 import { SurpriseQuestionsExercise } from './components/SurpriseQuestionsExercise'
+import { TabooExercise } from './components/TabooExercise'
 import { WordGapsExercise } from './components/WordGapsExercise'
+import { ZappingExercise } from './components/ZappingExercise'
 import {
+  activeStages,
   createSessionState,
   getCurrentStage,
   prepSeconds,
+  roundSecondsOf,
   sessionReducer,
 } from './sessionReducer'
-import type { TrainingSessionState } from './types'
+import type { SessionMode, TrainingSessionState } from './types'
 import {
-  FLUENCY_ROUND_SECONDS,
+  MODE_LABELS,
+  QUESTION_REVIEW_DAYS,
   TRAINING_SESSION_SCHEMA,
   speakingSecondsForLevel,
 } from './types'
 import { useFluencyRecordings } from './useFluencyRecordings'
-import { REVENGE_RECORDING, useQuestionRecordings } from './useQuestionRecordings'
+import { retryKey, speakingKey, useQuestionRecordings } from './useQuestionRecordings'
 import type { QuestionRecordings } from './useQuestionRecordings'
 import './training.css'
 
@@ -51,10 +58,19 @@ function sessionDurationMinutes(session: TrainingSessionState): number {
 
 function practisedQuestionIds(session: TrainingSessionState): string[] {
   const ids = session.plan.questions.map((question) => question.id)
-  if (session.level === 3 && session.plan.pivotQuestion) {
-    ids.push(session.plan.pivotQuestion.id)
+  if (session.zapping?.stage === 'done') {
+    for (const question of session.plan.zappingQuestions ?? []) ids.push(question.id)
   }
   return ids
+}
+
+function parseMode(value: string | null): SessionMode {
+  return value === 'short' || value === 'conversation' ? value : 'full'
+}
+
+/** The taboo monologue is on screen once the word gaps are over. */
+function inTaboo(session: TrainingSessionState): boolean {
+  return Boolean(session.plan.taboo) && session.gaps.index >= session.plan.gapItems.length
 }
 
 function CompletedScreen({ session }: { session: TrainingSessionState }) {
@@ -72,11 +88,21 @@ function CompletedScreen({ session }: { session: TrainingSessionState }) {
       </div>
       <ul className="summary-list">
         <li>{plan.chunks.length} chunks travaillés</li>
-        <li>{plan.gapItems.length} mots travaillés</li>
-        <li>{practisedQuestionIds(session).length} questions spontanées</li>
         <li>
-          4 → 3 → 2 terminé{plan.retellingStory ? ' (variante retelling)' : ''}
+          {plan.constantTime ? '3 / 3 / 3' : '4 → 3 → 2'} terminé
+          {plan.retellingStory ? ' (variante retelling)' : ''}
         </li>
+        {session.repriseDone && plan.repriseTopic ? (
+          <li>Sujet repris : {plan.repriseTopic.title}</li>
+        ) : null}
+        {plan.questions.length > 0 ? (
+          <li>
+            {session.questionRetries ?? 0} question(s) refaite(s)
+            {session.zapping?.stage === 'done' ? ' + zapping' : ''}
+          </li>
+        ) : null}
+        {plan.gapItems.length > 0 ? <li>{plan.gapItems.length} mots travaillés</li> : null}
+        {session.taboo?.rating ? <li>Monologue tabou terminé</li> : null}
       </ul>
       <div className="button-row">
         <Link className="button button--block" to="/progress">
@@ -96,12 +122,21 @@ function stageProgress(session: TrainingSessionState): number {
   const plan = session.plan
   if (stage === 'chunks') return session.chunks.index / Math.max(1, plan.chunks.length)
   if (stage === 'fluency') {
-    const rounds = FLUENCY_ROUND_SECONDS.length
+    const rounds = roundSecondsOf(plan).length
     const done = session.fluency.roundIndex + (session.fluency.stage === 'summary' ? 1 : 0)
     return done / rounds
   }
-  if (stage === 'questions') return session.questions.index / Math.max(1, plan.questions.length)
-  if (stage === 'gaps') return session.gaps.index / Math.max(1, plan.gapItems.length)
+  if (stage === 'reprise') return session.reprise.stage === 'running' ? 0.5 : 0
+  if (stage === 'questions') {
+    const zapping = plan.zappingQuestions ?? []
+    const total = plan.questions.length + (zapping.length > 0 ? 1 : 0)
+    const zappingDone = session.zapping.stage === 'running' ? session.zapping.index / zapping.length : 0
+    return (Math.min(session.questions.index, plan.questions.length) + zappingDone) / Math.max(1, total)
+  }
+  if (stage === 'gaps') {
+    const total = plan.gapItems.length + (plan.taboo ? 1 : 0)
+    return Math.min(session.gaps.index, total) / Math.max(1, total)
+  }
   return 0.5
 }
 
@@ -121,12 +156,17 @@ function skipFor(
         return { label: 'Passer le résumé', run: () => dispatch({ type: 'FLUENCY_SUMMARY_DONE' }) }
       }
       return { label: 'Passer ce tour', run: () => dispatch({ type: 'FLUENCY_SKIP' }) }
+    case 'reprise':
+      return { label: 'Passer la reprise', run: () => dispatch({ type: 'REPRISE_DONE' }) }
     case 'questions':
-      if (session.revenge.stage !== 'idle' && session.revenge.stage !== 'done') {
-        return { label: 'Passer la revanche', run: () => dispatch({ type: 'REVENGE_DONE' }) }
+      if (session.questions.index >= session.plan.questions.length) {
+        return { label: 'Passer le zapping', run: () => dispatch({ type: 'ZAPPING_DONE' }) }
       }
       return { label: 'Passer cette question', run: () => dispatch({ type: 'QUESTION_SKIP' }) }
     case 'gaps':
+      if (inTaboo(session)) {
+        return { label: 'Passer le monologue', run: () => dispatch({ type: 'TABOO_SKIP' }) }
+      }
       return { label: 'Passer ce mot', run: () => dispatch({ type: 'GAP_NEXT' }) }
     case 'feedback':
       return { label: 'Passer le feedback', run: () => dispatch({ type: 'FEEDBACK_SKIP' }) }
@@ -138,6 +178,8 @@ function skipFor(
 export default function TrainingPage() {
   const { state, updateWith } = useAppState()
   const sessionRecorder = useAudioRecorder({ keepStream: true })
+  const [searchParams] = useSearchParams()
+  const requestedMode = parseMode(searchParams.get('mode'))
 
   const initialSession = useMemo<TrainingSessionState | null>(() => {
     // An unfinished session saved by an older version restarts cleanly.
@@ -145,7 +187,7 @@ export default function TrainingPage() {
       return state.inProgressSession
     }
     try {
-      const plan = buildSessionPlan(state)
+      const plan = buildSessionPlan(state, Math.random, requestedMode)
       return createSessionState(plan, trainingLevelForSessions(state.sessions))
     } catch {
       return null
@@ -160,16 +202,18 @@ export default function TrainingPage() {
   )
 
   const roundRecordings = useFluencyRecordings(sessionRecorder, session?.fluency)
-  const inQuestions =
-    Boolean(session) && session.phase === 'active' && getCurrentStage(session) === 'questions'
-  const questionRecordings = useQuestionRecordings(sessionRecorder, session, inQuestions)
+  const questionRecordings = useQuestionRecordings(sessionRecorder, session)
 
-  // The microphone stays open across the four rounds and the surprise
-  // questions, then is handed back.
+  // The microphone stays open across the rounds, the reprise, the questions
+  // and the taboo monologue, then is handed back.
+  const currentStage = session ? getCurrentStage(session) : null
   const microphoneInUse =
     Boolean(session) &&
-    ((getCurrentStage(session) === 'fluency' && session.fluency.stage !== 'summary') ||
-      inQuestions)
+    session.phase === 'active' &&
+    ((currentStage === 'fluency' && session.fluency.stage !== 'summary') ||
+      currentStage === 'reprise' ||
+      currentStage === 'questions' ||
+      (currentStage === 'gaps' && inTaboo(session)))
   const releaseMicrophone = sessionRecorder.release
   useEffect(() => {
     if (!microphoneInUse) releaseMicrophone()
@@ -187,7 +231,7 @@ export default function TrainingPage() {
     session.phase === 'active' &&
     getCurrentStage(session) === 'fluency' &&
     (session.fluency.stage !== 'prep' || session.fluency.roundIndex > 0) &&
-    session.fluency.roundIndex < FLUENCY_ROUND_SECONDS.length - 1 &&
+    session.fluency.roundIndex < roundSecondsOf(session.plan).length - 1 &&
     !session.fluency.transferPrompt
   const topicId = session?.plan.topic.id
   useEffect(() => {
@@ -251,6 +295,8 @@ export default function TrainingPage() {
       blockedWord: session.feedback.blockedWord,
       expressionToReuse: session.feedback.expressionToReuse,
       topicId: plan.topic.id,
+      ...(session.repriseDone && plan.repriseTopic ? { repriseTopicId: plan.repriseTopic.id } : {}),
+      ...(session.taboo?.stage === 'done' && plan.taboo ? { tabooId: plan.taboo.id } : {}),
       questionIds,
       chunkIds: plan.chunks.map((chunk) => chunk.id),
       genericWordIds,
@@ -262,11 +308,17 @@ export default function TrainingPage() {
         chunksUsed: (session.usedChunkIds ?? []).length,
         questionBlocks,
         retelling: Boolean(plan.retellingStory),
+        constantTime: Boolean(plan.constantTime),
+        questionRetries: session.questionRetries ?? 0,
+        zappingDone: session.zapping?.stage === 'done',
+        ...(session.taboo?.rating ? { tabooRating: session.taboo.rating } : {}),
+        mode: plan.mode ?? 'full',
       },
     }
 
     updateWith((prev) => {
       let next = recordCompletedSession(prev, record)
+      next = applyQuestionRatings(next, session.questionRatings, now, QUESTION_REVIEW_DAYS)
 
       for (const result of session.chunkResults) {
         next = upsertChunkReview(next, result.chunkId, result.result, now)
@@ -362,6 +414,9 @@ export default function TrainingPage() {
 
   const stage = getCurrentStage(session)
   const skip = skipFor(session, stage, dispatch)
+  const stages = activeStages(session.plan)
+  const listening = sessionRecorder.status === 'recording'
+  const currentKey = speakingKey(session)
 
   return (
     <TimerPersistenceContext.Provider value={timerPersistence}>
@@ -371,7 +426,11 @@ export default function TrainingPage() {
         phase={session.phase}
         stageIndex={session.stageIndex}
         stageProgress={stageProgress(session)}
+        stages={stages}
       />
+      {session.phase === 'active' && session.plan.mode && session.plan.mode !== 'full' && session.stageIndex === 0 ? (
+        <p className="pill pill--soft">{MODE_LABELS[session.plan.mode]}</p>
+      ) : null}
 
       {session.phase === 'complete' ? <CompletedScreen session={session} /> : null}
 
@@ -412,6 +471,8 @@ export default function TrainingPage() {
           recordings={roundRecordings}
           retellingStory={session.plan.retellingStory ?? null}
           prosodyFocusGoal={session.plan.prosodyFocusGoal ?? null}
+          roundSeconds={roundSecondsOf(session.plan)}
+          constantTime={Boolean(session.plan.constantTime)}
           onKeywordsChange={(keywords) =>
             dispatch({ type: 'FLUENCY_SET_KEYWORDS', keywords })
           }
@@ -428,16 +489,37 @@ export default function TrainingPage() {
         />
       ) : null}
 
+      {session.phase === 'active' && stage === 'reprise' && session.plan.repriseTopic ? (
+        <RepriseExercise
+          topic={session.plan.repriseTopic}
+          stage={session.reprise.stage}
+          recording={listening && currentKey !== null}
+          onStart={() => dispatch({ type: 'REPRISE_START' })}
+          onDone={() => dispatch({ type: 'REPRISE_DONE' })}
+        />
+      ) : null}
+
       {session.phase === 'active' && stage === 'questions' ? (
         <QuestionsRenderer
           session={session}
           onSession={dispatch}
           recordings={questionRecordings}
-          recording={sessionRecorder.status === 'recording'}
+          recording={listening && currentKey !== null}
         />
       ) : null}
 
-      {session.phase === 'active' && stage === 'gaps' ? (
+      {session.phase === 'active' && stage === 'gaps' && inTaboo(session) && session.plan.taboo ? (
+        <TabooExercise
+          taboo={session.plan.taboo}
+          stage={session.taboo.stage}
+          recording={listening && currentKey !== null}
+          onStart={() => dispatch({ type: 'TABOO_START' })}
+          onSpoken={() => dispatch({ type: 'TABOO_SPOKEN' })}
+          onRate={(rating) => dispatch({ type: 'TABOO_RATE', rating })}
+        />
+      ) : null}
+
+      {session.phase === 'active' && stage === 'gaps' && !inTaboo(session) && session.plan.gapItems[session.gaps.index] ? (
         <WordGapsExercise
           key={`gap-${session.gaps.index}-${session.gaps.step}`}
           item={session.plan.gapItems[session.gaps.index]}
@@ -468,14 +550,13 @@ export default function TrainingPage() {
           onToggleReminder={(reminderId) =>
             dispatch({ type: 'FLUENCY_TOGGLE_REMINDER_USED', reminderId })
           }
-          revengeClips={
-            session.revenge.questionId && questionRecordings[REVENGE_RECORDING]
-              ? {
-                  before: questionRecordings[session.revenge.questionId] ?? null,
-                  after: questionRecordings[REVENGE_RECORDING],
-                }
-              : null
-          }
+          questionClips={session.plan.questions
+            .filter((question) => questionRecordings[question.id] || questionRecordings[retryKey(question.id)])
+            .map((question) => ({
+              question: question.text,
+              before: questionRecordings[question.id] ?? null,
+              after: questionRecordings[retryKey(question.id)] ?? null,
+            }))}
           chunksOfDay={session.plan.chunksOfDay}
           usedChunkIds={session.usedChunkIds ?? []}
           onToggleChunk={(chunkId) => dispatch({ type: 'CHUNK_TOGGLE_USED', chunkId })}
@@ -505,54 +586,15 @@ function QuestionsRenderer({
 }) {
   const plan = session.plan
 
-  if (
-    session.revenge.stage === 'countdown' ||
-    session.revenge.stage === 'prep' ||
-    session.revenge.stage === 'speaking'
-  ) {
-    const revengeQuestion =
-      plan.questions.find(
-        (question) => question.id === session.revenge.questionId,
-      ) ??
-      (plan.pivotQuestion?.id === session.revenge.questionId
-        ? plan.pivotQuestion
-        : undefined)
-    if (!revengeQuestion) {
-      return (
-        <section className="card card--center">
-          <h2>Revanche</h2>
-          <button
-            type="button"
-            className="button button--block"
-            onClick={() => onSession({ type: 'REVENGE_DONE' })}
-          >
-            Continuer
-          </button>
-        </section>
-      )
-    }
-
+  if (session.questions.index >= plan.questions.length) {
     return (
-      <SurpriseQuestionsExercise
-        key={`revenge-${session.revenge.stage}`}
-        question={revengeQuestion}
-        index={0}
-        total={plan.questions.length}
-        stage={session.revenge.stage as 'countdown' | 'prep' | 'speaking'}
-        prepSeconds={prepSeconds(session)}
-        speakingSeconds={speakingSecondsForLevel(session.level)}
-        chunksOfDay={plan.chunksOfDay}
-        focusWords={plan.focusWords}
-        revenge
-        recording={recording && session.revenge.stage === 'speaking'}
-        previousAnswerUrl={
-          session.revenge.questionId ? recordings[session.revenge.questionId] ?? null : null
-        }
-        onCountdownDone={() => onSession({ type: 'REVENGE_COUNTDOWN_DONE' })}
-        onPrepDone={() => onSession({ type: 'REVENGE_PREP_DONE' })}
-        onSpeakingDone={() => onSession({ type: 'REVENGE_DONE' })}
-        onRate={() => undefined}
-        onDone={() => onSession({ type: 'REVENGE_DONE' })}
+      <ZappingExercise
+        questions={plan.zappingQuestions ?? []}
+        stage={session.zapping.stage}
+        index={session.zapping.index}
+        recording={recording}
+        onStart={() => onSession({ type: 'ZAPPING_START' })}
+        onNext={() => onSession({ type: 'ZAPPING_NEXT' })}
       />
     )
   }
@@ -560,8 +602,6 @@ function QuestionsRenderer({
   const question = plan.questions[session.questions.index]
   if (!question) return null
   const isLastQuestion = session.questions.index === plan.questions.length - 1
-  const pivotQuestion =
-    session.level === 3 && isLastQuestion ? plan.pivotQuestion : null
 
   return (
     <SurpriseQuestionsExercise
@@ -572,15 +612,19 @@ function QuestionsRenderer({
       stage={session.questions.stage}
       prepSeconds={prepSeconds(session)}
       speakingSeconds={speakingSecondsForLevel(session.level)}
+      advanced={session.level === 3 && isLastQuestion}
       chunksOfDay={plan.chunksOfDay}
       focusWords={plan.focusWords}
-      pivotQuestion={pivotQuestion}
-      recording={recording && session.questions.stage === 'speaking'}
+      recording={recording}
+      firstAnswerUrl={recordings[question.id] ?? null}
+      note={session.questionNotes?.[question.id] ?? ''}
       onCountdownDone={() => onSession({ type: 'QUESTION_COUNTDOWN_DONE' })}
       onPrepDone={() => onSession({ type: 'QUESTION_PREP_DONE' })}
       onSpeakingDone={() => onSession({ type: 'QUESTION_SPEAKING_DONE' })}
       onRate={(rating) => onSession({ type: 'QUESTION_RATE', rating })}
-      onDone={() => undefined}
+      onNoteChange={(note) => onSession({ type: 'QUESTION_NOTE_SET', note })}
+      onNoteDone={() => onSession({ type: 'QUESTION_NOTE_DONE' })}
+      onRetryDone={() => onSession({ type: 'QUESTION_RETRY_DONE' })}
     />
   )
 }

@@ -27,6 +27,7 @@
   /* Tile gradients, one per activity. */
   --tile-chunks: linear-gradient(135deg, #8b5cf6, #c084fc);
   --tile-fluency: linear-gradient(135deg, #5b5bd6, #8b5cf6);
+  --tile-reprise: linear-gradient(135deg, #7c3aed, #c084fc);
   --tile-questions: linear-gradient(135deg, #ff6b9d, #ff9f68);
   --tile-gaps: linear-gradient(135deg, #0bbf9a, #38d9a9);
   --tile-feedback: linear-gradient(135deg, #ffd166, #ff9f68);
