@@ -28,13 +28,6 @@ const question: Question = {
   difficulty: 'medium',
 }
 
-const pivot: Question = {
-  id: 'q-b',
-  text: "Maintenant : l'intelligence artificielle à l'école.",
-  category: 'technologie',
-  difficulty: 'hard',
-}
-
 function recorder(overrides: Partial<AudioRecorder> = {}): AudioRecorder {
   return {
     status: 'idle',
@@ -123,7 +116,7 @@ describe('4→3→2 alignment', () => {
     expect(screen.getByRole('heading', { name: /réécoute/i })).toBeInTheDocument()
     expect(container.querySelectorAll('audio')).toHaveLength(4)
     // Once in the round pills, once as the AudioClip caption.
-    expect(screen.getAllByText('Transfert — 1:00')).toHaveLength(2)
+    expect(screen.getAllByText('Transfert — 2:00')).toHaveLength(2)
     expect(screen.getAllByRole('link', { name: 'Télécharger' })).toHaveLength(4)
 
     fireEvent.click(screen.getByRole('button', { name: /continuer/i }))
@@ -171,7 +164,9 @@ describe('surprise-question timing', () => {
         onPrepDone={onPrepDone}
         onSpeakingDone={() => undefined}
         onRate={() => undefined}
-        onDone={() => undefined}
+        onNoteChange={() => undefined}
+        onNoteDone={() => undefined}
+        onRetryDone={() => undefined}
       />,
     )
 
@@ -200,7 +195,9 @@ describe('surprise-question timing', () => {
         onPrepDone={() => undefined}
         onSpeakingDone={onSpeakingDone}
         onRate={() => undefined}
-        onDone={() => undefined}
+        onNoteChange={() => undefined}
+        onNoteDone={() => undefined}
+        onRetryDone={() => undefined}
       />,
     )
 
@@ -219,39 +216,65 @@ describe('surprise-question timing', () => {
     expect(onSpeakingDone).toHaveBeenCalledTimes(1)
   })
 
-  it('gives 60 seconds to the first question, then an additional 30-second pivot', () => {
-    vi.useFakeTimers()
-    const onSpeakingDone = vi.fn()
-
+  it('shows springboards and the full answer structure during the preparation', () => {
     render(
       <SurpriseQuestionsExercise
         question={question}
-        index={4}
-        total={5}
-        stage="speaking"
-        prepSeconds={3}
+        index={0}
+        total={2}
+        stage="prep"
+        prepSeconds={5}
         chunksOfDay={[]}
         focusWords={[]}
-        pivotQuestion={pivot}
         onCountdownDone={() => undefined}
         onPrepDone={() => undefined}
-        onSpeakingDone={onSpeakingDone}
+        onSpeakingDone={() => undefined}
         onRate={() => undefined}
-        onDone={() => undefined}
+        onNoteChange={() => undefined}
+        onNoteDone={() => undefined}
+        onRetryDone={() => undefined}
       />,
     )
+    expect(screen.getByText('Position → raison → exemple → nuance → conclusion')).toBeInTheDocument()
+    expect(screen.getByText('Démarre par un tremplin')).toBeInTheDocument()
+  })
 
-    act(() => {
-      vi.advanceTimersByTime(60_000)
-    })
-
-    expect(screen.getByText(pivot.text)).toBeInTheDocument()
-    expect(onSpeakingDone).not.toHaveBeenCalled()
-
+  it('notes what was missing for 30 seconds, then gives 60 seconds to answer again', () => {
+    vi.useFakeTimers()
+    const onNoteDone = vi.fn()
+    const onRetryDone = vi.fn()
+    const common = {
+      question,
+      index: 0,
+      total: 2,
+      prepSeconds: 3,
+      chunksOfDay: [],
+      focusWords: [],
+      onCountdownDone: () => undefined,
+      onPrepDone: () => undefined,
+      onSpeakingDone: () => undefined,
+      onRate: () => undefined,
+      onNoteChange: () => undefined,
+      onNoteDone,
+      onRetryDone,
+    }
+    const { unmount } = render(<SurpriseQuestionsExercise {...common} stage="note" />)
     act(() => {
       vi.advanceTimersByTime(30_000)
     })
-    expect(onSpeakingDone).toHaveBeenCalledTimes(1)
+    expect(onNoteDone).toHaveBeenCalledTimes(1)
+    unmount()
+
+    render(<SurpriseQuestionsExercise {...common} stage="retry" note="un exemple concret" speakingSeconds={90} />)
+    expect(screen.getByText('un exemple concret')).toBeInTheDocument()
+    act(() => {
+      vi.advanceTimersByTime(59_000)
+    })
+    expect(onRetryDone).not.toHaveBeenCalled()
+    act(() => {
+      vi.advanceTimersByTime(1_000)
+    })
+    expect(onRetryDone).toHaveBeenCalledTimes(1)
   })
 })
 

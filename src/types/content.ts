@@ -51,6 +51,27 @@ export interface Chunk {
   level: string
   register?: Register
   usageTip?: string
+  /** How it is really said in conversation ("Chais pas…" for "Je ne sais pas…"). */
+  spoken?: string
+  /** A real speaker saying it, cut from the prosody bank. */
+  nativeClip?: NativeClip
+}
+
+/** A few seconds of a recording from the prosody bank. */
+export interface NativeClip {
+  /** Prosody excerpt the clip is cut from. */
+  exerciseId: string
+  start: number
+  end: number
+}
+
+/** "Monologue tabou": describe a subject without its obvious words. */
+export interface TabooTopic {
+  id: string
+  subject: string
+  category: string
+  /** The 3 to 5 words that may not be said. */
+  forbidden: string[]
 }
 
 export interface ConversationScenario {
@@ -84,6 +105,7 @@ export interface ContentRepository {
   chunks: readonly Chunk[]
   conversationScenarios: readonly ConversationScenario[]
   retellingStories: readonly RetellingStory[]
+  tabooTopics: readonly TabooTopic[]
 }
 
 export interface Identifiable {

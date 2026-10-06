@@ -1,11 +1,19 @@
 import type {
   BlockRating,
   GapItem,
+  QuestionStage,
   RecallResult,
   SessionPlan,
+  StageKind,
   TrainingSessionState,
 } from './types'
-import { FLUENCY_ROUND_SECONDS, STAGE_ORDER, TRAINING_SESSION_SCHEMA, prepSecondsForLevel } from './types'
+import {
+  FLUENCY_ROUND_SECONDS,
+  MAX_KEYWORDS,
+  STAGE_ORDER,
+  TRAINING_SESSION_SCHEMA,
+  prepSecondsForLevel,
+} from './types'
 import type { SessionFeedback } from './types'
 import type { TimerSnapshot } from '../../hooks/useCountdownTimer'
 
@@ -31,20 +39,29 @@ export type TrainingAction =
       missedChunk?: string
       missedChunkIntent?: string
     }
+  | { type: 'REPRISE_START' }
+  | { type: 'REPRISE_DONE' }
   | { type: 'QUESTION_COUNTDOWN_DONE' }
   | { type: 'QUESTION_PREP_DONE' }
   | { type: 'QUESTION_SPEAKING_DONE' }
   | { type: 'QUESTION_RATE'; rating: BlockRating }
+  | { type: 'QUESTION_NOTE_SET'; note: string }
+  | { type: 'QUESTION_NOTE_DONE' }
+  | { type: 'QUESTION_RETRY_DONE' }
   | { type: 'QUESTION_SKIP' }
-  | { type: 'REVENGE_COUNTDOWN_DONE' }
-  | { type: 'REVENGE_PREP_DONE' }
-  | { type: 'REVENGE_DONE' }
+  | { type: 'ZAPPING_START' }
+  | { type: 'ZAPPING_NEXT' }
+  | { type: 'ZAPPING_DONE' }
   | { type: 'GAP_FOUND' }
   | { type: 'GAP_VERIFY'; correct: boolean }
   | { type: 'GAP_CAPTURE'; context: string }
   | { type: 'GAP_START_PARAPHRASE' }
   | { type: 'GAP_REVEAL' }
   | { type: 'GAP_NEXT' }
+  | { type: 'TABOO_START' }
+  | { type: 'TABOO_SPOKEN' }
+  | { type: 'TABOO_RATE'; rating: BlockRating }
+  | { type: 'TABOO_SKIP' }
   | { type: 'FLUENCY_TOGGLE_REMINDER_USED'; reminderId: string }
   | { type: 'CHUNK_TOGGLE_USED'; chunkId: string }
   | {
@@ -70,7 +87,7 @@ export function createSessionState(
   level: 1 | 2 | 3,
   now: Date = new Date(),
 ): TrainingSessionState {
-  return {
+  const state: TrainingSessionState = {
     schema: TRAINING_SESSION_SCHEMA,
     sessionId: createSessionId(now),
     startedAt: now.toISOString(),
@@ -92,12 +109,15 @@ export function createSessionState(
       missedChunk: '',
       missedChunkIntent: '',
     },
+    reprise: { stage: 'intro' },
     questions: { index: 0, stage: 'countdown' },
     questionRatings: [],
-    revenge: { questionId: null, stage: 'idle' },
+    questionNotes: {},
+    zapping: { stage: 'intro', index: 0 },
     gaps: { index: 0, step: initialGapStep(plan.gapItems[0]) },
     gapResults: [],
     gapCaptures: [],
+    taboo: { stage: 'intro', rating: null },
     feedback: {
       blockedWord: '',
       blockedWordContext: '',
@@ -109,12 +129,36 @@ export function createSessionState(
       fluencyScore: null,
     },
   }
+  return skipEmptyStages(state)
 }
 
-export function getCurrentStage(
-  state: TrainingSessionState,
-): (typeof STAGE_ORDER)[number] {
+export function getCurrentStage(state: TrainingSessionState): StageKind {
   return STAGE_ORDER[state.stageIndex] ?? 'feedback'
+}
+
+/** Whether this session goes through `stage` (not skipped, and has content). */
+export function stageIsActive(plan: SessionPlan, stage: StageKind): boolean {
+  if ((plan.skippedStages ?? []).includes(stage)) return false
+  if (stage === 'chunks') return plan.chunks.length > 0
+  if (stage === 'reprise') return Boolean(plan.repriseTopic)
+  if (stage === 'questions') {
+    return plan.questions.length > 0 || (plan.zappingQuestions ?? []).length > 0
+  }
+  if (stage === 'gaps') return plan.gapItems.length > 0 || Boolean(plan.taboo)
+  return true
+}
+
+/** The stages this session really goes through, in order. */
+export function activeStages(plan: SessionPlan): StageKind[] {
+  return STAGE_ORDER.filter((stage) => stageIsActive(plan, stage))
+}
+
+function skipEmptyStages(state: TrainingSessionState): TrainingSessionState {
+  let index = state.stageIndex
+  while (index < STAGE_ORDER.length - 1 && !stageIsActive(state.plan, STAGE_ORDER[index])) {
+    index += 1
+  }
+  return index === state.stageIndex ? state : { ...state, stageIndex: index }
 }
 
 export function isFeedbackValid(feedback: SessionFeedback): boolean {
@@ -138,19 +182,24 @@ export function prepSeconds(state: TrainingSessionState): number {
   return prepSecondsForLevel(state.level)
 }
 
+/** Length of each round of this session (4/3/2 or the weekly 3/3/3). */
+export function roundSecondsOf(plan: SessionPlan): readonly number[] {
+  return plan.roundSeconds?.length ? plan.roundSeconds : FLUENCY_ROUND_SECONDS
+}
+
 function advanceStage(state: TrainingSessionState): TrainingSessionState {
   if (state.stageIndex + 1 >= STAGE_ORDER.length) {
     return { ...state, phase: 'complete' }
   }
-  return { ...state, stageIndex: state.stageIndex + 1 }
+  return skipEmptyStages({ ...state, stageIndex: state.stageIndex + 1 })
 }
 
 /**
- * Moves to the next fluency round. After the transfert round, the recorded
+ * Moves to the next fluency round. After the transfer round, the recorded
  * rounds are replayed in a summary — unless recording was turned off.
  */
 function advanceFluencyRound(state: TrainingSessionState): TrainingSessionState {
-  if (state.fluency.roundIndex + 1 >= FLUENCY_ROUND_SECONDS.length) {
+  if (state.fluency.roundIndex + 1 >= roundSecondsOf(state.plan).length) {
     if (!state.fluency.recordAll) return advanceStage(state)
     return { ...state, fluency: { ...state.fluency, stage: 'summary' } }
   }
@@ -165,7 +214,7 @@ function advanceFluencyRound(state: TrainingSessionState): TrainingSessionState 
 }
 
 /**
- * Leaves a running round: the first one asks for the mini feedback before
+ * Leaves a running round: the first one asks for the delayed feedback before
  * round 2, the others move straight on.
  */
 function completeFluencyRound(state: TrainingSessionState): TrainingSessionState {
@@ -173,6 +222,30 @@ function completeFluencyRound(state: TrainingSessionState): TrainingSessionState
     return { ...state, fluency: { ...state.fluency, stage: 'feedback' } }
   }
   return advanceFluencyRound(state)
+}
+
+function setQuestionStage(state: TrainingSessionState, stage: QuestionStage): TrainingSessionState {
+  return { ...state, questions: { ...state.questions, stage } }
+}
+
+/** After a question cycle: the next question, then the zapping, then the next stage. */
+function nextQuestion(state: TrainingSessionState): TrainingSessionState {
+  if (state.questions.index + 1 < state.plan.questions.length) {
+    return { ...state, questions: { index: state.questions.index + 1, stage: 'countdown' } }
+  }
+  const finished = { ...state, questions: { ...state.questions, index: state.plan.questions.length } }
+  if ((state.plan.zappingQuestions ?? []).length > 0 && state.zapping.stage !== 'done') {
+    return { ...finished, zapping: { stage: 'intro', index: 0 } }
+  }
+  return advanceStage(finished)
+}
+
+/** After the word gaps, the taboo monologue; then the next stage. */
+function afterGaps(state: TrainingSessionState): TrainingSessionState {
+  if (state.plan.taboo && state.taboo.stage === 'intro' && !state.tabooStarted) {
+    return { ...state, tabooStarted: true, gaps: { ...state.gaps, index: state.plan.gapItems.length } }
+  }
+  return advanceStage(state)
 }
 
 export function sessionReducer(
@@ -217,7 +290,7 @@ export function sessionReducer(
     case 'FLUENCY_SET_KEYWORDS':
       return {
         ...state,
-        fluency: { ...state.fluency, keywords: action.keywords.slice(0, 3) },
+        fluency: { ...state.fluency, keywords: action.keywords.slice(0, MAX_KEYWORDS) },
       }
 
     case 'FLUENCY_SET_RECORD_ALL':
@@ -234,7 +307,7 @@ export function sessionReducer(
     case 'FLUENCY_SET_TRANSFER': {
       const prompt = action.prompt.trim()
       const { roundIndex, transferPrompt } = state.fluency
-      if (!prompt || transferPrompt || roundIndex >= FLUENCY_ROUND_SECONDS.length - 1) {
+      if (!prompt || transferPrompt || roundIndex >= roundSecondsOf(state.plan).length - 1) {
         return state
       }
       return { ...state, fluency: { ...state.fluency, transferPrompt: prompt } }
@@ -272,68 +345,79 @@ export function sessionReducer(
         fluency: { ...state.fluency, roundIndex: 1, stage: 'ready' },
       }
 
+    case 'REPRISE_START':
+      if (state.reprise.stage !== 'intro') return state
+      return { ...state, reprise: { stage: 'running' } }
+
+    case 'REPRISE_DONE':
+      return advanceStage({ ...state, repriseDone: state.reprise.stage === 'running' })
+
     case 'QUESTION_COUNTDOWN_DONE':
-      return { ...state, questions: { ...state.questions, stage: 'prep' } }
+      return setQuestionStage(state, 'prep')
 
     case 'QUESTION_PREP_DONE':
-      return { ...state, questions: { ...state.questions, stage: 'speaking' } }
+      return setQuestionStage(state, 'speaking')
 
     case 'QUESTION_SPEAKING_DONE':
-      return { ...state, questions: { ...state.questions, stage: 'rate' } }
+      return setQuestionStage(state, 'rate')
 
-    case 'QUESTION_SKIP':
     case 'QUESTION_RATE': {
       const question = state.plan.questions[state.questions.index]
-      if (!question) return state
-      // The rating always belongs to the question that was asked, even when an
-      // advanced pivot followed it, so it can be chosen for the revenge.
-      // A skipped question is not rated.
-      const questionRatings =
-        action.type === 'QUESTION_RATE'
-          ? [...state.questionRatings, { questionId: question.id, rating: action.rating }]
-          : state.questionRatings
-
-      if (state.questions.index + 1 < state.plan.questions.length) {
-        return {
+      if (!question || state.questions.stage !== 'rate') return state
+      return setQuestionStage(
+        {
           ...state,
-          questionRatings,
-          questions: { index: state.questions.index + 1, stage: 'countdown' },
-        }
-      }
-
-      // "Reprends celle où tu as le plus bloqué": the revenge always happens,
-      // on the worst-rated question (the first one on a tie).
-      const rank: Record<BlockRating, number> = { none: 0, some: 1, much: 2 }
-      let worstId: string | null = null
-      let worstRank = -1
-      for (const entry of questionRatings) {
-        if (rank[entry.rating] > worstRank) {
-          worstRank = rank[entry.rating]
-          worstId = entry.questionId
-        }
-      }
-
-      if (worstId) {
-        return {
-          ...state,
-          questionRatings,
-          revenge: { questionId: worstId, stage: 'countdown' },
-        }
-      }
-      return advanceStage({ ...state, questionRatings })
+          questionRatings: [
+            ...state.questionRatings.filter((entry) => entry.questionId !== question.id),
+            { questionId: question.id, rating: action.rating },
+          ],
+        },
+        'note',
+      )
     }
 
-    case 'REVENGE_COUNTDOWN_DONE':
-      return { ...state, revenge: { ...state.revenge, stage: 'prep' } }
-
-    case 'REVENGE_PREP_DONE':
-      return { ...state, revenge: { ...state.revenge, stage: 'speaking' } }
-
-    case 'REVENGE_DONE':
-      return advanceStage({
+    case 'QUESTION_NOTE_SET': {
+      const question = state.plan.questions[state.questions.index]
+      if (!question) return state
+      return {
         ...state,
-        revenge: { ...state.revenge, stage: 'done' },
+        questionNotes: { ...(state.questionNotes ?? {}), [question.id]: action.note },
+      }
+    }
+
+    case 'QUESTION_NOTE_DONE':
+      if (state.questions.stage !== 'note') return state
+      return setQuestionStage(state, 'retry')
+
+    case 'QUESTION_RETRY_DONE':
+      if (state.questions.stage !== 'retry') return state
+      return nextQuestion({
+        ...state,
+        questionRetries: (state.questionRetries ?? 0) + 1,
       })
+
+    // A skipped question is not rated; skipping during the zapping ends it.
+    case 'QUESTION_SKIP':
+      if (state.questions.index >= state.plan.questions.length) {
+        return advanceStage({ ...state, zapping: { ...state.zapping, stage: 'done' } })
+      }
+      return nextQuestion(state)
+
+    case 'ZAPPING_START':
+      if (state.zapping.stage !== 'intro') return state
+      return { ...state, zapping: { stage: 'running', index: 0 } }
+
+    case 'ZAPPING_NEXT': {
+      if (state.zapping.stage !== 'running') return state
+      const next = state.zapping.index + 1
+      if (next >= (state.plan.zappingQuestions ?? []).length) {
+        return advanceStage({ ...state, zapping: { stage: 'done', index: next } })
+      }
+      return { ...state, zapping: { stage: 'running', index: next } }
+    }
+
+    case 'ZAPPING_DONE':
+      return advanceStage({ ...state, zapping: { ...state.zapping, stage: 'done' } })
 
     case 'GAP_FOUND':
       // The learner has an answer: show it, then let them say whether it was
@@ -380,8 +464,9 @@ export function sessionReducer(
     }
 
     case 'GAP_NEXT': {
+      if (state.gaps.index >= state.plan.gapItems.length) return afterGaps(state)
       const nextIndex = state.gaps.index + 1
-      if (nextIndex >= state.plan.gapItems.length) return advanceStage(state)
+      if (nextIndex >= state.plan.gapItems.length) return afterGaps(state)
       return {
         ...state,
         gaps: {
@@ -390,6 +475,21 @@ export function sessionReducer(
         },
       }
     }
+
+    case 'TABOO_START':
+      if (state.taboo.stage !== 'intro') return state
+      return { ...state, taboo: { ...state.taboo, stage: 'running' } }
+
+    case 'TABOO_SPOKEN':
+      if (state.taboo.stage !== 'running') return state
+      return { ...state, taboo: { ...state.taboo, stage: 'rate' } }
+
+    case 'TABOO_RATE':
+      if (state.taboo.stage !== 'rate') return state
+      return advanceStage({ ...state, taboo: { stage: 'done', rating: action.rating } })
+
+    case 'TABOO_SKIP':
+      return advanceStage({ ...state, taboo: { ...state.taboo, stage: 'done' } })
 
     case 'FLUENCY_TOGGLE_REMINDER_USED': {
       const current = state.usedFluencyReminderIds ?? []

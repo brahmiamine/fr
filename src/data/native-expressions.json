@@ -69,7 +69,8 @@
     "category": "opinion",
     "level": "B2",
     "register": "courant",
-    "usageTip": "À réutiliser pour exprimer un doute sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour exprimer un doute sans reconstruire la phrase mot par mot.",
+    "spoken": "J'en suis pas si sûr…"
   },
   {
     "id": "chunk_009",
@@ -78,7 +79,8 @@
     "category": "conversation",
     "level": "B1",
     "register": "courant",
-    "usageTip": "À réutiliser pour reconnaître le point de vue de l'autre sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour reconnaître le point de vue de l'autre sans reconstruire la phrase mot par mot.",
+    "spoken": "J'vois ce que tu veux dire."
   },
   {
     "id": "chunk_010",
@@ -222,7 +224,8 @@
     "category": "reformulation",
     "level": "B1",
     "register": "courant",
-    "usageTip": "À réutiliser pour corriger ce qu'on vient de dire sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour corriger ce qu'on vient de dire sans reconstruire la phrase mot par mot.",
+    "spoken": "Enfin, j'veux dire…"
   },
   {
     "id": "chunk_026",
@@ -384,7 +387,8 @@
     "category": "opinion",
     "level": "B1",
     "register": "courant",
-    "usageTip": "À réutiliser pour donner son avis spontanément sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour donner son avis spontanément sans reconstruire la phrase mot par mot.",
+    "spoken": "Moi, j'dirais que…"
   },
   {
     "id": "chunk_044",
@@ -393,7 +397,8 @@
     "category": "opinion",
     "level": "B1",
     "register": "courant",
-    "usageTip": "À réutiliser pour donner son avis personnel sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour donner son avis personnel sans reconstruire la phrase mot par mot.",
+    "spoken": "Personnellement, j'trouve que…"
   },
   {
     "id": "chunk_045",
@@ -402,7 +407,8 @@
     "category": "opinion",
     "level": "A2",
     "register": "courant",
-    "usageTip": "À réutiliser pour exprimer ce qu'on pense sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour exprimer ce qu'on pense sans reconstruire la phrase mot par mot.",
+    "spoken": "J'pense que…"
   },
   {
     "id": "chunk_046",
@@ -411,7 +417,8 @@
     "category": "opinion",
     "level": "A2",
     "register": "courant",
-    "usageTip": "À réutiliser pour exprimer une conviction légère sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour exprimer une conviction légère sans reconstruire la phrase mot par mot.",
+    "spoken": "J'crois que…"
   },
   {
     "id": "chunk_047",
@@ -420,7 +427,8 @@
     "category": "opinion",
     "level": "B2",
     "register": "courant",
-    "usageTip": "À réutiliser pour exprimer une conviction forte sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour exprimer une conviction forte sans reconstruire la phrase mot par mot.",
+    "spoken": "Chuis convaincu que…"
   },
   {
     "id": "chunk_048",
@@ -438,7 +446,8 @@
     "category": "opinion",
     "level": "A2",
     "register": "courant",
-    "usageTip": "À réutiliser pour donner son ressenti sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour donner son ressenti sans reconstruire la phrase mot par mot.",
+    "spoken": "J'trouve que…"
   },
   {
     "id": "chunk_050",
@@ -447,7 +456,8 @@
     "category": "opinion",
     "level": "A2",
     "register": "courant",
-    "usageTip": "À réutiliser pour donner une préférence sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour donner une préférence sans reconstruire la phrase mot par mot.",
+    "spoken": "J'préfère…"
   },
   {
     "id": "chunk_051",
@@ -465,7 +475,8 @@
     "category": "opinion",
     "level": "B1",
     "register": "courant",
-    "usageTip": "À réutiliser pour prendre position avec prudence sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour prendre position avec prudence sans reconstruire la phrase mot par mot.",
+    "spoken": "J'dirais plutôt que…"
   },
   {
     "id": "chunk_053",
@@ -483,7 +494,8 @@
     "category": "opinion",
     "level": "B1",
     "register": "courant",
-    "usageTip": "À réutiliser pour présenter sa façon de voir sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour présenter sa façon de voir sans reconstruire la phrase mot par mot.",
+    "spoken": "Moi, j'vois ça comme ça…"
   },
   {
     "id": "chunk_055",
@@ -492,7 +504,8 @@
     "category": "opinion",
     "level": "B1",
     "register": "familier",
-    "usageTip": "À réutiliser pour donner une opinion franche sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour donner une opinion franche sans reconstruire la phrase mot par mot.",
+    "spoken": "Franchement, j'pense que…"
   },
   {
     "id": "chunk_056",
@@ -501,7 +514,8 @@
     "category": "opinion",
     "level": "B1",
     "register": "courant",
-    "usageTip": "À réutiliser pour donner une opinion sincère sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour donner une opinion sincère sans reconstruire la phrase mot par mot.",
+    "spoken": "Honnêtement, j'trouve que…"
   },
   {
     "id": "chunk_057",
@@ -510,7 +524,8 @@
     "category": "opinion",
     "level": "B1",
     "register": "courant",
-    "usageTip": "À réutiliser pour exprimer une opinion actuelle sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour exprimer une opinion actuelle sans reconstruire la phrase mot par mot.",
+    "spoken": "En vrai, j'pense que…"
   },
   {
     "id": "chunk_058",
@@ -528,7 +543,8 @@
     "category": "opinion",
     "level": "B2",
     "register": "courant",
-    "usageTip": "À réutiliser pour reconnaître une vérité sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour reconnaître une vérité sans reconstruire la phrase mot par mot.",
+    "spoken": "Faut reconnaître que…"
   },
   {
     "id": "chunk_060",
@@ -555,7 +571,8 @@
     "category": "opinion",
     "level": "B1",
     "register": "courant",
-    "usageTip": "À réutiliser pour exprimer un jugement modéré sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour exprimer un jugement modéré sans reconstruire la phrase mot par mot.",
+    "spoken": "J'trouve ça plutôt…"
   },
   {
     "id": "chunk_063",
@@ -564,7 +581,8 @@
     "category": "reaction",
     "level": "A2",
     "register": "familier",
-    "usageTip": "À réutiliser pour exprimer une réaction positive sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour exprimer une réaction positive sans reconstruire la phrase mot par mot.",
+    "spoken": "J'trouve ça pas mal."
   },
   {
     "id": "chunk_064",
@@ -618,7 +636,8 @@
     "category": "conversation",
     "level": "A2",
     "register": "courant",
-    "usageTip": "À réutiliser pour dire qu'on comprend sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour dire qu'on comprend sans reconstruire la phrase mot par mot.",
+    "spoken": "J'comprends."
   },
   {
     "id": "chunk_070",
@@ -627,7 +646,8 @@
     "category": "conversation",
     "level": "A2",
     "register": "courant",
-    "usageTip": "À réutiliser pour montrer qu'on suit sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour montrer qu'on suit sans reconstruire la phrase mot par mot.",
+    "spoken": "J'vois."
   },
   {
     "id": "chunk_071",
@@ -636,7 +656,8 @@
     "category": "conversation",
     "level": "A2",
     "register": "courant",
-    "usageTip": "À réutiliser pour confirmer qu'on a compris sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour confirmer qu'on a compris sans reconstruire la phrase mot par mot.",
+    "spoken": "D'accord, j'vois."
   },
   {
     "id": "chunk_072",
@@ -744,7 +765,8 @@
     "category": "agreement",
     "level": "A2",
     "register": "courant",
-    "usageTip": "À réutiliser pour dire qu'on est d'accord sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour dire qu'on est d'accord sans reconstruire la phrase mot par mot.",
+    "spoken": "Chuis d'accord."
   },
   {
     "id": "chunk_084",
@@ -753,7 +775,8 @@
     "category": "agreement",
     "level": "A2",
     "register": "courant",
-    "usageTip": "À réutiliser pour dire qu'on partage l'idée sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour dire qu'on partage l'idée sans reconstruire la phrase mot par mot.",
+    "spoken": "J'pense pareil."
   },
   {
     "id": "chunk_085",
@@ -798,7 +821,8 @@
     "category": "nuance",
     "level": "B1",
     "register": "courant",
-    "usageTip": "À réutiliser pour accorder partiellement sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour accorder partiellement sans reconstruire la phrase mot par mot.",
+    "spoken": "Chuis d'accord sur ce point, mais…"
   },
   {
     "id": "chunk_090",
@@ -861,7 +885,8 @@
     "category": "nuance",
     "level": "B1",
     "register": "familier",
-    "usageTip": "À réutiliser pour dire qu'il y a des exceptions sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour dire qu'il y a des exceptions sans reconstruire la phrase mot par mot.",
+    "spoken": "Y a quand même des exceptions."
   },
   {
     "id": "chunk_097",
@@ -897,7 +922,8 @@
     "category": "nuance",
     "level": "B1",
     "register": "courant",
-    "usageTip": "À réutiliser pour dire qu'on peut comprendre les deux côtés sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour dire qu'on peut comprendre les deux côtés sans reconstruire la phrase mot par mot.",
+    "spoken": "J'comprends les deux points de vue."
   },
   {
     "id": "chunk_101",
@@ -915,7 +941,8 @@
     "category": "nuance",
     "level": "B2",
     "register": "courant",
-    "usageTip": "À réutiliser pour reconnaître partiellement sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour reconnaître partiellement sans reconstruire la phrase mot par mot.",
+    "spoken": "Y a du vrai là-dedans."
   },
   {
     "id": "chunk_103",
@@ -924,7 +951,8 @@
     "category": "disagreement",
     "level": "B1",
     "register": "courant",
-    "usageTip": "À réutiliser pour exprimer un désaccord poli sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour exprimer un désaccord poli sans reconstruire la phrase mot par mot.",
+    "spoken": "Chuis pas tout à fait d'accord."
   },
   {
     "id": "chunk_104",
@@ -933,7 +961,8 @@
     "category": "disagreement",
     "level": "A2",
     "register": "courant",
-    "usageTip": "À réutiliser pour exprimer un désaccord simple sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour exprimer un désaccord simple sans reconstruire la phrase mot par mot.",
+    "spoken": "Chuis pas d'accord."
   },
   {
     "id": "chunk_105",
@@ -969,7 +998,8 @@
     "category": "disagreement",
     "level": "B1",
     "register": "courant",
-    "usageTip": "À réutiliser pour mettre en doute une affirmation sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour mettre en doute une affirmation sans reconstruire la phrase mot par mot.",
+    "spoken": "Chuis pas sûr que…"
   },
   {
     "id": "chunk_109",
@@ -1023,7 +1053,8 @@
     "category": "disagreement",
     "level": "B1",
     "register": "courant",
-    "usageTip": "À réutiliser pour préciser qu'on ne voit pas pareil sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour préciser qu'on ne voit pas pareil sans reconstruire la phrase mot par mot.",
+    "spoken": "J'le vois pas comme ça."
   },
   {
     "id": "chunk_115",
@@ -1032,7 +1063,8 @@
     "category": "disagreement",
     "level": "B1",
     "register": "courant",
-    "usageTip": "À réutiliser pour adoucir un désaccord sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour adoucir un désaccord sans reconstruire la phrase mot par mot.",
+    "spoken": "J'vois ce que tu veux dire, mais…"
   },
   {
     "id": "chunk_116",
@@ -1041,7 +1073,8 @@
     "category": "disagreement",
     "level": "B1",
     "register": "courant",
-    "usageTip": "À réutiliser pour dire qu'on n'est qu'à moitié convaincu sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour dire qu'on n'est qu'à moitié convaincu sans reconstruire la phrase mot par mot.",
+    "spoken": "Chuis moyen convaincu."
   },
   {
     "id": "chunk_117",
@@ -1050,7 +1083,8 @@
     "category": "reformulation",
     "level": "B1",
     "register": "courant",
-    "usageTip": "À réutiliser pour clarifier son idée sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour clarifier son idée sans reconstruire la phrase mot par mot.",
+    "spoken": "Ce que j'veux dire, c'est que…"
   },
   {
     "id": "chunk_118",
@@ -1158,7 +1192,8 @@
     "category": "hesitation",
     "level": "B1",
     "register": "courant",
-    "usageTip": "À réutiliser pour chercher le mot exact sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour chercher le mot exact sans reconstruire la phrase mot par mot.",
+    "spoken": "Comment j'pourrais dire ça…"
   },
   {
     "id": "chunk_130",
@@ -1176,7 +1211,8 @@
     "category": "hesitation",
     "level": "B1",
     "register": "courant",
-    "usageTip": "À réutiliser pour reformuler faute de mot sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour reformuler faute de mot sans reconstruire la phrase mot par mot.",
+    "spoken": "Chais pas comment l'expliquer, mais…"
   },
   {
     "id": "chunk_132",
@@ -1185,7 +1221,8 @@
     "category": "conversation",
     "level": "B1",
     "register": "courant",
-    "usageTip": "À réutiliser pour faire comprendre approximativement sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour faire comprendre approximativement sans reconstruire la phrase mot par mot.",
+    "spoken": "Tu vois ce que j'veux dire ?"
   },
   {
     "id": "chunk_133",
@@ -1338,7 +1375,8 @@
     "category": "narration",
     "level": "A2",
     "register": "courant",
-    "usageTip": "À réutiliser pour introduire un souvenir sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour introduire un souvenir sans reconstruire la phrase mot par mot.",
+    "spoken": "J'me souviens que…"
   },
   {
     "id": "chunk_150",
@@ -1707,7 +1745,8 @@
     "category": "argumentation",
     "level": "B1",
     "register": "courant",
-    "usageTip": "À réutiliser pour introduire un autre angle sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour introduire un autre angle sans reconstruire la phrase mot par mot.",
+    "spoken": "Après, y a aussi…"
   },
   {
     "id": "chunk_191",
@@ -1734,7 +1773,8 @@
     "category": "structure",
     "level": "B1",
     "register": "courant",
-    "usageTip": "À réutiliser pour annoncer deux aspects sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour annoncer deux aspects sans reconstruire la phrase mot par mot.",
+    "spoken": "Y a deux choses…"
   },
   {
     "id": "chunk_194",
@@ -1743,7 +1783,8 @@
     "category": "structure",
     "level": "B1",
     "register": "courant",
-    "usageTip": "À réutiliser pour annoncer plusieurs raisons sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour annoncer plusieurs raisons sans reconstruire la phrase mot par mot.",
+    "spoken": "Y a plusieurs raisons…"
   },
   {
     "id": "chunk_195",
@@ -1806,7 +1847,8 @@
     "category": "structure",
     "level": "B1",
     "register": "courant",
-    "usageTip": "À réutiliser pour rappeler une idée précédente sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour rappeler une idée précédente sans reconstruire la phrase mot par mot.",
+    "spoken": "Comme j'disais…"
   },
   {
     "id": "chunk_202",
@@ -1815,7 +1857,8 @@
     "category": "structure",
     "level": "B1",
     "register": "courant",
-    "usageTip": "À réutiliser pour rappeler une information sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour rappeler une information sans reconstruire la phrase mot par mot.",
+    "spoken": "Comme j'te disais…"
   },
   {
     "id": "chunk_203",
@@ -1851,7 +1894,8 @@
     "category": "structure",
     "level": "B1",
     "register": "courant",
-    "usageTip": "À réutiliser pour conclure naturellement à l'oral sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour conclure naturellement à l'oral sans reconstruire la phrase mot par mot.",
+    "spoken": "Au final, j'pense que…"
   },
   {
     "id": "chunk_207",
@@ -2058,7 +2102,8 @@
     "category": "uncertainty",
     "level": "A2",
     "register": "courant",
-    "usageTip": "À réutiliser pour exprimer une incertitude sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour exprimer une incertitude sans reconstruire la phrase mot par mot.",
+    "spoken": "Chais pas trop…"
   },
   {
     "id": "chunk_230",
@@ -2130,7 +2175,8 @@
     "category": "uncertainty",
     "level": "B1",
     "register": "courant",
-    "usageTip": "À réutiliser pour exprimer une réserve sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour exprimer une réserve sans reconstruire la phrase mot par mot.",
+    "spoken": "J'peux me tromper, mais…"
   },
   {
     "id": "chunk_238",
@@ -2139,7 +2185,8 @@
     "category": "uncertainty",
     "level": "B1",
     "register": "courant",
-    "usageTip": "À réutiliser pour dire qu'on n'en est pas certain sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour dire qu'on n'en est pas certain sans reconstruire la phrase mot par mot.",
+    "spoken": "Chuis pas certain, mais…"
   },
   {
     "id": "chunk_239",
@@ -2193,7 +2240,8 @@
     "category": "hesitation",
     "level": "A2",
     "register": "courant",
-    "usageTip": "À réutiliser pour exprimer qu'on hésite sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour exprimer qu'on hésite sans reconstruire la phrase mot par mot.",
+    "spoken": "Chais pas…"
   },
   {
     "id": "chunk_245",
@@ -2202,7 +2250,8 @@
     "category": "hesitation",
     "level": "A2",
     "register": "courant",
-    "usageTip": "À réutiliser pour hésiter entre deux possibilités sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour hésiter entre deux possibilités sans reconstruire la phrase mot par mot.",
+    "spoken": "Chais pas si…"
   },
   {
     "id": "chunk_246",
@@ -2382,7 +2431,8 @@
     "category": "conversation",
     "level": "B1",
     "register": "courant",
-    "usageTip": "À réutiliser pour dire qu'on gère sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour dire qu'on gère sans reconstruire la phrase mot par mot.",
+    "spoken": "C'est bon, j'gère."
   },
   {
     "id": "chunk_266",
@@ -2436,7 +2486,8 @@
     "category": "conversation",
     "level": "A2",
     "register": "courant",
-    "usageTip": "À réutiliser pour inviter l'autre à parler sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour inviter l'autre à parler sans reconstruire la phrase mot par mot.",
+    "spoken": "J't'écoute."
   },
   {
     "id": "chunk_272",
@@ -2490,7 +2541,8 @@
     "category": "conversation",
     "level": "B1",
     "register": "courant",
-    "usageTip": "À réutiliser pour rebondir sur l'autre sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour rebondir sur l'autre sans reconstruire la phrase mot par mot.",
+    "spoken": "Oui, j'vois ce que tu veux dire."
   },
   {
     "id": "chunk_278",
@@ -2499,7 +2551,8 @@
     "category": "conversation",
     "level": "B1",
     "register": "courant",
-    "usageTip": "À réutiliser pour montrer qu'on comprend une situation sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour montrer qu'on comprend une situation sans reconstruire la phrase mot par mot.",
+    "spoken": "J'vois le truc."
   },
   {
     "id": "chunk_279",
@@ -2508,7 +2561,8 @@
     "category": "conversation",
     "level": "B1",
     "register": "courant",
-    "usageTip": "À réutiliser pour dire qu'on connaît la situation sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour dire qu'on connaît la situation sans reconstruire la phrase mot par mot.",
+    "spoken": "J'vois très bien."
   },
   {
     "id": "chunk_280",
@@ -2544,7 +2598,8 @@
     "category": "conversation",
     "level": "B1",
     "register": "familier",
-    "usageTip": "À réutiliser pour reprendre après une interruption sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour reprendre après une interruption sans reconstruire la phrase mot par mot.",
+    "spoken": "Bref, j'disais…"
   },
   {
     "id": "chunk_284",
@@ -2553,7 +2608,8 @@
     "category": "conversation",
     "level": "B1",
     "register": "courant",
-    "usageTip": "À réutiliser pour revenir au point précédent sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour revenir au point précédent sans reconstruire la phrase mot par mot.",
+    "spoken": "Comme j'disais tout à l'heure…"
   },
   {
     "id": "chunk_285",
@@ -2562,7 +2618,8 @@
     "category": "conversation",
     "level": "A2",
     "register": "courant",
-    "usageTip": "À réutiliser pour dire qu'on comprend maintenant sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour dire qu'on comprend maintenant sans reconstruire la phrase mot par mot.",
+    "spoken": "Ah oui, j'comprends mieux."
   },
   {
     "id": "chunk_286",
@@ -2571,7 +2628,8 @@
     "category": "conversation",
     "level": "B1",
     "register": "courant",
-    "usageTip": "À réutiliser pour dire qu'on suit le raisonnement sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour dire qu'on suit le raisonnement sans reconstruire la phrase mot par mot.",
+    "spoken": "Oui, j'vois l'idée."
   },
   {
     "id": "chunk_287",
@@ -2670,7 +2728,8 @@
     "category": "argumentation",
     "level": "B1",
     "register": "courant",
-    "usageTip": "À réutiliser pour comparer avantages et inconvénients sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour comparer avantages et inconvénients sans reconstruire la phrase mot par mot.",
+    "spoken": "Y a du pour et du contre."
   },
   {
     "id": "chunk_298",
@@ -2697,7 +2756,8 @@
     "category": "opinion",
     "level": "B1",
     "register": "courant",
-    "usageTip": "À réutiliser pour présenter un choix sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour présenter un choix sans reconstruire la phrase mot par mot.",
+    "spoken": "Si j'devais choisir, …"
   },
   {
     "id": "chunk_301",
@@ -2742,7 +2802,8 @@
     "category": "opinion",
     "level": "B1",
     "register": "courant",
-    "usageTip": "À réutiliser pour généraliser prudemment sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour généraliser prudemment sans reconstruire la phrase mot par mot.",
+    "spoken": "En général, j'dirais que…"
   },
   {
     "id": "chunk_306",
@@ -2769,7 +2830,8 @@
     "category": "nuance",
     "level": "B1",
     "register": "courant",
-    "usageTip": "À réutiliser pour nuancer une opposition sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour nuancer une opposition sans reconstruire la phrase mot par mot.",
+    "spoken": "Y a un juste milieu."
   },
   {
     "id": "chunk_309",
@@ -3174,7 +3236,8 @@
     "category": "reaction",
     "level": "B1",
     "register": "courant",
-    "usageTip": "À réutiliser pour exprimer qu'une idée évoque quelque chose sans reconstruire la phrase mot par mot."
+    "usageTip": "À réutiliser pour exprimer qu'une idée évoque quelque chose sans reconstruire la phrase mot par mot.",
+    "spoken": "Ça me dit quèque chose."
   },
   {
     "id": "chunk_354",

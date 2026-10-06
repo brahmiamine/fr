@@ -2,39 +2,56 @@ import { useState } from 'react'
 import type { Chunk, Question } from '../../../types/content'
 import { AudioClip } from '../../../components/AudioClip/AudioClip'
 import { Timer } from '../../../components/Timer/Timer'
-import { Button, Callout, Card, ChoiceButton, ChoiceGrid, DotList, InfoLine, Pill } from '../../../components/ui'
+import { Button, Callout, Card, ChoiceButton, ChoiceGrid, DotList, InfoLine, Pill, TextField } from '../../../components/ui'
 import {
+  ANSWER_STRUCTURE,
   QUESTION_COUNTDOWN_SECONDS,
+  QUESTION_NOTE_SECONDS,
+  QUESTION_RETRY_SECONDS,
   QUESTION_SPEAKING_SECONDS,
   QUESTION_STARTERS,
   QUESTION_TYPE_LABELS,
 } from '../types'
-import type { BlockRating } from '../types'
+import type { BlockRating, QuestionStage } from '../types'
 
 export interface SurpriseQuestionsExerciseProps {
   question: Question
   index: number
   total: number
-  stage: 'countdown' | 'prep' | 'speaking' | 'rate'
+  stage: QuestionStage
   prepSeconds: number
   /** 60 s at first, up to 90 s as the learner progresses. */
   speakingSeconds?: number
+  /** Advanced level: the second answer defends the opposite position. */
+  advanced?: boolean
   chunksOfDay: Chunk[]
   focusWords: string[]
-  pivotQuestion?: Question | null
-  revenge?: boolean
   /** The microphone is capturing this answer. */
   recording?: boolean
-  /** Revenge only: the first answer to this question, to hear it again first. */
-  previousAnswerUrl?: string | null
+  /** The first answer, to hear again before the second one. */
+  firstAnswerUrl?: string | null
+  /** What the learner noted as missing after the first answer. */
+  note?: string
+  /** The question had a big block a few days ago and comes back. */
+  isReview?: boolean
   onCountdownDone: () => void
   onPrepDone: () => void
   onSpeakingDone: () => void
   onRate: (rating: BlockRating) => void
-  onDone: () => void
+  onNoteChange: (note: string) => void
+  onNoteDone: () => void
+  onRetryDone: () => void
 }
 
-const PIVOT_SECONDS = 30
+/** Three springboards for this question, always the same ones for it. */
+export function startersFor(questionId: string, count = 3): string[] {
+  let hash = 0
+  for (const char of questionId) hash = (hash * 31 + char.charCodeAt(0)) >>> 0
+  const starters = QUESTION_STARTERS
+  return Array.from({ length: Math.min(count, starters.length) }, (_, offset) =>
+    starters[(hash + offset * 7) % starters.length],
+  )
+}
 
 export function SurpriseQuestionsExercise({
   question,
@@ -42,52 +59,34 @@ export function SurpriseQuestionsExercise({
   total,
   stage,
   prepSeconds,
-  speakingSeconds: answerSeconds = QUESTION_SPEAKING_SECONDS,
+  speakingSeconds = QUESTION_SPEAKING_SECONDS,
+  advanced = false,
   chunksOfDay,
   focusWords,
-  pivotQuestion = null,
-  revenge = false,
   recording = false,
-  previousAnswerUrl = null,
+  firstAnswerUrl = null,
+  note = '',
+  isReview = false,
   onCountdownDone,
   onPrepDone,
   onSpeakingDone,
   onRate,
-  onDone,
+  onNoteChange,
+  onNoteDone,
+  onRetryDone,
 }: SurpriseQuestionsExerciseProps) {
   const [showStarters, setShowStarters] = useState(false)
-  const [pivotActive, setPivotActive] = useState(false)
-
-  const timerKey = revenge ? 'revenge' : `question-${index}`
-
-  const counterLabel = revenge ? 'Revanche' : `Question ${index + 1}/${total}`
-
-  if (stage === 'countdown' && revenge && previousAnswerUrl) {
-    return (
-      <Card center aria-live="polite">
-        <Pill tone="contrast" pop>{counterLabel}</Pill>
-        <h2>Revanche</h2>
-        <p className="muted">
-          C'est la question où tu as le plus bloqué. Réécoute ta première
-          réponse si tu veux, repère où tu t'es arrêté, puis refais-la.
-        </p>
-        <AudioClip src={previousAnswerUrl} label="Ma première réponse" />
-        <Button variant="animated" size="lg" block trailing="▶" onClick={onCountdownDone}>
-          Je refais la question
-        </Button>
-      </Card>
-    )
-  }
+  const timerKey = `question-${index}`
+  const counterLabel = `Question ${index + 1}/${total}`
+  const springboards = startersFor(question.id)
 
   if (stage === 'countdown') {
     return (
       <Card center aria-live="polite">
-        <Pill tone={revenge ? 'contrast' : 'muted'} pop>{counterLabel}</Pill>
-        <h2>{revenge ? 'Revanche :' : 'Question suivante dans…'}</h2>
-        {revenge ? (
-          <p className="muted">
-            Tu as eu du mal sur celle-ci. Refais-la une deuxième fois.
-          </p>
+        <Pill tone="muted" pop>{counterLabel}</Pill>
+        <h2>Question suivante dans…</h2>
+        {isReview ? (
+          <p className="muted">Tu avais beaucoup bloqué sur celle-ci il y a quelques jours : elle revient.</p>
         ) : null}
         <Timer
           persistKey={`${timerKey}-countdown`}
@@ -106,14 +105,17 @@ export function SurpriseQuestionsExercise({
   if (stage === 'prep') {
     return (
       <Card center aria-live="polite">
-        <Pill tone={revenge ? 'contrast' : 'muted'}>{counterLabel}</Pill>
+        <Pill tone="muted">{counterLabel}</Pill>
         <h1 className="exercise__prompt">{question.text}</h1>
         {question.type ? (
           <p className="pill pill--warm">
             Type : {QUESTION_TYPE_LABELS[question.type] ?? question.type}
           </p>
         ) : null}
-        <p className="exercise__prep-plan">Idée → raison → exemple</p>
+        <p className="exercise__prep-plan">{ANSWER_STRUCTURE}</p>
+        <Callout title="Démarre par un tremplin" tone="soft">
+          <DotList items={springboards} />
+        </Callout>
         <Timer
           persistKey={`${timerKey}-prep`}
           durationSeconds={prepSeconds}
@@ -148,23 +150,45 @@ export function SurpriseQuestionsExercise({
     )
   }
 
-  const hasAdvancedPivot = Boolean(pivotQuestion && !revenge)
-  const activeQuestion = pivotActive && pivotQuestion ? pivotQuestion : question
-  // With an advanced pivot: 60 s, then the abrupt 30 s pivot.
-  const speakingSeconds = pivotActive
-    ? PIVOT_SECONDS
-    : hasAdvancedPivot
-      ? QUESTION_SPEAKING_SECONDS
-      : answerSeconds
-
-  const completeSpeakingPhase = () => {
-    if (hasAdvancedPivot && !pivotActive) {
-      setPivotActive(true)
-      return
-    }
-    if (revenge) onDone()
-    else onSpeakingDone()
+  if (stage === 'note') {
+    return (
+      <Card aria-labelledby="question-note-title">
+        <div className="card-head">
+          <h2 id="question-note-title">Qu'est-ce qui a manqué ?</h2>
+          <Timer
+            persistKey={`${timerKey}-note`}
+            durationSeconds={QUESTION_NOTE_SECONDS}
+            autoStart
+            hideControls
+            compact
+            secondsOnly
+            variant="inline"
+            label="30 s"
+            onComplete={onNoteDone}
+          />
+        </div>
+        <p className="muted">
+          Un mot, une idée, une transition ? Note-le en quelques mots : tu vas
+          refaire la même question tout de suite.
+        </p>
+        {firstAnswerUrl ? <AudioClip src={firstAnswerUrl} label="Réécouter ma réponse" /> : null}
+        <TextField
+          id="question-note"
+          label="Ce qui a manqué (facultatif)"
+          value={note}
+          onChange={onNoteChange}
+          placeholder="ex. un exemple concret, le mot « loyer »"
+        />
+        <Button variant="animated" size="lg" block trailing="▶" onClick={onNoteDone}>
+          Je refais la question
+        </Button>
+      </Card>
+    )
   }
+
+  const retry = stage === 'retry'
+  const seconds = retry ? QUESTION_RETRY_SECONDS : speakingSeconds
+  const complete = retry ? onRetryDone : onSpeakingDone
 
   return (
     <Card aria-labelledby="question-title">
@@ -174,22 +198,26 @@ export function SurpriseQuestionsExercise({
           Enregistrement de ta réponse
         </span>
       ) : null}
-      <p className={`pill${pivotActive ? ' pill--warm' : ''}`}>
-        {pivotActive ? 'Pivot — change de sujet maintenant' : counterLabel}
+      <p className={`pill${retry ? ' pill--warm' : ''}`}>
+        {retry ? `${counterLabel} · deuxième réponse` : counterLabel}
       </p>
       <h2 id="question-title" className="exercise__prompt">
-        {activeQuestion.text}
+        {question.text}
       </h2>
+      {retry && advanced ? (
+        <p className="text-strong">Niveau avancé : défends maintenant la position inverse.</p>
+      ) : null}
+      {retry && note.trim() ? <InfoLine label="À intégrer :">{note}</InfoLine> : null}
 
       <Timer
-        key={pivotActive ? 'pivot' : 'main'}
-        persistKey={`${timerKey}-speaking-${pivotActive ? 'pivot' : 'main'}`}
-        durationSeconds={speakingSeconds}
+        key={stage}
+        persistKey={`${timerKey}-${stage}`}
+        durationSeconds={seconds}
         autoStart
         hideControls
-        label={pivotActive ? 'Continue immédiatement' : 'Parle'}
+        label={retry ? 'Refais-la' : 'Parle'}
         wave
-        onComplete={completeSpeakingPhase}
+        onComplete={complete}
       />
 
       {chunksOfDay.length > 0 ? (
@@ -209,10 +237,10 @@ export function SurpriseQuestionsExercise({
         aria-controls="question-starters"
         onClick={() => setShowStarters((open) => !open)}
       >
-        {showStarters ? 'Masquer les amorces' : "Besoin d'une amorce ?"}
+        {showStarters ? 'Masquer les tremplins' : "Besoin d'un tremplin ?"}
       </Button>
       {showStarters ? (
-        <Callout title="Amorces possibles" id="question-starters">
+        <Callout title="Tremplins possibles" id="question-starters">
           <DotList items={QUESTION_STARTERS} />
         </Callout>
       ) : null}

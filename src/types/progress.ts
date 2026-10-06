@@ -16,6 +16,14 @@ export interface SessionSummary {
   /** How often the learner blocked on surprise questions. */
   questionBlocks?: { none: number; some: number; much: number }
   retelling?: boolean
+  /** The week's 3/3/3 version. */
+  constantTime?: boolean
+  /** Questions answered a second time ("répondre → reprendre"). */
+  questionRetries?: number
+  zappingDone?: boolean
+  /** Blocks felt during the taboo monologue. */
+  tabooRating?: 'none' | 'some' | 'much'
+  mode?: 'full' | 'short' | 'conversation'
 }
 
 export interface SessionRecord {
@@ -31,7 +39,16 @@ export interface SessionRecord {
   questionIds: string[]
   chunkIds: string[]
   genericWordIds: string[]
+  /** Subject of 2–7 days before, spoken again in this session. */
+  repriseTopicId?: string
+  tabooId?: string
   summary: SessionSummary
+}
+
+/** A surprise question with a big block, to answer again a few days later. */
+export interface QuestionReview {
+  questionId: string
+  nextReview: string
 }
 
 export interface ProsodySessionRecord {
@@ -144,6 +161,7 @@ export interface AppState {
   personalExamples: PersonalExample[]
   personalChunks: PersonalChunk[]
   fluencyNotes: FluencyNote[]
+  questionReviews: QuestionReview[]
   recentTopicIds: string[]
   recentQuestionIds: string[]
   recentWordIds: string[]
@@ -190,6 +208,7 @@ export function createInitialState(): AppState {
     personalExamples: [],
     personalChunks: [],
     fluencyNotes: [],
+    questionReviews: [],
     recentTopicIds: [],
     recentQuestionIds: [],
     recentWordIds: [],

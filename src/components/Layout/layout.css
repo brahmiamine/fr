@@ -267,6 +267,7 @@
 
 .is-current .stage-rail__dot--chunks { background: var(--tile-chunks); }
 .is-current .stage-rail__dot--fluency { background: var(--tile-fluency); }
+.is-current .stage-rail__dot--reprise { background: var(--tile-reprise); }
 .is-current .stage-rail__dot--questions { background: var(--tile-questions); }
 .is-current .stage-rail__dot--gaps { background: var(--tile-gaps); }
 .is-current .stage-rail__dot--feedback { background: var(--tile-feedback); }

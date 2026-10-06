@@ -64,6 +64,9 @@ function normalizeV4(raw: Record<string, unknown>): AppState {
     fluencyNotes: Array.isArray(raw.fluencyNotes)
       ? (raw.fluencyNotes as AppState['fluencyNotes'])
       : [],
+    questionReviews: Array.isArray(raw.questionReviews)
+      ? (raw.questionReviews as AppState['questionReviews'])
+      : [],
     recentTopicIds: asStringArray(raw.recentTopicIds),
     recentQuestionIds: asStringArray(raw.recentQuestionIds),
     recentWordIds: asStringArray(raw.recentWordIds),

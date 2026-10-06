@@ -7,6 +7,7 @@ import type { GapItem } from '../types'
 import {
   GAP_PARAPHRASE_SECONDS,
   GAP_RECALL_SECONDS,
+  RESCUE_CORE,
   RESCUE_STRUCTURES,
 } from '../types'
 
@@ -133,9 +134,17 @@ export function WordGapsExercise({
           </Callout>
         ) : null}
 
-        <Callout title="Structures de secours" collapsible>
+        <p className="text-strong">Règle d'une seconde : contourne tout de suite.</p>
+        <Callout title="Tes formules de contournement">
           <div className="chip-row">
-            {RESCUE_STRUCTURES.map((structure) => (
+            {RESCUE_CORE.map((structure) => (
+              <span key={structure} className="rescue-chip">{structure}</span>
+            ))}
+          </div>
+        </Callout>
+        <Callout title="Autres formules" collapsible>
+          <div className="chip-row">
+            {RESCUE_STRUCTURES.filter((structure) => !RESCUE_CORE.includes(structure)).map((structure) => (
               <span key={structure} className="rescue-chip">{structure}</span>
             ))}
           </div>

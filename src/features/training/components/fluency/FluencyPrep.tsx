@@ -4,6 +4,8 @@ import { Button, Callout, Card, DotList, Pill, TextField } from '../../../../com
 import type { AudioRecorder } from '../../../../hooks/useAudioRecorder'
 import type { RetellingStory, Topic } from '../../../../types/content'
 import type { FluencyReminder } from '../../types'
+import { FLUENCY_PREP_SECONDS, MAX_KEYWORDS } from '../../types'
+import { Timer } from '../../../../components/Timer/Timer'
 import { RecordSwitch } from './RecordSwitch'
 import { RetellingStoryBox } from './RetellingStoryBox'
 
@@ -17,6 +19,7 @@ export interface FluencyPrepProps {
   recordAll: boolean
   retellingStory: RetellingStory | null
   prosodyFocusGoal: string | null
+  constantTime?: boolean
   onKeywordsChange: (keywords: string[]) => void
   onRecordAllChange: (recordAll: boolean) => void
   onStartRound: () => void
@@ -27,7 +30,7 @@ function splitKeywords(value: string): string[] {
     .split(/[,\n]+/)
     .map((item) => item.trim())
     .filter(Boolean)
-    .slice(0, 3)
+    .slice(0, MAX_KEYWORDS)
 }
 
 export function FluencyPrep({
@@ -40,6 +43,7 @@ export function FluencyPrep({
   recordAll,
   retellingStory,
   prosodyFocusGoal,
+  constantTime = false,
   onKeywordsChange,
   onRecordAllChange,
   onStartRound,
@@ -51,7 +55,14 @@ export function FluencyPrep({
       <div className="row">
         <Pill>Tour 1 / 4{retellingStory ? ' · Variante retelling' : ''}</Pill>
         {topic.category ? <Pill>{topic.category}</Pill> : null}
+        {constantTime ? <Pill tone="warm">Version 3/3/3 de la semaine</Pill> : null}
       </div>
+      {constantTime ? (
+        <p className="muted">
+          Une fois par semaine, le temps reste constant (3 / 3 / 3 min) : moins de
+          pression, plus de place pour la précision.
+        </p>
+      ) : null}
       <h1 id="fluency-title" className="exercise__prompt">
         {topic.title}
       </h1>
@@ -103,19 +114,31 @@ export function FluencyPrep({
             </Callout>
           ) : null}
           {prosodyFocusGoal ? (
-            <Callout title="Prosodie à garder :" tone="soft">
+            <Callout title="Prosodie travaillée récemment :" tone="soft">
               <span className="text-strong">{prosodyFocusGoal}</span>
             </Callout>
           ) : null}
         </div>
       ) : null}
 
+      <div className="row">
+        <Timer
+          persistKey="fluency-prep"
+          durationSeconds={FLUENCY_PREP_SECONDS}
+          autoStart
+          hideControls
+          compact
+          secondsOnly
+          variant="inline"
+          label="Préparation (indicative)"
+        />
+      </div>
       <TextField
         id="keywords"
         label={
           retellingStory
             ? 'Note 2–3 expressions entendues (facultatif)'
-            : 'Note 3 mots-clés maximum (facultatif)'
+            : '3 à 5 mots-clés maximum, jamais de phrases (facultatif)'
         }
         value={keywords.join(', ')}
         onChange={(value) => onKeywordsChange(splitKeywords(value))}

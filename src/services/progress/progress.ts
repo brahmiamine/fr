@@ -238,6 +238,11 @@ export function calculateProsodyMinutes(
   )
 }
 
+/** Whole days from `b` to `a` (local dates "YYYY-MM-DD"). */
+export function daysBetween(a: string, b: string): number {
+  return dayDistance(a, b)
+}
+
 function dayDistance(a: string, b: string): number {
   return Math.round(
     (parseLocalDate(a).getTime() - parseLocalDate(b).getTime()) / 86400000,
@@ -280,6 +285,27 @@ export function recordConversationPractice(
     (existing) => existing.weekKey !== practice.weekKey,
   )
   return { ...state, conversationPractices: [...remaining, practice] }
+}
+
+/**
+ * "Une question ratée revient dans la pioche 3 à 7 jours plus tard": a big
+ * block schedules the question again at J+3; any other answer to a question
+ * that was waiting closes its review.
+ */
+export function applyQuestionRatings(
+  state: AppState,
+  ratings: readonly { questionId: string; rating: 'none' | 'some' | 'much' }[],
+  now: Date = new Date(),
+  reviewDays = 3,
+): AppState {
+  let reviews = [...(state.questionReviews ?? [])]
+  for (const { questionId, rating } of ratings) {
+    reviews = reviews.filter((review) => review.questionId !== questionId)
+    if (rating === 'much') {
+      reviews.push({ questionId, nextReview: nextReviewAfter(reviewDays, now) })
+    }
+  }
+  return { ...state, questionReviews: reviews }
 }
 
 export function setInProgressSession(

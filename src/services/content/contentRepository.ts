@@ -6,11 +6,15 @@ import conversationScenariosData from '../../data/conversation-scenarios.json'
 import retellingStoriesData from '../../data/retelling-stories.json'
 import retellingRecordingsData from '../../data/retelling-recordings.json'
 import prosodyData from '../../data/prosody.json'
+import tabooTopicsData from '../../data/taboo-topics.json'
+import chunkClipsData from '../../data/chunk-clips.json'
 import type {
   Chunk,
   ConversationScenario,
   ContentRepository,
+  NativeClip,
   ParaphraseWord,
+  TabooTopic,
   Question,
   RetellingStory,
   Topic,
@@ -50,16 +54,31 @@ export function storiesFromRecordings(
   })
 }
 
+/**
+ * Attaches to each chunk the moment a real speaker of the prosody bank says it
+ * (found by `scripts/find-chunk-clips.mjs`), to hear its spoken form.
+ */
+export function withNativeClips(
+  chunks: readonly Chunk[],
+  clips: Readonly<Record<string, NativeClip>>,
+): Chunk[] {
+  return chunks.map((chunk) => (clips[chunk.id] ? { ...chunk, nativeClip: clips[chunk.id] } : chunk))
+}
+
 // JSON is imported statically so the content ships with the bundle and works on
 // a static host without any backend. New content only requires editing the JSON.
 export const contentRepository: ContentRepository = {
   topics: topicsData as unknown as Topic[],
   questions: questionsData as unknown as Question[],
   paraphraseWords: paraphraseWordsData as unknown as ParaphraseWord[],
-  chunks: chunksData as unknown as Chunk[],
+  chunks: withNativeClips(
+    chunksData as unknown as Chunk[],
+    chunkClipsData as unknown as Record<string, NativeClip>,
+  ),
   conversationScenarios: conversationScenariosData as unknown as ConversationScenario[],
   retellingStories: [
     ...(retellingStoriesData as unknown as RetellingStory[]),
     ...storiesFromRecordings(retellingRecordingsData, prosodyData),
   ],
+  tabooTopics: tabooTopicsData as unknown as TabooTopic[],
 }

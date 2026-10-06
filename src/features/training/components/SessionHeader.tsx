@@ -9,6 +9,8 @@ export interface SessionHeaderProps {
   stageIndex: number
   /** Progress inside the current stage, between 0 and 1. */
   stageProgress?: number
+  /** Stages of this session (some days skip the reprise, the questions…). */
+  stages?: StageKind[]
 }
 
 export function SessionHeader({
@@ -16,13 +18,16 @@ export function SessionHeader({
   phase,
   stageIndex,
   stageProgress = 0,
+  stages = STAGE_ORDER,
 }: SessionHeaderProps) {
-  const position = Math.min(stageIndex + 1, STAGE_ORDER.length)
+  const current = stage ? stages.indexOf(stage) : -1
+  const passed = current >= 0 ? current : stages.filter((item) => STAGE_ORDER.indexOf(item) < stageIndex).length
+  const position = Math.min(passed + 1, stages.length)
   const title = stage ? STAGE_META[stage].title : ''
   const label =
-    phase === 'complete' ? 'Séance terminée' : `Étape ${position}/${STAGE_ORDER.length}`
-  const segments = STAGE_ORDER.map((_, index) =>
-    phase === 'complete' || index < stageIndex ? 1 : index === stageIndex ? stageProgress : 0,
+    phase === 'complete' ? 'Séance terminée' : `Étape ${position}/${stages.length}`
+  const segments = stages.map((_, index) =>
+    phase === 'complete' || index < passed ? 1 : index === passed ? stageProgress : 0,
   )
 
   return (
@@ -47,7 +52,7 @@ export function SessionHeader({
         role="progressbar"
         aria-valuenow={position}
         aria-valuemin={0}
-        aria-valuemax={STAGE_ORDER.length}
+        aria-valuemax={stages.length}
       />
     </header>
   )

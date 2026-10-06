@@ -125,3 +125,13 @@
   flex: 1;
   min-width: 0;
 }
+
+.native-clip {
+  display: grid;
+  gap: 4px;
+  width: 100%;
+}
+
+.native-clip__credit {
+  font-size: 12px;
+}

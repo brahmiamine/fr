@@ -38,6 +38,16 @@ export function TodaySessionCard({
       <ButtonLink to="/training" variant="animated" size="lg" block trailing="→">
         {ctaLabel}
       </ButtonLink>
+      {!onRestart ? (
+        <div className="today__modes">
+          <ButtonLink to="/training?mode=short" variant="subtle" block>
+            Version courte · ≈ 20 min
+          </ButtonLink>
+          <ButtonLink to="/training?mode=conversation" variant="subtle" block>
+            Jour de conversation · chunks + 4 → 3 → 2
+          </ButtonLink>
+        </div>
+      ) : null}
       {onRestart ? (
         <Button
           variant="subtle"

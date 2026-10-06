@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { buildSessionPlan } from '../../services/review/selectPlan'
 import { createInitialState } from '../../types/progress'
 import {
+  activeStages,
   createSessionState,
   getCurrentStage,
   isFeedbackValid,
@@ -23,7 +24,15 @@ describe('createSessionState', () => {
     expect(getCurrentStage(state)).toBe('chunks')
     expect(state.fluency.keywords).toEqual([])
     expect(state.fluencyFeedback.missingWordContext).toBe('')
-    expect(state.plan.questions).toHaveLength(5)
+    expect(state.plan.questions).toHaveLength(2)
+    expect(state.plan.zappingQuestions).toHaveLength(4)
+    expect(state.plan.roundSeconds).toEqual([240, 180, 120, 120])
+    expect(state.plan.taboo?.forbidden.length).toBeGreaterThanOrEqual(3)
+  })
+
+  it('skips the reprise when no subject of 2 to 7 days ago is waiting', () => {
+    expect(plan.repriseTopic).toBeNull()
+    expect(activeStages(plan)).toEqual(['chunks', 'fluency', 'questions', 'gaps', 'feedback'])
   })
 })
 
@@ -39,8 +48,16 @@ describe('prep time adaptation', () => {
   })
 })
 
+function answerQuestion(state: TrainingSessionState, rating: 'none' | 'some' | 'much') {
+  let next = sessionReducer(state, { type: 'QUESTION_COUNTDOWN_DONE' })
+  next = sessionReducer(next, { type: 'QUESTION_PREP_DONE' })
+  next = sessionReducer(next, { type: 'QUESTION_SPEAKING_DONE' })
+  next = sessionReducer(next, { type: 'QUESTION_RATE', rating })
+  return next
+}
+
 describe('full session walk', () => {
-  it('moves through chunks, fluency, questions, gaps and feedback', () => {
+  it('moves through chunks, fluency, questions + zapping, gaps + taboo and feedback', () => {
     let state = newSession()
 
     for (const result of ['easy', 'difficult', 'failed', 'discovered'] as const) {
@@ -52,9 +69,9 @@ describe('full session walk', () => {
 
     state = sessionReducer(state, {
       type: 'FLUENCY_SET_KEYWORDS',
-      keywords: ['travail', 'transport', 'temps'],
+      keywords: ['travail', 'transport', 'temps', 'stress', 'famille', 'trop'],
     })
-    expect(state.fluency.keywords).toEqual(['travail', 'transport', 'temps'])
+    expect(state.fluency.keywords).toEqual(['travail', 'transport', 'temps', 'stress', 'famille'])
 
     state = sessionReducer(state, { type: 'FLUENCY_START' })
     state = sessionReducer(state, { type: 'FLUENCY_ROUND_COMPLETE' })
@@ -68,7 +85,6 @@ describe('full session walk', () => {
       importantError: 'Attention à depuis',
     })
     expect(state.fluency.roundIndex).toBe(1)
-    expect(state.fluency.keywords).toHaveLength(3)
     expect(state.fluency.stage).toBe('ready')
 
     for (let i = 0; i < 3; i += 1) {
@@ -81,24 +97,30 @@ describe('full session walk', () => {
     state = sessionReducer(state, { type: 'FLUENCY_SUMMARY_DONE' })
     expect(getCurrentStage(state)).toBe('questions')
 
-    for (let i = 0; i < 4; i += 1) {
-      state = sessionReducer(state, { type: 'QUESTION_COUNTDOWN_DONE' })
-      state = sessionReducer(state, { type: 'QUESTION_PREP_DONE' })
-      state = sessionReducer(state, { type: 'QUESTION_SPEAKING_DONE' })
-      state = sessionReducer(state, { type: 'QUESTION_RATE', rating: 'none' })
-    }
-    state = sessionReducer(state, { type: 'QUESTION_COUNTDOWN_DONE' })
-    state = sessionReducer(state, { type: 'QUESTION_PREP_DONE' })
-    state = sessionReducer(state, { type: 'QUESTION_SPEAKING_DONE' })
-    state = sessionReducer(state, { type: 'QUESTION_RATE', rating: 'much' })
+    // Each question: answer, rate, note what was missing, answer again.
+    state = answerQuestion(state, 'none')
+    expect(state.questions.stage).toBe('note')
+    state = sessionReducer(state, { type: 'QUESTION_NOTE_SET', note: 'un exemple concret' })
+    state = sessionReducer(state, { type: 'QUESTION_NOTE_DONE' })
+    expect(state.questions.stage).toBe('retry')
+    state = sessionReducer(state, { type: 'QUESTION_RETRY_DONE' })
+    expect(state.questions).toEqual({ index: 1, stage: 'countdown' })
 
-    expect(state.revenge.questionId).not.toBeNull()
-    state = sessionReducer(state, { type: 'REVENGE_COUNTDOWN_DONE' })
-    state = sessionReducer(state, { type: 'REVENGE_PREP_DONE' })
-    state = sessionReducer(state, { type: 'REVENGE_DONE' })
+    state = answerQuestion(state, 'much')
+    state = sessionReducer(state, { type: 'QUESTION_NOTE_DONE' })
+    state = sessionReducer(state, { type: 'QUESTION_RETRY_DONE' })
+    expect(state.questionRetries).toBe(2)
+    expect(state.questionNotes[plan.questions[0].id]).toBe('un exemple concret')
+
+    // Then the zapping: four unrelated questions.
+    expect(getCurrentStage(state)).toBe('questions')
+    expect(state.zapping.stage).toBe('intro')
+    state = sessionReducer(state, { type: 'ZAPPING_START' })
+    for (let i = 0; i < 4; i += 1) state = sessionReducer(state, { type: 'ZAPPING_NEXT' })
+    expect(state.zapping.stage).toBe('done')
     expect(getCurrentStage(state)).toBe('gaps')
 
-    for (let i = 0; i < 5; i += 1) {
+    for (let i = 0; i < plan.gapItems.length; i += 1) {
       if (state.gaps.step === 'recall') {
         state = sessionReducer(state, { type: 'GAP_FOUND' })
         state = sessionReducer(state, { type: 'GAP_VERIFY', correct: true })
@@ -107,68 +129,74 @@ describe('full session walk', () => {
       }
       state = sessionReducer(state, { type: 'GAP_NEXT' })
     }
+    // The taboo monologue closes the stage.
+    expect(getCurrentStage(state)).toBe('gaps')
+    expect(state.gaps.index).toBe(plan.gapItems.length)
+    state = sessionReducer(state, { type: 'TABOO_START' })
+    state = sessionReducer(state, { type: 'TABOO_SPOKEN' })
+    state = sessionReducer(state, { type: 'TABOO_RATE', rating: 'some' })
+    expect(state.taboo).toEqual({ stage: 'done', rating: 'some' })
     expect(getCurrentStage(state)).toBe('feedback')
 
-    state = sessionReducer(state, {
-      type: 'FEEDBACK_SET',
-      field: 'blockCount',
-      value: 2,
-    })
-    state = sessionReducer(state, {
-      type: 'FEEDBACK_SET',
-      field: 'fluencyScore',
-      value: 4,
-    })
+    state = sessionReducer(state, { type: 'FEEDBACK_SET', field: 'blockCount', value: 2 })
+    state = sessionReducer(state, { type: 'FEEDBACK_SET', field: 'fluencyScore', value: 4 })
     state = sessionReducer(state, { type: 'FEEDBACK_SUBMIT' })
     expect(state.phase).toBe('complete')
   })
 })
 
-describe('question revenge selection', () => {
-  it('always replays the hardest question, even when nothing was blocked', () => {
-    let state = { ...newSession(), stageIndex: 2 }
-    for (let i = 0; i < 5; i += 1) {
-      state = sessionReducer(state, { type: 'QUESTION_RATE', rating: 'none' })
-    }
-    expect(state.revenge.questionId).toBe(plan.questions[0].id)
+describe('reprise of a recent subject', () => {
+  it('takes the subject up again for 3 minutes, then moves on to the questions', () => {
+    const topic = plan.topic
+    let state = createSessionState({ ...plan, repriseTopic: topic }, 2)
+    state = { ...state, stageIndex: 2 }
+    expect(getCurrentStage(state)).toBe('reprise')
+    state = sessionReducer(state, { type: 'REPRISE_START' })
+    expect(state.reprise.stage).toBe('running')
+    state = sessionReducer(state, { type: 'REPRISE_DONE' })
+    expect(state.repriseDone).toBe(true)
     expect(getCurrentStage(state)).toBe('questions')
   })
 
-  it('replays the worst-rated question', () => {
-    let state = { ...newSession(), stageIndex: 2 }
-    const ratings = ['some', 'none', 'much', 'some', 'none'] as const
-    for (const rating of ratings) {
-      state = sessionReducer(state, { type: 'QUESTION_RATE', rating })
-    }
-    expect(state.revenge.questionId).toBe(plan.questions[2].id)
+  it('does not count a reprise skipped before it started', () => {
+    let state = createSessionState({ ...plan, repriseTopic: plan.topic }, 2)
+    state = sessionReducer({ ...state, stageIndex: 2 }, { type: 'REPRISE_DONE' })
+    expect(state.repriseDone).toBe(false)
+  })
+})
+
+describe('session modes', () => {
+  it('keeps only chunks, the 4 → 3 → 2, one question and the feedback in the short version', () => {
+    const short = buildSessionPlan(createInitialState(), () => 0.5, 'short')
+    expect(short.questions).toHaveLength(1)
+    expect(short.zappingQuestions).toHaveLength(0)
+    expect(activeStages(short)).toEqual(['chunks', 'fluency', 'questions', 'feedback'])
   })
 
-  it('attributes the advanced final rating to the question asked, not the pivot', () => {
-    const base = createSessionState(plan, 3, new Date('2026-10-02T10:00:00.000Z'))
-    let state: TrainingSessionState = {
-      ...base,
-      stageIndex: 2,
-      questions: {
-        index: plan.questions.length - 1,
-        stage: 'rate',
-      },
-      questionRatings: plan.questions.slice(0, -1).map((question) => ({
-        questionId: question.id,
-        rating: 'none' as const,
-      })),
-    }
+  it('leaves the questions and the gaps to the real conversation', () => {
+    const conversation = buildSessionPlan(createInitialState(), () => 0.5, 'conversation')
+    expect(activeStages(conversation)).toEqual(['chunks', 'fluency', 'feedback'])
+  })
+})
 
-    state = sessionReducer(state, { type: 'QUESTION_RATE', rating: 'much' })
+describe('question ratings', () => {
+  it('records the rating of each first answer', () => {
+    let state = { ...newSession(), stageIndex: 3 }
+    state = answerQuestion(state, 'much')
+    expect(state.questionRatings).toEqual([{ questionId: plan.questions[0].id, rating: 'much' }])
+  })
 
-    const lastQuestion = plan.questions[plan.questions.length - 1]
-    expect(state.questionRatings[state.questionRatings.length - 1]?.questionId).toBe(lastQuestion.id)
-    expect(state.revenge.questionId).toBe(lastQuestion.id)
+  it('gives the advanced level the opposite position on the second answer only on screen', () => {
+    // The level does not change the flow: answer → rate → note → retry.
+    let state = { ...createSessionState(plan, 3), stageIndex: 3 }
+    state = answerQuestion(state, 'none')
+    expect(state.questions.stage).toBe('note')
   })
 })
 
 describe('word gap verification', () => {
   it('records a found word only after the learner checked the answer', () => {
-    let state = { ...newSession(), stageIndex: 3 }
+    let state = { ...newSession(), stageIndex: 4 }
     state = { ...state, gaps: { index: 0, step: 'recall' } }
     state = sessionReducer(state, { type: 'GAP_FOUND' })
     expect(state.gaps.step).toBe('verify')
@@ -183,7 +211,7 @@ describe('word gap verification', () => {
 
   it('lets the learner keep a generic word in their personal gap list', () => {
     const genericIndex = plan.gapItems.findIndex((item) => !item.isPersonal)
-    let state = { ...newSession(), stageIndex: 3 }
+    let state = { ...newSession(), stageIndex: 4 }
     state = { ...state, gaps: { index: genericIndex, step: 'revealed' } }
     state = sessionReducer(state, { type: 'GAP_CAPTURE', context: 'le bouton au mur' })
     expect(state.gapCaptures).toEqual([
@@ -256,19 +284,20 @@ describe('feedback validation', () => {
 
 describe('skipping questions', () => {
   it('moves on without recording a rating', () => {
-    let state = { ...newSession(), stageIndex: 2 }
+    let state = { ...newSession(), stageIndex: 3 }
     state = sessionReducer(state, { type: 'QUESTION_SKIP' })
     expect(state.questions).toEqual({ index: 1, stage: 'countdown' })
     expect(state.questionRatings).toHaveLength(0)
   })
 
-  it('goes straight to the next stage when every question was skipped', () => {
-    let state = { ...newSession(), stageIndex: 2 }
+  it('reaches the zapping when every question was skipped, and skipping it ends the stage', () => {
+    let state = { ...newSession(), stageIndex: 3 }
     for (let i = 0; i < plan.questions.length; i += 1) {
       state = sessionReducer(state, { type: 'QUESTION_SKIP' })
     }
-    expect(state.revenge.questionId).toBeNull()
-    expect(getCurrentStage(state)).not.toBe('questions')
+    expect(state.zapping.stage).toBe('intro')
+    state = sessionReducer(state, { type: 'QUESTION_SKIP' })
+    expect(getCurrentStage(state)).toBe('gaps')
   })
 })
 
@@ -315,7 +344,7 @@ describe('skipping other exercises', () => {
     state = sessionReducer(state, { type: 'FLUENCY_SUMMARY_DONE' })
     expect(getCurrentStage(state)).toBe('questions')
 
-    state = { ...state, stageIndex: 3 }
+    state = { ...state, stageIndex: 4 }
     state = sessionReducer(state, { type: 'GAP_NEXT' })
     expect(state.gapResults).toHaveLength(0)
   })
@@ -325,9 +354,10 @@ describe('skipping other exercises', () => {
 
     const withSummary = sessionReducer(atTransfert, { type: 'FLUENCY_ROUND_COMPLETE' })
     expect(withSummary.fluency.stage).toBe('summary')
+    // No subject to take up again: the reprise is skipped.
     expect(
       sessionReducer(withSummary, { type: 'FLUENCY_SUMMARY_DONE' }).stageIndex,
-    ).toBe(2)
+    ).toBe(3)
 
     const withoutSummary = sessionReducer(
       { ...atTransfert, fluency: { ...atTransfert.fluency, recordAll: false } },
@@ -368,7 +398,7 @@ describe('skipping other exercises', () => {
   })
 
   it('completes the session when the feedback is skipped', () => {
-    const state = sessionReducer({ ...newSession(), stageIndex: 4 }, { type: 'FEEDBACK_SKIP' })
+    const state = sessionReducer({ ...newSession(), stageIndex: 5 }, { type: 'FEEDBACK_SKIP' })
     expect(state.phase).toBe('complete')
   })
 })

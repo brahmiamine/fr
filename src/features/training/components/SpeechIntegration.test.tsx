@@ -307,7 +307,9 @@ describe('guided text-to-speech placement', () => {
         onPrepDone={vi.fn()}
         onSpeakingDone={vi.fn()}
         onRate={vi.fn()}
-        onDone={vi.fn()}
+        onNoteChange={() => undefined}
+        onNoteDone={() => undefined}
+        onRetryDone={() => undefined}
       />,
     )
 

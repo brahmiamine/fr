@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { buildSessionPlan } from './selectPlan'
+import { buildSessionPlan, isConstantTimeSession, selectRepriseTopic } from './selectPlan'
 import { createInitialState } from '../../types/progress'
 import { toLocalDateString } from '../progress/progress'
 import type { AppState, WordGap } from '../../types/progress'
@@ -33,16 +33,83 @@ describe('buildSessionPlan', () => {
   it('selects a complete session plan without duplicate questions', () => {
     const plan = buildSessionPlan(createInitialState(), () => 0.5)
     expect(plan.topic).toBeDefined()
-    expect(plan.questions).toHaveLength(5)
-    expect(plan.pivotQuestion).toBeDefined()
+    expect(plan.questions).toHaveLength(2)
+    expect(plan.zappingQuestions).toHaveLength(4)
     expect(plan.chunks).toHaveLength(4)
     expect(plan.chunksOfDay).toHaveLength(4)
     expect(plan.chunksOfDay.map((chunk) => chunk.id).sort()).toEqual(
       plan.chunks.map((chunk) => chunk.id).sort(),
     )
-    expect(plan.gapItems).toHaveLength(5)
-    expect(new Set(plan.questions.map((q) => q.id)).size).toBe(5)
-    expect(new Set(plan.questions.map((q) => q.category)).size).toBe(5)
+    expect(plan.gapItems).toHaveLength(4)
+    const asked = [...plan.questions, ...plan.zappingQuestions]
+    expect(new Set(asked.map((q) => q.id)).size).toBe(6)
+    expect(new Set(asked.map((q) => q.category)).size).toBe(6)
+  })
+
+  it('brings back a question with a big block once it is due, before new ones', () => {
+    const state = {
+      ...createInitialState(),
+      questionReviews: [{ questionId: 'q010', nextReview: toLocalDateString() }],
+    }
+    const plan = buildSessionPlan(state, () => 0.5)
+    expect(plan.questions[0].id).toBe('q010')
+    expect(plan.zappingQuestions.map((q) => q.id)).not.toContain('q010')
+  })
+
+  it('takes up again a subject spoken 2 to 7 days ago, only once', () => {
+    const now = new Date(2026, 9, 6, 10)
+    const session = (id: string, daysAgo: number, extra = {}) => ({
+      id,
+      date: toLocalDateString(new Date(2026, 9, 6 - daysAgo)),
+      completedAt: new Date(2026, 9, 6 - daysAgo).toISOString(),
+      durationMinutes: 40,
+      blockCount: 0,
+      fluencyScore: 3,
+      blockedWord: '',
+      expressionToReuse: '',
+      topicId: id,
+      questionIds: [],
+      chunkIds: [],
+      genericWordIds: [],
+      summary: { chunksWorked: 0, gapsPracticed: 0, questionsAsked: 0, fluencyDone: true },
+      ...extra,
+    })
+    const tooRecent = session('t001', 1)
+    const due = session('t002', 3)
+    const tooOld = session('t003', 9)
+    const state = { ...createInitialState(), sessions: [tooOld, due, tooRecent] }
+    expect(selectRepriseTopic(state, toLocalDateString(now))?.id).toBe('t002')
+    expect(buildSessionPlan(state, () => 0.5, 'full', now).repriseTopic?.id).toBe('t002')
+    expect(buildSessionPlan(state, () => 0.5, 'full', now).topic.id).not.toBe('t002')
+
+    const reprised = { ...state, sessions: [...state.sessions, session('t004', 0, { repriseTopicId: 't002' })] }
+    expect(selectRepriseTopic(reprised, toLocalDateString(now))).toBeNull()
+  })
+
+  it('switches to the 3/3/3 version once a week, on the third session', () => {
+    const monday = new Date(2026, 9, 5, 9)
+    const wednesday = new Date(2026, 9, 7, 9)
+    const done = (day: number, constantTime = false) => ({
+      id: `s${day}`,
+      date: toLocalDateString(new Date(2026, 9, day)),
+      completedAt: new Date(2026, 9, day).toISOString(),
+      durationMinutes: 40,
+      blockCount: 0,
+      fluencyScore: 3,
+      blockedWord: '',
+      expressionToReuse: '',
+      topicId: 't001',
+      questionIds: [],
+      chunkIds: [],
+      genericWordIds: [],
+      summary: { chunksWorked: 0, gapsPracticed: 0, questionsAsked: 0, fluencyDone: true, constantTime },
+    })
+    const twoDone = { ...createInitialState(), sessions: [done(5), done(6)] }
+    expect(isConstantTimeSession(createInitialState(), monday)).toBe(false)
+    expect(isConstantTimeSession(twoDone, wednesday)).toBe(true)
+    expect(buildSessionPlan(twoDone, () => 0.5, 'full', wednesday).roundSeconds).toEqual([180, 180, 180, 120])
+    const alreadyDone = { ...createInitialState(), sessions: [done(5, true), done(6)] }
+    expect(isConstantTimeSession(alreadyDone, wednesday)).toBe(false)
   })
 
   it('prioritises due personal word gaps over generic words', () => {

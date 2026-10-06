@@ -381,3 +381,7 @@
     letter-spacing: 0.08em;
   }
 }
+
+.taboo__word s {
+  text-decoration-thickness: 2px;
+}

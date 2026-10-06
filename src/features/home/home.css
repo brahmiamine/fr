@@ -312,3 +312,9 @@
 .coach-promo__ghost {
   padding: 0 16px;
 }
+
+.today__modes {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
