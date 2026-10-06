@@ -9,6 +9,8 @@ import SettingsPage from '../features/settings/SettingsPage'
 import CoachPage from '../features/ai/CoachPage'
 import ProsodyPage from '../features/prosody/ProsodyPage'
 import IntonationPairsPage from '../features/prosody/IntonationPairsPage'
+import ProsodyCheckPage from '../features/prosody/ProsodyCheckPage'
+import ProsodyBlindPage from '../features/prosody/ProsodyBlindPage'
 
 export default function App() {
   return (
@@ -21,6 +23,8 @@ export default function App() {
           <Route path="/progress" element={<ProgressPage />} />
           <Route path="/prosody" element={<ProsodyPage />} />
           <Route path="/prosody/pairs" element={<IntonationPairsPage />} />
+          <Route path="/prosody/check" element={<ProsodyCheckPage />} />
+          <Route path="/prosody/blind" element={<ProsodyBlindPage />} />
           <Route path="/coach" element={<CoachPage />} />
           <Route path="/settings" element={<SettingsPage />} />
         </Route>

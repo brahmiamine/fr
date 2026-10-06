@@ -38,6 +38,9 @@ export function ProsodyPromo({ ready, completed }: { ready: boolean; completed: 
       <Link to="/prosody/pairs" className="prosody-promo__pairs">
         Paires d'intonation · 2 min
       </Link>
+      <Link to="/prosody/check" className="prosody-promo__pairs">
+        Bilan S0 / S4 / S8 · 15 min
+      </Link>
     </div>
   )
 }
