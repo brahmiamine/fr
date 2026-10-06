@@ -8,9 +8,41 @@ fonctionne en statique sur Cloudflare Workers, avec une IA facultative.
 
 Application déployée : https://fr.testcivique.workers.dev/
 
+## La méthode
+
+L'application applique deux méthodes, décrites en détail (exercices, durées,
+niveau de preuve, mesures et références) dans `docs/` :
+
+| Document | Compétence | Boucle |
+|---|---|---|
+| [`docs/Parler sans bloquer.md`](docs/Parler%20sans%20bloquer.md) | **Fluidité** : trouver ses mots, tenir un discours, ne plus bloquer | récupérer → parler → bloquer → contourner → identifier → corriger → espacer → réutiliser |
+| [`docs/Sonner plus naturel.md`](docs/Sonner%20plus%20naturel.md) | **Prosodie** : rythme et intonation du français parlé | entendre → découper → copier → s'écouter → comparer → corriger un point → revenir à froid → parler seul |
+| [`docs/ai-models.md`](docs/ai-models.md) | Modèles d'IA gratuits du Worker | diagnostic et choix des modèles |
+
+Trois principes traversent les deux méthodes :
+
+1. **Répéter avant de passer à autre chose** : la répétition consolide, la
+   nouveauté seule ne consolide pas (de Jong & Perfetti, 2011). Même sujet,
+   même question, même extrait, plutôt qu'un contenu neuf à chaque fois.
+2. **Espacer les retours** : revenir quelques jours plus tard (J+1, J+3, J+7
+   pour les chunks et les mots ; J+2 à J+7 pour les sujets).
+3. **Boucler par une rétroaction** : s'enregistrer, repérer peu de choses (une
+   à trois), corriger entre deux passages, jamais pendant, et réinjecter.
+
+La séance de fluidité recommandée dure ≈ 40 min : chunks (5 min), 4→3→2+
+(15 min), reprise d'un ancien sujet (3 min), questions surprises « répondre →
+reprendre » + zapping (10 min), trous de mots + monologue tabou (5 min),
+feedback (2 min). Le bloc prosodie ajoute 10 à 15 min par jour, sur 1 à 3
+extraits par semaine travaillés à fond.
+
+L'application n'implémente pas encore toute la méthode : la section
+[« Écarts entre la méthode et l'application »](#écarts-entre-la-méthode-et-lapplication)
+liste ce qui reste à faire. Les sections suivantes décrivent ce que
+l'application fait **aujourd'hui**.
+
 ## Le principe
 
-Une séance (≈ 35 min) suit un parcours guidé en 5 étapes :
+Dans l'application, une séance (≈ 35 min) suit aujourd'hui un parcours guidé en 5 étapes :
 
 | Étape | Durée |
 |---|---:|
@@ -137,6 +169,56 @@ dans `public/audio/prosody/`, mets `modelKind: "recording"`,
 Les enregistrements personnels V1/V2/retelling restent uniquement en mémoire.
 Seules les métadonnées de progression (extrait, focus, durée, retelling) sont
 conservées dans `localStorage`.
+
+## Écarts entre la méthode et l'application
+
+La méthode de `docs/` a été mise à jour à partir de deux synthèses de
+recherche. L'application en applique déjà le cœur : chunks en récupération
+espacée (J+1 → J+3 → J+7), trous de mots personnels, 4→3→2 avec feedback
+différé et transfert, revanche sur la question la plus bloquante, test et
+conversation hebdomadaires, et en prosodie le marquage actif, la courbe du
+modèle, l'imitation différée, la comparaison A → B → A, la correction d'un
+seul point et le retelling. Voici ce qui reste à faire.
+
+**État :** ✅ fait · 🟡 partiel · ⬜ à faire
+
+### Fluidité (`Parler sans bloquer`)
+
+| Élément de la méthode | État | Aujourd'hui dans l'application |
+|---|:---:|---|
+| Reprise d'un sujet du 4→3→2 entre J+2 et J+7 (3 min, sans préparation) | ⬜ | la sélection **évite** les sujets récents (`selectPlan.ts`) |
+| Transfert de 2 min sur une **question** différente | 🟡 | 1 min sur un sujet proche (écrit par l'IA si elle est activée) |
+| Version 3/3/3 une fois par semaine | ⬜ | toujours 4/3/2 |
+| Réécoute de 1 à 2 min entre les tours | 🟡 | minuteur indicatif de 60 s |
+| Une consigne prosodique par tour | 🟡 | le dernier point travaillé en prosodie, identique pour tous les tours |
+| Questions « répondre → reprendre » pour chaque question | 🟡 | 5 questions, puis une seule revanche sur la plus bloquante |
+| Zapping (4 × 45 s avec transitions) | 🟡 | pivot de 30 s au niveau avancé seulement |
+| Démarrer par un tremplin ; structure position → raison → exemple → nuance → conclusion | 🟡 | amorces derrière un bouton ; plan « Idée → raison → exemple » |
+| Questions ratées reprogrammées entre J+3 et J+7 | ⬜ | non mémorisées pour revenir |
+| Chunks : dire 2 phrases **avant** de vérifier | ⬜ | les phrases sont demandées après la révélation |
+| Chunks récoltés dans l'écoute native, avec leur forme orale (« chais pas ») | ⬜ | liste statique ; la synthèse vocale lit la forme écrite |
+| Monologue tabou (90 s) et règle d'une seconde | ⬜ | paraphrase mot par mot (15 s) |
+| Boîte à outils de 8 à 10 formules de contournement | 🟡 | 40 structures, sans noyau à automatiser |
+| Conversation réelle 2 à 3 fois par semaine, minute transcrite puis réécrite | 🟡 | une conversation par semaine, sans transcription |
+| Test hebdo : tâche connue + 3 questions inconnues, contournement de 10 mots, référence L1 | 🟡 | un sujet inconnu de 3 min |
+| Pauses ≥ 250 ms et durée moyenne ; « euh » nus séparés des marqueurs français | 🟡 | pauses > 1 s mesurées au micro ; l'IA compte les hésitations sans distinguer les marqueurs |
+
+### Prosodie (`Sonner plus naturel`)
+
+| Élément de la méthode | État | Aujourd'hui dans l'application |
+|---|:---:|---|
+| 1 à 3 extraits par semaine, repris 3 à 5 jours puis révisés à J+1, J+3, J+7 | ⬜ | un nouvel extrait à chaque séance |
+| Test à froid le lendemain, avant toute écoute | ⬜ | — |
+| Chorusing en boucle (6 répétitions, une dimension par passe) | 🟡 | une passe de shadowing |
+| Écouter, pause, reproduire de mémoire, puis changer un mot | ⬜ | — |
+| Ralenti à 0,75× les premiers jours | ⬜ | vitesse réelle uniquement |
+| Courbe de l'apprenant superposée à celle du modèle (demi-tons) | 🟡 | courbe du modèle seulement |
+| Retelling en réutilisant 2 ou 3 « moules » de l'extrait | 🟡 | idée propre à chaque extrait, sans moules imposés |
+| Paires fonctionnelles d'intonation (*Tu viens. / Tu viens ?*) | ⬜ | — |
+| Un locuteur principal pendant 3 à 4 semaines ; préférer le non scripté | ⬜ | banque surtout faite de monologues, dont une voix off lue |
+| Extraits de conversation à deux voix (semaines 5 à 8) | ⬜ | presque absents de la banque ; import possible via « Utiliser mon propre extrait » |
+| Tests S0 / S4 / S8 et notation à l'aveugle par des natifs | ⬜ | l'audio reste en mémoire, rien n'est conservé pour comparer |
+| Marquage `/ ↑ ↓` avant de voir le modèle, A → B → A, une seule correction | ✅ | — |
 
 ## Démarrage local
 
