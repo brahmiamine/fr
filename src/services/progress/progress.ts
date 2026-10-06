@@ -206,6 +206,21 @@ export function recordProsodySession(
   }
 }
 
+/** Adds the measured melody distances to an already saved prosody session. */
+export function setProsodyMelodyDistance(
+  state: AppState,
+  sessionId: string,
+  melodyDistance: NonNullable<ProsodySessionRecord['melodyDistance']>,
+): AppState {
+  if (!state.prosodySessions.some((session) => session.id === sessionId)) return state
+  return {
+    ...state,
+    prosodySessions: state.prosodySessions.map((session) =>
+      session.id === sessionId ? { ...session, melodyDistance } : session,
+    ),
+  }
+}
+
 /**
  * The prosody point the learner chose most often in their last 5 sessions
  * (most recent wins a tie). Used to pick matching excerpts and to keep the

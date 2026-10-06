@@ -9,6 +9,7 @@ import {
 import {
   recentProsodyFocus,
   recordProsodySession,
+  setProsodyMelodyDistance,
   toLocalDateString,
 } from '../../services/progress/progress'
 import {
@@ -215,33 +216,30 @@ function ProsodySession({
       retellingSeconds: session.retelling.durationSeconds,
       cold: session.cold,
     }
-    // Measure the melody distance against the model before saving, so the
-    // history can show it. Synthetic voices have no curve: the record keeps
-    // no distance.
-    let cancelled = false
+    // The session and its plan are saved right away: nothing depends on the
+    // melody measure finishing (nor on this component staying mounted, nor on
+    // StrictMode running the effect twice).
+    updateWith((prev) =>
+      advancePlan(recordProsodySession(prev, record), exercise, record.date, now),
+    )
+
+    // The melody distance against the model is measured afterwards and added
+    // to the saved record. Synthetic voices have no curve: no distance.
     const model = modelPitchFor(exercise)
     void Promise.all([
       learnerMelody(model, recorder.attempt1?.url),
       learnerMelody(model, recorder.attempt2?.url),
       learnerMelody(model, recorder.cold?.url),
     ]).then(([v1, v2, coldMelody]) => {
-      if (cancelled) return
-      const melodyDistance: ProsodySessionRecord['melodyDistance'] = {}
+      const melodyDistance: NonNullable<ProsodySessionRecord['melodyDistance']> = {}
       if (v1.distance !== null) melodyDistance.v1 = v1.distance
       if (v2.distance !== null) melodyDistance.v2 = v2.distance
       if (coldMelody.distance !== null) melodyDistance.cold = coldMelody.distance
-      updateWith((prev) =>
-        advancePlan(
-          recordProsodySession(prev, { ...record, melodyDistance }),
-          exercise,
-          record.date,
-          now,
-        ),
-      )
+      if (Object.keys(melodyDistance).length === 0) return
+      updateWith((prev) => setProsodyMelodyDistance(prev, record.id, melodyDistance))
     })
-    return () => {
-      cancelled = true
-    }
+    // `recorder` only gives the recordings of this very session.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session, exercise, updateWith])
 
   if (session.completed) {

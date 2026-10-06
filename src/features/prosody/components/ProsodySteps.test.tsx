@@ -1,5 +1,6 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
+import { CHORUS_GAP_MS } from '../types'
 import type { ProsodyExercise } from '../types'
 import type { ProsodyRecorder } from '../hooks/useProsodyRecorder'
 import { ColdExercise } from './ColdExercise'
@@ -84,6 +85,41 @@ describe('ChorusLoop', () => {
     expect(screen.getByText(/passe 1\/6/)).toBeInTheDocument()
     expect(screen.getByText(/écoute seule/)).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /Continuer vers la mémoire/ })).toBeDisabled()
+  })
+
+  it('chains the six passes by itself, 650 ms apart, then unlocks the memory step', () => {
+    vi.useFakeTimers()
+    const play = vi
+      .spyOn(HTMLMediaElement.prototype, 'play')
+      .mockImplementation(() => Promise.resolve())
+    vi.spyOn(HTMLMediaElement.prototype, 'pause').mockImplementation(() => undefined)
+    const onPass = vi.fn()
+    const { container } = render(
+      <ChorusLoop exercise={exercise} audioSrc={audioSrc} onPass={onPass} onDone={() => undefined} />,
+    )
+    const audio = container.querySelector('audio') as HTMLAudioElement
+
+    // One tap starts the loop.
+    fireEvent.click(screen.getByRole('button', { name: 'Lancer la boucle' }))
+    for (let pass = 1; pass <= 6; pass += 1) {
+      expect(play).toHaveBeenCalledTimes(pass)
+      audio.currentTime = 9
+      fireEvent.timeUpdate(audio)
+      expect(onPass).toHaveBeenCalledTimes(pass)
+      if (pass < 6) {
+        // Nothing starts before the gap is over.
+        act(() => {
+          vi.advanceTimersByTime(CHORUS_GAP_MS - 1)
+        })
+        expect(play).toHaveBeenCalledTimes(pass)
+        act(() => {
+          vi.advanceTimersByTime(1)
+        })
+      }
+    }
+    expect(screen.getByRole('button', { name: /Continuer vers la mémoire/ })).toBeEnabled()
+    vi.restoreAllMocks()
+    vi.useRealTimers()
   })
 })
 

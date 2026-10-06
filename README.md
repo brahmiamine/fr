@@ -213,7 +213,7 @@ en prosodie. Il ne reste qu'un point absent, signalé ci-dessous.
 | Paires fonctionnelles d'intonation (*Tu viens. / Tu viens ?*) | ✅ |
 | Un locuteur principal pendant 3 à 4 semaines ; préférer le non scripté | ✅ |
 | Extraits de conversation à deux voix (semaines 5 à 8) | ⬜ |
-| Tests S0 / S4 / S8 et notation à l'aveugle par des natifs | ✅ |
+| Tests S0 / S4 / S8 et notation à l'aveugle (par soi-même ou par des natifs qui écoutent sur l'appareil, sous leur prénom) | ✅ |
 | Marquage `/ ↑ ↓` avant de voir le modèle, A → B → A, une seule correction | ✅ |
 
 > Les extraits de **conversation à deux voix** (semaines 5 à 8) sont encore
@@ -312,7 +312,10 @@ d'anciennes données peuvent être considérées comme déjà vues.
   personnels, contenus récents, progression prosodique (sans audio) et session de fluidité en cours.
 - **Exception — le bilan prosodique S0 / S4 / S8** : ses enregistrements sont
   conservés dans **IndexedDB** (base `parle-plus-audio`) sur l'appareil, pour
-  être notés à l'aveugle et comparés plus tard. Ils ne sont jamais envoyés.
+  être notés à l'aveugle et comparés plus tard. Ils ne sont jamais envoyés. Les
+  notes sont gardées par évaluateur (toi, ou un natif qui écoute sur
+  l'appareil sous son prénom) ; les bilans ne sont nommés qu'une fois la
+  notation finie, avec un tableau des moyennes et un export CSV.
   Tout le reste de l'audio reste uniquement en mémoire.
 - Si `localStorage` (ou IndexedDB) est indisponible, l'entraînement continue en
   mémoire et un avertissement non bloquant s'affiche.

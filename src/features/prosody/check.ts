@@ -97,3 +97,113 @@ async function activityOfRecording(
     return null
   }
 }
+
+/** A rating given by one person (the learner, or a native who listens) to one recording. */
+export interface StoredRating extends BlindRating {
+  rater: string
+  itemId: string
+}
+
+export const DEFAULT_RATER = 'Moi'
+
+export function ratingKey(rater: string, itemId: string): string {
+  return `rating-${rater.trim() || DEFAULT_RATER}::${itemId}`
+}
+
+/**
+ * Reads a stored rating. Ratings saved before raters existed (key
+ * `rating-<itemId>`, no name) count as the learner's own.
+ */
+export function parseStoredRating(key: string, value: Partial<StoredRating>): StoredRating | null {
+  const { comprehensibility, accent, naturalness } = value
+  if (
+    typeof comprehensibility !== 'number' ||
+    typeof accent !== 'number' ||
+    typeof naturalness !== 'number'
+  ) {
+    return null
+  }
+  const body = key.replace(/^rating-/, '')
+  const [rater, itemId] = body.includes('::') ? body.split('::') : [DEFAULT_RATER, body]
+  return {
+    rater: value.rater ?? rater,
+    itemId: value.itemId ?? itemId,
+    comprehensibility,
+    accent,
+    naturalness,
+  }
+}
+
+export interface RatingSummaryRow {
+  rater: string
+  kind: ProsodyCheckKind
+  count: number
+  comprehensibility: number
+  accent: number
+  naturalness: number
+}
+
+const mean = (values: number[]) => Math.round((values.reduce((sum, value) => sum + value, 0) / values.length) * 10) / 10
+
+/**
+ * Mean score per rater and per bilan (S0, S4, S8), on the spontaneous
+ * recordings only (story and argument): that is where gains are least sure.
+ * The bilans are only named here, after the blind rating is over.
+ */
+export function summarizeRatings(
+  records: readonly ProsodyCheckRecord[],
+  ratings: readonly StoredRating[],
+): RatingSummaryRow[] {
+  const owner = new Map<string, { kind: ProsodyCheckKind; item: CheckItem }>()
+  for (const record of records) for (const item of record.items) owner.set(item.id, { kind: record.kind, item })
+
+  const groups = new Map<string, StoredRating[]>()
+  for (const rating of ratings) {
+    const found = owner.get(rating.itemId)
+    if (!found || (found.item.kind !== 'story' && found.item.kind !== 'argument')) continue
+    const key = `${rating.rater}||${found.kind}`
+    groups.set(key, [...(groups.get(key) ?? []), rating])
+  }
+  const order: ProsodyCheckKind[] = ['S0', 'S4', 'S8']
+  return [...groups.entries()]
+    .map(([key, list]) => {
+      const [rater, kind] = key.split('||') as [string, ProsodyCheckKind]
+      return {
+        rater,
+        kind,
+        count: list.length,
+        comprehensibility: mean(list.map((rating) => rating.comprehensibility)),
+        accent: mean(list.map((rating) => rating.accent)),
+        naturalness: mean(list.map((rating) => rating.naturalness)),
+      }
+    })
+    .sort((a, b) => a.rater.localeCompare(b.rater) || order.indexOf(a.kind) - order.indexOf(b.kind))
+}
+
+/** One line per rating, to open in a spreadsheet or hand to a native. */
+export function ratingsToCsv(
+  records: readonly ProsodyCheckRecord[],
+  ratings: readonly StoredRating[],
+): string {
+  const owner = new Map<string, { kind: ProsodyCheckKind; date: string; item: CheckItem }>()
+  for (const record of records) {
+    for (const item of record.items) owner.set(item.id, { kind: record.kind, date: record.date, item })
+  }
+  const cell = (value: string | number | undefined) => `"${String(value ?? '').replace(/"/g, '""')}"`
+  const header = ['rater', 'bilan', 'date', 'recording', 'comprehensibility', 'accent', 'naturalness']
+  const rows = ratings.map((rating) => {
+    const found = owner.get(rating.itemId)
+    return [
+      rating.rater,
+      found?.kind,
+      found?.date,
+      found?.item.kind,
+      rating.comprehensibility,
+      rating.accent,
+      rating.naturalness,
+    ]
+      .map(cell)
+      .join(',')
+  })
+  return [header.join(','), ...rows].join('\n')
+}

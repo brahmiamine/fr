@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { ProsodyExercise } from '../types'
 import { CHORUS_GAP_MS, CHORUS_PASSES, imitationTranscript, speechRateFor } from '../types'
 import { AudioClip } from '../../../components/AudioClip/AudioClip'
@@ -26,11 +26,39 @@ const PASS_INSTRUCTIONS = [
  */
 export function ChorusLoop({ exercise, audioSrc, onPass, onDone }: ChorusLoopProps) {
   const [passesDone, setPassesDone] = useState(0)
+  const [waiting, setWaiting] = useState(false)
+  const containerRef = useRef<HTMLElement | null>(null)
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const running = passesDone < CHORUS_PASSES
+
+  useEffect(
+    () => () => {
+      if (timerRef.current) clearTimeout(timerRef.current)
+    },
+    [],
+  )
+
+  // The first pass starts with the learner's tap; the five others follow on
+  // their own, CHORUS_GAP_MS after the previous one ended.
+  const afterPass = () => {
+    onPass()
+    const next = passesDone + 1
+    setPassesDone(next)
+    if (next >= CHORUS_PASSES) return
+    setWaiting(true)
+    timerRef.current = setTimeout(() => {
+      setWaiting(false)
+      containerRef.current?.querySelector<HTMLButtonElement>('.audio-player__play')?.click()
+    }, CHORUS_GAP_MS)
+  }
   const current = Math.min(passesDone, PASS_INSTRUCTIONS.length - 1)
 
   return (
-    <section className="card exercise exercise--center" aria-labelledby="chorus-title">
+    <section
+      ref={containerRef}
+      className="card exercise exercise--center"
+      aria-labelledby="chorus-title"
+    >
       <p className="pill">Chorusing · passe {Math.min(passesDone + 1, CHORUS_PASSES)}/{CHORUS_PASSES}</p>
       <h2 id="chorus-title">{running ? 'Parle en même temps que le locuteur.' : 'Boucle terminée.'}</h2>
       <p className="muted">{running ? PASS_INSTRUCTIONS[current] : 'Les 6 passes sont faites.'}</p>
@@ -42,16 +70,17 @@ export function ChorusLoop({ exercise, audioSrc, onPass, onDone }: ChorusLoopPro
           speechRate={speechRateFor(exercise)}
           start={exercise.imitation.start}
           end={exercise.imitation.end}
-          label={`Lancer la passe ${passesDone + 1}`}
-          onComplete={() => {
-            onPass()
-            setPassesDone((value) => value + 1)
-          }}
+          label={passesDone === 0 ? 'Lancer la boucle' : `Passe ${passesDone + 1}`}
+          onComplete={afterPass}
         />
       ) : null}
       <p className="muted">
         {running
-          ? `Environ ${CHORUS_GAP_MS} ms de pause avant la passe suivante.`
+          ? passesDone === 0
+            ? `Touche une fois : les ${CHORUS_PASSES} passes s'enchaînent seules, ${CHORUS_GAP_MS} ms d'écart.`
+            : waiting
+              ? 'Pause…'
+              : 'Passe en cours.'
           : 'Le segment est maintenant prêt à être dit de mémoire.'}
       </p>
       <button
