@@ -148,6 +148,10 @@ Choisis de préférence une personne de 25 à 50 ans, de France du Nord ou d'Îl
 
 **Un locuteur principal, puis plusieurs.** Garde **un seul locuteur principal pendant 3 à 4 semaines** pour stabiliser ton modèle, puis ajoute **2 ou 3 voix** du même registre. La variété des voix favorise la généralisation (paradigme de l'entraînement « à haute variabilité »), mais trop tôt elle disperse.
 
+> **Dans l'application :** la banque ne contient encore presque aucun extrait de
+> conversation à deux voix. Pour les semaines 5 à 8, importe ta propre
+> conversation via « Utiliser mon propre extrait ».
+
 **Même sexe, voix proche :** utile pour comparer à l'oreille et sur la courbe, pas indispensable. La **forme** du contour compte plus que la hauteur absolue ; sur une courbe, compare en **demi-tons**.
 
 ---
