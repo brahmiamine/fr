@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { ProsodyExercise } from './types'
+import { maxImitationSecondsFor, withImitationForLevel } from './types'
 import {
   isProsodyExerciseReady,
   pickReadyProsodyExercise,
@@ -57,5 +58,39 @@ describe('prosody content protocol', () => {
     for (const exercise of readyProsodyExercises) {
       expect(validateProsodyExercise(exercise)).toEqual([])
     }
+  })
+})
+
+describe('progressive imitation segment', () => {
+  const long: ProsodyExercise = {
+    id: 'p_long',
+    level: 'B1',
+    category: 'opinion',
+    modelKind: 'recording',
+    transcript: 'a b c d',
+    groups: [
+      { text: 'a', start: 0, end: 3, intonation: 'level' },
+      { text: 'b', start: 3.2, end: 6.5, intonation: 'rise' },
+      { text: 'c', start: 6.8, end: 10, intonation: 'level' },
+      { text: 'd', start: 10.2, end: 14, intonation: 'fall' },
+    ],
+    imitation: { start: 0, end: 14 },
+    retelling: { idea: 'x' },
+    ready: true,
+    source: 'test',
+  }
+
+  it('starts with one short phrase, ending on a group', () => {
+    expect(maxImitationSecondsFor(0)).toBe(8)
+    expect(withImitationForLevel(long, 0).imitation).toEqual({ start: 0, end: 6.5 })
+  })
+
+  it('grows with practice up to the full segment', () => {
+    expect(withImitationForLevel(long, 6).imitation).toEqual({ start: 0, end: 10 })
+    expect(withImitationForLevel(long, 12).imitation).toEqual({ start: 0, end: 14 })
+  })
+
+  it('keeps a learner-imported segment as chosen', () => {
+    expect(withImitationForLevel({ ...long, custom: true }, 0).imitation.end).toBe(14)
   })
 })

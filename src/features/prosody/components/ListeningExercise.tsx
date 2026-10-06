@@ -7,12 +7,13 @@ import {
   spansFromBoundaries,
 } from '../marking'
 import type { ProsodyExercise } from '../types'
-import { speechRateFor } from '../types'
+import { hasReliableIntonation, speechRateFor } from '../types'
 import {
   REQUIRED_MEANING_LISTENS,
   REQUIRED_PROSODY_LISTENS,
 } from '../types'
 import { useWordHighlight } from '../hooks/useWordHighlight'
+import { PitchContour } from './PitchContour'
 import { AudioClip } from '../../../components/AudioClip/AudioClip'
 
 export interface ListeningExerciseProps {
@@ -224,20 +225,35 @@ function MarkingFeedback({
     <div className="exercise__rescue">
       <h3>Ton marquage</h3>
       <p lang="fr">{mine}</p>
+      {result.scored ? (
+        <p className="muted">
+          Frontières trouvées : {result.found}/{result.total}
+          {result.extra > 0 ? ` · ${result.extra} en trop` : ''}
+          {result.intonationCompared > 0
+            ? ` · intonation juste sur ${result.intonationMatches}/${result.intonationCompared} groupe(s) identique(s)`
+            : ''}
+          .
+        </p>
+      ) : (
+        <p className="muted">
+          Le découpage de ce modèle n'a pas encore été mesuré sur l'audio : il
+          n'y a pas de score. Compare ton marquage à l'oreille.
+        </p>
+      )}
       <p className="muted">
-        Frontières trouvées : {result.found}/{result.total}
-        {result.extra > 0 ? ` · ${result.extra} en trop` : ''}
-        {result.intonationCompared > 0
-          ? ` · intonation juste sur ${result.intonationMatches}/${result.intonationCompared} groupe(s) identiques`
-          : ''}
-        . Le découpage exact peut varier selon le locuteur : l'objectif est de
-        copier celui que tu entends.
+        {exercise.annotation === 'acoustic'
+          ? "Les frontières du modèle sont placées là où le locuteur fait une vraie pause, mesurée sur l'enregistrement. Seules les montées et descentes nettes de sa voix sont notées ; les autres ne comptent pas."
+          : "Le découpage exact peut varier selon le locuteur : l'objectif est de copier celui que tu entends."}
       </p>
     </div>
   )
 }
 
-function intonationMark(group: ProsodyExercise['groups'][number]): string {
+function intonationMark(
+  exercise: ProsodyExercise,
+  group: ProsodyExercise['groups'][number],
+): string {
+  if (!hasReliableIntonation(exercise, group)) return ''
   if (group.intonation === 'rise') return ' ↑'
   if (group.intonation === 'fall') return ' ↓'
   return ''
@@ -361,7 +377,7 @@ export function ListeningExercise({
               {group.finalLengthening ? (
                 <span className="prosody-groups__mark">—</span>
               ) : null}
-              <span className="prosody-groups__mark">{intonationMark(group)}</span>
+              <span className="prosody-groups__mark">{intonationMark(exercise, group)}</span>
               {group.liaisonAfter ? <span className="prosody-groups__mark"> ‿liaison</span> : null}
               {group.enchainementAfter ? <span className="prosody-groups__mark"> ‿enchaînement</span> : null}
               {index < exercise.groups.length - 1 ? (
@@ -378,6 +394,7 @@ export function ListeningExercise({
         <span className="prosody-groups__mark">—</span> syllabe allongée ·{' '}
         <span className="prosody-groups__mark">‿</span> liaison / enchaînement
       </p>
+      <PitchContour exercise={exercise} playhead={reveal.time} />
       </>
       )}
       <AudioClip

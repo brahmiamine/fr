@@ -67,8 +67,14 @@ export interface RetellingStory {
   id: string
   title: string
   category: string
+  /** What is said; read aloud by the synthetic voice when there is no `audio`. */
   text: string
   transferPrompt: string
+  /** A real speaker telling it (path under public/), from the prosody bank. */
+  audio?: string
+  /** Credit and license of the recording. */
+  attribution?: string
+  sourceUrl?: string
 }
 
 export interface ContentRepository {

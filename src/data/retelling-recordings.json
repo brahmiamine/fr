@@ -1,0 +1,23 @@
+[
+  { "prosodyId": "prosody_yt_006", "title": "Changer de pays et oser parler", "category": "personnel", "transferPrompt": "Raconte une période où tu as dû t'adapter à une nouvelle langue ou à un nouvel environnement." },
+  { "prosodyId": "prosody_yt_120", "title": "Étudier à Paris pendant la guerre", "category": "travail", "transferPrompt": "Raconte une rencontre qui a compté dans ton parcours." },
+  { "prosodyId": "prosody_yt_123", "title": "Seule femme parmi trente hommes", "category": "travail", "transferPrompt": "Raconte une situation où tu te sentais différent du reste du groupe." },
+  { "prosodyId": "prosody_yt_131", "title": "Un accident à quinze ans", "category": "sante", "transferPrompt": "Raconte un événement qui a changé tes projets." },
+  { "prosodyId": "prosody_yt_136", "title": "Un coup de fil inattendu", "category": "travail", "transferPrompt": "Raconte une proposition que tu as d'abord refusée, ou acceptée en hésitant." },
+  { "prosodyId": "prosody_yt_145", "title": "Le conseil d'un père chercheur", "category": "relations", "transferPrompt": "Raconte un conseil qu'un proche t'a donné et qui t'a marqué." },
+  { "prosodyId": "prosody_yt_147", "title": "Prise pour l'assistante", "category": "travail", "transferPrompt": "Raconte une fois où quelqu'un t'a sous-estimé." },
+  { "prosodyId": "prosody_yt_149", "title": "Rien ne se passe comme prévu", "category": "quotidien", "transferPrompt": "Raconte une matinée où tout est allé de travers." },
+  { "prosodyId": "prosody_yt_158", "title": "Les cassettes de la grand-mère", "category": "culture", "transferPrompt": "Raconte d'où vient une de tes passions." },
+  { "prosodyId": "prosody_yt_159", "title": "Un voyage en Tunisie en 2011", "category": "voyage", "transferPrompt": "Raconte un voyage qui a changé ta façon de voir quelque chose." },
+  { "prosodyId": "prosody_yt_175", "title": "« Mademoiselle », jamais la patronne", "category": "travail", "transferPrompt": "Raconte une situation où l'on ne t'a pas pris au sérieux." },
+  { "prosodyId": "prosody_yt_177", "title": "Cheffe et enceinte en plein service", "category": "travail", "transferPrompt": "Raconte une réaction des autres qui t'a surpris." },
+  { "prosodyId": "prosody_yt_185", "title": "Une vocation née à quatre ans", "category": "travail", "transferPrompt": "Raconte comment tu as choisi ton métier ou tes études." },
+  { "prosodyId": "prosody_yt_204", "title": "Trois ans pour écrire un texte universel", "category": "societe", "transferPrompt": "Raconte un projet de groupe où il a fallu se mettre d'accord." },
+  { "prosodyId": "prosody_yt_207", "title": "Le jour du vote", "category": "societe", "transferPrompt": "Raconte un moment où tu as attendu un résultat important." },
+  { "prosodyId": "prosody_yt_222", "title": "Les premiers vols d'un président", "category": "voyage", "transferPrompt": "Raconte ton premier voyage en avion, ou un voyage qui t'a marqué." },
+  { "prosodyId": "prosody_yt_223", "title": "Une décoration à 6 000 mètres", "category": "voyage", "transferPrompt": "Raconte une anecdote surprenante vécue en voyage." },
+  { "prosodyId": "prosody_yt_233", "title": "Le président et le Concorde", "category": "technologie", "transferPrompt": "Raconte l'histoire d'un objet ou d'une machine qui t'a fait rêver." },
+  { "prosodyId": "prosody_yt_264", "title": "Un manoir découvert par hasard", "category": "logement", "transferPrompt": "Raconte une découverte faite par hasard qui a changé tes plans." },
+  { "prosodyId": "prosody_yt_279", "title": "Le malentendu de la tiny house", "category": "logement", "transferPrompt": "Raconte un malentendu dans un groupe d'amis ou de collègues." },
+  { "prosodyId": "prosody_yt_305", "title": "Annoncer un projet fou à ses collègues", "category": "projets", "transferPrompt": "Raconte une décision que ton entourage n'a pas comprise." }
+]

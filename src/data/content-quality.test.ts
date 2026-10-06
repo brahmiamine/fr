@@ -6,9 +6,16 @@ import words from './paraphrase-words.json'
 import prosody from './prosody.json'
 import scenarios from './conversation-scenarios.json'
 import stories from './retelling-stories.json'
+import retellingRecordings from './retelling-recordings.json'
+import { contentRepository } from '../services/content/contentRepository'
+import type { ProsodyExercise } from '../features/prosody/types'
 import { secondsPerSyllable } from '../services/content/prosodyTiming'
 
 const badFrenchContraction = /\b(?:de les|de le|à les|à le)\b/i
+
+const bundledAudio = new Set(
+  Object.keys(import.meta.glob('/public/audio/prosody/*.ogg', { query: '?url', import: 'default' })),
+)
 
 describe('pedagogical content quality', () => {
   it('contains no common uncontracted French article mistakes in questions', () => {
@@ -79,5 +86,38 @@ describe('pedagogical content quality', () => {
       expect(words).toBeLessThanOrEqual(160)
       expect(story.transferPrompt.length).toBeGreaterThan(10)
     }
+  })
+
+  it('adds real speakers from the prosody bank to the retelling stories', () => {
+    const recorded = contentRepository.retellingStories.filter((story) => story.audio)
+    expect(recorded).toHaveLength(retellingRecordings.length)
+    for (const story of recorded) {
+      expect(story.audio).toMatch(/^audio\/prosody\/prosody_yt_\d{3}\.ogg$/)
+      expect(bundledAudio.has(`/public/${story.audio}`)).toBe(true)
+      expect(story.attribution).toBeTruthy()
+      expect(story.transferPrompt.length).toBeGreaterThan(10)
+    }
+  })
+
+  it('measures the groups of the real recordings on the audio', () => {
+    const bank = prosody as unknown as ProsodyExercise[]
+    const recordings = bank.filter((item) => item.modelKind === 'recording')
+    const annotated = recordings.filter((item) => item.annotation === 'acoustic')
+    expect(annotated.length).toBeGreaterThanOrEqual(recordings.length - 5)
+    for (const item of annotated) {
+      expect(item.pitch?.semitones.length).toBeGreaterThan(50)
+      item.groups.forEach((group, index) => {
+        expect(group.words?.length).toBe(group.text.split(/\s+/).length)
+        expect(typeof group.intonationMeasured).toBe('boolean')
+        // A boundary only exists where the speaker really pauses.
+        if (index < item.groups.length - 1) expect(group.pauseAfter).toBeGreaterThanOrEqual(0.08)
+      })
+    }
+  })
+
+  it('gives every recording its own retelling idea, not one per video', () => {
+    const recordings = prosody.filter((item) => item.modelKind === 'recording')
+    const ideas = new Set(recordings.map((item) => item.retelling.idea))
+    expect(ideas.size).toBe(recordings.length)
   })
 })

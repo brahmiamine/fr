@@ -12,15 +12,19 @@ const exercise: ProsodyExercise = {
   id: 'prosody_test',
   level: 'B1',
   category: 'opinion',
+  modelKind: 'recording',
+  annotation: 'acoustic',
   audio: 'audio/prosody/prosody_test.wav',
   transcript: "Franchement, je pense que c'est une bonne idée, mais ça dépend.",
   groups: [
-    { text: 'Franchement', start: 0, end: 2, intonation: 'level' },
+    { text: 'Franchement', start: 0, end: 2, intonation: 'level', intonationMeasured: true, pauseAfter: 0.3 },
     {
       text: "je pense que c'est une bonne idée",
       start: 2,
       end: 7,
       intonation: 'rise',
+      intonationMeasured: true,
+      pauseAfter: 0.4,
       finalLengthening: true,
     },
     {
@@ -28,6 +32,7 @@ const exercise: ProsodyExercise = {
       start: 7,
       end: 12,
       intonation: 'fall',
+      intonationMeasured: true,
     },
   ],
   imitation: { start: 2, end: 9 },
@@ -225,6 +230,38 @@ describe('prosody active marking', () => {
     )
     expect(screen.getByText(/Frontières trouvées : 2\/2/)).toBeInTheDocument()
     expect(screen.getByText(/intonation juste sur 3\/3/)).toBeInTheDocument()
+  })
+
+  it('shows the measured melody of the model on reveal', () => {
+    render(
+      <ListeningExercise
+        exercise={{ ...exercise, pitch: { step: 0.1, semitones: [0, 1, 2, null, -1, -2, -3] } }}
+        step="reveal"
+        audioSrc={audioSrc}
+        meaningPlays={1}
+        prosodyPlays={1}
+        onAudioComplete={() => undefined}
+        onNext={() => undefined}
+      />,
+    )
+    expect(screen.getByRole('img', { name: /Courbe de hauteur de voix/ })).toBeInTheDocument()
+  })
+
+  it('does not score a recording whose groups were only guessed from punctuation', () => {
+    render(
+      <ListeningExercise
+        exercise={{ ...exercise, annotation: undefined }}
+        step="reveal"
+        audioSrc={audioSrc}
+        meaningPlays={1}
+        prosodyPlays={1}
+        marking={{ boundaries: [3], intonations: ['rise', 'rise'] }}
+        onAudioComplete={() => undefined}
+        onNext={() => undefined}
+      />,
+    )
+    expect(screen.queryByText(/Frontières trouvées/)).not.toBeInTheDocument()
+    expect(screen.getByText(/il\s+n'y a pas de score/)).toBeInTheDocument()
   })
 })
 

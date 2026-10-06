@@ -169,3 +169,45 @@
   color: #fff;
   box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.18);
 }
+
+.pitch-contour {
+  margin: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.pitch-contour svg {
+  width: 100%;
+  height: 90px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--accent) 4%, transparent);
+}
+
+.pitch-contour__line {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.pitch-contour__mid {
+  stroke: var(--border);
+  stroke-dasharray: 4 4;
+  vector-effect: non-scaling-stroke;
+}
+
+.pitch-contour__boundary {
+  stroke: var(--muted);
+  stroke-width: 1;
+  opacity: 0.5;
+  vector-effect: non-scaling-stroke;
+}
+
+.pitch-contour__playhead {
+  stroke: var(--accent-2);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}

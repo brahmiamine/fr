@@ -11,6 +11,8 @@ export interface SessionFeedbackProps {
   onChange: (field: keyof SessionFeedback, value: string | number | null) => void
   onSubmit: () => void
   audioUrl?: string | null
+  /** The worst surprise question, first answer and revenge, when both were recorded. */
+  revengeClips?: { before: string | null; after: string } | null
   fluencyReminders?: FluencyReminder[]
   usedReminderIds?: string[]
   onToggleReminder?: (reminderId: string) => void
@@ -24,6 +26,7 @@ export function SessionFeedbackView({
   onChange,
   onSubmit,
   audioUrl = null,
+  revengeClips = null,
   fluencyReminders = [],
   usedReminderIds = [],
   onToggleReminder,
@@ -54,6 +57,20 @@ export function SessionFeedbackView({
             Réécoute environ une minute avant de remplir ce feedback.
           </p>
           <AudioClip src={audioUrl} label="Écouter mon enregistrement" />
+        </div>
+      ) : null}
+
+      {revengeClips ? (
+        <div className="callout">
+          <h2>Ta revanche : avant / après</h2>
+          <p className="muted">
+            Compare tes deux réponses à la question où tu as le plus bloqué :
+            démarres-tu plus vite ? Bloques-tu moins ?
+          </p>
+          {revengeClips.before ? (
+            <AudioClip src={revengeClips.before} label="Première réponse" />
+          ) : null}
+          <AudioClip src={revengeClips.after} label="Revanche" />
         </div>
       ) : null}
 

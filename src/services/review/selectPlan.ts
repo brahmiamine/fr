@@ -138,12 +138,16 @@ function selectGapItems(
   return items
 }
 
+/**
+ * "Enfin, ce mot est réinjecté dans un futur 4→3→2 ou une question surprise":
+ * every word already revealed once comes back to be used while speaking —
+ * except the ones due for retrieval today, which must not be shown before
+ * the learner tries to find them in the word-gap exercise.
+ */
 function selectFocusWords(state: AppState, random: () => number): string[] {
   const today = toLocalDateString()
   const reusable = state.wordGaps.filter(
-    (gap) =>
-      gap.successCount > 0 &&
-      (gap.status === 'mastered' || gap.nextReview > today),
+    (gap) => gap.status === 'mastered' || gap.nextReview > today,
   )
   return shuffle(reusable, random)
     .slice(0, 2)
