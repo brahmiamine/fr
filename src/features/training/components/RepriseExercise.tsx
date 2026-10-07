@@ -1,14 +1,20 @@
 import { Timer } from '../../../components/Timer/Timer'
 import { Button, Card, Pill } from '../../../components/ui'
 import type { Topic } from '../../../types/content'
+import { AiAnalysisPanel } from '../../ai/AiAnalysisPanel'
+import { QuickWordGap } from '../../wordGaps/QuickWordGap'
 import { REPRISE_SECONDS } from '../types'
 
 export interface RepriseExerciseProps {
   topic: Topic
-  stage: 'intro' | 'running'
+  stage: 'intro' | 'running' | 'review'
   /** The microphone is capturing this reprise. */
   recording?: boolean
+  /** The recorded reprise, analysed on demand once spoken. */
+  audioUrl?: string | null
   onStart: () => void
+  /** The 3 minutes are over. */
+  onSpoken: () => void
   onDone: () => void
 }
 
@@ -16,7 +22,15 @@ export interface RepriseExerciseProps {
  * "Chaque sujet revient une fois, entre J+2 et J+7, en 3 minutes sans
  * préparation": the subject is shown and the learner starts right away.
  */
-export function RepriseExercise({ topic, stage, recording = false, onStart, onDone }: RepriseExerciseProps) {
+export function RepriseExercise({
+  topic,
+  stage,
+  recording = false,
+  audioUrl = null,
+  onStart,
+  onSpoken,
+  onDone,
+}: RepriseExerciseProps) {
   if (stage === 'intro') {
     return (
       <Card center aria-labelledby="reprise-title">
@@ -30,6 +44,23 @@ export function RepriseExercise({ topic, stage, recording = false, onStart, onDo
         </p>
         <Button variant="animated" size="lg" block trailing="▶" onClick={onStart}>
           Commencer la reprise (3 min)
+        </Button>
+      </Card>
+    )
+  }
+
+  if (stage === 'review') {
+    return (
+      <Card aria-labelledby="reprise-review-title">
+        <h2 id="reprise-review-title">Reprise terminée</h2>
+        <p className="muted">
+          Un mot t'a manqué pendant la reprise ? Note-le maintenant : il reviendra
+          dans tes trous de mots.
+        </p>
+        <QuickWordGap id="reprise-gap" defaultOpen />
+        <AiAnalysisPanel audioUrl={audioUrl} situation="round" subtitle="Sur ta reprise" />
+        <Button size="lg" block trailing="→" onClick={onDone}>
+          Continuer
         </Button>
       </Card>
     )
@@ -51,7 +82,7 @@ export function RepriseExercise({ topic, stage, recording = false, onStart, onDo
         hideControls
         wave
         label="Parle"
-        onComplete={onDone}
+        onComplete={onSpoken}
       />
       <p className="fluency-run__hint">
         Ne récite pas : redis-le autrement. Un mot manque ? Contourne-le en moins d'une seconde.

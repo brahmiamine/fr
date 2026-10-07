@@ -21,6 +21,7 @@ import {
   masteredGapCount,
 } from '../../services/progress/progress'
 import ConversationPrep from './ConversationPrep'
+import { WordGapList } from '../wordGaps/WordGapList'
 import WeeklyConversation from './WeeklyConversation'
 import WeeklyTest from './WeeklyTest'
 import type { WeeklyTestRecord } from '../../types/progress'
@@ -254,8 +255,9 @@ export default function ProgressPage() {
                 ],
                 tags: [
                   `${session.durationMinutes} min`,
-                  `${session.blockCount} blocages`,
-                  `Fluidité ${session.fluencyScore}/5`,
+                  ...(session.feedbackSkipped
+                    ? ['Feedback passé']
+                    : [`${session.blockCount} blocages`, `Fluidité ${session.fluencyScore}/5`]),
                 ],
               }))
             : []
@@ -263,34 +265,7 @@ export default function ProgressPage() {
         empty="Aucune session terminée pour le moment. Lance ta première session depuis l'accueil."
       />
 
-      {state.wordGaps.length > 0 ? (
-        <section className="card card--md" aria-labelledby="gaps-title">
-          <h2 id="gaps-title">Mes trous de mots</h2>
-          <ul className="history">
-            {state.wordGaps.map((gap) => (
-              <li key={gap.id} className="history__item">
-                <div>
-                  <p className="history__date">{gap.target}</p>
-                  {gap.context ? (
-                    <p className="muted history__note">Idée : {gap.context}</p>
-                  ) : (
-                    <p className="muted history__note">
-                      Ancien mot sans contexte enregistré
-                    </p>
-                  )}
-                </div>
-                <div className="history__meta">
-                  <span className="pill">
-                    {gap.status === 'mastered'
-                      ? 'Maîtrisé'
-                      : `Prochain : ${gap.nextReview}`}
-                  </span>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </section>
-      ) : null}
+      <WordGapList />
 
       {state.fluencyNotes.length > 0 ? (
         <section className="card card--md" aria-labelledby="notes-title">

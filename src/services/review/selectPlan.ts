@@ -19,11 +19,11 @@ import {
   QUESTIONS_PER_SESSION,
   REPRISE_MAX_DAYS,
   REPRISE_MIN_DAYS,
+  SHORT_GAPS_PER_SESSION,
   STAGE_ORDER,
   ZAPPING_QUESTIONS,
 } from '../../features/training/types'
 
-const PERSONAL_GAP_RATIO = 0.7
 /** Every third session, the 4 → 3 → 2 retells a short story. */
 export const RETELLING_EVERY_N_SESSIONS = 3
 
@@ -61,7 +61,7 @@ function personalAsChunk(state: AppState, today: string): Chunk[] {
   return state.personalChunks
     .filter((chunk) => {
       const review = reviews.get(chunk.id)
-      if (review) return !review.mastered && review.nextReview <= today
+      if (review) return review.nextReview <= today
       return chunk.nextReview <= today
     })
     .map((chunk) => ({
@@ -85,8 +85,11 @@ function selectChunks(
   const byId = new Map(allEligible.map((chunk) => [chunk.id, chunk]))
   const reviewById = new Map(state.chunkReviews.map((review) => [review.chunkId, review]))
 
-  const due = state.chunkReviews
-    .filter((review) => !review.mastered && review.nextReview <= today)
+  // Learning chunks first, then mastered ones due for their monthly check.
+  const due = [
+    ...state.chunkReviews.filter((review) => !review.mastered && review.nextReview <= today),
+    ...state.chunkReviews.filter((review) => review.mastered && review.nextReview <= today),
+  ]
     .map((review) => byId.get(review.chunkId))
     .filter((chunk): chunk is Chunk => Boolean(chunk))
 
@@ -107,25 +110,41 @@ function selectChunks(
   return pickInPriority<Chunk>([due, unseen, rest], count, random)
 }
 
-function selectGapItems(
+/** Words of the weekly circumlocution task that were not guessed, most recent test first. */
+function failedParaphraseWords(state: AppState) {
+  const failed = new Set(
+    [...state.weeklyTests]
+      .sort((a, b) => b.date.localeCompare(a.date))
+      .flatMap((test) => test.failedParaphraseIds ?? []),
+  )
+  return contentRepository.paraphraseWords.filter(
+    (word) => failed.has(word.id) && !state.recentWordIds.includes(word.id),
+  )
+}
+
+/**
+ * Personal word gaps first — every slot if enough are due ("trous de mots
+ * personnels" come before new content) — the oldest first, then mastered
+ * words due for their monthly check. Generic words to paraphrase fill what
+ * is left, starting with the ones missed in the weekly test.
+ */
+export function selectGapItems(
   state: AppState,
   count: number,
   random: () => number,
+  options: { personalOnly?: boolean } = {},
 ): GapItem[] {
   const today = toLocalDateString()
-  const dueGaps = state.wordGaps
+  const byDate = (a: { nextReview: string }, b: { nextReview: string }) =>
+    a.nextReview.localeCompare(b.nextReview)
+  const learningDue = state.wordGaps
     .filter((gap) => gap.status === 'learning' && gap.nextReview <= today)
-    .sort((a, b) => a.nextReview.localeCompare(b.nextReview))
+    .sort(byDate)
+  const masteredDue = state.wordGaps
+    .filter((gap) => gap.status === 'mastered' && gap.nextReview <= today)
+    .sort(byDate)
 
-  const genericWords = selectUniqueItems(
-    contentRepository.paraphraseWords,
-    count,
-    state.recentWordIds,
-    random,
-  )
-
-  const personalTarget = Math.min(dueGaps.length, Math.round(count * PERSONAL_GAP_RATIO))
-  const personal = dueGaps.slice(0, personalTarget)
+  const personal = [...learningDue, ...masteredDue].slice(0, count)
   const items: GapItem[] = personal.map((gap) => ({
     key: `gap-${gap.id}`,
     kind: 'retrieve',
@@ -135,7 +154,19 @@ function selectGapItems(
     sourceId: gap.id,
     rescueAngles: [],
   }))
+  if (options.personalOnly) return items
 
+  const missed = failedParaphraseWords(state)
+  const missedIds = new Set(missed.map((word) => word.id))
+  const genericWords = [
+    ...missed,
+    ...selectUniqueItems(
+      contentRepository.paraphraseWords.filter((word) => !missedIds.has(word.id)),
+      count,
+      state.recentWordIds,
+      random,
+    ),
+  ]
   for (const word of genericWords.slice(0, count - personal.length)) {
     items.push({
       key: `word-${word.id}`,
@@ -158,9 +189,7 @@ function selectGapItems(
  */
 function selectFocusWords(state: AppState, random: () => number): string[] {
   const today = toLocalDateString()
-  const reusable = state.wordGaps.filter(
-    (gap) => gap.status === 'mastered' || gap.nextReview > today,
-  )
+  const reusable = state.wordGaps.filter((gap) => gap.nextReview > today)
   return shuffle(reusable, random)
     .slice(0, 2)
     .map((gap) => gap.target)
@@ -350,7 +379,12 @@ export function buildSessionPlan(
     questions,
     zappingQuestions,
     taboo: mode === 'full' ? selectTaboo(state, random) : null,
-    gapItems: mode === 'full' ? selectGapItems(state, GAPS_PER_SESSION, random) : [],
+    gapItems:
+      mode === 'full'
+        ? selectGapItems(state, GAPS_PER_SESSION, random)
+        : mode === 'short'
+          ? selectGapItems(state, SHORT_GAPS_PER_SESSION, random, { personalOnly: true })
+          : [],
     focusWords: selectFocusWords(state, random),
     fluencyReminders: selectFluencyReminders(state, random),
     newChunkIds,

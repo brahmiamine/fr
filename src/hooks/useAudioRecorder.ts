@@ -1,5 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { analyzeSpeechActivity } from '../services/audio/speechActivity'
+import {
+  analyzeSpeechActivity,
+  forgetRecordingActivity,
+  rememberRecordingActivity,
+} from '../services/audio/speechActivity'
 import type { SpeechActivity } from '../services/audio/speechActivity'
 
 export type RecorderStatus =
@@ -108,7 +112,10 @@ export function useAudioRecorder(options: AudioRecorderOptions = {}): AudioRecor
   }, [])
 
   const releaseUrl = useCallback(() => {
-    for (const url of urlsRef.current) URL.revokeObjectURL(url)
+    for (const url of urlsRef.current) {
+      URL.revokeObjectURL(url)
+      forgetRecordingActivity(url)
+    }
     urlsRef.current = []
     setBlobUrl(null)
   }, [])
@@ -168,18 +175,19 @@ export function useAudioRecorder(options: AudioRecorderOptions = {}): AudioRecor
       }
 
       recorder.onstop = () => {
+        let measured: SpeechActivity | null = null
         if (measureLevels) {
           stopMeter()
-          setActivity(
-            analyzeSpeechActivity(levelsRef.current, {
-              frameSeconds: LEVEL_FRAME_MS / 1000,
-            }),
-          )
+          measured = analyzeSpeechActivity(levelsRef.current, {
+            frameSeconds: LEVEL_FRAME_MS / 1000,
+          })
+          setActivity(measured)
         }
         const blob = new Blob(chunks, {
           type: recorder.mimeType || 'audio/webm',
         })
         const url = URL.createObjectURL(blob)
+        rememberRecordingActivity(url, measured)
         urlsRef.current.push(url)
         setBlobUrl(url)
         if (!keepStream) {

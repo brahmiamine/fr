@@ -142,7 +142,8 @@ export interface TrainingSessionState {
   fluencyFeedback: FluencyFeedback
 
   reprise: {
-    stage: 'intro' | 'running'
+    /** `review`: spoken, time to note a missing word before moving on. */
+    stage: 'intro' | 'running' | 'review'
   }
 
   questions: {
@@ -153,8 +154,13 @@ export interface TrainingSessionState {
   questionRatings: QuestionRating[]
   /** What was missing in each first answer, shown during its second one. */
   questionNotes: Record<string, string>
+  /**
+   * A word missing in a first answer, with the idea it carried: shown during
+   * the second answer, then added to the personal word gaps.
+   */
+  questionWords?: Record<string, { word: string; idea: string }>
   zapping: {
-    stage: 'intro' | 'running' | 'done'
+    stage: 'intro' | 'running' | 'review' | 'done'
     index: number
   }
 
@@ -166,6 +172,8 @@ export interface TrainingSessionState {
   tabooStarted?: boolean
   /** The subject of 2–7 days ago was really spoken again. */
   repriseDone?: boolean
+  /** The final feedback was skipped. */
+  feedbackSkipped?: boolean
   /** Questions answered a second time. */
   questionRetries?: number
 
@@ -203,7 +211,9 @@ export const STAGE_META: Record<StageKind, { title: string; minutes: number }> =
 /** Stages kept by each kind of session. */
 export const MODE_STAGES: Record<SessionMode, StageKind[]> = {
   full: STAGE_ORDER,
-  short: ['chunks', 'fluency', 'questions', 'feedback'],
+  // Due personal word gaps only (no generic words, no taboo): the list never
+  // waits for a full session to come back.
+  short: ['chunks', 'fluency', 'questions', 'gaps', 'feedback'],
   conversation: ['chunks', 'fluency', 'feedback'],
 }
 
@@ -232,6 +242,8 @@ export const QUESTIONS_PER_SESSION = 2
 export const ZAPPING_QUESTIONS = 4
 export const ZAPPING_SECONDS = 45
 export const GAPS_PER_SESSION = 4
+/** Short session: only the personal word gaps that are due, at most this many. */
+export const SHORT_GAPS_PER_SESSION = 2
 export const QUESTION_COUNTDOWN_SECONDS = 3
 export const QUESTION_SPEAKING_SECONDS = 60
 /** Second answer to the same question. */

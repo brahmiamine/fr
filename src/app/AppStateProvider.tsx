@@ -83,3 +83,8 @@ export function useAppState(): AppStateContextValue {
   }
   return context
 }
+
+/** Same as `useAppState`, or null outside the provider (stand-alone widgets). */
+export function useOptionalAppState(): AppStateContextValue | null {
+  return useContext(AppStateContext)
+}

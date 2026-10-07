@@ -429,6 +429,34 @@ export function createWordGap(
   }
 }
 
+/**
+ * Key used to recognise the same word written differently: case, accents,
+ * a leading article and quotes do not matter ("La prise electrique" =
+ * "prise électrique").
+ */
+export function wordGapKey(target: string): string {
+  return target
+    .normalize('NFD')
+    .replace(/\p{M}/gu, '')
+    .toLowerCase()
+    .replace(/[«»"“”]/g, ' ')
+    .replace(/[’]/g, "'")
+    .trim()
+    .replace(/^(?:(?:le|la|les|un|une|des|du|de la)\s+|de l'|l'|d')/, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+export function findWordGap(state: AppState, target: string): WordGap | undefined {
+  const key = wordGapKey(target)
+  return key ? state.wordGaps.find((gap) => wordGapKey(gap.target) === key) : undefined
+}
+
+/**
+ * The learner could not find this word while speaking. A new word starts its
+ * path (J+1 → J+3 → J+7). A word already in the list — even mastered — was
+ * missed again: "un échec remet le parcours à zéro", it comes back tomorrow.
+ */
 export function captureWordGap(
   state: AppState,
   target: string,
@@ -436,15 +464,54 @@ export function captureWordGap(
   now: Date = new Date(),
 ): AppState {
   const cleanTarget = target.trim()
-  if (!cleanTarget) return state
-  const existing = state.wordGaps.find(
-    (gap) => gap.target.toLowerCase() === cleanTarget.toLowerCase(),
-  )
-  if (existing) {
-    if (existing.context || !context.trim()) return state
-    return upsertWordGap(state, { ...existing, context: context.trim() })
-  }
-  return upsertWordGap(state, createWordGap(cleanTarget, context, now))
+  if (!cleanTarget || !wordGapKey(cleanTarget)) return state
+  const cleanContext = context.trim()
+  const existing = findWordGap(state, cleanTarget)
+  if (!existing) return upsertWordGap(state, createWordGap(cleanTarget, cleanContext, now))
+
+  const today = toLocalDateString(now)
+  const tomorrow = nextReviewAfter(1, now)
+  // Noted twice the same day (mini-feedback, then final feedback): once is enough.
+  const alreadyCounted = existing.createdAt === today || existing.lastBlockedAt === today
+  return upsertWordGap(state, {
+    ...existing,
+    context: existing.context || cleanContext,
+    successCount: 0,
+    status: 'learning',
+    // Already due (today or overdue): it stays due rather than moving away.
+    nextReview: existing.nextReview < tomorrow ? existing.nextReview : tomorrow,
+    ...(alreadyCounted
+      ? {}
+      : { timesBlocked: (existing.timesBlocked ?? 0) + 1, lastBlockedAt: today }),
+  })
+}
+
+/** Corrects the word or its idea from the list. */
+export function editWordGap(
+  state: AppState,
+  gapId: string,
+  changes: { target?: string; context?: string },
+): AppState {
+  const existing = state.wordGaps.find((gap) => gap.id === gapId)
+  if (!existing) return state
+  const target = changes.target?.trim() || existing.target
+  const context = changes.context !== undefined ? changes.context.trim() : existing.context
+  return upsertWordGap(state, { ...existing, target, context })
+}
+
+export function deleteWordGap(state: AppState, gapId: string): AppState {
+  return { ...state, wordGaps: state.wordGaps.filter((gap) => gap.id !== gapId) }
+}
+
+/**
+ * New words noted today. Each one needs at least three reviews: beyond a few
+ * per day, the list grows faster than the sessions can bring them back.
+ */
+export const NEW_WORD_GAPS_PER_DAY = 5
+
+export function newWordGapsToday(state: AppState, now: Date = new Date()): number {
+  const today = toLocalDateString(now)
+  return state.wordGaps.filter((gap) => gap.createdAt === today).length
 }
 
 let personalChunkCounter = 0

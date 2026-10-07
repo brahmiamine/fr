@@ -24,19 +24,29 @@ describe('reprise of a recent subject', () => {
     vi.useFakeTimers()
     const onStart = vi.fn()
     const onDone = vi.fn()
-    const { rerender } = render(<RepriseExercise topic={topic} stage="intro" onStart={onStart} onDone={onDone} />)
+    const onSpoken = vi.fn()
+    const { rerender } = render(
+      <RepriseExercise topic={topic} stage="intro" onStart={onStart} onSpoken={onSpoken} onDone={onDone} />,
+    )
     expect(screen.getByText(/sans préparation/)).toBeInTheDocument()
     fireEvent.click(screen.getByRole('button', { name: /Commencer la reprise/ }))
     expect(onStart).toHaveBeenCalled()
 
-    rerender(<RepriseExercise topic={topic} stage="running" onStart={onStart} onDone={onDone} />)
+    rerender(<RepriseExercise topic={topic} stage="running" onStart={onStart} onSpoken={onSpoken} onDone={onDone} />)
     act(() => {
       vi.advanceTimersByTime(179_000)
     })
-    expect(onDone).not.toHaveBeenCalled()
+    expect(onSpoken).not.toHaveBeenCalled()
     act(() => {
       vi.advanceTimersByTime(1_000)
     })
+    expect(onSpoken).toHaveBeenCalledTimes(1)
+    expect(onDone).not.toHaveBeenCalled()
+
+    // Once spoken, a moment to note a missing word before moving on.
+    rerender(<RepriseExercise topic={topic} stage="review" onStart={onStart} onSpoken={onSpoken} onDone={onDone} />)
+    expect(screen.getByText('Reprise terminée')).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('button', { name: /Continuer/ }))
     expect(onDone).toHaveBeenCalledTimes(1)
   })
 })

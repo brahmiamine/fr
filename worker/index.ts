@@ -133,12 +133,13 @@ export async function handleApi(request: Request, env: Env): Promise<Response> {
     if (order.length === 0) return json({ error: 'no transcription provider configured' }, 503)
 
     const startedAt = Date.now()
-    const { provider, text, attempts } = await transcribeWithFallback(order, env, file, 'fr')
+    const { provider, text, words, attempts } = await transcribeWithFallback(order, env, file, 'fr')
     if (!provider) return json({ error: 'all providers failed', ...failures(attempts) }, 502)
     return json({
       provider,
       model: transcribeModelFor(provider, env),
       text: text.trim(),
+      ...(words ? { words } : {}),
       audioBytes: file.size,
       latencyMs: Date.now() - startedAt,
       ...failures(attempts),

@@ -17,6 +17,8 @@ export interface SpeechActivity {
   meanPauseSeconds?: number
   /** Time from the first to the last sound, in seconds. */
   spokenSeconds?: number
+  /** Longest silence between the first and the last sound, in seconds. */
+  longestPauseSeconds?: number
 }
 
 export interface SpeechActivityOptions {
@@ -66,10 +68,12 @@ export function analyzeSpeechActivity(
   let speechFrames = 0
   let shortPauses = 0
   let pausedFrames = 0
+  let longestSilenceFrames = 0
 
   for (let index = firstSpeech; index <= lastSpeech; index += 1) {
     if (speaking[index]) {
       speechFrames += 1
+      longestSilenceFrames = Math.max(longestSilenceFrames, silenceFrames)
       if (silenceFrames * frameSeconds >= shortPauseSeconds - 1e-9) {
         shortPauses += 1
         pausedFrames += silenceFrames
@@ -95,5 +99,24 @@ export function analyzeSpeechActivity(
     shortPauses,
     meanPauseSeconds: shortPauses > 0 ? Math.round(((pausedFrames * frameSeconds) / shortPauses) * 100) / 100 : 0,
     spokenSeconds: round((lastSpeech - firstSpeech + 1) * frameSeconds),
+    longestPauseSeconds: round(longestSilenceFrames * frameSeconds),
   }
+}
+
+/**
+ * Measures of each in-memory recording, by blob URL: any screen that replays
+ * or analyses a recording finds them without passing them along.
+ */
+const activityByUrl = new Map<string, SpeechActivity>()
+
+export function rememberRecordingActivity(url: string, activity: SpeechActivity | null): void {
+  if (activity) activityByUrl.set(url, activity)
+}
+
+export function recordingActivity(url: string | null | undefined): SpeechActivity | null {
+  return url ? activityByUrl.get(url) ?? null : null
+}
+
+export function forgetRecordingActivity(url: string): void {
+  activityByUrl.delete(url)
 }

@@ -1,0 +1,46 @@
+.quick-gap {
+  display: grid;
+  gap: 8px;
+}
+
+.quick-gap--open {
+  padding: 12px 14px;
+  border: 1px dashed var(--border, rgba(127, 127, 127, 0.4));
+  border-radius: 14px;
+}
+
+.quick-gap__toggle {
+  justify-self: start;
+  padding: 6px 12px;
+  border: 1px dashed var(--border, rgba(127, 127, 127, 0.4));
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.quick-gap__title {
+  margin: 0;
+  font-weight: 700;
+}
+
+.quick-gap__message,
+.quick-gap__saved {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.gap-list__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.gap-list__edit {
+  display: grid;
+  gap: 8px;
+  width: 100%;
+}

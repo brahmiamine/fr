@@ -5,6 +5,7 @@ import { useAudioRecorder } from '../../hooks/useAudioRecorder'
 import { runAiTask } from '../../services/ai/client'
 import { contentRepository } from '../../services/content/contentRepository'
 import { AiAnalysisPanel } from './AiAnalysisPanel'
+import { QuickWordGap } from '../wordGaps/QuickWordGap'
 import './ai.css'
 
 /** Picks a different theme for each question. */
@@ -72,7 +73,7 @@ function bankQuestion(themeId: string, avoid: string[]): string {
  * fills in when the AI gives fewer questions or none.
  */
 export function SurpriseCoach() {
-  const recorder = useAudioRecorder({ keepStream: true })
+  const recorder = useAudioRecorder({ keepStream: true, measureLevels: true })
   const [themeId, setThemeId] = useState(RANDOM_THEME)
   const [total, setTotal] = useState(5)
   const [seconds, setSeconds] = useState(60)
@@ -258,11 +259,13 @@ export function SurpriseCoach() {
               ) : null}
               <AiAnalysisPanel
                 audioUrl={recordings[position]}
+                situation="coach"
                 subtitle={`Sur ta réponse ${position + 1}`}
               />
             </li>
           ))}
         </ol>
+        <QuickWordGap id="coach-gap" />
         <Button block size="lg" trailing="↻" onClick={() => setPhase('setup')}>
           Nouvelle série
         </Button>

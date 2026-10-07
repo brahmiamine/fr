@@ -32,6 +32,8 @@ export interface SurpriseQuestionsExerciseProps {
   firstAnswerUrl?: string | null
   /** What the learner noted as missing after the first answer. */
   note?: string
+  /** A word missing in the first answer and the idea it carried. */
+  missingWord?: { word: string; idea: string }
   /** The question had a big block a few days ago and comes back. */
   isReview?: boolean
   onCountdownDone: () => void
@@ -39,6 +41,7 @@ export interface SurpriseQuestionsExerciseProps {
   onSpeakingDone: () => void
   onRate: (rating: BlockRating) => void
   onNoteChange: (note: string) => void
+  onMissingWordChange?: (value: { word: string; idea: string }) => void
   onNoteDone: () => void
   onRetryDone: () => void
 }
@@ -66,12 +69,14 @@ export function SurpriseQuestionsExercise({
   recording = false,
   firstAnswerUrl = null,
   note = '',
+  missingWord = { word: '', idea: '' },
   isReview = false,
   onCountdownDone,
   onPrepDone,
   onSpeakingDone,
   onRate,
   onNoteChange,
+  onMissingWordChange,
   onNoteDone,
   onRetryDone,
 }: SurpriseQuestionsExerciseProps) {
@@ -172,12 +177,33 @@ export function SurpriseQuestionsExercise({
           refaire la même question tout de suite.
         </p>
         {firstAnswerUrl ? <AudioClip src={firstAnswerUrl} label="Réécouter ma réponse" /> : null}
+        {onMissingWordChange ? (
+          <>
+            <TextField
+              id="question-missing-word"
+              label="Un mot qui t'a manqué ? (facultatif)"
+              value={missingWord.word}
+              onChange={(word) => onMissingWordChange({ ...missingWord, word })}
+              placeholder="ex. loyer"
+            />
+            {missingWord.word.trim() ? (
+              <TextField
+                id="question-missing-idea"
+                label="L'idée, sans le mot"
+                value={missingWord.idea}
+                onChange={(idea) => onMissingWordChange({ ...missingWord, idea })}
+                placeholder="ex. ce que je paie chaque mois pour mon appartement"
+                hint="Il rejoindra tes trous de mots à la fin de la séance."
+              />
+            ) : null}
+          </>
+        ) : null}
         <TextField
           id="question-note"
-          label="Ce qui a manqué (facultatif)"
+          label="Une idée ou une transition qui a manqué (facultatif)"
           value={note}
           onChange={onNoteChange}
-          placeholder="ex. un exemple concret, le mot « loyer »"
+          placeholder="ex. un exemple concret, « d'un autre côté »"
         />
         <Button variant="animated" size="lg" block trailing="▶" onClick={onNoteDone}>
           Je refais la question
@@ -206,6 +232,9 @@ export function SurpriseQuestionsExercise({
       </h2>
       {retry && advanced ? (
         <p className="text-strong">Niveau avancé : défends maintenant la position inverse.</p>
+      ) : null}
+      {retry && missingWord.word.trim() ? (
+        <InfoLine label="Mot à placer :">{missingWord.word}</InfoLine>
       ) : null}
       {retry && note.trim() ? <InfoLine label="À intégrer :">{note}</InfoLine> : null}
 

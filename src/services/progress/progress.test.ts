@@ -10,6 +10,9 @@ import {
   calculateWeeklyProgress,
   captureWordGap,
   createWordGap,
+  deleteWordGap,
+  editWordGap,
+  newWordGapsToday,
   findComparisonTest,
   formatDuration,
   getWeekKey,
@@ -159,6 +162,56 @@ describe('closed learning loop', () => {
 
     state = captureWordGap(state, 'prise électrique', 'autre contexte')
     expect(state.wordGaps).toHaveLength(1)
+  })
+
+  it('brings a word back tomorrow when the learner blocks on it again, even mastered', () => {
+    const created = new Date(2026, 9, 1)
+    let state = captureWordGap(createInitialState(), 'échéance', 'la date limite pour payer', created)
+    state = {
+      ...state,
+      wordGaps: [{ ...state.wordGaps[0], status: 'mastered', successCount: 3, nextReview: '2026-11-10' }],
+    }
+    const later = new Date(2026, 9, 12)
+    state = captureWordGap(state, "L'échéance", 'autre idée', later)
+    expect(state.wordGaps).toHaveLength(1)
+    expect(state.wordGaps[0]).toMatchObject({
+      target: 'échéance',
+      context: 'la date limite pour payer',
+      status: 'learning',
+      successCount: 0,
+      nextReview: '2026-10-13',
+      timesBlocked: 1,
+      lastBlockedAt: '2026-10-12',
+    })
+    // Noted twice the same day: counted once; an overdue word stays due.
+    state = captureWordGap(state, 'echeance', '', later)
+    expect(state.wordGaps[0].timesBlocked).toBe(1)
+    state = { ...state, wordGaps: [{ ...state.wordGaps[0], nextReview: '2026-10-05' }] }
+    state = captureWordGap(state, 'échéance', '', new Date(2026, 9, 14))
+    expect(state.wordGaps[0].nextReview).toBe('2026-10-05')
+    expect(state.wordGaps[0].timesBlocked).toBe(2)
+  })
+
+  it('recognises the same word with an article, accents or quotes', () => {
+    let state = captureWordGap(createInitialState(), 'prise électrique', 'dans le mur')
+    state = captureWordGap(state, '« La prise electrique »', 'autre')
+    state = captureWordGap(state, "l'embouteillage", 'trop de voitures')
+    state = captureWordGap(state, 'embouteillage', 'bouchon')
+    expect(state.wordGaps.map((gap) => gap.target)).toEqual(['prise électrique', "l'embouteillage"])
+  })
+
+  it('edits and deletes a word, and counts the new words of the day', () => {
+    const now = new Date(2026, 9, 7)
+    let state = captureWordGap(createInitialState(), 'prise', 'dans le mur', now)
+    state = captureWordGap(state, 'loyer', 'ce que je paie chaque mois', now)
+    expect(newWordGapsToday(state, now)).toBe(2)
+    const id = state.wordGaps[0].id
+    state = editWordGap(state, id, { target: 'prise électrique', context: '' })
+    expect(state.wordGaps.find((gap) => gap.id === id)).toMatchObject({ target: 'prise électrique', context: '' })
+    state = editWordGap(state, id, { target: '  ' })
+    expect(state.wordGaps.find((gap) => gap.id === id)?.target).toBe('prise électrique')
+    state = deleteWordGap(state, id)
+    expect(state.wordGaps.map((gap) => gap.target)).toEqual(['loyer'])
   })
 
   it('turns a useful expression into a personal chunk due tomorrow', () => {

@@ -14,11 +14,11 @@ import TrainingPage from './TrainingPage'
 
 const plan = buildSessionPlan(createInitialState(), () => 0.5)
 
-function renderTraining(initialState?: AppState) {
+function renderTraining(initialState?: AppState, path = '/training') {
   return render(
     <SettingsProvider>
       <AppStateProvider initialState={initialState}>
-        <MemoryRouter initialEntries={['/training']}>
+        <MemoryRouter initialEntries={[path]}>
           <TrainingPage />
         </MemoryRouter>
       </AppStateProvider>
@@ -203,6 +203,75 @@ describe('TrainingPage', () => {
         { questionId: plan.questions[0].id, nextReview: expect.any(String) },
       ])
     })
+  })
+
+  it('adds the words missing in the surprise questions to the word gaps', async () => {
+    const user = userEvent.setup()
+    const [first, second] = plan.questions
+    const session: TrainingSessionState = {
+      ...createSessionState(plan, 2, new Date('2026-10-02T10:00:00.000Z')),
+      stageIndex: 5,
+      questionWords: {
+        [first.id]: { word: 'loyer', idea: 'ce que je paie chaque mois pour mon logement' },
+        [second.id]: { word: 'échéance', idea: '' },
+      },
+      questionNotes: { [second.id]: 'la date limite' },
+      feedback: {
+        blockedWord: '',
+        blockedWordContext: '',
+        abandonedSentence: '',
+        awkwardPhrase: '',
+        expressionToReuse: '',
+        expressionIntent: '',
+        blockCount: 1,
+        fluencyScore: 3,
+      },
+    }
+    renderTraining({ ...createInitialState(), inProgressSession: session })
+    await user.click(screen.getByRole('button', { name: 'Terminer la séance' }))
+    await waitFor(() => {
+      const parsed = JSON.parse(window.localStorage.getItem(STORAGE_KEY) as string) as AppState
+      expect(parsed.wordGaps.map((gap) => [gap.target, gap.context])).toEqual([
+        ['loyer', 'ce que je paie chaque mois pour mon logement'],
+        // Without an idea, the note written for the second answer stands in.
+        ['échéance', 'la date limite'],
+      ])
+    })
+  })
+
+  it('marks a skipped feedback instead of storing made-up scores', async () => {
+    const user = userEvent.setup()
+    const session: TrainingSessionState = {
+      ...createSessionState(plan, 2, new Date('2026-10-02T10:00:00.000Z')),
+      stageIndex: 5,
+    }
+    renderTraining({ ...createInitialState(), inProgressSession: session })
+    await user.click(screen.getByRole('button', { name: 'Passer le feedback' }))
+    await waitFor(() => {
+      const parsed = JSON.parse(window.localStorage.getItem(STORAGE_KEY) as string) as AppState
+      expect(parsed.sessions[0].feedbackSkipped).toBe(true)
+    })
+  })
+
+  it('lets the learner choose when another kind of session is already under way', async () => {
+    const user = userEvent.setup()
+    const session: TrainingSessionState = {
+      ...createSessionState(plan, 2, new Date('2026-10-02T10:00:00.000Z')),
+      stageIndex: 3,
+      questions: { index: 0, stage: 'countdown' },
+    }
+    const { unmount } = renderTraining({ ...createInitialState(), inProgressSession: session }, '/training?mode=short')
+    expect(screen.getByText('Une séance est déjà en cours')).toBeInTheDocument()
+    // No subject to take up again yet: the reprise is not counted among the steps.
+    expect(screen.getByText(/étape 3\/5/)).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: 'Reprendre ma séance' }))
+    expect(screen.getByText('Question suivante dans…')).toBeInTheDocument()
+    unmount()
+
+    renderTraining({ ...createInitialState(), inProgressSession: session }, '/training?mode=short')
+    await user.click(screen.getByRole('button', { name: /Commencer : Version courte/ }))
+    expect(screen.getByText(/Chunk 1\/4/)).toBeInTheDocument()
+    expect(screen.getByText('Version courte')).toBeInTheDocument()
   })
 
   it('keeps the submit disabled until feedback is valid', () => {

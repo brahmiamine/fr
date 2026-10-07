@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useReducer, useRef } from 'react'
+import { useEffect, useMemo, useReducer, useRef, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { useAppState } from '../../app/AppStateProvider'
 import { TimerPersistenceContext } from '../../components/Timer/TimerPersistence'
 import type { TimerPersistence } from '../../components/Timer/TimerPersistence'
-import { Confetti, IconTile, MiniStat, SkipButton } from '../../components/ui'
+import { Button, Confetti, IconTile, MiniStat, SkipButton } from '../../components/ui'
 import { useAudioRecorder } from '../../hooks/useAudioRecorder'
 import { runAiTask } from '../../services/ai/client'
 import { buildSessionPlan } from '../../services/review/selectPlan'
@@ -38,6 +38,7 @@ import {
   prepSeconds,
   roundSecondsOf,
   sessionReducer,
+  sessionStep,
 } from './sessionReducer'
 import type { SessionMode, TrainingSessionState } from './types'
 import {
@@ -47,7 +48,13 @@ import {
   speakingSecondsForLevel,
 } from './types'
 import { useFluencyRecordings } from './useFluencyRecordings'
-import { retryKey, speakingKey, useQuestionRecordings } from './useQuestionRecordings'
+import {
+  REPRISE_RECORDING,
+  ZAPPING_RECORDING,
+  retryKey,
+  speakingKey,
+  useQuestionRecordings,
+} from './useQuestionRecordings'
 import type { QuestionRecordings } from './useQuestionRecordings'
 import './training.css'
 
@@ -126,7 +133,9 @@ function stageProgress(session: TrainingSessionState): number {
     const done = session.fluency.roundIndex + (session.fluency.stage === 'summary' ? 1 : 0)
     return done / rounds
   }
-  if (stage === 'reprise') return session.reprise.stage === 'running' ? 0.5 : 0
+  if (stage === 'reprise') {
+    return session.reprise.stage === 'review' ? 0.9 : session.reprise.stage === 'running' ? 0.5 : 0
+  }
   if (stage === 'questions') {
     const zapping = plan.zappingQuestions ?? []
     const total = plan.questions.length + (zapping.length > 0 ? 1 : 0)
@@ -157,9 +166,11 @@ function skipFor(
       }
       return { label: 'Passer ce tour', run: () => dispatch({ type: 'FLUENCY_SKIP' }) }
     case 'reprise':
+      if (session.reprise.stage === 'review') return null
       return { label: 'Passer la reprise', run: () => dispatch({ type: 'REPRISE_DONE' }) }
     case 'questions':
       if (session.questions.index >= session.plan.questions.length) {
+        if (session.zapping.stage === 'review') return null
         return { label: 'Passer le zapping', run: () => dispatch({ type: 'ZAPPING_DONE' }) }
       }
       return { label: 'Passer cette question', run: () => dispatch({ type: 'QUESTION_SKIP' }) }
@@ -175,15 +186,54 @@ function skipFor(
   }
 }
 
+/**
+ * An unfinished session of another kind is never dropped silently when the
+ * learner asks for a short session or a conversation day: they choose.
+ */
 export default function TrainingPage() {
+  const { state } = useAppState()
+  const [searchParams] = useSearchParams()
+  const askedMode = searchParams.get('mode')
+  const requestedMode = parseMode(askedMode)
+  const saved =
+    state.inProgressSession?.schema === TRAINING_SESSION_SCHEMA ? state.inProgressSession : null
+  const savedMode = saved?.plan.mode ?? 'full'
+  const conflict = Boolean(saved) && askedMode !== null && savedMode !== requestedMode
+  const [choice, setChoice] = useState<'resume' | 'new' | null>(null)
+
+  if (conflict && choice === null) {
+    return (
+      <section className="card card--center" aria-labelledby="training-choice-title">
+        <h1 id="training-choice-title">Une séance est déjà en cours</h1>
+        <p className="muted">
+          Tu as une {MODE_LABELS[savedMode].toLowerCase()} commencée
+          {saved ? ` (étape ${sessionStep(saved).index}/${sessionStep(saved).total})` : ''}. Tu peux la reprendre, ou
+          l'abandonner pour une {MODE_LABELS[requestedMode].toLowerCase()}.
+        </p>
+        <div className="button-row">
+          <Button block onClick={() => setChoice('resume')}>
+            Reprendre ma séance
+          </Button>
+          <Button variant="subtle" block onClick={() => setChoice('new')}>
+            Commencer : {MODE_LABELS[requestedMode]}
+          </Button>
+        </div>
+      </section>
+    )
+  }
+
+  return <TrainingSession startFresh={choice === 'new'} />
+}
+
+function TrainingSession({ startFresh }: { startFresh: boolean }) {
   const { state, updateWith } = useAppState()
-  const sessionRecorder = useAudioRecorder({ keepStream: true })
+  const sessionRecorder = useAudioRecorder({ keepStream: true, measureLevels: true })
   const [searchParams] = useSearchParams()
   const requestedMode = parseMode(searchParams.get('mode'))
 
   const initialSession = useMemo<TrainingSessionState | null>(() => {
     // An unfinished session saved by an older version restarts cleanly.
-    if (state.inProgressSession?.schema === TRAINING_SESSION_SCHEMA) {
+    if (!startFresh && state.inProgressSession?.schema === TRAINING_SESSION_SCHEMA) {
       return state.inProgressSession
     }
     try {
@@ -295,6 +345,7 @@ export default function TrainingPage() {
       blockedWord: session.feedback.blockedWord,
       expressionToReuse: session.feedback.expressionToReuse,
       topicId: plan.topic.id,
+      ...(session.feedbackSkipped ? { feedbackSkipped: true } : {}),
       ...(session.repriseDone && plan.repriseTopic ? { repriseTopicId: plan.repriseTopic.id } : {}),
       ...(session.taboo?.stage === 'done' && plan.taboo ? { tabooId: plan.taboo.id } : {}),
       questionIds,
@@ -381,6 +432,18 @@ export default function TrainingPage() {
         session.fluencyFeedback.missedChunkIntent ?? '',
         now,
       )
+
+      // A word noted after a first answer: its idea, or else the note or the
+      // question, is what will be shown to find it again.
+      for (const question of plan.questions) {
+        const missing = session.questionWords?.[question.id]
+        if (!missing?.word.trim()) continue
+        const context =
+          missing.idea.trim() ||
+          session.questionNotes?.[question.id]?.trim() ||
+          `Dans ta réponse à « ${question.text} »`
+        next = captureWordGap(next, missing.word, context, now)
+      }
 
       for (const capture of session.gapCaptures ?? []) {
         next = captureWordGap(next, capture.target, capture.context, now)
@@ -494,7 +557,9 @@ export default function TrainingPage() {
           topic={session.plan.repriseTopic}
           stage={session.reprise.stage}
           recording={listening && currentKey !== null}
+          audioUrl={questionRecordings[REPRISE_RECORDING] ?? null}
           onStart={() => dispatch({ type: 'REPRISE_START' })}
+          onSpoken={() => dispatch({ type: 'REPRISE_SPOKEN' })}
           onDone={() => dispatch({ type: 'REPRISE_DONE' })}
         />
       ) : null}
@@ -593,8 +658,10 @@ function QuestionsRenderer({
         stage={session.zapping.stage}
         index={session.zapping.index}
         recording={recording}
+        audioUrl={recordings[ZAPPING_RECORDING] ?? null}
         onStart={() => onSession({ type: 'ZAPPING_START' })}
         onNext={() => onSession({ type: 'ZAPPING_NEXT' })}
+        onDone={() => onSession({ type: 'ZAPPING_DONE' })}
       />
     )
   }
@@ -618,6 +685,8 @@ function QuestionsRenderer({
       recording={recording}
       firstAnswerUrl={recordings[question.id] ?? null}
       note={session.questionNotes?.[question.id] ?? ''}
+      missingWord={session.questionWords?.[question.id]}
+      onMissingWordChange={({ word, idea }) => onSession({ type: 'QUESTION_WORD_SET', word, idea })}
       onCountdownDone={() => onSession({ type: 'QUESTION_COUNTDOWN_DONE' })}
       onPrepDone={() => onSession({ type: 'QUESTION_PREP_DONE' })}
       onSpeakingDone={() => onSession({ type: 'QUESTION_SPEAKING_DONE' })}

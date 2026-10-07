@@ -1,5 +1,10 @@
 import { loadSettings } from '../settings/settings'
 import { recordAiFailures, recordAiSuccess } from './stats'
+import { recordingActivity } from '../audio/speechActivity'
+import { computeFluencyMetrics, countWords } from './fluencyMetrics'
+import type { FluencyMetrics, TimedWord } from './fluencyMetrics'
+
+export { countFillers, countMarkers, countWords } from './fluencyMetrics'
 
 /** Providers the server can use, in its default fallback order. */
 export const AI_PROVIDERS: { id: string; label: string }[] = [
@@ -109,7 +114,8 @@ export async function fetchAiStatus(): Promise<AiStatus> {
 }
 
 export type AiTask =
-  | 'analyze-speech'
+  | 'analyze-fluency'
+  | 'compare-432'
   | 'judge-word'
   | 'question'
   | 'roleplay'
@@ -160,10 +166,30 @@ export async function runAiTask<T>(
   return { data: result.data, provider: result.provider }
 }
 
+export interface Transcript {
+  text: string
+  provider: string
+  /** Word timestamps, when the provider gives them (Whisper). */
+  words?: TimedWord[]
+}
+
+/**
+ * Transcripts by blob URL: a round analysed alone, then compared with the
+ * others, is sent to the server once. A failure is not kept.
+ */
+const transcriptCache = new Map<string, Promise<Transcript>>()
+
 /** Transcribes an in-memory recording (a blob: URL from the recorder). */
-export async function transcribeAudio(
-  audioUrl: string,
-): Promise<{ text: string; provider: string }> {
+export function transcribeAudio(audioUrl: string): Promise<Transcript> {
+  const cached = transcriptCache.get(audioUrl)
+  if (cached) return cached
+  const pending = fetchTranscript(audioUrl)
+  transcriptCache.set(audioUrl, pending)
+  pending.catch(() => transcriptCache.delete(audioUrl))
+  return pending
+}
+
+async function fetchTranscript(audioUrl: string): Promise<Transcript> {
   requireEnabled()
   let blob: Blob
   try {
@@ -184,6 +210,7 @@ export async function transcribeAudio(
   }
   const result = (await response.json()) as {
     text: string
+    words?: TimedWord[]
     provider: string
     model: string
     audioBytes: number
@@ -201,14 +228,9 @@ export async function transcribeAudio(
     failed: result.failed,
     models: result.models,
   })
-  return { text: result.text, provider: result.provider }
-}
-
-export interface SpeechAnalysis {
-  summary: string
-  corrections: { said: string; better: string }[]
-  expressions: { expression: string; intent: string }[]
-  blockedWord: { word: string; idea: string } | null
+  return Array.isArray(result.words) && result.words.length > 0
+    ? { text: result.text, provider: result.provider, words: result.words }
+    : { text: result.text, provider: result.provider }
 }
 
 export interface WordVerdict {
@@ -216,35 +238,99 @@ export interface WordVerdict {
   comment: string
 }
 
-/** Transcribes a recording, then asks for coaching on what was said. */
+export type BlockageType =
+  | 'missing_word'
+  | 'sentence_restart'
+  | 'idea_block'
+  | 'grammar_planning'
+  | 'excessive_filler'
+  | 'uncertain'
+
+/** Fluency coaching on one recording: where it blocks, why, how to keep going. */
+export interface FluencyAnalysis {
+  summary: string
+  blockages: { evidence: string; type: BlockageType; strategy: string }[]
+  /** Words that seem to have been missing, with the idea to retrieve them from. */
+  missingWords: { word: string; idea: string }[]
+  /** Chunks to reuse to keep speaking. */
+  strategies: { chunk: string; use: string }[]
+  /** Only the errors that hinder understanding, keep coming back or block the flow. */
+  corrections: { said: string; better: string }[]
+  microExercise: string
+}
+
+export type SpeechSituation = 'round' | 'question' | 'final' | 'coach' | 'conversation'
+
+/** The measures of a recording: its transcript, its word timestamps and its microphone levels. */
+export async function recordingMetrics(
+  audioUrl: string,
+): Promise<{ transcript: Transcript; metrics: FluencyMetrics }> {
+  const transcript = await transcribeAudio(audioUrl)
+  const metrics = computeFluencyMetrics({
+    transcript: transcript.text,
+    words: transcript.words,
+    activity: recordingActivity(audioUrl),
+  })
+  return { transcript, metrics }
+}
+
+/** Transcribes a recording, measures it, then asks for fluency coaching. */
 export async function analyzeRecording(
   audioUrl: string,
-): Promise<{ transcript: string; analysis: SpeechAnalysis | null }> {
-  const { text } = await transcribeAudio(audioUrl)
-  if (countWords(text) < 4) return { transcript: text, analysis: null }
-  const { data } = await runAiTask<SpeechAnalysis>('analyze-speech', { transcript: text })
-  return { transcript: text, analysis: data }
+  situation: SpeechSituation = 'round',
+): Promise<{ transcript: string; metrics: FluencyMetrics | null; analysis: FluencyAnalysis | null }> {
+  const { transcript, metrics } = await recordingMetrics(audioUrl)
+  if (countWords(transcript.text) < 4) return { transcript: transcript.text, metrics: null, analysis: null }
+  const { data } = await runAiTask<Partial<FluencyAnalysis>>('analyze-fluency', {
+    transcript: transcript.text,
+    situation,
+    metrics,
+  })
+  // An answer from an older server, or missing a list, still renders.
+  const analysis: FluencyAnalysis = {
+    summary: data?.summary ?? '',
+    blockages: data?.blockages ?? [],
+    missingWords: data?.missingWords ?? [],
+    strategies: data?.strategies ?? [],
+    corrections: data?.corrections ?? [],
+    microExercise: data?.microExercise ?? '',
+  }
+  return { transcript: transcript.text, metrics, analysis }
 }
 
-export function countWords(text: string): number {
-  return text.trim() ? text.trim().split(/\s+/).length : 0
+export type Trend = 'better' | 'same' | 'worse' | 'unknown'
+
+/** How the rounds of a 4 → 3 → 2 evolved, and the one thing to do next time. */
+export interface RoundsComparison {
+  summary: string
+  hesitations: Trend
+  restarts: Trend
+  continuity: Trend
+  contentKept: Trend
+  recited: boolean
+  observations: string[]
+  transfer: string
+  priority: string
 }
 
-const FILLER = /(?:^|[^\p{L}])(?:euh+|heu+|hum+|hmm+|mmh+)(?=$|[^\p{L}])/giu
-const MARKER =
-  /(?:^|[^\p{L}])(?:disons|en fait|comment dire|du coup|tu vois|vous voyez|enfin|bon|ben|bah|bref|voilà|genre|en gros)(?=$|[^\p{L}])/giu
-
-/** Bare hesitations ("euh", "hum"…) found in a transcript. */
-export function countFillers(text: string): number {
-  return text.match(FILLER)?.length ?? 0
-}
-
-/**
- * French discourse markers that do the job of a hesitation ("disons", "en
- * fait", "bon", "ben"…): the goal is more of these and fewer bare "euh".
- */
-export function countMarkers(text: string): number {
-  return text.match(MARKER)?.length ?? 0
+export async function compareRoundRecordings(input: {
+  topic: string
+  transferTopic?: string
+  rounds: { label: string; audioUrl: string; transfer?: boolean }[]
+}): Promise<RoundsComparison> {
+  const rounds = []
+  for (const round of input.rounds) {
+    const { transcript, metrics } = await recordingMetrics(round.audioUrl)
+    if (countWords(transcript.text) < 4) continue
+    rounds.push({ label: round.label, transcript: transcript.text, metrics, transfer: Boolean(round.transfer) })
+  }
+  if (rounds.filter((round) => !round.transfer).length < 2) throw new AiError('failed')
+  const { data } = await runAiTask<RoundsComparison>('compare-432', {
+    topic: input.topic,
+    transferTopic: input.transferTopic ?? '',
+    rounds,
+  })
+  return data
 }
 
 /**

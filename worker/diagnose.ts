@@ -147,7 +147,7 @@ async function testAudio(provider: ProviderId, env: Env): Promise<ModelReport> {
   const model = transcribeModelFor(provider, env)
   const startedAt = Date.now()
   try {
-    const text = await transcribeWith(provider, env, silentWav(), 'fr')
+    const { text } = await transcribeWith(provider, env, silentWav(), 'fr')
     return { provider, model, kind: 'audio', ok: true, ms: Date.now() - startedAt, sample: text.slice(0, 80) }
   } catch (error) {
     const message = String((error as Error)?.message ?? error)

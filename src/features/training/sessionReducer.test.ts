@@ -101,6 +101,7 @@ describe('full session walk', () => {
     state = answerQuestion(state, 'none')
     expect(state.questions.stage).toBe('note')
     state = sessionReducer(state, { type: 'QUESTION_NOTE_SET', note: 'un exemple concret' })
+    state = sessionReducer(state, { type: 'QUESTION_WORD_SET', word: 'loyer', idea: 'ce que je paie pour mon logement' })
     state = sessionReducer(state, { type: 'QUESTION_NOTE_DONE' })
     expect(state.questions.stage).toBe('retry')
     state = sessionReducer(state, { type: 'QUESTION_RETRY_DONE' })
@@ -111,12 +112,20 @@ describe('full session walk', () => {
     state = sessionReducer(state, { type: 'QUESTION_RETRY_DONE' })
     expect(state.questionRetries).toBe(2)
     expect(state.questionNotes[plan.questions[0].id]).toBe('un exemple concret')
+    expect(state.questionWords?.[plan.questions[0].id]).toEqual({
+      word: 'loyer',
+      idea: 'ce que je paie pour mon logement',
+    })
 
     // Then the zapping: four unrelated questions.
     expect(getCurrentStage(state)).toBe('questions')
     expect(state.zapping.stage).toBe('intro')
     state = sessionReducer(state, { type: 'ZAPPING_START' })
     for (let i = 0; i < 4; i += 1) state = sessionReducer(state, { type: 'ZAPPING_NEXT' })
+    // A moment to note a missing word, then on.
+    expect(state.zapping.stage).toBe('review')
+    expect(getCurrentStage(state)).toBe('questions')
+    state = sessionReducer(state, { type: 'ZAPPING_DONE' })
     expect(state.zapping.stage).toBe('done')
     expect(getCurrentStage(state)).toBe('gaps')
 

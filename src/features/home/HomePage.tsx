@@ -18,6 +18,7 @@ import {
 import { CONVERSATIONS_PER_WEEK } from '../../types/progress'
 import { readyProsodyExercises } from '../../services/content/prosodyRepository'
 import { STAGE_META, STAGE_ORDER, prepSecondsForLevel } from '../training/types'
+import { sessionStep } from '../training/sessionReducer'
 import { useAiEnabled } from '../ai/useAiEnabled'
 import { CoachPromo } from './components/CoachPromo'
 import { ChallengeCard } from './components/ChallengeCard'
@@ -67,7 +68,7 @@ export default function HomePage() {
   ]
 
   const ctaLabel = state.inProgressSession
-    ? `Reprendre ma séance — Étape ${state.inProgressSession.stageIndex + 1}/${STAGE_ORDER.length}`
+    ? `Reprendre ma séance — Étape ${sessionStep(state.inProgressSession).index}/${sessionStep(state.inProgressSession).total}`
     : 'Commencer ma séance'
 
   return (

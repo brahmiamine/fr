@@ -106,7 +106,11 @@ describe('/api/task', () => {
 
   it('rejects unknown tasks and invalid input', async () => {
     expect((await handleApi(task({ task: 'free-chat', input: {} }), env)).status).toBe(400)
-    expect((await handleApi(task({ task: 'analyze-speech', input: {} }), env)).status).toBe(400)
+    expect((await handleApi(task({ task: 'analyze-fluency', input: {} }), env)).status).toBe(400)
+    // A comparison needs at least two rounds on the same subject.
+    expect(
+      (await handleApi(task({ task: 'compare-432', input: { rounds: [{ label: 'Tour 1', transcript: 'a' }] } }), env)).status,
+    ).toBe(400)
   })
 
   it('answers 503 when no provider is configured', async () => {
@@ -114,26 +118,89 @@ describe('/api/task', () => {
     expect(response.status).toBe(503)
   })
 
-  it('shapes the speech analysis', async () => {
-    vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+  it('shapes the fluency analysis and sends the measures', async () => {
+    const fetchMock = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
       openAiReply(
-        'Bien sûr ! {"summary":"Bravo","corrections":[{"said":"je suis d\'accord avec toi","better":"je partage ton avis"}],' +
-          '"expressions":[{"expression":"D\'un autre côté","intent":"nuancer"}],"blockedWord":null}',
+        'Voici : {"summary":"Tu tiens ton idée","blockages":[{"evidence":"je… je… je pense","type":"sentence_restart","strategy":"Ne recommence pas"},' +
+          '{"evidence":"le truc","type":"inventé","strategy":"Décris-le"},{"evidence":"x","type":"idea_block","strategy":"trop"}],' +
+          '"missingWords":[{"word":"échéance","idea":"la date limite pour payer"},{"word":"sans idée"}],' +
+          '"strategies":[{"chunk":"Ce que je veux dire, c\'est que…","use":"continuer"}],' +
+          '"corrections":[{"said":"je suis d\'accord avec toi","better":"je partage ton avis"}],"microExercise":"Refais 30 s sans recommencer"}',
       ),
     )
     const response = await handleApi(
-      task({ task: 'analyze-speech', providers: ['groq'], input: { transcript: 'euh je suis d\'accord' } }),
+      task({
+        task: 'analyze-fluency',
+        providers: ['groq'],
+        input: { transcript: 'euh je… je… je pense', situation: 'round', metrics: { fillers: 3, longPauses: 2, bogus: 9 } },
+      }),
       env,
     )
     const data = (await response.json()) as { data: Record<string, unknown>; provider: string }
     expect(data.provider).toBe('groq')
-    expect(data).toMatchObject({ usage: null })
-    expect(data.data).toMatchObject({
-      summary: 'Bravo',
-      corrections: [{ better: 'je partage ton avis' }],
-      expressions: [{ expression: "D'un autre côté", intent: 'nuancer' }],
-      blockedWord: null,
+    expect(data.data).toEqual({
+      summary: 'Tu tiens ton idée',
+      blockages: [
+        { evidence: 'je… je… je pense', type: 'sentence_restart', strategy: 'Ne recommence pas' },
+        // An unknown type falls back to "uncertain"; only 2 blockages are kept.
+        { evidence: 'le truc', type: 'uncertain', strategy: 'Décris-le' },
+      ],
+      missingWords: [{ word: 'échéance', idea: 'la date limite pour payer' }],
+      strategies: [{ chunk: "Ce que je veux dire, c'est que…", use: 'continuer' }],
+      corrections: [{ said: "je suis d'accord avec toi", better: 'je partage ton avis' }],
+      microExercise: 'Refais 30 s sans recommencer',
     })
+    const sent = JSON.parse(String((fetchMock.mock.calls[0][1] as RequestInit).body)) as {
+      messages: { content: string }[]
+    }
+    const user = sent.messages[1].content
+    expect(user).toContain('« euh / hum » nus : 3')
+    expect(user).toContain('silences de plus d’1 s : 2')
+    expect(user).not.toContain('bogus')
+  })
+
+  it('says when no timing is known', async () => {
+    const { metricsBlock } = await import('./tasks')
+    expect(metricsBlock({ fillers: 2 })).toContain('ne prétends jamais connaître la durée')
+    expect(metricsBlock({ fillers: 2, longPauses: 1 })).toContain('estimation')
+  })
+
+  it('compares the rounds of a 4-3-2', async () => {
+    const fetchMock = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      openAiReply(
+        '{"summary":"Plus fluide","hesitations":"better","restarts":"same","continuity":"nope","contentKept":"worse",' +
+          '"recited":true,"observations":["Tu récites","a","b","c"],"transfer":"","priority":"Reformule au lieu de réciter"}',
+      ),
+    )
+    const response = await handleApi(
+      task({
+        task: 'compare-432',
+        providers: ['groq'],
+        input: {
+          topic: 'Télétravail',
+          rounds: [
+            { label: 'Tour 1', transcript: 'un deux trois' },
+            { label: 'Tour 2', transcript: 'un deux' },
+            { label: 'Transfert', transcript: 'autre chose', transfer: true },
+          ],
+        },
+      }),
+      env,
+    )
+    const data = (await response.json()) as { data: Record<string, unknown> }
+    expect(data.data).toMatchObject({
+      hesitations: 'better',
+      restarts: 'same',
+      continuity: 'unknown',
+      contentKept: 'worse',
+      recited: true,
+      observations: ['Tu récites', 'a', 'b'],
+      priority: 'Reformule au lieu de réciter',
+    })
+    const sent = JSON.parse(String((fetchMock.mock.calls[0][1] as RequestInit).body)) as {
+      messages: { content: string }[]
+    }
+    expect(sent.messages[1].content).toContain('Transfert (transfert : autre sujet)')
   })
 
   it('moves on when a provider fails or answers garbage', async () => {
@@ -189,6 +256,65 @@ describe('/api/transcribe', () => {
       { ASSETS: assets, GROQ_API_KEY: 'k' },
     )
     expect(await response.json()).toMatchObject({ provider: 'groq', text: 'euh bonjour' })
+  })
+
+  it('asks Whisper to keep hesitations and returns the word timestamps', async () => {
+    const fetchMock = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          text: 'euh je pense',
+          words: [
+            { word: 'euh', start: 0.1, end: 0.4 },
+            { word: 'je', start: 1.9, end: 2.0 },
+            { word: '', start: 2, end: 2.1 },
+            { word: 'pense', start: 2.1, end: 2.5 },
+          ],
+        }),
+      ),
+    )
+    const form = new FormData()
+    form.append('file', new Blob(['abc'], { type: 'audio/webm' }), 'a.webm')
+    const response = await handleApi(
+      new Request('https://x.test/api/transcribe', { method: 'POST', body: form }),
+      { ASSETS: assets, GROQ_API_KEY: 'k' },
+    )
+    const sent = (fetchMock.mock.calls[0][1] as RequestInit).body as FormData
+    expect(sent.get('prompt')).toContain('euh')
+    expect(sent.get('response_format')).toBe('verbose_json')
+    expect(await response.json()).toMatchObject({
+      text: 'euh je pense',
+      words: [
+        { word: 'euh', start: 0.1, end: 0.4 },
+        { word: 'je', start: 1.9, end: 2 },
+        { word: 'pense', start: 2.1, end: 2.5 },
+      ],
+    })
+  })
+
+  it('transcribes again without timestamps when the model refuses them', async () => {
+    const fetchMock = vi
+      .spyOn(globalThis, 'fetch')
+      .mockResolvedValueOnce(new Response('timestamps not supported', { status: 400 }))
+      .mockResolvedValueOnce(new Response(JSON.stringify({ text: 'bonjour' })))
+    const form = new FormData()
+    form.append('file', new Blob(['abc'], { type: 'audio/webm' }), 'a.webm')
+    const response = await handleApi(
+      new Request('https://x.test/api/transcribe', { method: 'POST', body: form }),
+      { ASSETS: assets, GROQ_API_KEY: 'k' },
+    )
+    expect(fetchMock).toHaveBeenCalledTimes(2)
+    expect(((fetchMock.mock.calls[1][1] as RequestInit).body as FormData).get('response_format')).toBe('json')
+    const data = (await response.json()) as Record<string, unknown>
+    expect(data).toMatchObject({ provider: 'groq', text: 'bonjour' })
+    expect(data.words).toBeUndefined()
+  })
+
+  it('reads the words nested in Whisper segments', async () => {
+    const { timedWordsOf } = await import('./transcribe')
+    expect(timedWordsOf({ segments: [{ words: [{ word: ' bon', start: 0, end: 0.3 }] }, {}] })).toEqual([
+      { word: 'bon', start: 0, end: 0.3 },
+    ])
+    expect(timedWordsOf({ text: 'x' })).toBeUndefined()
   })
 
   it('refuses a missing file', async () => {

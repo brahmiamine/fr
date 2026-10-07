@@ -1,4 +1,5 @@
 import { Timer } from '../../../components/Timer/Timer'
+import { QuickWordGap } from '../../wordGaps/QuickWordGap'
 import { Button, Callout, Card, ChoiceButton, ChoiceGrid, DotList, Pill } from '../../../components/ui'
 import type { TabooTopic } from '../../../types/content'
 import { RESCUE_CORE, TABOO_SECONDS } from '../types'
@@ -51,6 +52,10 @@ export function TabooExercise({ taboo, stage, recording = false, onStart, onSpok
     return (
       <Card center>
         <h2>T'es-tu arrêté plus d'une seconde sur un mot ?</h2>
+        <QuickWordGap
+          id="taboo-gap"
+          label="Le mot sur lequel je me suis arrêté"
+        />
         <ChoiceGrid min={150}>
           <ChoiceButton tone="success" onClick={() => onRate('none')}>
             Jamais

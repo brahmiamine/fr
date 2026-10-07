@@ -871,3 +871,48 @@
   font-weight: 800;
   font-variant-numeric: tabular-nums;
 }
+
+.ai-metrics {
+  margin: 0;
+  font-size: 0.85rem;
+}
+
+.ai-blockage__type {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
+.ai-trends {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ai-trend {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  background: var(--surface-muted, rgba(127, 127, 127, 0.08));
+  font-size: 0.9rem;
+}
+
+.ai-trend.is-better strong {
+  color: var(--success, #1f9d55);
+}
+
+.ai-trend.is-worse strong {
+  color: var(--danger, #c0392b);
+}
+
+.ai-observations {
+  margin: 0;
+  padding-left: 18px;
+}

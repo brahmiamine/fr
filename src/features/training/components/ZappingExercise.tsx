@@ -1,22 +1,36 @@
 import { Timer } from '../../../components/Timer/Timer'
 import { Button, Card, Pill } from '../../../components/ui'
 import type { Question } from '../../../types/content'
+import { AiAnalysisPanel } from '../../ai/AiAnalysisPanel'
+import { QuickWordGap } from '../../wordGaps/QuickWordGap'
 import { ZAPPING_SECONDS, ZAPPING_TRANSITIONS } from '../types'
 
 export interface ZappingExerciseProps {
   questions: Question[]
-  stage: 'intro' | 'running' | 'done'
+  stage: 'intro' | 'running' | 'review' | 'done'
   index: number
   recording?: boolean
+  /** The recorded zapping, analysed on demand once over. */
+  audioUrl?: string | null
   onStart: () => void
   onNext: () => void
+  onDone?: () => void
 }
 
 /**
  * "Enchaîne 4 questions de 45 secondes sans aucun lien, avec une transition
  * orale entre chacune": the questions follow one another without a pause.
  */
-export function ZappingExercise({ questions, stage, index, recording = false, onStart, onNext }: ZappingExerciseProps) {
+export function ZappingExercise({
+  questions,
+  stage,
+  index,
+  recording = false,
+  audioUrl = null,
+  onStart,
+  onNext,
+  onDone,
+}: ZappingExerciseProps) {
   if (stage === 'intro') {
     return (
       <Card center aria-labelledby="zapping-title">
@@ -29,6 +43,20 @@ export function ZappingExercise({ questions, stage, index, recording = false, on
         <p className="text-strong">{ZAPPING_TRANSITIONS.slice(0, 3).map((item) => `« ${item} »`).join(' · ')}</p>
         <Button variant="animated" size="lg" block trailing="▶" onClick={onStart}>
           Commencer le zapping
+        </Button>
+      </Card>
+    )
+  }
+
+  if (stage === 'review') {
+    return (
+      <Card aria-labelledby="zapping-review-title">
+        <h2 id="zapping-review-title">Zapping terminé</h2>
+        <p className="muted">Un mot t'a manqué en changeant de sujet ? Note-le maintenant.</p>
+        <QuickWordGap id="zapping-gap" defaultOpen />
+        <AiAnalysisPanel audioUrl={audioUrl} situation="question" subtitle="Sur ton zapping" />
+        <Button size="lg" block trailing="→" onClick={onDone}>
+          Continuer
         </Button>
       </Card>
     )

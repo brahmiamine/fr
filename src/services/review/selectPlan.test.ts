@@ -120,6 +120,57 @@ describe('buildSessionPlan', () => {
     expect(plan.gapItems[0].context).toContain('mur')
   })
 
+  it('gives every slot to due personal words before any generic word', () => {
+    const today = toLocalDateString()
+    const gap = (id: string, nextReview: string, status: WordGap['status'] = 'learning'): WordGap => ({
+      id,
+      target: `mot ${id}`,
+      context: `idée ${id}`,
+      createdAt: today,
+      successCount: 0,
+      nextReview,
+      status,
+    })
+    const state: AppState = {
+      ...createInitialState(),
+      wordGaps: [
+        gap('a', '2020-01-03'),
+        gap('m', '2020-01-01', 'mastered'),
+        gap('b', '2020-01-02'),
+        gap('c', today),
+        gap('d', today),
+        gap('later', '2099-01-01'),
+      ],
+    }
+    const plan = buildSessionPlan(state, () => 0.5)
+    // Learning words, oldest first; the mastered check comes after them.
+    expect(plan.gapItems.map((item) => item.sourceId)).toEqual(['b', 'a', 'c', 'd'])
+
+    const fewer = { ...state, wordGaps: [gap('m', '2020-01-01', 'mastered'), gap('a', today)] }
+    const items = buildSessionPlan(fewer, () => 0.5).gapItems
+    expect(items.map((item) => item.sourceId).slice(0, 2)).toEqual(['a', 'm'])
+    expect(items.slice(2).every((item) => !item.isPersonal)).toBe(true)
+    // A word due today is never shown before it has to be found.
+    expect(buildSessionPlan(fewer, () => 0.5).focusWords).toEqual([])
+  })
+
+  it('reviews due personal words in a short session too, without generic words or taboo', () => {
+    const plan = buildSessionPlan(stateWithGaps(), () => 0.5, 'short')
+    expect(plan.gapItems.map((item) => item.sourceId)).toEqual(['gap-1', 'gap-2'])
+    expect(plan.taboo).toBeNull()
+    expect(plan.skippedStages).not.toContain('gaps')
+    expect(buildSessionPlan(createInitialState(), () => 0.5, 'short').gapItems).toEqual([])
+  })
+
+  it('brings back the words missed in the weekly circumlocution test, to paraphrase', () => {
+    const state: AppState = {
+      ...createInitialState(),
+      weeklyTests: [{ failedParaphraseIds: ['w003'] } as AppState['weeklyTests'][number]],
+    }
+    const plan = buildSessionPlan(state, () => 0.5)
+    expect(plan.gapItems[0]).toMatchObject({ sourceId: 'w003', kind: 'paraphrase', isPersonal: false })
+  })
+
   it('reinjects a successfully retrieved word into spontaneous speaking', () => {
     const state = stateWithGaps()
     state.wordGaps[0] = {

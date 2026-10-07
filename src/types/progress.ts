@@ -42,6 +42,8 @@ export interface SessionRecord {
   /** Subject of 2–7 days before, spoken again in this session. */
   repriseTopicId?: string
   tabooId?: string
+  /** The final feedback was skipped: `blockCount` and `fluencyScore` are not the learner's. */
+  feedbackSkipped?: boolean
   summary: SessionSummary
 }
 
@@ -120,6 +122,12 @@ export interface WeeklyTestRecord {
   typeTokenRatio?: number
   /** First test only: the same unknown task in the native language. */
   l1Baseline?: WeeklyTaskMeasure
+  /**
+   * Words of the circumlocution task that were not guessed. The learner knew
+   * them (they were shown): they come back as words to paraphrase, never as
+   * personal word gaps to retrieve.
+   */
+  failedParaphraseIds?: string[]
 }
 
 export interface WeeklyTaskMeasure {
@@ -141,6 +149,9 @@ export interface WordGap {
   successCount: number
   nextReview: string
   status: 'learning' | 'mastered'
+  /** Times the learner blocked on this word again after it was first noted. */
+  timesBlocked?: number
+  lastBlockedAt?: string
 }
 
 export interface ChunkReview {
@@ -175,6 +186,8 @@ export type FluencyNoteKind =
   | 'abandonedSentence'
   | 'awkwardPhrase'
   | 'conversationBlock'
+  /** The one thing to do next time, from the comparison of the 4 → 3 → 2 rounds. */
+  | 'fluencyPriority'
 
 export interface FluencyNote {
   id: string

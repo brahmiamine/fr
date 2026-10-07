@@ -132,7 +132,15 @@ export function Fluency432Exercise({
         />
       ) : null}
 
-      {summary ? <FluencySummary recordings={recordings} roundSeconds={roundSeconds} onContinue={onSummaryDone} /> : null}
+      {summary ? (
+        <FluencySummary
+          recordings={recordings}
+          roundSeconds={roundSeconds}
+          topic={topic.title}
+          transferTopic={topic.transferPrompt}
+          onContinue={onSummaryDone}
+        />
+      ) : null}
     </section>
   )
 }

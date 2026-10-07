@@ -5,6 +5,8 @@ import { useAppState } from '../../app/AppStateProvider'
 import { AudioClip } from '../../components/AudioClip/AudioClip'
 import { useAudioRecorder } from '../../hooks/useAudioRecorder'
 import { aiErrorMessage, transcribeAudio } from '../../services/ai/client'
+import { AiAnalysisPanel } from '../ai/AiAnalysisPanel'
+import { QuickWordGap } from '../wordGaps/QuickWordGap'
 import {
   captureWordGap,
   conversationsThisWeek,
@@ -42,7 +44,7 @@ export default function WeeklyConversation() {
   const { state, updateWith } = useAppState()
   const done = conversationsThisWeek(state.conversationPractices)
   const aiEnabled = useAiEnabled()
-  const recorder = useAudioRecorder()
+  const recorder = useAudioRecorder({ measureLevels: true })
 
   const [saved, setSaved] = useState(false)
   const [duration, setDuration] = useState('20')
@@ -237,6 +239,7 @@ export default function WeeklyConversation() {
             {transcription.status === 'error' ? (
               <p role="alert" className="ai-error">{transcription.message}</p>
             ) : null}
+            <AiAnalysisPanel audioUrl={minuteAudio} situation="conversation" subtitle="Sur ta minute la plus difficile" />
           </div>
           <div className="field">
             <label htmlFor="conversation-transcript">Transcription de la minute</label>
@@ -305,6 +308,8 @@ export default function WeeklyConversation() {
             />
           </div>
         ) : null}
+
+        <QuickWordGap id="conversation-gap" label="Un autre mot qui t'a manqué" />
 
         <div className="field">
           <label htmlFor="conversation-block">

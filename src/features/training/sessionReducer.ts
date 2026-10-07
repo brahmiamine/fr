@@ -40,12 +40,14 @@ export type TrainingAction =
       missedChunkIntent?: string
     }
   | { type: 'REPRISE_START' }
+  | { type: 'REPRISE_SPOKEN' }
   | { type: 'REPRISE_DONE' }
   | { type: 'QUESTION_COUNTDOWN_DONE' }
   | { type: 'QUESTION_PREP_DONE' }
   | { type: 'QUESTION_SPEAKING_DONE' }
   | { type: 'QUESTION_RATE'; rating: BlockRating }
   | { type: 'QUESTION_NOTE_SET'; note: string }
+  | { type: 'QUESTION_WORD_SET'; word: string; idea: string }
   | { type: 'QUESTION_NOTE_DONE' }
   | { type: 'QUESTION_RETRY_DONE' }
   | { type: 'QUESTION_SKIP' }
@@ -113,6 +115,7 @@ export function createSessionState(
     questions: { index: 0, stage: 'countdown' },
     questionRatings: [],
     questionNotes: {},
+    questionWords: {},
     zapping: { stage: 'intro', index: 0 },
     gaps: { index: 0, step: initialGapStep(plan.gapItems[0]) },
     gapResults: [],
@@ -151,6 +154,15 @@ export function stageIsActive(plan: SessionPlan, stage: StageKind): boolean {
 /** The stages this session really goes through, in order. */
 export function activeStages(plan: SessionPlan): StageKind[] {
   return STAGE_ORDER.filter((stage) => stageIsActive(plan, stage))
+}
+
+/** "Étape 2/4": the position among the stages this session really goes through. */
+export function sessionStep(state: TrainingSessionState): { index: number; total: number } {
+  // A session saved by an older version may lack its plan.
+  if (!state?.plan) return { index: (state?.stageIndex ?? 0) + 1, total: STAGE_ORDER.length }
+  const stages = activeStages(state.plan)
+  const position = stages.indexOf(getCurrentStage(state))
+  return { index: Math.max(0, position) + 1, total: Math.max(1, stages.length) }
 }
 
 function skipEmptyStages(state: TrainingSessionState): TrainingSessionState {
@@ -349,8 +361,13 @@ export function sessionReducer(
       if (state.reprise.stage !== 'intro') return state
       return { ...state, reprise: { stage: 'running' } }
 
+    // Spoken: a moment to note a missing word, never during the 3 minutes.
+    case 'REPRISE_SPOKEN':
+      if (state.reprise.stage !== 'running') return state
+      return { ...state, reprise: { stage: 'review' } }
+
     case 'REPRISE_DONE':
-      return advanceStage({ ...state, repriseDone: state.reprise.stage === 'running' })
+      return advanceStage({ ...state, repriseDone: state.reprise.stage !== 'intro' })
 
     case 'QUESTION_COUNTDOWN_DONE':
       return setQuestionStage(state, 'prep')
@@ -385,6 +402,18 @@ export function sessionReducer(
       }
     }
 
+    case 'QUESTION_WORD_SET': {
+      const question = state.plan.questions[state.questions.index]
+      if (!question) return state
+      return {
+        ...state,
+        questionWords: {
+          ...(state.questionWords ?? {}),
+          [question.id]: { word: action.word, idea: action.idea },
+        },
+      }
+    }
+
     case 'QUESTION_NOTE_DONE':
       if (state.questions.stage !== 'note') return state
       return setQuestionStage(state, 'retry')
@@ -410,8 +439,9 @@ export function sessionReducer(
     case 'ZAPPING_NEXT': {
       if (state.zapping.stage !== 'running') return state
       const next = state.zapping.index + 1
+      // After the last question: a moment to note a missing word.
       if (next >= (state.plan.zappingQuestions ?? []).length) {
-        return advanceStage({ ...state, zapping: { stage: 'done', index: next } })
+        return { ...state, zapping: { stage: 'review', index: next } }
       }
       return { ...state, zapping: { stage: 'running', index: next } }
     }
@@ -519,7 +549,7 @@ export function sessionReducer(
       }
 
     case 'FEEDBACK_SKIP':
-      return { ...state, phase: 'complete' }
+      return { ...state, phase: 'complete', feedbackSkipped: true }
 
     case 'FEEDBACK_SUBMIT':
       if (!isFeedbackValid(state.feedback)) return state

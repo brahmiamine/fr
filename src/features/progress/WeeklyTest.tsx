@@ -297,6 +297,10 @@ export default function WeeklyTest() {
       markers: toNumber(measurement.markers),
       successfulParaphrases: guessed.filter(Boolean).length,
       paraphraseAttempts: content.words.length,
+      // Shown words that could not be made guessed: they come back to paraphrase.
+      failedParaphraseIds: content.words
+        .filter((_, index) => guessed[index] === false)
+        .map((word) => word.id),
       abandonedSentences: toNumber(measurement.abandonedSentences),
       longestFluentSegmentSeconds: toNumber(measurement.longestFluentSegmentSeconds),
       // The known task lasts 3 minutes: words ÷ 3 stays the speaking rate.
@@ -527,8 +531,8 @@ export default function WeeklyTest() {
               <p className="muted">
                 L'IA transcrit tes enregistrements pour compter les mots, les « euh »
                 nus, les marqueurs français et la diversité du vocabulaire. Les pauses
-                restent à classer toi-même. Beaucoup d'outils effacent les « euh » :
-                vérifie à l'oreille. L'audio est envoyé à un service d'IA.
+                restent à classer toi-même. La transcription est réglée pour garder les
+                « euh », mais vérifie à l'oreille. L'audio est envoyé à un service d'IA.
               </p>
               <button
                 type="button"

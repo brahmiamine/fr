@@ -1,6 +1,8 @@
 import { AudioClip } from '../../../../components/AudioClip/AudioClip'
 import { Button, Card, Pill } from '../../../../components/ui'
 import { AiAnalysisPanel } from '../../../ai/AiAnalysisPanel'
+import { RoundsComparisonPanel } from '../../../ai/RoundsComparisonPanel'
+import { QuickWordGap } from '../../../wordGaps/QuickWordGap'
 import type { RoundRecordings } from '../../useFluencyRecordings'
 import { FLUENCY_ROUND_SECONDS, roundLabels } from '../../types'
 
@@ -8,6 +10,9 @@ export interface FluencySummaryProps {
   /** Recordings of the rounds, by round index. */
   recordings: RoundRecordings
   roundSeconds?: readonly number[]
+  /** Subject of the rounds and of the transfer, for the comparison. */
+  topic?: string
+  transferTopic?: string
   onContinue: () => void
 }
 
@@ -18,9 +23,16 @@ export interface FluencySummaryProps {
 export function FluencySummary({
   recordings,
   roundSeconds = FLUENCY_ROUND_SECONDS,
+  topic = '',
+  transferTopic,
   onContinue,
 }: FluencySummaryProps) {
   const labels = roundLabels(roundSeconds)
+  const compared = labels.flatMap((label, index) =>
+    recordings[index]
+      ? [{ label, audioUrl: recordings[index], transfer: index === labels.length - 1 }]
+      : [],
+  )
   return (
     <Card enter="pop" aria-labelledby="fluency-summary-title">
       <div className="row">
@@ -50,6 +62,7 @@ export function FluencySummary({
             )}
             <AiAnalysisPanel
               audioUrl={recordings[index]}
+              situation="round"
               subtitle={`Sur ton ${label.toLowerCase().replace(' — ', ' · ')}`}
             />
             {recordings[index] ? (
@@ -64,6 +77,8 @@ export function FluencySummary({
           </li>
         ))}
       </ol>
+      <RoundsComparisonPanel topic={topic} transferTopic={transferTopic} rounds={compared} />
+      <QuickWordGap id="fluency-summary-gap" />
       <Button variant="animated" size="lg" block trailing="→" onClick={onContinue}>
         Continuer
       </Button>

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import type { KeyboardEvent } from 'react'
 import { SpeakButton } from '../../components/Speech/SpeakButton'
 import { Button, Icon, WaveBars } from '../../components/ui'
+import { QuickWordGap } from '../wordGaps/QuickWordGap'
 import { useAudioRecorder } from '../../hooks/useAudioRecorder'
 import {
   aiErrorMessage,
@@ -233,6 +234,7 @@ export function RoleplayChat() {
         Entrée pour envoyer. Avec le micro, ton message vocal est envoyé dès que tu termines
         l'enregistrement.
       </p>
+      {started ? <QuickWordGap id="roleplay-gap" /> : null}
     </>
   )
 }

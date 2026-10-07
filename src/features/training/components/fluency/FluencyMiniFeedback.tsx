@@ -6,6 +6,7 @@ import { Timer } from '../../../../components/Timer/Timer'
 import { Button, Callout, Card, TextField } from '../../../../components/ui'
 import type { AudioRecorder } from '../../../../hooks/useAudioRecorder'
 import { AiAnalysisPanel } from '../../../ai/AiAnalysisPanel'
+import { QuickWordGap } from '../../../wordGaps/QuickWordGap'
 import { MINI_FEEDBACK_SECONDS } from '../../types'
 import type { FluencyFeedback } from '../../types'
 
@@ -80,13 +81,11 @@ export function FluencyMiniFeedback({
 
       <AiAnalysisPanel
         audioUrl={recorder?.blobUrl}
-        subtitle="Sur ton tour 1 · 4:00"
+        situation="round"
+        subtitle="Sur ton tour 1"
         onUseCorrection={useCorrection}
         onUseExpression={({ expression, intent }) =>
           setValues((prev) => ({ ...prev, missedChunk: expression, missedChunkIntent: intent }))
-        }
-        onUseWord={({ word, idea }) =>
-          setValues((prev) => ({ ...prev, missingWord: word, missingWordContext: idea }))
         }
       />
 
@@ -109,6 +108,7 @@ export function FluencyMiniFeedback({
               required
             />
           ) : null}
+          {values.missingWord.trim() ? <QuickWordGap id="mini-feedback-gap" label="Un autre mot qui a manqué" /> : null}
           <TextField
             id="difficult-phrase"
             label="Reformulation corrigée d'une phrase difficile (facultatif)"

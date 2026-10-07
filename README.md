@@ -73,16 +73,31 @@ Le contenu n'est **jamais tiré au hasard** : il suit les priorités
   placés.
 - **Trous de mots** : quand tu bloques sur un mot, il rejoint ta base
   personnelle et suit réellement J+1 → J+3 → J+7 avant maîtrise ; un échec le
-  fait revenir le lendemain. L'exercice présente seulement l'idée : tu as 5 s
+  fait revenir le lendemain. **Re-bloquer sur un mot déjà connu, même
+  maîtrisé, le remet au début du parcours** (il revient le lendemain). Un mot
+  se note partout où l'on parle, toujours *entre* deux prises de parole,
+  jamais pendant : petit retour et résumé du 4→3→2, questions surprises
+  (mot + idée, rappelé pendant la deuxième réponse), fin de reprise, fin de
+  zapping, monologue tabou, feedback final, vraie conversation, Coach IA et
+  jeu de rôle (bouton « ➕ Mot qui m'a manqué », enregistré tout de suite).
+  L'idée sans le mot est obligatoire : c'est elle qui sert à le retrouver.
+  Au plus 5 nouveaux mots par jour (chacun doit revenir trois fois). Le même
+  mot écrit autrement (article, accents, guillemets) n'est pas dupliqué. Les
+  mots personnels dus passent avant tout mot générique (les plus anciens
+  d'abord), la version courte révise aussi 2 mots dus, et un mot maîtrisé
+  revient pour une vérification un mois plus tard. Dans Progression → « Mes
+  trous de mots », on peut ajouter, corriger ou supprimer un mot. L'exercice présente seulement l'idée : tu as 5 s
   pour retrouver le mot, sinon tu passes automatiquement à la circumlocution.
   Si tu as une réponse, elle n'est comptée comme juste qu'**après** avoir vu
   le mot et confirmé. Les mots génériques de `paraphrase-words.json`
-  complètent la liste (≈ 70 % perso / 30 % générique) ; un mot générique que
+  complètent les places restantes, en commençant par ceux ratés au test
+  hebdomadaire (des mots que tu connaissais : ils reviennent à contourner,
+  jamais comme trous de mots à retrouver) ; un mot générique que
   tu n'aurais pas trouvé peut rejoindre ta base personnelle avec ta propre
   description de l'idée. Une fois révélé, chaque mot est **réinjecté** dans
   le 4→3→2 et les questions des séances suivantes (« Mots à réutiliser »),
   sauf le jour où il doit être retrouvé, pour ne jamais te le souffler avant.
-- **Questions surprises** : la question apparaît pendant la préparation progressive (10 s au début, 5 s après 5 séances, 3 s après 15 — mais le niveau ne monte que si moins de 40 % des réponses des 3 dernières séances ont « beaucoup » bloqué). La parole démarre ensuite automatiquement, sans pause ni sortie anticipée, et s'allonge avec le niveau : 60 s, 75 s puis 90 s. La diversité de catégories et de types est privilégiée et la question la plus mal notée revient **toujours** en « revanche » ; au niveau avancé, la dernière réponse dure 60 s puis enchaîne sur un pivot surprise de 30 s. Si l'enregistrement est activé, chaque réponse est enregistrée (en mémoire) : avant la revanche, tu peux réécouter ta première réponse, et le feedback final fait écouter **avant / après**.
+- **Questions surprises** : la question apparaît pendant la préparation progressive (10 s au début, 5 s après 5 séances, 3 s après 15 — mais le niveau ne monte que si moins de 40 % des réponses des 3 dernières séances ont « beaucoup » bloqué). La parole démarre ensuite automatiquement, sans pause ni sortie anticipée, et s'allonge avec le niveau : 60 s, 75 s puis 90 s. La diversité de catégories et de types est privilégiée et la question la plus mal notée revient **toujours** en « revanche » ; au niveau avancé, la dernière réponse dure 60 s puis enchaîne sur un pivot surprise de 30 s. Si l'enregistrement est activé, chaque réponse est enregistrée (en mémoire) : avant la revanche, tu peux réécouter ta première réponse, et le feedback final fait écouter **avant / après**. Après la première réponse, tu notes séparément **le mot qui a manqué (avec l'idée)** — rappelé pendant la deuxième réponse puis ajouté à tes trous de mots — et l'idée ou la transition qui a manqué.
 - **4 → 3 → 2** : 4 passages (4 min, 3 min, 2 min, 1 min de transfert). Le mini-feedback (minuteur indicatif de 60 s) demande un mot manquant, une formulation corrigée et **un chunk que tu aurais pu utiliser**, rappelé pendant les tours 2 et 3. Une séance sur trois, le 4→3→2 devient un **retelling** : tu écoutes une courte histoire (`retelling-stories.json`, voix de synthèse) ou un **extrait naturel** d'une vraie personne (`retelling-recordings.json`, puisé dans la banque prosodique sous licence), tu notes 2–3 expressions entendues, puis tu la racontes avec tes mots ; le transfert porte sur une expérience personnelle proche. Le dernier point travaillé en prosodie est rappelé pendant le 4→3→2.
 - **Enregistrement audio** : optionnel, via `MediaRecorder`. S'il est activé, chaque tour du 4→3→2 et chaque réponse aux questions surprises sont enregistrés pendant qu'ils se déroulent. Le tour 1 est réécouté au mini-feedback, les 4 tours dans un résumé, la pire question avant sa revanche ; l'audio reste uniquement en mémoire.
 - **Lecture vocale guidée** : le moteur de synthèse vocale déjà utilisé par les modèles prosodiques TTS est partagé avec la fluidité. Les chunks et mots ne deviennent écoutables qu'après révélation ; le sujet 4→3→2 et les formulations corrigées sont écoutables avant réutilisation. Les questions surprises et les phases de parole chronométrées restent sans lecture pour ne pas modifier la contrainte de production.
@@ -317,6 +332,12 @@ d'anciennes données peuvent être considérées comme déjà vues.
   l'appareil sous son prénom) ; les bilans ne sont nommés qu'une fois la
   notation finie, avec un tableau des moyennes et un export CSV.
   Tout le reste de l'audio reste uniquement en mémoire.
+- Une séance dont le feedback final est passé est marquée « Feedback passé » :
+  aucun score ni nombre de blocages n'est inventé.
+- Si une séance d'un autre type est en cours quand tu demandes la version
+  courte ou un jour de conversation, l'application te laisse choisir entre la
+  reprendre et l'abandonner ; l'étape affichée (« Étape 3/5 ») ne compte que
+  les étapes réellement prévues.
 - Si `localStorage` (ou IndexedDB) est indisponible, l'entraînement continue en
   mémoire et un avertissement non bloquant s'affiche.
 
@@ -365,7 +386,8 @@ Où l'IA intervient (uniquement quand elle est activée) :
 | Écran | Rôle de l'IA |
 | --- | --- |
 | Manche de transfert du 4→3→2 | Écrit un sujet proche (même type de raisonnement, autre thème), demandé dès le tour 1 ; le sujet écrit dans `topics.json` reste utilisé si l'IA est éteinte ou échoue |
-| Petit retour du 4→3→2 et feedback final | Transcrit l'enregistrement et propose reformulations, expressions et mot manquant ; l'apprenant choisit ce qu'il copie dans le formulaire |
+| Petit retour, résumé du 4→3→2, reprise, zapping, questions surprises, feedback final, conversation | **Coach de fluidité** (`analyze-fluency`), pas correcteur : où tu bloques (mot manquant, phrase recommencée, panne d'idée, phrase trop complexe, « euh » en rafale), une stratégie par blocage, 2 expressions pour continuer, au plus 2 corrections (seulement si l'erreur gêne, revient ou bloque), les mots manquants (ajoutés en un clic aux trous de mots) et un mini-exercice de 30 s. Les mesures sont calculées par l'application et envoyées avec la transcription |
+| Résumé du 4→3→2 | **Compare les tours** (`compare-432`) : hésitations, redémarrages, continuité, contenu gardé, récitation mot pour mot ; une priorité, gardée comme correction pour les séances suivantes |
 | Trous de mots (vérification) | Avis facultatif sur le mot que l'apprenant dit avoir trouvé |
 | Test hebdomadaire | Transcrit l'enregistrement et remplit le nombre de mots et d'hésitations |
 | Coach IA (`/coach`) | **Questions surprises** : série chronométrée dans le thème choisi (compte à rebours, question révélée au dernier moment, enchaînement automatique, réponses enregistrées puis analysées dans le résumé) ; **jeu de rôle** en conversation de messages, avec micro à côté du texte |
@@ -394,8 +416,21 @@ Variables optionnelles : `PROVIDER_ORDER` (ex. `gemini,groq,cloudflare`),
 code, ne le définissez pas, sinon le serveur refusera toutes les requêtes).
 
 - `GET /api/status` : fournisseurs configurés (jamais les clés) ;
-- `POST /api/task` : `analyze-speech`, `judge-word`, `question`, `roleplay` ;
+- `POST /api/task` : `analyze-fluency`, `compare-432`, `judge-word`, `question`, `roleplay`, `transfer-topic` ;
 - `POST /api/transcribe` : transcription (Groq, Mistral, Gemini, Workers AI).
+  Whisper (Groq, Workers AI) reçoit un exemple hésitant comme consigne pour
+  **garder les « euh », répétitions et faux départs**, et Groq renvoie
+  l'horodatage de chaque mot (`words`) ; si un modèle refuse l'horodatage, la
+  transcription est redemandée sans.
+
+**Mesures envoyées avec la transcription** (`src/services/ai/fluencyMetrics.ts`),
+calculées dans le navigateur, jamais par le modèle : mots par minute, « euh »
+nus, marqueurs français (en fait, disons, comment dire…), redémarrages
+(« je je », « que… que »), silences de plus d'1 s et le plus long, temps avant
+le premier mot (niveau du micro). Avec l'horodatage des mots, chaque silence
+d'au moins 1 s est classé *au milieu d'une proposition* (formulation : un mot,
+une phrase) ou *entre deux propositions* (idée) — une estimation. Sans
+aucune durée connue, le prompt interdit au modèle d'en inventer.
 
 Les réponses portent les tokens consommés et le temps de réponse : l'écran Paramètres affiche, par modèle, les requêtes, échecs, tokens, audio transcrit et temps moyen (comptés dans le navigateur, avec un bouton de remise à zéro).
 

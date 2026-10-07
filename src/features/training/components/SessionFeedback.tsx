@@ -5,6 +5,7 @@ import { SpeakButton } from '../../../components/Speech/SpeakButton'
 import type { FluencyReminder, SessionFeedback } from '../types'
 import { isFeedbackValid } from '../sessionReducer'
 import { AiAnalysisPanel } from '../../ai/AiAnalysisPanel'
+import { QuickWordGap } from '../../wordGaps/QuickWordGap'
 
 export interface SessionFeedbackProps {
   feedback: SessionFeedback
@@ -72,6 +73,11 @@ export function SessionFeedbackView({
               <p className="text-strong">{clip.question}</p>
               {clip.before ? <AudioClip src={clip.before} label="Première réponse" /> : null}
               {clip.after ? <AudioClip src={clip.after} label="Deuxième réponse" /> : null}
+              <AiAnalysisPanel
+                audioUrl={clip.before}
+                situation="question"
+                subtitle="Sur ta première réponse"
+              />
             </div>
           ))}
         </div>
@@ -79,6 +85,7 @@ export function SessionFeedbackView({
 
       <AiAnalysisPanel
         audioUrl={audioUrl}
+        situation="final"
         subtitle="Sur ta réécoute finale"
         onUseCorrection={(better) =>
           onChange(feedback.abandonedSentence.trim() ? 'awkwardPhrase' : 'abandonedSentence', better)
@@ -86,10 +93,6 @@ export function SessionFeedbackView({
         onUseExpression={({ expression, intent }) => {
           onChange('expressionToReuse', expression)
           onChange('expressionIntent', intent)
-        }}
-        onUseWord={({ word, idea }) => {
-          onChange('blockedWord', word)
-          onChange('blockedWordContext', idea)
         }}
       />
 
@@ -186,6 +189,8 @@ export function SessionFeedbackView({
             />
           </div>
         ) : null}
+
+        <QuickWordGap id="session-feedback-gap" label="Un autre mot qui t'a manqué" />
 
         <div className="field">
           <label htmlFor="abandoned-sentence">
